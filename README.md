@@ -6,7 +6,7 @@ Aram's own page at aram.nu: a quiet, black, lowercase list of his projects.
 
 One page with two entries. **khabar.nu** links to the news app and shows, under its name,
 the one line the Khabar editor writes about the day's news (refreshed every five minutes).
-**3d, bim & elektronik** names his field and shows four 3D-printed square-kufi tiles; a tap
+Under it, one grey line names his field (3d, bim, electronics) over four 3D-printed square-kufi tiles; a tap
 opens a tile large on black.
 
 ## Status

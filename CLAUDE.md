@@ -8,7 +8,8 @@ project.
 
 Aram's own page at aram.nu (domain bought 2026-10-20 at Simply.com, same account as
 khabar.nu). A minimal list of his projects: khabar.nu with the Khabar editor's day line under
-it, and "3d, bim & elektronik" with four 3D-printed kufi tiles.
+it, and one line about his 3D, BIM and electronics work over four 3D-printed kufi tiles
+(no heading there, by his choice).
 
 Owner's design rules for this page: black background, white text, **no capital letters**
 (CSS lowercase), a minimal font (the device's own sans, weight 300), little text, **no
