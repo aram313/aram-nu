@@ -1,14 +1,10 @@
 {
   "name": "aram-nu",
   "version": "0.1.0",
-  "description": "Personal one-line page at aram.nu showing today's lead story from khabar.nu",
+  "description": "Aram's minimal project page at aram.nu: khabar.nu with today's line, and his 3D, BIM and electronics work",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "echo \"TODO: dev server\"",
-    "build": "echo \"TODO: production build\"",
-    "test": "echo \"TODO: tests\"",
-    "lint": "echo \"TODO: linter\""
+    "dev": "py -m http.server 8790 --directory src"
   },
   "author": "AramJ",
   "license": "MIT"

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="aram – khabar.nu, 3d, bim og elektronik">
+<title>aram</title>
+<link rel="icon" href="data:,">
+<style>
+  :root {
+    --bg: #000;
+    --fg: #fff;
+    --dim: #8c8c8c;
+    --line: #1f1f1f;
+  }
+  html { background: var(--bg); }
+  body {
+    margin: 0;
+    min-height: 100svh;
+    background: var(--bg);
+    color: var(--fg);
+    /* each device's own clean sans: SF on Apple, Segoe on Windows, Roboto on Android */
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Roboto, sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    text-transform: lowercase;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+  main {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: max(18vh, 72px) 24px 96px;
+  }
+  h1, h2, p { margin: 0; font-weight: inherit; font-size: inherit; }
+  a { color: inherit; text-decoration: none; }
+
+  h1 { margin-bottom: 72px; }
+
+  section { padding: 24px 0; border-top: 1px solid var(--line); }
+  section:last-child { border-bottom: 1px solid var(--line); }
+  .sub { color: var(--dim); margin-top: 4px; }
+  h2 a::after { content: " ↗"; color: var(--dim); }
+  @media (hover: hover) { h2 a:hover, .sub a:hover { opacity: 0.7; } }
+
+  /* the khabar line arrives quietly once fetched */
+  #news { min-height: 1.6em; opacity: 0; transition: opacity 0.9s ease; }
+  #news.shown { opacity: 1; }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-top: 20px;
+  }
+  .tiles button {
+    padding: 0; border: 0; background: #111; cursor: zoom-in;
+    aspect-ratio: 1; overflow: hidden; border-radius: 2px;
+  }
+  .tiles img { width: 100%; height: 100%; display: block; object-fit: cover; }
+
+  /* opened tile: the photo alone on black, tap anywhere to close */
+  dialog {
+    padding: 0; border: 0; max-width: none; max-height: none;
+    width: 100vw; height: 100svh; background: var(--bg);
+    opacity: 0; transition: opacity 0.25s ease;
+  }
+  dialog[open] { opacity: 1; display: flex; align-items: center; justify-content: center; cursor: zoom-out; }
+  dialog::backdrop { background: var(--bg); }
+  dialog img { max-width: min(92vw, 92svh); max-height: 92svh; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) { #news, dialog { transition: none; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>aram</h1>
+
+  <section>
+    <h2><a href="https://khabar.nu">khabar.nu</a></h2>
+    <p class="sub"><a id="news" href="https://khabar.nu"></a></p>
+  </section>
+
+  <section>
+    <h2>3d, bim &amp; elektronik</h2>
+    <p class="sub">3d-skanning, modellering, ingeniørarbejde og elektronik.</p>
+    <div class="tiles" id="tiles"></div>
+  </section>
+</main>
+
+<dialog id="view"><img alt=""></dialog>
+
+<script>
+  // The day's news in one line: the lede the Khabar editor writes for khabar.nu's front page.
+  const FRONT = 'https://raw.githubusercontent.com/aram313/nyhedsradar/digest/front.json';
+  const news = document.getElementById('news');
+
+  async function loadNews() {
+    try {
+      const r = await fetch(FRONT, { cache: 'no-cache' });
+      const lede = ((await r.json()).lede || '').trim();
+      if (lede && lede !== news.textContent) news.textContent = lede;
+    } catch (e) { /* keep whatever is showing */ }
+    if (!news.textContent) news.textContent = 'dagens nyheder';
+    news.classList.add('shown');
+  }
+  loadNews();
+  setInterval(loadNews, 5 * 60 * 1000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) loadNews(); });
+
+  // The kufi tiles, in the order of the photos in img/ (see scripts/prepare-images.py).
+  const SHAHADA = 'lā ilāha illā llāh';
+  const RASUL = 'muḥammadun rasūlu llāh';
+  const TILES = [
+    ['sort', SHAHADA, 'sort'], ['rasul-sort', RASUL, 'sort'],
+    ['roed', SHAHADA, 'rød'], ['sort-paa-sand', SHAHADA, 'sort på sand'],
+  ];
+  const grid = document.getElementById('tiles');
+  const view = document.getElementById('view');
+  const big = view.querySelector('img');
+
+  for (const [name, text, colour] of TILES) {
+    const b = document.createElement('button');
+    const alt = `${text} i firkantet kufi, 3d-printet, ${colour}`;
+    b.setAttribute('aria-label', alt);
+    b.innerHTML = `<img src="img/${name}-s.jpg" alt="${alt}" loading="lazy" decoding="async" width="480" height="480">`;
+    b.addEventListener('click', () => {
+      big.src = `img/${name}-l.jpg`;
+      big.alt = alt;
+      view.showModal();
+    });
+    grid.append(b);
+  }
+  view.addEventListener('click', () => view.close());
+</script>
+</body>
+</html>

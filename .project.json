@@ -1,9 +1,14 @@
 {
   "name": "aram-nu",
   "title": "aram.nu",
-  "description": "Personal one-line page at aram.nu showing today's lead story from khabar.nu",
+  "description": "Aram's minimal project page at aram.nu: khabar.nu with today's line, and his 3D, BIM and electronics work",
   "type": "web-app",
-  "stack": ["html", "css", "javascript"],
+  "stack": [
+    "html",
+    "css",
+    "javascript",
+    "github-pages"
+  ],
   "status": "active",
   "created": "2026-10-20",
   "updated": "2026-10-20",

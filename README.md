@@ -1,69 +1,42 @@
 # aram.nu
 
-Personal one-line page at aram.nu showing today's lead story from khabar.nu
+Aram's own page at aram.nu: a quiet, black, lowercase list of his projects.
 
 ## What this is
 
-<!-- Two or three sentences a non-developer can follow. What problem does this solve,
-     and for whom? Avoid naming technologies here — that goes under Stack below. -->
+One page with two entries. **khabar.nu** links to the news app and shows, under its name,
+the one line the Khabar editor writes about the day's news (refreshed every five minutes).
+**3d, bim & elektronik** names his field and shows four 3D-printed square-kufi tiles; a tap
+opens a tile large on black.
 
 ## Status
 
-**active** · Created 2026-10-20 · Type: `web-app`
+**active** · Created 2026-10-20 · Type: `web-app` · Not published yet (see below).
 
-## Getting started
+## Run it locally
 
-### Requirements
-
-<!-- List what must be installed before this will run. Be specific about versions. -->
-
-### Install
+Requirements: Python (`py`).
 
 ```
-<!-- The exact commands, copy-pasteable -->
+npm run dev
 ```
 
-### Run
+Then open http://localhost:8790. (Without npm: `py -m http.server 8790 --directory src`.)
 
-```
-<!-- The exact commands -->
-```
+## How it is built
 
-### Test
+- `src/index.html` is the whole site: markup, style and a small script. No build step.
+- The khabar line comes from `front.json` on the `digest` branch of the public
+  `aram313/nyhedsradar` repository (the `lede` field). If it cannot be read, the line says
+  "dagens nyheder".
+- `src/img/` holds web copies of the tile photos, made by `scripts/prepare-images.py` from
+  Aram's Lightroom exports (`Downloads\lightroom-download-2024-07-02T12_03_21Z` and
+  `…T12_53_12Z`). Change which tiles show in `SHOWN` there and in `TILES` in the page.
 
-```
-<!-- The exact commands -->
-```
+## Publishing
 
-## Layout
-
-| Path | Contains |
-|---|---|
-| `src\` | Source code |
-| `tests\` | Tests, mirroring the structure of `src\` |
-| `docs\` | Documentation and architecture decision records |
-| `scripts\` | Build, deploy and development helpers |
-| `config\` | Configuration, per environment |
-| `assets\` | Static files owned by this project |
-
-## Configuration
-
-Copy `.env.example` to `.env` and fill in the values. `.env` is never committed.
-
-## Stack
-
-html, css, javascript
-
-## Documentation
-
-- Architecture decisions: `docs\adr\`
-- Guides: `docs\guides\`
-- Change history: [CHANGELOG.md](CHANGELOG.md)
-
-## Conventions
-
-This project follows the workspace standard in `E:\STRUCTURE.md`.
-
-## Licence
-
-See [LICENSE](LICENSE).
+`.github/workflows/pages.yml` publishes `src/` to GitHub Pages on every push to `main`.
+Publishing needs a GitHub repository with Pages set to "GitHub Actions" and the custom
+domain `aram.nu`, plus DNS at Simply.com: four `A` records for `aram.nu` to
+185.199.108.153, 185.199.109.153, 185.199.110.153 and 185.199.111.153, and a `CNAME` for
+`www` to `aram313.github.io`.

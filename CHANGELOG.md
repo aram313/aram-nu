@@ -12,6 +12,9 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 ### Added
 
 - Project scaffolded from the `web-app` workspace template.
+- The page: black, lowercase, minimal; khabar.nu with the editor's day line; "3d, bim &
+  elektronik" with four 3D-printed kufi tiles that open large on tap.
+- GitHub Pages workflow for publishing `src/` (replaces the template's npm CI).
 
 ---
 
