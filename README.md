@@ -11,7 +11,7 @@ opens a tile large on black.
 
 ## Status
 
-**active** · Created 2026-10-20 · Type: `web-app` · Not published yet (see below).
+**active** · Created 2026-10-20 · Type: `web-app` · Live at https://aram.nu since 2026-10-20 (repo `aram313/aram-nu`).
 
 ## Run it locally
 
@@ -36,7 +36,7 @@ Then open http://localhost:8790. (Without npm: `py -m http.server 8790 --directo
 ## Publishing
 
 `.github/workflows/pages.yml` publishes `src/` to GitHub Pages on every push to `main`.
-Publishing needs a GitHub repository with Pages set to "GitHub Actions" and the custom
-domain `aram.nu`, plus DNS at Simply.com: four `A` records for `aram.nu` to
+The repository `aram313/aram-nu` has Pages set to "GitHub Actions" and the custom domain
+`aram.nu`. DNS at Simply.com (set 2026-10-20): four `A` records for `aram.nu` to
 185.199.108.153, 185.199.109.153, 185.199.110.153 and 185.199.111.153, and a `CNAME` for
 `www` to `aram313.github.io`.

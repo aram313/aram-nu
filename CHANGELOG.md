@@ -15,6 +15,7 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - The page: black, lowercase, minimal; khabar.nu with the editor's day line; "3d, bim &
   elektronik" with four 3D-printed kufi tiles that open large on tap.
 - GitHub Pages workflow for publishing `src/` (replaces the template's npm CI).
+- Published at https://aram.nu (GitHub Pages, DNS at Simply.com).
 
 ---
 
