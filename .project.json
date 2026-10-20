@@ -1,0 +1,12 @@
+{
+  "name": "aram-nu",
+  "title": "aram.nu",
+  "description": "Personal one-line page at aram.nu showing today's lead story from khabar.nu",
+  "type": "web-app",
+  "stack": ["html", "css", "javascript"],
+  "status": "active",
+  "created": "2026-10-20",
+  "updated": "2026-10-20",
+  "owner": "AramJ",
+  "repo": ""
+}

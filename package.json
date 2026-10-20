@@ -1,0 +1,15 @@
+{
+  "name": "aram-nu",
+  "version": "0.1.0",
+  "description": "Personal one-line page at aram.nu showing today's lead story from khabar.nu",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo \"TODO: dev server\"",
+    "build": "echo \"TODO: production build\"",
+    "test": "echo \"TODO: tests\"",
+    "lint": "echo \"TODO: linter\""
+  },
+  "author": "AramJ",
+  "license": "MIT"
+}
