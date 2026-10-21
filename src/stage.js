@@ -272,16 +272,27 @@
         [[0.6482, 0.0195, -0.3186], 'mur 500 mm', 12.2, 15.7], [[0.2057, 0.0108, 0.5787], 'tømmer 130 × 130 mm', 16.7, 20.2]],
     },
     {
-      slug: 'tagvaerk', id: 'tag', name: 'tagværk', lin: true, length: 18, draw: [6],
+      slug: 'tagvaerk', id: 'tag', name: 'tagværk', lin: true, length: 25, draw: [6, 6, 1.2],
       row: 'laserscanning · 165 m tag',
       meta: ['laserscanning', [1232, 'stykker tømmer'], '165 m tag'],
       gain: { lin: 0.95 },
+      // line groups, from the model's own types: 0 the timber the scanner saw (surveyed), 1 the timber
+      // estimated from it, 2 three pieces the model has a note on
       pose: { yaw: 62, pitch: 13, zoom: 9, at: [-0.72, 0, 0] },
       beats: [
-        { at: 0, text: 'et gammelt tagværk, målt op med laserscanner, spær for spær.', lin: [1] },
-        { at: 6, text: 'hvert stykke tømmer tegnet, som det faktisk ligger.', lin: [1], pose: { yaw: 34, pitch: 5, zoom: 15, at: [-0.3, 0, 0] } },
-        { at: 11.5, text: '165 meter tag.', lin: [1], pose: { yaw: 14, pitch: 34, zoom: 1.08, at: [0, 0, 0] } },
+        { at: 0, text: 'et gammelt tagværk, målt op med laserscanner, spær for spær.', lin: [1, 1, 0] },
+        { at: 5.5, text: 'det, scanneren kunne se, er tegnet som målt: 596 stykker.', lin: [1, 0.12, 0],
+          pose: { yaw: 34, pitch: 5, zoom: 15, at: [-0.3, 0, 0] } },
+        { at: 10.5, text: 'resten, 636 stykker, er skønnet ud fra dem.', lin: [0.22, 1, 0],
+          pose: { yaw: 48, pitch: 8, zoom: 15, at: [-0.3, 0, 0] } },
+        { at: 15, text: 'skæve, bøjede og buede stykker er skrevet på.', lin: [0.45, 0.3, 1],
+          pose: { yaw: 22, pitch: 24, zoom: 1.7, at: [0, 0, 0], w: 3.5, tall: { yaw: 80, pitch: 16, zoom: 14, at: [-0.55, 0, 0] } } },
+        { at: 20, text: '1.232 stykker tømmer, 165 m tag.', lin: [1, 0.7, 0.4],
+          pose: { yaw: 14, pitch: 34, zoom: 1.08, at: [0, 0, 0], w: 4, tall: { yaw: 80, pitch: 16, zoom: 11, at: [-0.5, 0, 0] } } },
       ],
+      // [where, text, from, to]: the model's notes on three pieces
+      notes: [[[-0.6524, 0.0183, 0.0111], 'buet', 15.6, 19.6], [[-0.2323, 0.0222, 0.0173], 'skæv', 15.9, 19.6],
+        [[0.6917, 0.0215, 0.0227], 'bøjet', 16.2, 19.6]],
     },
     {
       slug: 'vaerktoej', id: 'vaerktoej', name: 'værktøj', lin: true, tri: true, hidden: true, ortho: true, length: 24, draw: [6],

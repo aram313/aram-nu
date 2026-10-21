@@ -29,7 +29,9 @@ measured in from the house's corners), a district heating pipe first seen as the
 drawing shows it (the pipes it crosses as circles), then in 3D with every pipe at its real
 diameter, the straight way that gas blocked, the 1,75 m dip and 0,29 m under the sewer, and the
 points measured in the excavation, a house drawn in hidden lines and cut open (its levels marked beside the section with
-the model's own names, a wall's thickness and the roof's timber size), a factory's
+the model's own names, a wall's thickness and the roof's timber size), an old roof drawn
+rafter by rafter, first the timber the scanner saw, then the timber estimated from it, then the
+pieces the model notes as crooked, bent or bowed, a factory's
 steel tower drawn member by member from the ground, four of its members named by the profile
 they were fitted to the scan with, a sheet of twelve 3D-printed tools where the camera
 visits four and measures each in three directions. One lowercase line tells each beat, over
