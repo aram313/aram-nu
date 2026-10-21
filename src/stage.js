@@ -1406,10 +1406,12 @@
     const P = PROJECTS[i];
     tau = HOLD ? (AT >= 0 ? AT : 0) : STILL ? P.beats[P.beats.length - 1].at + 3 : 0;
     ready = false;
+    play.classList.add('wait');
     caption(P);
     load(P).then(() => {
       if (cur !== i) return;
       ready = true;
+      play.classList.remove('wait');
       if (!STILL && !HOLD) countUp();
       kick();
     });
