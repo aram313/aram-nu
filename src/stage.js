@@ -314,7 +314,7 @@
         ['prismeholder til pæl', [0.3177, -0.6643, -0.0728, 0.4147, -0.5673, 0.0053], ['60', '60', '48,3'], [0.3662, -0.6158]],
         ['kugleprismeholder', [0.8933, -0.6384, -0.0728, 0.9386, -0.5932, 0.0396], ['28', '28', '69,5'], [0.9159, -0.6158]],
       ],
-      pose: { yaw: 35, pitch: 40, zoom: 0.88, at: [0.02, -0.21, 0] },
+      pose: { yaw: 35, pitch: 40, zoom: 0.88, at: [0.02, -0.21, 0], tall: { yaw: 118, pitch: 62, zoom: 0.95, at: [0.02, 0, 0] } },
       beats: [
         { at: 0, text: 'værktøj til landmålerne, tegnet i fusion.', lin: [1], names: 1 },
         { at: 5.5, text: 'hver del målsat i millimeter.', lin: [1], focus: 0,
@@ -326,7 +326,7 @@
         { at: 16.6, text: 'hver del målsat i millimeter.', lin: [1], focus: 11,
           pose: { yaw: 26, pitch: 22, zoom: 6.5, at: [0.916, -0.616, -0.017] } },
         { at: 20.3, text: 'printet og samlet i et katalog, kollegerne bestiller fra.', lin: [1], names: 1,
-          pose: { yaw: 40, pitch: 44, zoom: 0.88, at: [0.02, -0.21, 0] } },
+          pose: { yaw: 40, pitch: 44, zoom: 0.88, at: [0.02, -0.21, 0], tall: { yaw: 124, pitch: 64, zoom: 0.95, at: [0.02, 0, 0] } } },
       ],
     },
   ];
@@ -1274,8 +1274,8 @@
     const words = [], e = cam.eye, names = value(P, 'names', undefined, t, 0.8);
     // the names on the whole sheet only where a row of four has room for them on the screen
     const box0 = P.parts[0][1], box3 = P.parts[3][1];
-    const [ax] = screen(mvp, [box0[0], box0[1], box0[2]]), [bx] = screen(mvp, [box3[3], box3[1], box3[2]]);
-    const room = ease((Math.abs(bx - ax) / 4 - 120) / 60);
+    const [ax, ay] = screen(mvp, [box0[0], box0[1], box0[2]]), [bx, by] = screen(mvp, [box3[3], box3[1], box3[2]]);
+    const room = ease((Math.hypot(bx - ax, by - ay) / 4 - 120) / 60);
     let v = 0;
     const seg = (a, b, i) => {
       if (v + 2 > DIMS * 2 || i < 0.002) return;

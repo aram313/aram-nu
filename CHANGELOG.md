@@ -89,6 +89,7 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   crooked and bent; the end runs along the whole 165 m roof (on a phone, seen down its length).
 - værktøj: a sheet of twelve prints with their names; the camera visits four of them, from
   330 mm down to 28 mm, and draws each one's width, depth and height.
+- værktøj: on a phone the sheet turns upright, so all twelve prints fit the screen.
 
 ---
 
