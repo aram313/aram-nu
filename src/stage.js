@@ -45,19 +45,28 @@
       ],
     },
     {
-      slug: 'kabeltrace', id: 'kabel', name: 'kabeltracé', lin: true, flo: true, length: 21, sweep: [0.8, 0.6, 0],
+      slug: 'kabeltrace', id: 'kabel', name: 'kabeltracé', flo: true, tube: true, length: 23,
       row: 'as-built · 178 km kabler',
       meta: ['as-built', [3, 'datacentergrunde'], [178, 'km kabler'], [66715, 'elementer']],
-      gain: { lin: 0.9 }, flowSpeed: 0.0105,
-      pose: { yaw: 250, pitch: 30, zoom: 50, at: [-0.263, -0.25, 0.0016] },
+      gain: { tube: 0.92 }, flowSpeed: 0.0105, runs: 500, rideW: 7.6, miniPitch: 64, start: { cut: 1 }, half: 625,
+      // where the section and the camera ride: the middle of one bundle of cables, every 5 m
+      route: [[-0.33403, -0.15136, 0.0031], [-0.33145, -0.15634, 0.00309], [-0.32777, -0.16335, 0.00309], [-0.32402, -0.17042, 0.00309],
+        [-0.32025, -0.17748, 0.00312], [-0.31646, -0.18452, 0.00315], [-0.31266, -0.19154, 0.00316], [-0.30884, -0.19858, 0.00315],
+        [-0.30496, -0.20561, 0.00312], [-0.3011, -0.21259, 0.00305], [-0.29729, -0.21956, 0.00294], [-0.29354, -0.22659, 0.0028],
+        [-0.28982, -0.2337, 0.00271], [-0.28568, -0.24073, 0.00265], [-0.28001, -0.24642, 0.00252], [-0.27276, -0.24991, 0.00228],
+        [-0.26469, -0.25172, 0.00192], [-0.25629, -0.25279, 0.00153], [-0.24775, -0.25255, 0.00113], [-0.23962, -0.25056, 0.00083],
+        [-0.23203, -0.24744, 0.00063], [-0.22468, -0.24386, 0.00048], [-0.21748, -0.24009, 0.00033], [-0.21046, -0.23638, 0.0002],
+        [-0.20294, -0.23253, 0.00009]],
+      pose: { follow: true, yaw: 6, pitch: 15, zoom: 320 },
       beats: [
-        { at: 0, text: 'her mødes tre kabelruter i jorden.', lin: [1, 0, 0], flow: 1 },
-        { at: 5, text: 'hvert kabel lagt ind i revit, som det ligger.', lin: [1, 0.9, 0], flow: 1,
-          pose: { yaw: 275, pitch: 40, zoom: 10, at: [-0.25, -0.21, 0] } },
-        { at: 10.5, text: 'kilometer efter kilometer.', lin: [0.7, 0.85, 1], flow: 0.8,
-          pose: { yaw: 300, pitch: 54, zoom: 2, at: [-0.12, -0.12, 0] } },
-        { at: 15.5, text: '178 km kabler på tre datacentergrunde.', lin: [0.6, 0.8, 1], flow: 0.6,
-          pose: { yaw: 320, pitch: 62, zoom: 1.6, at: [0, 0, 0] } },
+        { at: 0, text: 'et kabeltracé i snit.', tube: 1, cut: 1 },
+        { at: 2.6, text: 'hvert rør i sin rigtige diameter.', tube: 1, cut: 1, sizes: 1 },
+        { at: 6.2, text: 'som de ligger i jorden, meter for meter.', tube: 1, cut: 1, ride: 1,
+          pose: { follow: true, yaw: 14, pitch: 21, zoom: 270, w: 3.5 } },
+        { at: 14, text: 'kilometer efter kilometer.', tube: 1, ride: 1, flow: 1,
+          pose: { yaw: -16, pitch: 8, zoom: 30, at: [-0.268, -0.252, 0.0025], w: 4.5 } },
+        { at: 18.5, text: '178 km kabler på tre datacentergrunde.', tube: 1, ride: 1, flow: 0.8,
+          pose: { yaw: -22, pitch: 11, zoom: 24, at: [-0.29, -0.2, 0.003], w: 6 } },
       ],
     },
     {
@@ -76,19 +85,23 @@
       ],
     },
     {
-      slug: 'georadar', id: 'gade', name: 'georadar', lin: true, tri: true, hidden: true, length: 19, draw: [6, 2.4, 2.4],
+      slug: 'georadar', id: 'gade', name: 'georadar', lin: true, tri: true, hidden: true, flo: true, tube: true, length: 21,
       row: 'georadar · 672 rør og kabler',
       meta: ['georadar', [672, 'rør og kabler'], '150 m gade'],
-      gain: { lin: 0.9 },
-      pose: { yaw: 28, pitch: 38, zoom: 1.45 },
+      gain: { lin: 0.9, tube: 0.95 }, rideW: 9, ringR: 0.16, half: 58.27,
+      // the radar's way down the middle of the street at ground level; its band spans the street
+      route: [[0.0474, -1.0159, -0.099], [0.0474, 0.5286, -0.099]],
+      scan: { group: 0, width: [-0.1288, 0.1288], depth: 0.0687 },
+      pose: { yaw: 8, pitch: 34, zoom: 2.6, at: [0.047, -0.55, -0.1] },
       beats: [
-        { at: 0, text: 'en gade mellem to bygninger.', lin: [0, 0.8, 0.5] },
-        { at: 4.5, text: 'georadaren kører gaden igennem, og det, der ligger under asfalten, dukker op.', lin: [1, 0.3, 0.12],
-          pose: { yaw: 40, pitch: 34, zoom: 1.6 } },
-        { at: 11, text: 'rør, kabler og brønde, ført ind i revit.', lin: [1, 0.25, 0.08],
-          pose: { yaw: 58, pitch: 24, zoom: 2.3, at: [0.05, -0.2, 0] } },
-        { at: 15.5, text: 'så de kan ses, før nogen graver.', lin: [1, 0.3, 0.12],
-          pose: { yaw: 14, pitch: 14, zoom: 2.1, at: [0.05, -0.35, 0] } },
+        { at: 0, text: 'en gade mellem to bygninger.', lin: [0, 0.4, 0.25] },
+        { at: 2.6, text: 'georadaren kører gaden igennem.', lin: [1, 0.3, 0.2], tube: 1, cut: 1, ride: 1,
+          pose: { follow: true, yaw: 0, pitch: 38, zoom: 6.5, w: 3 } },
+        { at: 6.8, text: 'det, der ligger under asfalten, dukker op.', lin: [1, 0.3, 0.2], tube: 1, cut: 1, ride: 1 },
+        { at: 12, text: 'rør, kabler og brønde, ført ind i revit.', lin: [1, 0.3, 0.18], tube: 1, ride: 1,
+          pose: { yaw: 30, pitch: 48, zoom: 2.0, at: [0.05, -0.25, -0.13], w: 4 } },
+        { at: 16.5, text: 'så de kan ses, før nogen graver.', lin: [1, 0.3, 0.18], tube: 1, ride: 1,
+          pose: { yaw: 52, pitch: 30, zoom: 4.2, at: [0.05, -0.55, -0.14], w: 4 } },
       ],
     },
     {
@@ -136,23 +149,38 @@
       ],
     },
     {
-      slug: 'vaerktoej', id: 'vaerktoej', name: 'værktøj', lin: true, tri: true, hidden: true, ortho: true, length: 17, draw: [7, 7],
+      slug: 'vaerktoej', id: 'vaerktoej', name: 'værktøj', lin: true, tri: true, hidden: true, ortho: true, length: 24, draw: [6],
       row: 'fusion · 3d print',
-      meta: ['tegnet i fusion', '3d-printet', [9, 'af dem her']],
+      meta: ['tegnet i fusion', '3d-printet', [12, 'af dem her']],
       gain: { lin: 1 },
-      pose: { yaw: 35, pitch: 38, zoom: 1.0 },
-      beats: [
-        { at: 0, text: 'værktøj til landmålerne, tegnet i fusion.', lin: [1, 1] },
-        { at: 8, text: 'prismeholdere, gps-fødder, holdere og dæksler, målt i millimeter.', lin: [1, 1], pose: { yaw: 55, pitch: 42, zoom: 1.05 } },
-        { at: 12.5, text: 'printet og samlet i et katalog, kollegerne bestiller fra.', lin: [1, 1], pose: { yaw: 20, pitch: 30, zoom: 1.0 } },
+      // [name, box in the page's coordinates, width / depth / height in mm, where it is tallest]
+      parts: [
+        ['gps-fod med spids, 330 mm', [-1.0000, 0.4594, -0.0728, -0.4665, 0.5079, 0.0663], ['330', '30', '86'], [-0.9724, 0.4835]],
+        ['armeringsholder', [-0.3856, 0.2815, -0.0728, 0.0186, 0.6857, 0.0728], ['250', '250', '90'], [-0.1835, 0.4836]],
+        ['laptopbeslag', [0.2935, 0.2736, -0.0728, 0.4390, 0.6937, -0.0002], ['90', '259,9', '44,9'], [0.3684, 0.6880]],
+        ['tabletholder til georadar', [0.8351, 0.3155, -0.0728, 0.9968, 0.6518, 0.0178], ['100', '208', '56'], [0.8663, 0.5073]],
+        ['gps-wrap', [-0.8642, -0.1970, -0.0728, -0.6023, 0.0649, 0.0375], ['162', '162', '68,2'], [-0.7335, -0.0664]],
+        ['centrering til rør ø160', [-0.3194, -0.2020, -0.0728, -0.0476, 0.0698, -0.0243], ['168,1', '168,1', '30'], [-0.1836, -0.0661]],
+        ['rund gps-fod ø100', [0.2854, -0.1469, -0.0728, 0.4470, 0.0148, 0.0663], ['100', '100', '86'], [0.3663, -0.0663]],
+        ['monitordæksel', [0.8319, -0.1501, -0.0728, 1.0000, 0.0180, -0.0113], ['104', '104', '38'], [0.9148, -0.0673]],
+        ['vaterpasfod', [-0.8076, -0.6937, -0.0728, -0.6589, -0.5379, 0.0307], ['91,9', '96,4', '64'], [-0.7333, -0.6016]],
+        ['prismekegle', [-0.2330, -0.6653, -0.0728, -0.1340, -0.5663, 0.0517], ['61,2', '61,2', '77'], [-0.1835, -0.6158]],
+        ['prismeholder til pæl', [0.3177, -0.6643, -0.0728, 0.4147, -0.5673, 0.0053], ['60', '60', '48,3'], [0.3662, -0.6158]],
+        ['kugleprismeholder', [0.8933, -0.6384, -0.0728, 0.9386, -0.5932, 0.0396], ['28', '28', '69,5'], [0.9159, -0.6158]],
       ],
-      // [where, text, group, when]: a measure written under each part as it is drawn
-      dims: [
-        [[-0.5709, 0.6346, -0.1118], '330 mm', 1, 0.9], [[0.1053, 0.5695, -0.1118], '82 mm', 1, 1.6],
-        [[0.7815, 0.5943, -0.1118], '61 mm', 1, 2.3], [[-0.5709, -0.2731, -0.1118], '100 mm', 1, 3.0],
-        [[0.1053, -0.039, -0.1118], '28 mm', 1, 3.6], [[0.7815, -0.1274, -0.1118], '92 mm', 1, 4.3],
-        [[-0.5709, -0.762, -0.1118], '64 mm', 1, 5.0], [[0.1053, -0.8088, -0.1118], '100 mm', 1, 5.7],
-        [[0.7815, -0.8972, -0.1118], '168 mm', 1, 6.4],
+      pose: { yaw: 35, pitch: 40, zoom: 0.88, at: [0.02, -0.21, 0] },
+      beats: [
+        { at: 0, text: 'værktøj til landmålerne, tegnet i fusion.', lin: [1], names: 1 },
+        { at: 5.5, text: 'hver del målsat i millimeter.', lin: [1], focus: 0,
+          pose: { yaw: 24, pitch: 30, zoom: 1.75, at: [-0.733, 0.484, -0.003] } },
+        { at: 9.2, text: 'hver del målsat i millimeter.', lin: [1], focus: 3,
+          pose: { yaw: 40, pitch: 34, zoom: 2.6, at: [0.916, 0.484, -0.027] } },
+        { at: 12.9, text: 'hver del målsat i millimeter.', lin: [1], focus: 7,
+          pose: { yaw: 32, pitch: 40, zoom: 4.4, at: [0.916, -0.066, -0.042] } },
+        { at: 16.6, text: 'hver del målsat i millimeter.', lin: [1], focus: 11,
+          pose: { yaw: 26, pitch: 22, zoom: 6.5, at: [0.916, -0.616, -0.017] } },
+        { at: 20.3, text: 'printet og samlet i et katalog, kollegerne bestiller fra.', lin: [1], names: 1,
+          pose: { yaw: 40, pitch: 44, zoom: 0.88, at: [0.02, -0.21, 0] } },
       ],
     },
   ];
@@ -162,6 +190,10 @@
   const POSE_W = 2.6;      // seconds for the camera to settle on a new beat
   const SWAP = 0.45;       // seconds to fade out when going to the next project
   const TRAIL = 7;         // points in the tail of each light running along a cable
+  const RINGS = 64;        // at most this many cables cut by a moving section
+  const RING_N = 48;       // segments in each ring
+  const BAND = 64;         // line segments in a georadar's band and curtain
+  const DIMS = 256;        // line segments in the measures on a sheet of parts
 
   const Q = new URLSearchParams(location.search);
   // ?id=<data file>&yaw=&pitch=&zoom=&at=x,y,z&t=: any data file on its own, for tuning a camera
@@ -204,11 +236,13 @@
   const ease = (x) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
   const lerp = (a, b, k) => a + (b - a) * k;
   const rad = (d) => (d * Math.PI) / 180;
-  const pick = (b, key, g) => (g === undefined ? b[key] || 0 : (b[key] || [])[g] || 0);
+  // a beat sets a value, one per group (an array), or names the one group it is about (a number)
+  const pick = (b, key, g) => (g === undefined ? b[key] || 0 : typeof b[key] === 'number' ? +(b[key] === g) : (b[key] || [])[g] || 0);
 
   // a value set beat by beat, each change easing in over w seconds from wherever the last one was
+  // (from 0, or from the project's start value: a section already there when the story opens)
   function value(P, key, g, t, w) {
-    let from = 0, to = 0, at = -1e9;
+    let from = g === undefined && P.start ? P.start[key] || 0 : 0, to = from, at = -1e9;
     for (const b of P.beats) {
       if (b.at > t) break;
       from = lerp(from, to, ease((b.at - at) / w));
@@ -217,19 +251,48 @@
     }
     return lerp(from, to, ease((t - at) / w));
   }
+  // the camera at time t. A pose with follow rides along the project's route: it looks at the place
+  // the ride has reached, its yaw turned from the route's heading there.
   function poseAt(P, t) {
     const base = Object.assign({ at: [0, 0, 0] }, P.pose);
-    let from = base, to = base, at = -1e9;
-    const mix = (a, b, k) => ({ yaw: lerp(a.yaw, b.yaw, k), pitch: lerp(a.pitch, b.pitch, k), zoom: a.zoom * Math.pow(b.zoom / a.zoom, k),
-                                at: [0, 1, 2].map((j) => lerp(a.at[j], b.at[j], k)) });
+    const where = (p, k) => {
+      if (!p.follow) return p;
+      const s = value(P, 'ride', undefined, k, P.rideW || 8);
+      const a = routeAt(P, s - 0.1).pos, b = routeAt(P, s + 0.1).pos;
+      return Object.assign({}, p, { at: routeAt(P, s).pos, yaw: p.yaw + (Math.atan2(b[0] - a[0], b[1] - a[1]) * 180) / Math.PI });
+    };
+    // over a big change of zoom the point looked at moves with the zoom, so the picture never races sideways
+    const mix = (a, b, k) => {
+      const r = b.zoom / a.zoom;
+      const ka = r > 4 ? 1 - (Math.pow(r, 1 - k) - 1) / (r - 1) : r < 0.25 ? (Math.pow(1 / r, k) - 1) / (1 / r - 1) : k;
+      return { yaw: lerp(a.yaw, b.yaw, k), pitch: lerp(a.pitch, b.pitch, k), zoom: a.zoom * Math.pow(r, k),
+               at: [0, 1, 2].map((j) => lerp(a.at[j], b.at[j], ka)) };
+    };
+    // from one riding view to another, the old one rides along too while it hands over
+    let from = base, to = base, at = -1e9, wide = POSE_W, live = null;
     for (const b of P.beats) {
       if (b.at > t) break;
       if (!b.pose) continue;
-      from = mix(from, to, ease((b.at - at) / POSE_W));
-      to = Object.assign({}, to, b.pose, { at: b.pose.at || to.at });
+      from = mix(live ? where(live, b.at) : from, where(to, b.at), ease((b.at - at) / wide));
+      live = to.follow && b.pose.follow ? to : null;
+      to = Object.assign({}, to, { follow: false }, b.pose, { at: b.pose.at || to.at });
       at = b.at;
+      wide = b.pose.w || POSE_W;
     }
-    return mix(from, to, ease((t - at) / POSE_W));
+    return mix(live ? where(live, t) : from, where(to, t), ease((t - at) / wide));
+  }
+  // the place and heading on a project's route at s (0..1): a Catmull-Rom curve through its points
+  function routeAt(P, s) {
+    const R = P.route, n = R.length - 1;
+    const x = Math.min(n - 1e-6, Math.max(0, s * n)), i = Math.floor(x), u = x - i;
+    const p = (k) => R[Math.max(0, Math.min(n, k))];
+    const a = p(i - 1), b = p(i), c = p(i + 1), d = p(i + 2);
+    const pos = [0, 1, 2].map((j) => 0.5 * (2 * b[j] + (c[j] - a[j]) * u + (2 * a[j] - 5 * b[j] + 4 * c[j] - d[j]) * u * u
+                                            + (3 * b[j] - a[j] - 3 * c[j] + d[j]) * u * u * u));
+    const tan = [0, 1, 2].map((j) => 0.5 * ((c[j] - a[j]) + 2 * (2 * a[j] - 5 * b[j] + 4 * c[j] - d[j]) * u
+                                            + 3 * (3 * b[j] - a[j] - 3 * c[j] + d[j]) * u * u));
+    const l = Math.hypot(tan[0], tan[1], tan[2]) || 1;
+    return { pos, tan: tan.map((v) => v / l) };
   }
   function firstShown(P, key, g) {
     for (const b of P.beats) if (pick(b, key, g) > 0) return b.at;
@@ -292,6 +355,8 @@
         lens.push(s);
       }
       d.flo = { T, offs, xyz, cum, lens };
+      const ro = 8 + (T + 1) * 4 + N * 12;   // each track's radius, in newer files
+      if (fb.byteLength >= ro + T * 4) d.flo.rad = new Float32Array(fb, ro, T);
     }
     if (tb) {
       const [nv, ni, flags] = new Int32Array(tb, 0, 3);
@@ -355,7 +420,8 @@
     uniform mat4 uMVP;
     uniform vec3 uEye, uSweep;
     uniform vec4 uClip;
-    uniform float uGain, uNear, uFar, uKeyed;
+    uniform float uGain, uNear, uFar, uKeyed, uPartK;
+    uniform float uPartW[16];
     uniform vec4 uAlpha, uReveal;
     varying float vI, vClip;
     void main() {
@@ -374,12 +440,45 @@
       float seen = clamp(age * 14.0, 0.0, 1.0);
       float flash = 1.0 + 1.8 * clamp(1.0 - age * 6.0, 0.0, 1.0) * seen;
       float depth = clamp((p.w - uNear) / (uFar - uNear), 0.0, 1.0);
-      vI = on * a * seen * flash * mix(1.0, 0.32, depth) * uGain;
+      // on a sheet of parts each part is one step of the key, and has a strength of its own
+      float pw = uPartK > 0.0 ? uPartW[int(clamp(floor(aKey / uPartK + 0.5), 0.0, 15.0))] : 1.0;
+      vI = on * a * seen * flash * mix(1.0, 0.32, depth) * uGain * pw;
     }`;
+  // beyond a section only uKeep of a line is left (0 = cut away)
   const FS_LIN = `
     precision mediump float;
+    uniform float uKeep;
     varying float vI, vClip;
-    void main() { if (vClip > 0.0) discard; gl_FragColor = vec4(vec3(vI), 1.0); }`;
+    void main() {
+      float k = vClip > 0.0 ? uKeep : 1.0;
+      if (k < 0.004) discard;
+      gl_FragColor = vec4(vec3(vI * k), 1.0);
+    }`;
+  // a cable or pipe from its centre line: its two outlines, where the tube turns away from the eye,
+  // set off from the centre line by its radius, so it is drawn whole at any distance
+  const VS_TUBE = `
+    attribute vec3 aPos, aOther;
+    attribute float aSide, aRad;
+    uniform mat4 uMVP;
+    uniform vec3 uEye;
+    uniform vec4 uClip;
+    uniform float uGain, uNear, uFar, uAlpha, uReveal;
+    uniform vec3 uKeyDir;
+    uniform vec2 uKeyRange;
+    varying float vI, vClip;
+    void main() {
+      vec3 s = cross(aOther - aPos, uEye - aPos);
+      float l = length(s);
+      vec3 o = l > 0.0 ? s * (aRad * aSide / l) : vec3(0.0);
+      vec4 p = uMVP * vec4(aPos + o, 1.0);
+      gl_Position = p;
+      vClip = dot(aPos, uClip.xyz) - uClip.w;
+      float depth = clamp((p.w - uNear) / (uFar - uNear), 0.0, 1.0);
+      float age = uReveal - (dot(aPos, uKeyDir) - uKeyRange.x) / (uKeyRange.y - uKeyRange.x);
+      float seen = clamp(age * 14.0, 0.0, 1.0);
+      float flash = 1.0 + 1.8 * clamp(1.0 - age * 6.0, 0.0, 1.0) * seen;
+      vI = uAlpha * seen * flash * mix(1.0, 0.32, depth) * uGain;
+    }`;
   const VS_TRI = `
     attribute vec3 aPos;
     uniform mat4 uMVP;
@@ -390,16 +489,19 @@
     precision mediump float;
     varying float vClip;
     void main() { if (vClip > 0.0) discard; gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }`;
+  // lights along the cables (and the rings of a section): smaller and fainter further away
   const VS_RUN = `
     attribute vec3 aPos;
     attribute float aI;
     uniform mat4 uMVP;
-    uniform float uSize, uAlpha;
+    uniform float uSize, uAlpha, uRef, uNear, uFar;
     varying float vI;
     void main() {
-      gl_Position = uMVP * vec4(aPos, 1.0);
-      gl_PointSize = uSize * (0.5 + 0.5 * aI);
-      vI = aI * uAlpha;
+      vec4 p = uMVP * vec4(aPos, 1.0);
+      gl_Position = p;
+      gl_PointSize = uSize * (0.5 + 0.5 * aI) * clamp(uRef / max(p.w, 1e-6), 0.3, 1.0);
+      float depth = clamp((p.w - uNear) / (uFar - uNear), 0.0, 1.0);
+      vI = aI * uAlpha * mix(1.0, 0.35, depth);
     }`;
   const VS_MINI = `
     attribute vec3 aPos;
@@ -448,9 +550,11 @@
     const gl = c.gl;
     c.prog = {
       pts: program(gl, VS_PTS, FS, ['uMVP', 'uSweep', 'uSize', 'uGain', 'uNear', 'uFar', 'uCondense', 'uAlpha', 'uReveal']),
-      lin: program(gl, VS_LIN, FS_LIN, ['uMVP', 'uEye', 'uSweep', 'uClip', 'uGain', 'uNear', 'uFar', 'uKeyed', 'uAlpha', 'uReveal']),
+      lin: program(gl, VS_LIN, FS_LIN, ['uMVP', 'uEye', 'uSweep', 'uClip', 'uKeep', 'uGain', 'uNear', 'uFar', 'uKeyed', 'uAlpha', 'uReveal',
+                                        'uPartK', 'uPartW']),
+      tube: program(gl, VS_TUBE, FS_LIN, ['uMVP', 'uEye', 'uClip', 'uKeep', 'uGain', 'uNear', 'uFar', 'uAlpha', 'uReveal', 'uKeyDir', 'uKeyRange']),
       tri: program(gl, VS_TRI, FS_TRI, ['uMVP', 'uClip']),
-      run: program(gl, VS_RUN, FS, ['uMVP', 'uSize', 'uAlpha']),
+      run: program(gl, VS_RUN, FS, ['uMVP', 'uSize', 'uAlpha', 'uRef', 'uNear', 'uFar']),
     };
     S = c;
     return true;
@@ -475,7 +579,7 @@
       g.ti = buffer(gl, d.tri.idx, gl.STATIC_DRAW, gl.ELEMENT_ARRAY_BUFFER);
     }
     if (d.flo) {
-      const k = Math.min(2400, d.flo.T * 8);
+      const k = Math.min(P.runs || 2400, d.flo.T * 8);
       const total = d.flo.lens.reduce((a, b) => a + b, 0);
       g.runs = Array.from({ length: k }, () => {   // a track chosen in proportion to its length
         let r = Math.random() * total, t = 0;
@@ -485,6 +589,41 @@
       g.runPos = new Float32Array(k * 3 * TRAIL);
       g.runI = new Float32Array(k * TRAIL);
       g.rp = buffer(gl, g.runPos, gl.DYNAMIC_DRAW); g.ri = buffer(gl, g.runI, gl.DYNAMIC_DRAW);
+    }
+    if (d.flo && d.flo.rad && P.tube) {   // every segment of every track twice, once for each outline
+      const f = d.flo;
+      let n = 0;
+      for (let t = 0; t < f.T; t++) n += f.offs[t + 1] - f.offs[t] - 1;
+      const pos = new Float32Array(n * 12), oth = new Float32Array(n * 12), side = new Float32Array(n * 4), r = new Float32Array(n * 4);
+      let v = 0;
+      for (let t = 0; t < f.T; t++) {
+        for (let i = f.offs[t]; i < f.offs[t + 1] - 1; i++) {
+          for (const [a, b, sg] of [[i, i + 1, 1], [i + 1, i, -1], [i, i + 1, -1], [i + 1, i, 1]]) {
+            for (let j = 0; j < 3; j++) { pos[v * 3 + j] = f.xyz[a * 3 + j]; oth[v * 3 + j] = f.xyz[b * 3 + j]; }
+            side[v] = sg; r[v] = f.rad[t]; v++;
+          }
+        }
+      }
+      g.tubeN = v;
+      g.tubeP = buffer(gl, pos); g.tubeO = buffer(gl, oth); g.tubeS = buffer(gl, side); g.tubeR = buffer(gl, r);
+      // each track's bounds, so a section only looks at the tracks near it
+      g.tbox = [];
+      for (let t = 0; t < f.T; t++) {
+        const lo = [1e9, 1e9, 1e9], hi = [-1e9, -1e9, -1e9];
+        for (let i = f.offs[t]; i < f.offs[t + 1]; i++) for (let j = 0; j < 3; j++) { lo[j] = Math.min(lo[j], f.xyz[i * 3 + j]); hi[j] = Math.max(hi[j], f.xyz[i * 3 + j]); }
+        g.tbox.push([lo, hi]);
+      }
+      g.ringPos = new Float32Array(RINGS * RING_N * 2 * 3);
+      g.ringI = new Float32Array(RINGS * RING_N * 2);
+      g.gp = buffer(gl, g.ringPos, gl.DYNAMIC_DRAW); g.gi = buffer(gl, g.ringI, gl.DYNAMIC_DRAW);
+      g.bandPos = new Float32Array(BAND * 2 * 3);
+      g.bandI = new Float32Array(BAND * 2);
+      g.bp = buffer(gl, g.bandPos, gl.DYNAMIC_DRAW); g.bi = buffer(gl, g.bandI, gl.DYNAMIC_DRAW);
+    }
+    if (P.parts) {
+      g.dimPos = new Float32Array(DIMS * 2 * 3);
+      g.dimI = new Float32Array(DIMS * 2);
+      g.dp = buffer(gl, g.dimPos, gl.DYNAMIC_DRAW); g.di = buffer(gl, g.dimI, gl.DYNAMIC_DRAW);
     }
     P.gpu = g;
     const kept = PROJECTS.filter((x) => x.gpu).sort((a, b) => (b.used || 0) - (a.used || 0));
@@ -545,7 +684,18 @@
     const drawSec = (gr) => (P.draw && P.draw[gr]) || DRAW;
     const shown = (key, gr) => (STILL ? 9 : (t - firstShown(P, key, gr)) / drawSec(gr) * 1.15);
     const sec = P.section;
-    const clip = sec ? sec.n.concat([lerp(sec.from, sec.to, value(P, 'cut', undefined, t, 2.4))]) : [0, 0, 0, 1];
+    let clip = sec ? sec.n.concat([lerp(sec.from, sec.to, value(P, 'cut', undefined, t, 2.4))]) : [0, 0, 0, 1];
+    let keep = 0, cut = null;
+    const words = [];
+    // a scan reveals what lies along the route up to where its band has come
+    const scanned = STILL || !P.scan ? 9 : value(P, 'ride', undefined, t, P.rideW || 8);
+    if (P.route) {   // a section across the route where the ride has come to; what lies before it fades away
+      const k = value(P, 'cut', undefined, t, 2.4);
+      const { pos: c, tan: n } = routeAt(P, value(P, 'ride', undefined, t, P.rideW || 8));
+      clip = [-n[0], -n[1], -n[2], -(c[0] * n[0] + c[1] * n[1] + c[2] * n[2])];
+      keep = P.scan ? 1 : 1 - k;
+      if (k > 0.002) cut = { c, n, k };
+    }
 
     gl.disable(gl.DEPTH_TEST);
     if (d.tri && g.ti && P.hidden) {   // the faces into the depth buffer only, so lines behind them hide
@@ -579,15 +729,54 @@
         gl.uniform3fv(p.u.uEye, cam.eye);
         gl.uniform3fv(p.u.uSweep, sweep);
         gl.uniform4fv(p.u.uClip, clip);
+        gl.uniform1f(p.u.uKeep, keep);
         gl.uniform1f(p.u.uKeyed, g.lk ? 1 : 0);
+        const pw = new Float32Array(16).fill(1);
+        if (P.parts) {   // while one part is in focus, the others step back
+          const f = P.parts.map((_, k) => value(P, 'focus', k, t, 0.8)), any = Math.max(...f);
+          f.forEach((x, k) => { pw[k] = 1 - 0.72 * Math.min(1, Math.max(0, any - x)); });
+        }
+        gl.uniform1f(p.u.uPartK, P.parts ? 0.9 / P.parts.length : 0);
+        gl.uniform1fv(p.u.uPartW, pw);
         gl.uniform1f(p.u.uGain, ((P.gain && P.gain.lin) || 1) * (S.max ? 1 : 0.6));
         gl.uniform1f(p.u.uNear, near); gl.uniform1f(p.u.uFar, far);
         gl.uniform4fv(p.u.uAlpha, a);
-        gl.uniform4fv(p.u.uReveal, [0, 1, 2, 3].map((gr) => shown('lin', gr)));
+        gl.uniform4fv(p.u.uReveal, [0, 1, 2, 3].map((gr) => (P.scan && gr === P.scan.group ? scanned : shown('lin', gr))));
         gl.drawArrays(gl.LINES, 0, d.lin.m * 2);
       }
     }
+    if (P.parts) words.push(...sheet(P, g, cam, mvp, t, alpha));
     gl.disable(gl.DEPTH_TEST);
+    if (g.tubeN) {
+      const a = value(P, 'tube', undefined, t, FADE_W) * alpha;
+      if (d.tri && g.ti && P.hidden) gl.enable(gl.DEPTH_TEST);   // behind the buildings' faces
+      if (a > 0.002) {
+        const p = S.prog.tube;
+        gl.useProgram(p.p);
+        const R0 = P.route && P.route[0], R1 = P.route && P.route[P.route.length - 1];
+        const kd = P.scan ? [R1[0] - R0[0], R1[1] - R0[1], R1[2] - R0[2]] : [0, 0, 0], kl = Math.hypot(...kd) || 1;
+        for (let j = 0; j < 3; j++) kd[j] /= kl;
+        gl.uniform3fv(p.u.uKeyDir, kd);
+        gl.uniform2fv(p.u.uKeyRange, P.scan ? [R0[0] * kd[0] + R0[1] * kd[1] + R0[2] * kd[2], R1[0] * kd[0] + R1[1] * kd[1] + R1[2] * kd[2]] : [0, 1]);
+        gl.uniform1f(p.u.uReveal, scanned);
+        gl.blendEquation(S.max || gl.FUNC_ADD); gl.blendFunc(gl.ONE, gl.ONE);
+        attrib(gl, p.p, 'aPos', g.tubeP, 3, gl.FLOAT, false);
+        attrib(gl, p.p, 'aOther', g.tubeO, 3, gl.FLOAT, false);
+        attrib(gl, p.p, 'aSide', g.tubeS, 1, gl.FLOAT, false);
+        attrib(gl, p.p, 'aRad', g.tubeR, 1, gl.FLOAT, false);
+        gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
+        gl.uniform3fv(p.u.uEye, cam.eye);
+        gl.uniform4fv(p.u.uClip, clip);
+        gl.uniform1f(p.u.uKeep, keep);
+        gl.uniform1f(p.u.uGain, ((P.gain && P.gain.tube) || 1) * (S.max ? 1 : 0.6));
+        gl.uniform1f(p.u.uNear, near); gl.uniform1f(p.u.uFar, far);
+        gl.uniform1f(p.u.uAlpha, a);
+        gl.drawArrays(gl.LINES, 0, g.tubeN);
+      }
+      if (cut) words.push(...rings(P, g, cut, mvp, t, alpha));
+      if (cut && P.scan) band(P, g, cut, mvp, alpha);
+      gl.disable(gl.DEPTH_TEST);
+    }
     gl.blendEquation(gl.FUNC_ADD); gl.blendFunc(gl.ONE, gl.ONE);
     if (d.pts) {
       const a = [0, 1, 2, 3].map((gr) => value(P, 'pts', gr, t, FADE_W) * alpha);
@@ -616,8 +805,12 @@
       g.runs.forEach((r, k) => {
         r.s = (r.s + r.v * speed * dtStep) % f.lens[r.t];
         for (let j = 0; j < TRAIL; j++) {
-          along(f, r.t, Math.max(0, r.s - j * gap), g.runPos, (k * TRAIL + j) * 3);
-          g.runI[k * TRAIL + j] = Math.pow(1 - j / TRAIL, 1.6);
+          const o = (k * TRAIL + j) * 3;
+          along(f, r.t, Math.max(0, r.s - j * gap), g.runPos, o);
+          // a light before the section is cut away with its cable
+          const gone = cut && (g.runPos[o] - cut.c[0]) * cut.n[0] + (g.runPos[o + 1] - cut.c[1]) * cut.n[1]
+                              + (g.runPos[o + 2] - cut.c[2]) * cut.n[2] < 0;
+          g.runI[k * TRAIL + j] = Math.pow(1 - j / TRAIL, 1.6) * (gone ? keep : 1);
         }
       });
       const p = S.prog.run;
@@ -628,27 +821,212 @@
       attrib(gl, p.p, 'aI', g.ri, 1, gl.FLOAT, false);
       gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
       gl.uniform1f(p.u.uSize, 3.4 * dpr);
+      gl.uniform1f(p.u.uRef, D); gl.uniform1f(p.u.uNear, near); gl.uniform1f(p.u.uFar, far);
       gl.uniform1f(p.u.uAlpha, fl);
       gl.drawArrays(gl.POINTS, 0, g.runs.length * TRAIL);
     }
-    labels(P, mvp, t, alpha);
+    if (P.dims) {
+      P.dims.forEach(([xyz, text, group, when], k) => {
+        const [x, y] = screen(mvp, xyz);
+        words.push({ key: 'd' + k, text, x, y, o: value(P, 'lin', group, t, FADE_W) * alpha * ease((t - (when || 0)) / 0.8) });
+      });
+    }
+    labels(words);
   }
 
-  // dimension labels: text placed on the screen where a model point lands
-  function labels(P, mvp, t, alpha) {
-    if (!P.dims) { labelsEl.textContent = ''; return; }
-    if (labelsEl.dataset.p !== P.slug) {
-      labelsEl.dataset.p = P.slug;
-      labelsEl.innerHTML = P.dims.map((x) => `<span>${x[1]}</span>`).join('');
+  // the cables a section cuts, each a ring of its own diameter where it crosses the section, drawn
+  // round like with a compass when the section first appears
+  function rings(P, g, cut, mvp, t, alpha) {
+    const f = P.cpu.flo, { c, n } = cut, R = P.ringR || 0.016;
+    const side = [n[1], -n[0], 0], sl = Math.hypot(side[0], side[1]) || 1;   // to the right, seen along the route
+    side[0] /= sl; side[1] /= sl;
+    const up = [side[1] * n[2] - side[2] * n[1], side[2] * n[0] - side[0] * n[2], side[0] * n[1] - side[1] * n[0]];
+    const hits = [];
+    for (let tr = 0; tr < f.T && hits.length < RINGS; tr++) {
+      const [lo, hi] = g.tbox[tr];
+      if (c[0] < lo[0] - R || c[0] > hi[0] + R || c[1] < lo[1] - R || c[1] > hi[1] + R || c[2] < lo[2] - R || c[2] > hi[2] + R) continue;
+      let s0 = 0;
+      for (let i = f.offs[tr]; i < f.offs[tr + 1]; i++) {
+        const s1 = (f.xyz[i * 3] - c[0]) * n[0] + (f.xyz[i * 3 + 1] - c[1]) * n[1] + (f.xyz[i * 3 + 2] - c[2]) * n[2];
+        if (i > f.offs[tr] && (s0 > 0) !== (s1 > 0)) {
+          const u = s0 / (s0 - s1), q = [0, 1, 2].map((j) => f.xyz[(i - 1) * 3 + j] + (f.xyz[i * 3 + j] - f.xyz[(i - 1) * 3 + j]) * u);
+          if (Math.hypot(q[0] - c[0], q[1] - c[1], q[2] - c[2]) < R) {
+            hits.push({ q, r: f.rad[tr], x: (q[0] - c[0]) * side[0] + (q[1] - c[1]) * side[1] });
+          }
+        }
+        s0 = s1;
+      }
     }
-    const cw = canvas.clientWidth, ch = canvas.clientHeight;
-    [...labelsEl.children].forEach((el, k) => {
-      const [xyz, , group, at] = P.dims[k];
-      const v = [0, 1, 2, 3].map((r) => mvp[r] * xyz[0] + mvp[4 + r] * xyz[1] + mvp[8 + r] * xyz[2] + mvp[12 + r]);
-      const show = value(P, 'lin', group, t, FADE_W) * alpha * ease((t - (at || 0)) / 0.8);
-      el.style.opacity = show.toFixed(3);
-      el.style.transform = `translate(${((v[0] / v[3]) * 0.5 + 0.5) * cw}px, ${(0.5 - (v[1] / v[3]) * 0.5) * ch}px)`;
+    hits.sort((a, b) => a.x - b.x);
+    const t0 = firstShown(P, 'tube'), I = cut.k * alpha;
+    // each size once, beside its ring furthest right and up
+    const sizes = new Map(), o = value(P, 'sizes', undefined, t, 0.8) * cut.k * alpha;
+    if (o > 0.002) {
+      for (const h of hits) {
+        const mm = Math.round(h.r * 2 * P.half * 1000), u = h.q.map((v, e) => v - c[e]);
+        const score = u[0] * side[0] + u[1] * side[1] + u[2] * up[2] * 1.5;
+        if (!sizes.has(mm) || score > sizes.get(mm).score) sizes.set(mm, { h, score });
+      }
+    }
+    const words = [...sizes].map(([mm, { h }]) => {
+      const [x, y] = screen(mvp, h.q.map((v, e) => v + h.r * side[e]));
+      return { key: 'r' + mm, text: 'ø' + mm, x: x + 7, y, o, side: true };
     });
+    let v = 0;
+    hits.slice(0, RINGS).forEach((h, k) => {
+      const arc = STILL ? 1 : ease((t - t0 - 0.35 - k * 0.06) / 0.9);
+      for (let j = 0; j < RING_N * arc; j++) {
+        for (const a of [j, Math.min(j + 1, RING_N * arc)]) {
+          const th = Math.PI / 2 - (2 * Math.PI * a) / RING_N, cs = Math.cos(th) * h.r, sn = Math.sin(th) * h.r;
+          for (let e = 0; e < 3; e++) g.ringPos[v * 3 + e] = h.q[e] + cs * side[e] + sn * up[e];
+          g.ringI[v++] = I;
+        }
+      }
+    });
+    if (!v) return words;
+    const gl = S.gl, p = S.prog.run;
+    gl.useProgram(p.p);
+    gl.blendEquation(S.max || gl.FUNC_ADD); gl.blendFunc(gl.ONE, gl.ONE);
+    gl.bindBuffer(gl.ARRAY_BUFFER, g.gp); gl.bufferSubData(gl.ARRAY_BUFFER, 0, g.ringPos.subarray(0, v * 3));
+    gl.bindBuffer(gl.ARRAY_BUFFER, g.gi); gl.bufferSubData(gl.ARRAY_BUFFER, 0, g.ringI.subarray(0, v));
+    attrib(gl, p.p, 'aPos', g.gp, 3, gl.FLOAT, false);
+    attrib(gl, p.p, 'aI', g.gi, 1, gl.FLOAT, false);
+    gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
+    gl.uniform1f(p.u.uSize, 1);
+    gl.uniform1f(p.u.uRef, 1e9); gl.uniform1f(p.u.uNear, 0); gl.uniform1f(p.u.uFar, 1e9);   // the cut face at full strength
+    gl.uniform1f(p.u.uAlpha, 1);
+    gl.drawArrays(gl.LINES, 0, v);
+    return words;
+  }
+
+  // a georadar's band across the street, two fading lines behind it, and the faint curtain it sees
+  // down into the ground
+  function band(P, g, cut, mvp, alpha) {
+    const { c, n } = cut, B = P.scan, I = cut.k * alpha, m = 1 / P.half;
+    const sl = Math.hypot(n[0], n[1]) || 1, side = [n[1] / sl, -n[0] / sl, 0];
+    const at = (u, back, down) => [0, 1, 2].map((e) => c[e] + side[e] * u - n[e] * back - (e === 2 ? down : 0));
+    let v = 0;
+    const seg = (a, b, ia, ib) => {
+      if (v + 2 > BAND * 2) return;
+      g.bandPos.set(a, v * 3); g.bandI[v++] = ia;
+      g.bandPos.set(b, v * 3); g.bandI[v++] = ib;
+    };
+    for (const [back, i] of [[0, 1], [0.7, 0.4], [1.6, 0.16]]) seg(at(B.width[0], back * m, 0), at(B.width[1], back * m, 0), I * i, I * i);
+    const k = 40;
+    for (let j = 0; j <= k; j++) {
+      const u = lerp(B.width[0], B.width[1], j / k);
+      seg(at(u, 0, 0), at(u, 0, B.depth), I * 0.18, 0);
+    }
+    const gl = S.gl, p = S.prog.run;
+    gl.useProgram(p.p);
+    gl.blendEquation(S.max || gl.FUNC_ADD); gl.blendFunc(gl.ONE, gl.ONE);
+    gl.bindBuffer(gl.ARRAY_BUFFER, g.bp); gl.bufferSubData(gl.ARRAY_BUFFER, 0, g.bandPos.subarray(0, v * 3));
+    gl.bindBuffer(gl.ARRAY_BUFFER, g.bi); gl.bufferSubData(gl.ARRAY_BUFFER, 0, g.bandI.subarray(0, v));
+    attrib(gl, p.p, 'aPos', g.bp, 3, gl.FLOAT, false);
+    attrib(gl, p.p, 'aI', g.bi, 1, gl.FLOAT, false);
+    gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
+    gl.uniform1f(p.u.uSize, 1);
+    gl.uniform1f(p.u.uRef, 1e9); gl.uniform1f(p.u.uNear, 0); gl.uniform1f(p.u.uFar, 1e9);
+    gl.uniform1f(p.u.uAlpha, 1);
+    gl.drawArrays(gl.LINES, 0, v);
+  }
+
+  // a sheet of parts: each one's name under it, and on the part in focus its three measures, drawn
+  // out from the middle as it comes into focus: width and depth on the ground on the sides facing
+  // the eye, height up its far corner
+  function sheet(P, g, cam, mvp, t, alpha) {
+    const words = [], e = cam.eye, names = value(P, 'names', undefined, t, 0.8);
+    // the names on the whole sheet only where a row of four has room for them on the screen
+    const box0 = P.parts[0][1], box3 = P.parts[3][1];
+    const [ax] = screen(mvp, [box0[0], box0[1], box0[2]]), [bx] = screen(mvp, [box3[3], box3[1], box3[2]]);
+    const room = ease((Math.abs(bx - ax) / 4 - 120) / 60);
+    let v = 0;
+    const seg = (a, b, i) => {
+      if (v + 2 > DIMS * 2 || i < 0.002) return;
+      g.dimPos.set(a, v * 3); g.dimI[v++] = i;
+      g.dimPos.set(b, v * 3); g.dimI[v++] = i;
+    };
+    P.parts.forEach(([name, [x0, y0, z0, x1, y1, z1], mm, top], k) => {
+      const vis = value(P, 'focus', k, t, 0.8) * alpha, grow = ease(vis);
+      const xc = (x0 + x1) / 2, yc = (y0 + y1) / 2, zc = (z0 + z1) / 2;
+      const o = 0.16 * Math.max(x1 - x0, y1 - y0, z1 - z0), tk = 0.22 * o;
+      const sy = e[1] < yc ? -1 : 1, yF = sy < 0 ? y0 : y1;
+      // the height goes up the end where the part is tallest (or the far end), the depth on the other
+      const xE = Math.abs(top[0] - xc) > 0.2 * (x1 - x0) ? (top[0] < xc ? x0 : x1) : e[0] < xc ? x1 : x0;
+      const xD = xE === x0 ? x1 : x0, sx = xD === x0 ? -1 : 1;
+      // the name, centred under the part as it lands on the screen (and under its measures in focus)
+      const corners = [];
+      for (const x of [x0, x1]) for (const y of [y0, y1]) for (const z of [z0, z1]) corners.push(screen(mvp, [x, y, z]));
+      const low = Math.max(...corners.map((q) => q[1])) + 16;
+      const dimLow = Math.max(low, screen(mvp, [xc, yF + sy * o * 1.9, z0])[1] + 16, screen(mvp, [xD + sx * o * 1.9, yc, z0])[1] + 16);
+      const [nx] = screen(mvp, [xc, yc, z0]), ny = lerp(low, dimLow, grow);
+      words.push({ key: 'n' + k, text: name, x: nx, y: ny, o: Math.max(vis, names * room * alpha) });
+      if (vis < 0.002) return;
+      const I = 0.85 * vis, X = 0.42 * vis;
+      // width, along x, in front
+      const yW = yF + sy * o, hw = ((x1 - x0) / 2) * grow;
+      seg([xc - hw, yW, z0], [xc + hw, yW, z0], I);
+      for (const x of [x0, x1]) {
+        seg([x, yF + sy * o * 0.25, z0], [x, yF + sy * o * 1.25, z0], X);
+        if (grow > 0.98) seg([x - tk, yW - sy * tk, z0], [x + tk, yW + sy * tk, z0], I);
+      }
+      // depth, along y, on the side
+      const xW = xD + sx * o, hd = ((y1 - y0) / 2) * grow;
+      seg([xW, yc - hd, z0], [xW, yc + hd, z0], I);
+      for (const y of [y0, y1]) {
+        seg([xD + sx * o * 0.25, y, z0], [xD + sx * o * 1.25, y, z0], X);
+        if (grow > 0.98) seg([xW - sx * tk, y - tk, z0], [xW + sx * tk, y + tk, z0], I);
+      }
+      // height, up the front corner at that end
+      const xH = xE - sx * o, hh = ((z1 - z0) / 2) * grow;
+      seg([xH, yF, zc - hh], [xH, yF, zc + hh], I);
+      for (const z of [z0, z1]) {
+        seg([xE - sx * o * 0.25, yF, z], [xE - sx * o * 1.25, yF, z], X);
+        if (grow > 0.98) seg([xH - tk, yF, z - tk], [xH + tk, yF, z + tk], I);
+      }
+      const label = (key, text, xyz) => { const [x, y] = screen(mvp, xyz); words.push({ key, text, x, y, o: vis * ease((vis - 0.5) * 2) }); };
+      label('w' + k, mm[0], [xc, yF + sy * o * 1.9, z0]);
+      label('d' + k, mm[1], [xD + sx * o * 1.9, yc, z0]);
+      label('h' + k, mm[2], [xE - sx * o * 1.9, yF, zc]);
+    });
+    if (v) {
+      const gl = S.gl, p = S.prog.run;
+      gl.useProgram(p.p);
+      gl.blendEquation(S.max || gl.FUNC_ADD); gl.blendFunc(gl.ONE, gl.ONE);
+      gl.bindBuffer(gl.ARRAY_BUFFER, g.dp); gl.bufferSubData(gl.ARRAY_BUFFER, 0, g.dimPos.subarray(0, v * 3));
+      gl.bindBuffer(gl.ARRAY_BUFFER, g.di); gl.bufferSubData(gl.ARRAY_BUFFER, 0, g.dimI.subarray(0, v));
+      attrib(gl, p.p, 'aPos', g.dp, 3, gl.FLOAT, false);
+      attrib(gl, p.p, 'aI', g.di, 1, gl.FLOAT, false);
+      gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
+      gl.uniform1f(p.u.uSize, 1);
+      gl.uniform1f(p.u.uRef, 1e9); gl.uniform1f(p.u.uNear, 0); gl.uniform1f(p.u.uFar, 1e9);
+      gl.uniform1f(p.u.uAlpha, 1);
+      gl.drawArrays(gl.LINES, 0, v);
+    }
+    return words;
+  }
+
+  // words on the drawing (measures under parts, sizes beside rings), where a model point lands on screen
+  function screen(mvp, xyz) {
+    const v = [0, 1, 3].map((r) => mvp[r] * xyz[0] + mvp[4 + r] * xyz[1] + mvp[8 + r] * xyz[2] + mvp[12 + r]);
+    return [((v[0] / v[2]) * 0.5 + 0.5) * canvas.clientWidth, (0.5 - (v[1] / v[2]) * 0.5) * canvas.clientHeight];
+  }
+  // centred on their point (or starting at it, beside a ring), and kept inside the screen
+  function labels(words) {
+    const old = new Map([...labelsEl.children].map((el) => [el.dataset.k, el]));
+    const cw = canvas.clientWidth, M = 12;
+    for (const w_ of words) {
+      let el = old.get(w_.key);
+      if (!el) { el = document.createElement('span'); el.dataset.k = w_.key; labelsEl.append(el); }
+      old.delete(w_.key);
+      if (el.textContent !== w_.text) { el.textContent = w_.text; el.w = 0; }
+      if (!el.w && w_.o > 0.002) el.w = el.offsetWidth;   // measured once per text
+      const half = w_.side ? 0 : (el.w || 0) / 2;
+      const x = Math.min(cw - M - (w_.side ? el.w || 0 : half), Math.max(M + half, w_.x)) - half;
+      el.style.opacity = w_.o.toFixed(3);
+      el.style.transform = `translate(${x.toFixed(1)}px, ${w_.y.toFixed(1)}px) translateY(-50%)`;
+    }
+    for (const el of old.values()) el.remove();
   }
 
   // ---------------------------------------------------------------- playing
@@ -659,7 +1037,7 @@
     metaEl.innerHTML = P.meta.map((m) => (Array.isArray(m) ? `<span data-n="${m[0]}">${start(m[0])}</span> ${m[1]}` : m)).join(' · ');
     beatsEl.innerHTML = texts(P).map((x) => `<li>${x}</li>`).join('');
     runEl.style.transform = 'scaleX(0)';
-    labelsEl.textContent = ''; labelsEl.dataset.p = '';
+    labelsEl.textContent = '';
   }
   function countUp() {
     const nums = [...metaEl.querySelectorAll('[data-n]')];
@@ -802,7 +1180,7 @@
       gl.viewport(x, y, bw, bh); gl.scissor(x, y, bw, bh);
       P.spin = (P.spin === undefined ? i * 40 : P.spin) + dt * (P.hover ? 60 : 16);   // degrees
       P.glow = (P.glow || 0) + ((P.hover ? 1 : 0) - (P.glow || 0)) * Math.min(1, dt * 6);
-      const cam = camera({ yaw: P.spin, pitch: 26, zoom: 1.05, at: [0, 0, 0] }, bw / bh, 0, true);
+      const cam = camera({ yaw: P.spin, pitch: P.miniPitch || 26, zoom: 1.05, at: [0, 0, 0] }, bw / bh, 0, true);
       gl.uniformMatrix4fv(p.u.uMVP, false, cam.mvp);
       gl.uniform1f(p.u.uI, 0.42 + 0.58 * P.glow);
       attrib(gl, p.p, 'aPos', d.buf, 3, gl.SHORT, true);

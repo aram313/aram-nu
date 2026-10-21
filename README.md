@@ -11,11 +11,14 @@ Under **projekter** each of Aram's projects is one line: a small live miniature 
 its name and a short grey line of what it is and how big (rørbro, datacenter, kabeltracé,
 buehal, georadar, fabrik, gammelt hus, tagværk, værktøj). A tap plays the project's story on
 the whole screen, by itself, in the style that fits it: a scan pulled onto its model, a
-datacenter crossing built element by element with light in its cables, kilometres of cable
-seen from a junction up, a house drawn in hidden lines and cut open, a factory's steel
-settling out of a cloud of points, a sheet of 3D-printed tools with their measures. One
-lowercase line tells each beat, over the project's numbers. A tap or Esc closes it; the
-arrow keys or a swipe go to the next project.
+datacenter crossing built element by element with light in its cables, a section riding
+along a bundle of cables (each cable a ring of its own diameter where the section cuts it)
+and out to a long view of the route, a georadar band running a street with what lies under
+the asphalt appearing behind it, a house drawn in hidden lines and cut open, a factory's
+steel settling out of a cloud of points, a sheet of twelve 3D-printed tools where the camera
+visits four and measures each in three directions. One lowercase line tells each beat, over
+the project's numbers. A tap or Esc closes it; the arrow keys or a swipe go to the next
+project.
 
 The projects are real work, taken out of context: cropped, turned and stripped of any
 client name, place or case number. A datacenter is shown around its building, never with
@@ -47,6 +50,14 @@ Then open http://localhost:8790. (Without npm: `py -m http.server 8790 --directo
   shows, the pull of the points onto the model, the light along the cables, a moving section,
   camera moves). Lines are drawn with "max" blending, so crossings never burn to white, and,
   for models with faces, as hidden lines: the faces go into the depth buffer first.
+- Cables and pipes with a centre line are drawn as tubes: two outlines set off from the centre
+  line by the radius, where the tube turns away from the eye, so they are whole at any
+  distance. A project with a `route` can ride it: `ride` moves along it, a pose with
+  `follow` keeps the camera on that place, and `cut` puts a section across it there. The
+  section cuts away what lies before it and draws a ring where it cuts each cable; with
+  `scan` (georadar) it cuts nothing and instead reveals what lies behind it, as a band
+  across the street with a faint curtain into the ground. With `parts` (the tool sheet) each
+  part has its name under it, and `focus` gives one part its width, depth and height.
 - The data is in `src/pts/`, gzipped (`.gz`, unpacked in the page). Every file starts with int32
   count and int32 flags (1 = float32 positions instead of int16, 2 = targets, 4 = keys):
   - `<id>.pts` points: xyz (centred, longest half-axis 1), the point each one is pulled to on
@@ -57,7 +68,8 @@ Then open http://localhost:8790. (Without npm: `py -m http.server 8790 --directo
     while it is a silhouette, tested at the edge's middle.
   - `<id>.tri` faces for hiding lines: vertex count, index count, flags, xyz, uint32 indices.
   - `<id>.flo` centre lines of cables and pipes: track count, point count, int32 offsets,
-    float32 xyz. The light runs along these.
+    float32 xyz, and a float32 radius per track. The light runs along these, and tubes and
+    section rings are drawn from them.
   - `<id>.mini` the miniature: count, int16 xyz of the model's longest edges.
   The files are made in Aram's private workspace from the models and scans (not in this
   repository, since the sources carry client names).

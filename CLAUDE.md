@@ -73,6 +73,9 @@ Owner's rules for the projects (2026-10-21):
 
 ## Constraints and gotchas
 
+- Headless Edge screenshots narrower than about 500 px are laid out wider than the picture
+  and cut off on the right. Check phone sizes in the browser pane's mobile preset instead.
+
 <!-- Things that will bite someone who does not know them. External services that
      must be running, ports in use, data that must be seeded first, known-fragile
      areas. Add to this list every time you hit one. -->
