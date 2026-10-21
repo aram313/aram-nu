@@ -190,7 +190,7 @@
     },
     {
       slug: 'fjernvarme', id: 'fv', name: 'fjernvarme', lin: true, flo: true, tube: true, length: 31,
-      row: 'profilsnit · et dyk under en kloak',
+      row: 'profilsnit · 6 ledninger',
       meta: ['profilsnit', [6, 'ledninger'], [24, 'punkter'], '1,75 m ned'],
       gain: { lin: 0.9, tube: 0.95 }, draw: [2, 1.5, 1, 1.5, 1.2], half: 9, ringR: 0.5,
       // what each tube is, from the drawing's layers: 0 district heating, 1 sewer, 2 gas, 3 water, 4 power,
@@ -249,7 +249,7 @@
     },
     {
       slug: 'gammelt-hus', id: 'bygning', name: 'gammelt hus', lin: true, tri: true, hidden: true, length: 25, draw: [4.5, 1.2],
-      row: 'laserscanning · 393 elementer',
+      row: 'laserscanning · 117 vægge',
       meta: ['laserscanning', [393, 'elementer'], [117, 'vægge']],
       gain: { lin: 0.95 },
       section: { n: [0, 1, 0], from: 0.6, to: 0.0195 },
