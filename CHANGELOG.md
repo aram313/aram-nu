@@ -100,6 +100,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - værktøj: each print's name arrives with the print as the sheet is drawn.
 - A word whose point is off the screen no longer shows, instead of being pushed in at the edge.
 - Words stand a little above the thing they name, not on top of it.
+- A shared link to aram.nu shows a picture: the steel bridge as scan points on black
+  (`src/img/del.jpg`, 1200 × 630), with the page's title and a short line.
 - While a story's data is still on its way, a faint light runs along its progress line (a still
   line with reduced motion), so a slow connection does not look like a broken page.
 - olietank: the last picture keeps its words (the tank, the metal object 1 m down, the district

@@ -105,6 +105,8 @@ Then open http://localhost:8790. (Without npm: `py -m http.server 8790 --directo
 - The khabar line comes from `front.json` on the `digest` branch of the public
   `aram313/nyhedsradar` repository (the `lede` field). If it cannot be read, the line says
   "dagens nyheder".
+- `src/img/del.jpg` is the picture a shared link shows (Open Graph), a frame of the bridge's scan
+  rendered by the player itself at 1200 × 630 without words.
 - `src/img/` holds web copies of the tile photos, made by `scripts/prepare-images.py` from
   Aram's Lightroom exports (`Downloads\lightroom-download-2024-07-02T12_03_21Z` and
   `…T12_53_12Z`). Change which tiles show in `SHOWN` there and in `TILES` in the page.
