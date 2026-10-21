@@ -1273,6 +1273,8 @@
   // the eye, height up its far corner
   function sheet(P, g, cam, mvp, t, alpha) {
     const words = [], e = cam.eye, names = value(P, 'names', undefined, t, 0.8);
+    // the sheet is drawn part by part (each part a step of 0.075 in the key); a name comes with its part
+    const drawn = STILL ? 9 : (t - firstShown(P, 'lin', 0)) / ((P.draw && P.draw[0]) || DRAW) * 1.15;
     // the names on the whole sheet only where a row of four has room for them on the screen
     const box0 = P.parts[0][1], box3 = P.parts[3][1];
     const [ax, ay] = screen(mvp, [box0[0], box0[1], box0[2]]), [bx, by] = screen(mvp, [box3[3], box3[1], box3[2]]);
@@ -1297,7 +1299,8 @@
       const low = Math.max(...corners.map((q) => q[1])) + 16;
       const dimLow = Math.max(low, screen(mvp, [xc, yF + sy * o * 1.9, z0])[1] + 16, screen(mvp, [xD + sx * o * 1.9, yc, z0])[1] + 16);
       const [nx] = screen(mvp, [xc, yc, z0]), ny = lerp(low, dimLow, grow);
-      words.push({ key: 'n' + k, text: name, x: nx, y: ny, o: Math.max(vis, names * room * alpha) });
+      const here = Math.min(1, Math.max(0, (drawn - 0.075 * k) * 14));
+      words.push({ key: 'n' + k, text: name, x: nx, y: ny, o: Math.max(vis, names * room * alpha * here) });
       if (vis < 0.002) return;
       const I = 0.85 * vis, X = 0.42 * vis;
       // width, along x, in front
@@ -1351,8 +1354,10 @@
   // centred on their point (or starting at it, beside a ring), and kept inside the screen
   function labels(words) {
     const old = new Map([...labelsEl.children].map((el) => [el.dataset.k, el]));
-    const cw = canvas.clientWidth, M = 12, placed = [];
+    const cw = canvas.clientWidth, ch = canvas.clientHeight, M = 12, placed = [];
     for (const w_ of words) {
+      // a word whose point is off the screen does not show, rather than being pushed in at the edge
+      if (!(w_.x > -4 && w_.x < cw + 4 && w_.y > -4 && w_.y < ch + 4)) w_.o = 0;
       let el = old.get(w_.key);
       if (!el) { el = document.createElement('span'); el.dataset.k = w_.key; labelsEl.append(el); }
       old.delete(w_.key);

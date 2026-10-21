@@ -97,6 +97,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - værktøj: a sheet of twelve prints with their names; the camera visits four of them, from
   330 mm down to 28 mm, and draws each one's width, depth and height.
 - værktøj: on a phone the sheet turns upright, so all twelve prints fit the screen.
+- værktøj: each print's name arrives with the print as the sheet is drawn.
+- A word whose point is off the screen no longer shows, instead of being pushed in at the edge.
 
 ---
 
