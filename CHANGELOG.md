@@ -88,7 +88,7 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   upe 220, ipe 120, w8x15). The numbers count what is shown: 326 steel beams, 32 m high.
 - gammelt hus: the section marks the model's own levels beside the cut, as a section drawing does
   (kælder, stueetage, 1. sal, loft); then a cut wall's thickness (500 mm, up to 560 mm) and the
-  roof's timber (130 × 130 mm).
+  roof's timber (85 pieces, most of them 130 × 130 mm).
 - tagværk: told from the model's own types: first the 596 pieces of timber the scanner saw
   (surveyed), then the 636 estimated from them, then three pieces the model notes as bowed,
   crooked and bent; the end runs along the whole 165 m roof (on a phone, seen down its length).

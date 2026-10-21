@@ -261,7 +261,7 @@
           pose: { yaw: 196, pitch: 14, zoom: 1.0 } },
         { at: 11.5, text: 'murene i deres målte tykkelse, op til 560 mm.', lin: [1, 0], cut: 1,
           pose: { yaw: 196, pitch: 10, zoom: 2.6, at: [0.6482, 0.0195, -0.348], w: 3.5, tall: { zoom: 2 } } },
-        { at: 16, text: 'tagværket af tømmer på 130 × 130 mm.', lin: [1, 0], cut: 1,
+        { at: 16, text: 'tagværket: 85 stykker tømmer, de fleste 130 × 130 mm.', lin: [1, 0], cut: 1,
           pose: { yaw: 200, pitch: 20, zoom: 2.4, at: [0.2057, 0.0108, 0.545], w: 3.5, tall: { zoom: 1.9 } } },
         { at: 20.5, text: 'tegnet, som det står, fra kælder til kvist.', lin: [1, 0], cut: 1,
           pose: { yaw: 222, pitch: 24, zoom: 1.12, w: 4 } },
