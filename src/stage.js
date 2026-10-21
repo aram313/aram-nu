@@ -14,7 +14,7 @@
     {
       slug: 'roerbro', id: 'bro', name: 'rørbro', pts: true, lin: true, tri: true, hidden: true, hot: true, length: 35.5,
       row: 'laserscanning · 130 mio. punkter',
-      meta: ['laserscanning', [16, 'opstillinger'], [130246832, 'punkter'], '94 % inden for 2 mm'],
+      meta: [[130, 'mio. punkter'], '94 % inden for 2 mm'],
       gain: { pts: 0.5, lin: 0.85 }, ptsDraw: 4, draw: [3.6, 3.6, 1, 1], half: 8.221,
       // where the 16 scanners stood, in the order they scanned
       stations: [[0.0525, 1.1970, -0.2408], [0.2967, 0.0797, -0.2538], [0.2347, -0.9288, -0.2567], [1.0869, -0.2855, -0.2348],
@@ -45,7 +45,7 @@
     {
       slug: 'datacenter', id: 'datacenter', name: 'datacenter', lin: true, tri: true, hidden: true, flo: true, tube: true, length: 28,
       row: 'as-built · 63 km kabelrør',
-      meta: ['as-built', [19185, 'elementer'], [63, 'km kabelrør'], [17, 'km rør']],
+      meta: ['as-built', [19185, 'elementer'], [63, 'km kabelrør']],
       gain: { lin: 0.95, tube: 0.9 }, flowSpeed: 0.03, runs: 900, draw: [3, 2.6, 2.6, 1], half: 142, ringR: 0.085,
       // what each tube carries, from the model's worksets and systems: 0 data, 1 power, 2 rain and sewage,
       // 3 water and fire water; 4 to 7 the same at the crossing, laid there one kind after the other
@@ -77,7 +77,7 @@
     {
       slug: 'kabeltrace', id: 'kabel', name: 'kabeltracé', flo: true, tube: true, length: 23,
       row: 'as-built · 178 km kabler',
-      meta: ['as-built', [3, 'datacentergrunde'], [178, 'km kabler'], [66715, 'elementer']],
+      meta: ['as-built', [178, 'km kabler'], [66715, 'elementer']],
       gain: { tube: 0.92 }, flowSpeed: 0.0105, runs: 500, rideW: 7.6, miniPitch: 64,
       // what the model calls each duct, in plain words (its types: 132 kV feeders, 10 kV, earth, fibre, drilling)
       kindNames: ['132 kV', '132 kV reserve', '10 kV', 'jordleder', 'fiber', 'underboring'], start: { cut: 1 }, half: 625,
@@ -104,7 +104,7 @@
     {
       slug: 'buehal', id: 'buehal', name: 'buehal', pts: true, lin: true, tri: true, hidden: true, length: 27,
       row: 'laserscanning · 12 stålbuer',
-      meta: ['laserscanning', [26, 'opstillinger'], [38935547, 'punkter'], [12, 'stålbuer målt']],
+      meta: ['laserscanning', [39, 'mio. punkter'], [12, 'stålbuer']],
       gain: { pts: 0.55, lin: 1 }, ptsDraw: 4, half: 11.849,
       // a cut along the hall, 2 m in from the arches' feet, that opens it to show the measures
       section: { n: [-0.31828, 0.948, 0], from: 1.2, to: -0.103 },
@@ -274,7 +274,7 @@
     {
       slug: 'tagvaerk', id: 'tag', name: 'tagværk', lin: true, length: 25, draw: [6, 6, 1.2],
       row: 'laserscanning · 165 m tag',
-      meta: ['laserscanning', [1232, 'stykker tømmer'], '165 m tag'],
+      meta: ['laserscanning', [1232, 'stk. tømmer'], '165 m tag'],
       gain: { lin: 0.95 },
       // line groups, from the model's own types: 0 the timber the scanner saw (surveyed), 1 the timber
       // estimated from it, 2 three pieces the model has a note on

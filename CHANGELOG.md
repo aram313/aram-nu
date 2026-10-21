@@ -57,6 +57,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - Tubes keep their outline round bends: the two outlines of neighbouring segments meet
   instead of leaving a gap on the outside of each bend.
 - Lines can come in eight groups instead of four.
+- The grey numbers in every story fit on one line on a phone (checked at 360 and 390 px); the
+  longest ones keep their three strongest numbers.
 - rørbro: the scan builds up setup by setup from where the 16 scanners stood; the points are
   pulled onto the steel and the 6 % that lie more than 2 mm off the model stay behind; the model
   is drawn part by part from the bottom in hidden lines; a bearing's bolt group is shown close
