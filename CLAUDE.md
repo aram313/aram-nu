@@ -8,8 +8,9 @@ project.
 
 Aram's own page at aram.nu (domain bought 2026-10-20 at Simply.com, same account as
 khabar.nu). A minimal list of his projects: khabar.nu with the Khabar editor's day line under
-it, and one line about his 3D, BIM and electronics work over four 3D-printed kufi tiles
-(no captions, no other text there).
+it, his real projects as one line each that open into a full-screen story (scan points and
+model wireframes on black), and four 3D-printed kufi tiles under "3d print" (no captions, no
+other text there).
 
 Owner's design rules for this page: black background, white text, **no capital letters**
 (CSS lowercase), a minimal font (the device's own sans, weight 300), little text, **no
@@ -43,10 +44,29 @@ distorting, and keep them out of footers or decorative backgrounds.
 `https://raw.githubusercontent.com/aram313/nyhedsradar/digest/front.json` (public, CORS open,
 cached 5 min). Do not change the Khabar repository from this project.
 
+The project player is `src/stage.js` (`PROJECTS` there), data in `src/pts/` (formats in README). The data
+is built outside this repository (Aram's work laptop, `D:\c\portfolio`), because the sources
+and their paths carry client and case names. Never commit those tools, their configuration
+or any path from them here.
+
 <!-- How the pieces fit together. Where the entry point is. What depends on what.
      Update this when the shape of the project changes. -->
 
 ## Project-specific conventions
+
+Owner's rules for the projects (2026-10-21):
+
+- Real projects, altered a little and taken out of context; no client name, place or case
+  number anywhere (text, alt text, file names).
+- The point look is only for real scan data; models are white wireframe, no colours.
+- Each project tells a story visually: scan to model to finding, or overview to detail.
+- The list stays minimal: at most one line per project (a small live miniature is fine). Not
+  scroll-driven; the story plays full screen on a tap.
+- Each project gets the style that makes sense for it; not every one is a making-of.
+- Lines must look professional: no burnt-out white, no lines popping in and out.
+- Grey numbers say how big and how detailed a project is; they must come from the data.
+- A datacenter may show its building, never the ring of pipes along the property line.
+- Check a frame with `?p=<id>&t=<seconds>`.
 
 <!-- Anything that differs from, or adds to, the workspace standard. If nothing
      differs, say so explicitly so the next session does not go looking. -->
