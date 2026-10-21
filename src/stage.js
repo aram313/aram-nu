@@ -207,7 +207,7 @@
         { at: 3.5, text: 'det, den krydser, står som cirkler.', lin: [0, 0, 0, 0, 0.5], cut: 1, sizes: 1, kinds: [1, 0, 0, 0, 0, 0, 0, 0],
           pose: { yaw: 0, pitch: 0, zoom: 3.6, at: [-0.02, 0, -0.045], tall: { zoom: 3.1, at: [0, 0, -0.03] } } },
         { at: 8, text: 'i 3d bliver cirklerne til ledninger.', lin: [0.6, 0, 0, 0, 0], kinds: [1, 1, 1, 1, 1, 1, 0, 0],
-          pose: { yaw: 32, pitch: 26, zoom: 2.1, at: [0, -0.1, -0.02], w: 4, tall: { zoom: 1.5 } } },
+          pose: { yaw: 32, pitch: 26, zoom: 2.1, at: [0, -0.1, -0.02], w: 4, tall: { zoom: 2.4, at: [-0.02, -0.12, -0.02] } } },
         { at: 13, text: 'den lige vej var spærret af gas, og under gassen lå kloakken.', lin: [0.4, 1, 0, 0, 0], kinds: [0.5, 0.8, 1, 0.3, 0.3, 1, 0, 0],
           pose: { yaw: 18, pitch: 16, zoom: 4.2, at: [0, 0, 0.03], tall: { zoom: 2.8 } } },
         { at: 18, text: 'så den dykker 1,75 m og går 0,29 m under kloakken.', lin: [0, 0.5, 1, 0, 0.5], cut: 1, kinds: [1, 0.15, 0.1, 0.1, 0.1, 0.1, 0, 0],
