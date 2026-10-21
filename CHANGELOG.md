@@ -60,6 +60,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - Tubes keep their outline round bends: the two outlines of neighbouring segments meet
   instead of leaving a gap on the outside of each bend.
 - Lines can come in eight groups instead of four.
+- With reduced motion, the list keeps its miniatures as still drawings (they light up under the
+  pointer but do not turn), and a story's last picture shows only the words that belong to it.
 - The grey numbers in every story fit on one line on a phone (checked at 360 and 390 px); the
   longest ones keep their three strongest numbers.
 - rørbro: the scan builds up setup by setup from where the 16 scanners stood; the points are

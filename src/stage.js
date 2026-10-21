@@ -134,7 +134,7 @@
     },
     {
       slug: 'georadar', id: 'gade', name: 'georadar', lin: true, tri: true, hidden: true, flo: true, tube: true, length: 25,
-      row: 'georadar · 85 ledninger under en gade',
+      row: 'georadar · 85 ledninger',
       meta: ['georadar', [85, 'ledninger'], [47, 'brønde'], '90 m gade'],
       gain: { lin: 0.9, tube: 0.95 }, rideW: 9, ringR: 0.16, half: 58.27, draw: [3.5, 3.5, 3.5, 1.2],
       // the radar's way down the middle of the street at ground level; its band spans the street
@@ -373,8 +373,8 @@
     b.type = 'button';
     b.innerHTML = `${P.name}<span>${P.row}</span>`;
     b.addEventListener('click', () => open(i));
-    b.addEventListener('pointerenter', () => { P.hover = 1; });
-    b.addEventListener('pointerleave', () => { P.hover = 0; });
+    b.addEventListener('pointerenter', () => { P.hover = 1; mkick(); });
+    b.addEventListener('pointerleave', () => { P.hover = 0; mkick(); });
     rows.append(b);
     rowEls.push([P, b]);
   });
@@ -1082,7 +1082,8 @@
     if (P.notes) {   // [where, text, from, to]: a word on the drawing for a stretch of the story
       P.notes.forEach(([xyz, text, from, to], k) => {
         const [x, y] = screen(mvp, xyz);
-        words.push({ key: 'm' + k, text, x, y, o: alpha * (STILL ? 1 : ease((t - from) / 0.8) * (1 - ease((t - to) / 0.8))) });
+        // held still (reduced motion), only the words that belong to the last picture
+        words.push({ key: 'm' + k, text, x, y, o: alpha * (STILL ? +(t >= from && t <= to) : ease((t - from) / 0.8) * (1 - ease((t - to) / 0.8))) });
       });
     }
     if (P.dims) {
@@ -1523,8 +1524,9 @@
       const rb = b.getBoundingClientRect();
       const bw = 34 * r, bh = 20 * r, x = 0, y = H - ((rb.top - top) + (rb.height + 20) / 2) * r;
       gl.viewport(x, y, bw, bh); gl.scissor(x, y, bw, bh);
-      P.spin = (P.spin === undefined ? i * 40 : P.spin) + dt * (P.hover ? 60 : 16);   // degrees
-      P.glow = (P.glow || 0) + ((P.hover ? 1 : 0) - (P.glow || 0)) * Math.min(1, dt * 6);
+      // degrees; held still (reduced motion), each miniature is a still drawing that only lights up
+      P.spin = (P.spin === undefined ? i * 40 : P.spin) + (STILL ? 0 : dt * (P.hover ? 60 : 16));
+      P.glow = STILL ? +!!P.hover : (P.glow || 0) + ((P.hover ? 1 : 0) - (P.glow || 0)) * Math.min(1, dt * 6);
       const cam = camera({ yaw: P.spin, pitch: P.miniPitch || 26, zoom: 1.05, at: [0, 0, 0] }, bw / bh, 0, true);
       gl.uniformMatrix4fv(p.u.uMVP, false, cam.mvp);
       gl.uniform1f(p.u.uI, 0.42 + 0.58 * P.glow);
@@ -1532,15 +1534,16 @@
       gl.drawArrays(gl.LINES, 0, d.m * 2);
     });
     gl.disable(gl.SCISSOR_TEST);
-    mraf = requestAnimationFrame(miniFrame);
+    mraf = STILL ? 0 : requestAnimationFrame(miniFrame);
   }
   function mkick() { if (!mraf && MG && inView) { mlast = 0; mraf = requestAnimationFrame(miniFrame); } }
   new IntersectionObserver(([e]) => {
     inView = e.isIntersecting;
-    if (inView && !MG && !STILL) miniInit();
+    if (inView && !MG) miniInit();
     mkick();
   }).observe(rows);
   play.addEventListener('close', mkick);
+  addEventListener('resize', mkick);
 
   // ?p=roerbro&t=12 opens that project held at that moment
   if (HOLD) {
