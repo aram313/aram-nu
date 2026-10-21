@@ -10,7 +10,10 @@ Khabar editor writes about the day's news (refreshed every five minutes).
 Under **projekter** each of Aram's projects is one line: a small live miniature of the model,
 its name and a short grey line of what it is and how big (rørbro, datacenter, kabeltracé,
 buehal, georadar, fabrik, gammelt hus, tagværk, værktøj). A tap plays the project's story on
-the whole screen, by itself, in the style that fits it: a scan pulled onto its model, a
+the whole screen, by itself, in the style that fits it: a pipe bridge scanned setup by setup
+from the places its 16 scanners stood, its points pulled onto the steel (the ones off the model
+by more than 2 mm left behind), the model drawn part by part in hidden lines, a bearing's bolt
+pattern with its measures and the damaged chord sighted along with its two measures, a
 datacenter crossing built element by element with light in its cables, a section riding
 along a bundle of cables (each cable a ring of its own diameter where the section cuts it)
 and out to a long view of the route, a georadar band running a street with what lies under
@@ -61,7 +64,8 @@ Then open http://localhost:8790. (Without npm: `py -m http.server 8790 --directo
 - The data is in `src/pts/`, gzipped (`.gz`, unpacked in the page). Every file starts with int32
   count and int32 flags (1 = float32 positions instead of int16, 2 = targets, 4 = keys):
   - `<id>.pts` points: xyz (centred, longest half-axis 1), the point each one is pulled to on
-    the model's edges, a shade byte and a group byte.
+    the model's edges, a shade byte, a group byte, and with flag 4 a uint16 key per point:
+    when it appears (setup by setup, outward from that setup's scanner).
   - `<id>.lin` model edges: xyz for both ends, per end int8 (normal 1, sharp flag) and int8
     (normal 2, group), and with flag 4 a uint16 key per end: when it is drawn (element by
     element, along an axis or along a route). A sharp edge always shows; a smooth one only

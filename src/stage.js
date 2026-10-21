@@ -12,20 +12,30 @@
 (() => {
   const PROJECTS = [
     {
-      slug: 'roerbro', id: 'bro', name: 'rørbro', pts: true, lin: true, length: 21,
+      slug: 'roerbro', id: 'bro', name: 'rørbro', pts: true, lin: true, tri: true, hidden: true, length: 25,
       row: 'laserscanning · 130 mio. punkter',
-      meta: ['laserscanning', [16, 'opstillinger'], [130246832, 'punkter'], 'median 0,39 mm mellem scan og model'],
-      gain: { pts: 0.5, lin: 0.85 },
-      pose: { yaw: -28, pitch: 12, zoom: 1.25 },
+      meta: ['laserscanning', [16, 'opstillinger'], [130246832, 'punkter'], '94 % inden for 2 mm'],
+      gain: { pts: 0.5, lin: 0.85 }, ptsDraw: 4, draw: [3.6, 3.6, 1, 1], half: 8.221,
+      // where the 16 scanners stood, in the order they scanned
+      stations: [[0.0525, 1.1970, -0.2408], [0.2967, 0.0797, -0.2538], [0.2347, -0.9288, -0.2567], [1.0869, -0.2855, -0.2348],
+        [0.6847, -0.2562, -0.2324], [0.6970, 0.3465, -0.2348], [1.0987, 0.4160, -0.2308], [0.9152, 0.0088, -0.2412],
+        [-0.6262, -0.3770, -0.2414], [-1.1100, -0.2786, -0.2413], [-0.9428, -0.0063, -0.2224], [-0.6049, 0.4091, -0.2399],
+        [-1.1293, 0.2907, -0.2092], [-0.5280, -0.7282, -0.2416], [0.1766, -0.3771, -0.2534], [0.7028, 0.7200, -0.2248]],
+      pose: { yaw: -30, pitch: 24, zoom: 0.92 },
       beats: [
-        { at: 0, text: 'en skadet rørbro i stål, laserscannet.', pts: [1] },
-        { at: 4.5, text: 'punkterne trækkes ind på stålet.', pts: [1], condense: 1, lin: [0.2, 0.2],
-          pose: { yaw: -12, pitch: 16, zoom: 1.35 } },
-        { at: 9.5, text: 'hvert profil, hver plade og hver bolt tegnet op i 3d.', pts: [0.3], condense: 1, lin: [1, 1],
-          pose: { yaw: 22, pitch: 20, zoom: 1.45 } },
-        { at: 15, text: 'og skaden målt: undergurten er presset ud af sin linje.', pts: [0.08], condense: 1,
-          lin: [0.14, 1, 1], pose: { yaw: 0, pitch: 58, zoom: 2.7, at: [0.053, -0.156, 0.2125] } },
+        { at: 0, text: 'en skadet rørbro i stål, scannet fra 16 opstillinger.', pts: [1, 1] },
+        { at: 4.8, text: 'punkterne trækkes ind på stålet, og 94 % ligger inden for 2 mm.', pts: [1, 0.3], condense: 1,
+          pose: { yaw: -14, pitch: 16, zoom: 1.3 } },
+        { at: 9.6, text: 'hvert profil og hver plade tegnet op i 3d, 156 dele.', pts: [0.2, 0.08], condense: 1, lin: [1, 1, 0, 0],
+          pose: { yaw: 22, pitch: 20, zoom: 1.4 } },
+        { at: 14.4, text: 'boltgrupperne målt ind, så det nye stål passer på de gamle bolte.', pts: [0.08, 0.03], condense: 1, lin: [1, 1, 1, 0],
+          pose: { yaw: 35, pitch: 42, zoom: 24, at: [-0.8202, -0.1808, 0.1839] } },
+        { at: 19.2, text: 'og skaden målt: undergurten er presset 227 mm ud af sin linje.', pts: [0.04, 0.02], condense: 1,
+          lin: [0.1, 1, 0, 1], pose: { yaw: 70, pitch: 5, zoom: 7.5, at: [0.0387, -0.1683, 0.2047] } },
       ],
+      // [where, text, group, when]: the bearing's hole pattern (mm, from the delivered bolt table), then the damage
+      dims: [[[-0.8298, -0.2021, 0.1877], '60', 2, 15.2], [[-0.8146, -0.2021, 0.1877], '189', 2, 15.5], [[-0.7897, -0.1809, 0.1877], '161', 2, 15.8],
+        [[0.0387, -0.1683, 0.2319], '227 mm', 3, 19.8], [[0.0507, -0.1339, 0.2048], '140 mm', 3, 20.3]],
     },
     {
       slug: 'datacenter', id: 'datacenter', name: 'datacenter', lin: true, tri: true, hidden: true, flo: true, length: 22,
@@ -194,6 +204,7 @@
   const RING_N = 48;       // segments in each ring
   const BAND = 64;         // line segments in a georadar's band and curtain
   const DIMS = 256;        // line segments in the measures on a sheet of parts
+  const SCAN_N = 20;       // segments in the ring that marks a scanner
 
   const Q = new URLSearchParams(location.search);
   // ?id=<data file>&yaw=&pitch=&zoom=&at=x,y,z&t=: any data file on its own, for tuning a camera
@@ -325,7 +336,8 @@
       o += n * 3 * size;
       if (flags & 2) { d.pts.target = new F(pb, o, n * 3); o += n * 3 * size; }
       d.pts.shade = new Uint8Array(pb, o, n); o += n;
-      d.pts.group = new Uint8Array(pb, o, n);
+      d.pts.group = new Uint8Array(pb, o, n); o += n;
+      if (flags & 4) d.pts.key = new Uint16Array(pb.slice(o, o + n * 2));   // when each point appears
     }
     if (lb) {
       const [m, flags] = new Int32Array(lb, 0, 2);
@@ -390,10 +402,10 @@
   }
   const VS_PTS = `
     attribute vec3 aPos, aTarget;
-    attribute float aShade, aGroup;
+    attribute float aShade, aGroup, aKey;
     uniform mat4 uMVP;
     uniform vec3 uSweep;
-    uniform float uSize, uGain, uNear, uFar, uCondense;
+    uniform float uSize, uGain, uNear, uFar, uCondense, uKeyed;
     uniform vec4 uAlpha, uReveal;
     varying float vI;
     void main() {
@@ -407,9 +419,12 @@
       vec4 p = uMVP * vec4(mix(aPos, aTarget, c), 1.0);
       gl_Position = p;
       gl_PointSize = uSize;
-      float age = r - (dot(aPos, uSweep) * 0.5 + 0.5);
-      float seen = clamp(age * 8.0, 0.0, 1.0);
-      float flash = 1.0 + 1.6 * clamp(1.0 - age * 6.0, 0.0, 1.0) * seen + 3.2 * c * (1.0 - c);
+      // a keyed point appears at its own moment (setup by setup), with a sharper front
+      float age = r - (uKeyed > 0.5 ? aKey : dot(aPos, uSweep) * 0.5 + 0.5);
+      float sharp = uKeyed > 0.5 ? 3.0 : 1.0;
+      float seen = clamp(age * 8.0 * sharp, 0.0, 1.0);
+      float moves = step(1e-5, length(aTarget - aPos));
+      float flash = 1.0 + 1.6 * clamp(1.0 - age * 6.0 * sharp, 0.0, 1.0) * seen + 3.2 * c * (1.0 - c) * moves;
       float depth = clamp((p.w - uNear) / (uFar - uNear), 0.0, 1.0);
       vI = aShade * mix(1.0, 0.25, depth) * seen * flash * uGain * a;
     }`;
@@ -549,7 +564,7 @@
     if (!c) return false;
     const gl = c.gl;
     c.prog = {
-      pts: program(gl, VS_PTS, FS, ['uMVP', 'uSweep', 'uSize', 'uGain', 'uNear', 'uFar', 'uCondense', 'uAlpha', 'uReveal']),
+      pts: program(gl, VS_PTS, FS, ['uMVP', 'uSweep', 'uSize', 'uGain', 'uNear', 'uFar', 'uCondense', 'uAlpha', 'uReveal', 'uKeyed']),
       lin: program(gl, VS_LIN, FS_LIN, ['uMVP', 'uEye', 'uSweep', 'uClip', 'uKeep', 'uGain', 'uNear', 'uFar', 'uKeyed', 'uAlpha', 'uReveal',
                                         'uPartK', 'uPartW']),
       tube: program(gl, VS_TUBE, FS_LIN, ['uMVP', 'uEye', 'uClip', 'uKeep', 'uGain', 'uNear', 'uFar', 'uAlpha', 'uReveal', 'uKeyDir', 'uKeyRange']),
@@ -569,6 +584,7 @@
     if (d.pts) {
       g.pp = buffer(gl, d.pts.pos); g.pt = buffer(gl, d.pts.target || d.pts.pos);
       g.ps = buffer(gl, d.pts.shade); g.pg = buffer(gl, d.pts.group);
+      if (d.pts.key) g.pk = buffer(gl, d.pts.key);
     }
     if (d.lin) {
       g.lp = buffer(gl, d.lin.pos); g.lo = buffer(gl, d.lin.other); g.l1 = buffer(gl, d.lin.n1); g.l2 = buffer(gl, d.lin.n2);
@@ -619,6 +635,11 @@
       g.bandPos = new Float32Array(BAND * 2 * 3);
       g.bandI = new Float32Array(BAND * 2);
       g.bp = buffer(gl, g.bandPos, gl.DYNAMIC_DRAW); g.bi = buffer(gl, g.bandI, gl.DYNAMIC_DRAW);
+    }
+    if (P.stations) {
+      g.scanPos = new Float32Array(P.stations.length * (SCAN_N + 1) * 2 * 3);
+      g.scanI = new Float32Array(P.stations.length * (SCAN_N + 1) * 2);
+      g.sp = buffer(gl, g.scanPos, gl.DYNAMIC_DRAW); g.si = buffer(gl, g.scanI, gl.DYNAMIC_DRAW);
     }
     if (P.parts) {
       g.dimPos = new Float32Array(DIMS * 2 * 3);
@@ -683,6 +704,7 @@
     const R = Math.max(D * 0.85, 0.02), near = D - R, far = D + R * 1.6;
     const drawSec = (gr) => (P.draw && P.draw[gr]) || DRAW;
     const shown = (key, gr) => (STILL ? 9 : (t - firstShown(P, key, gr)) / drawSec(gr) * 1.15);
+    const shownPts = (gr) => (STILL ? 9 : (t - firstShown(P, 'pts', gr)) / (P.ptsDraw || drawSec(gr)) * 1.15);
     const sec = P.section;
     let clip = sec ? sec.n.concat([lerp(sec.from, sec.to, value(P, 'cut', undefined, t, 2.4))]) : [0, 0, 0, 1];
     let keep = 0, cut = null;
@@ -788,6 +810,8 @@
         attrib(gl, p.p, 'aTarget', g.pt, 3, type, !d.pts.float);
         attrib(gl, p.p, 'aShade', g.ps, 1, gl.UNSIGNED_BYTE, true);
         attrib(gl, p.p, 'aGroup', g.pg, 1, gl.UNSIGNED_BYTE, false);
+        attrib(gl, p.p, 'aKey', g.pk || null, 1, gl.UNSIGNED_SHORT, true);
+        gl.uniform1f(p.u.uKeyed, g.pk ? 1 : 0);
         gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
         gl.uniform3fv(p.u.uSweep, sweep);
         gl.uniform1f(p.u.uSize, Math.max(1, 1.25 * dpr));
@@ -795,10 +819,11 @@
         gl.uniform1f(p.u.uNear, near); gl.uniform1f(p.u.uFar, far);
         gl.uniform1f(p.u.uCondense, value(P, 'condense', undefined, t, P.condenseW || 3.2));
         gl.uniform4fv(p.u.uAlpha, a);
-        gl.uniform4fv(p.u.uReveal, [0, 1, 2, 3].map((gr) => shown('pts', gr)));
+        gl.uniform4fv(p.u.uReveal, [0, 1, 2, 3].map((gr) => shownPts(gr)));
         gl.drawArrays(gl.POINTS, 0, d.pts.n);
       }
     }
+    if (P.stations) scanners(P, g, mvp, shownPts(0), (1 - value(P, 'condense', undefined, t, 1.6)) * value(P, 'pts', 0, t, FADE_W) * alpha);
     const fl = value(P, 'flow', undefined, t, FADE_W) * alpha;
     if (d.flo && g.runs && fl > 0.002 && !STILL) {
       const f = d.flo, speed = P.flowSpeed || 0.02, gap = speed * 0.035;
@@ -897,6 +922,41 @@
     gl.uniform1f(p.u.uAlpha, 1);
     gl.drawArrays(gl.LINES, 0, v);
     return words;
+  }
+
+  // where the scanners stood: a small ring at the scanner's head and its tripod down to the ground, lit
+  // while that setup's points come in, then faint until the points are pulled onto the model
+  function scanners(P, g, mvp, r, k) {
+    if (k < 0.002) return;
+    const n = P.stations.length, rad = 0.22 / P.half, leg = 1.55 / P.half;
+    let v = 0;
+    P.stations.forEach((c, j) => {
+      const on = ease(1 - Math.abs(r * n - (j + 0.5)) / 1.2), seen = ease((r * n - j) * 2);
+      const I = k * seen * (0.22 + 0.78 * on);
+      if (I < 0.002) return;
+      for (let i = 0; i < SCAN_N; i++) {
+        for (const a of [i, i + 1]) {
+          const th = (2 * Math.PI * a) / SCAN_N;
+          g.scanPos.set([c[0] + Math.cos(th) * rad, c[1] + Math.sin(th) * rad, c[2]], v * 3); g.scanI[v++] = I;
+        }
+      }
+      g.scanPos.set(c, v * 3); g.scanI[v++] = I * 0.6;
+      g.scanPos.set([c[0], c[1], c[2] - leg], v * 3); g.scanI[v++] = 0;
+    });
+    if (!v) return;
+    const gl = S.gl, p = S.prog.run;
+    gl.useProgram(p.p);
+    gl.blendEquation(S.max || gl.FUNC_ADD); gl.blendFunc(gl.ONE, gl.ONE);
+    gl.bindBuffer(gl.ARRAY_BUFFER, g.sp); gl.bufferSubData(gl.ARRAY_BUFFER, 0, g.scanPos.subarray(0, v * 3));
+    gl.bindBuffer(gl.ARRAY_BUFFER, g.si); gl.bufferSubData(gl.ARRAY_BUFFER, 0, g.scanI.subarray(0, v));
+    attrib(gl, p.p, 'aPos', g.sp, 3, gl.FLOAT, false);
+    attrib(gl, p.p, 'aI', g.si, 1, gl.FLOAT, false);
+    gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
+    gl.uniform1f(p.u.uSize, 1);
+    gl.uniform1f(p.u.uRef, 1e9); gl.uniform1f(p.u.uNear, 0); gl.uniform1f(p.u.uFar, 1e9);
+    gl.uniform1f(p.u.uAlpha, 1);
+    gl.drawArrays(gl.LINES, 0, v);
+    gl.blendEquation(gl.FUNC_ADD);
   }
 
   // a georadar's band across the street, two fading lines behind it, and the faint curtain it sees

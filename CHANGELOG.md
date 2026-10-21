@@ -24,10 +24,16 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   cut open by a section), tagværk (rafter after rafter), værktøj (a sheet of nine prints with
   measures). Lines blend with "max" and hide behind faces; numbers come from the models.
   Arrow keys or a swipe for the next project, tap or Esc to close. Player in `src/stage.js`,
-  data gzipped in `src/pts/` (about 11 MB, loaded one project at a time).
+  data gzipped in `src/pts/` (about 13 MB, loaded one project at a time).
 
 ### Changed
 
+- rørbro: the scan builds up setup by setup from where the 16 scanners stood; the points are
+  pulled onto the steel and the 6 % that lie more than 2 mm off the model stay behind; the model
+  is drawn part by part from the bottom in hidden lines; a bearing's bolt group is shown close
+  with its hole pattern (60, 189 and 161 mm, from the delivered bolt table); the damage is
+  sighted along the chord with its measures (227 mm sideways, 140 mm up, as in the delivered
+  report). The grey numbers fit on one line.
 - kabeltracé: a section rides along a bundle of cables through a bend, each cable cut as a
   ring of its real diameter (from the model) with the sizes written beside them, then out to
   a long view up the route with light in the cables. The cables are whole tubes now, joined
