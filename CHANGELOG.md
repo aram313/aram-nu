@@ -30,6 +30,12 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   grate at the surface, not the tank; the tank lies by the gable, 0,5 m down and 1,8 × 1,7 m,
   measured in from the house's corners (1,72 m and 0,89 m), with the pipes at their depths and
   the district heating named.
+- fjernvarme: a district heating pipe that dips under a sewer, told from its profile drawing.
+  It opens as the drawing shows it, the pipes it crosses as circles with their names and
+  sizes; in 3D the circles become pipes at their real diameters (sewer, gas, water, power and
+  the gas lines measured in the excavation); a dashed ghost shows the straight way that the gas
+  blocked; back in profile, the dip of 1,75 m and the 0,29 m under the sewer; then the 24 points
+  measured in the excavation, and the whole crossing.
 
 ### Changed
 
@@ -48,6 +54,9 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   upright, and words on the drawing step clear of each other.
 - Points and lights keep their size against the drawing, so they no longer grow over the
   picture on a phone.
+- Tubes keep their outline round bends: the two outlines of neighbouring segments meet
+  instead of leaving a gap on the outside of each bend.
+- Lines can come in eight groups instead of four.
 - rørbro: the scan builds up setup by setup from where the 16 scanners stood; the points are
   pulled onto the steel and the 6 % that lie more than 2 mm off the model stay behind; the model
   is drawn part by part from the bottom in hidden lines; a bearing's bolt group is shown close

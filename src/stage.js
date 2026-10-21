@@ -180,6 +180,44 @@
       dims: [[[0.2416, -0.4137, 0.0985], '1,72 m', 3, 20.2], [[0.3377, -0.5048, 0.0985], '0,89 m', 3, 20.5]],
     },
     {
+      slug: 'fjernvarme', id: 'fv', name: 'fjernvarme', lin: true, flo: true, tube: true, length: 31,
+      row: 'profilsnit · et dyk under en kloak',
+      meta: ['profilsnit', [6, 'ledninger'], [24, 'punkter'], '1,75 m ned'],
+      gain: { lin: 0.9, tube: 0.95 }, draw: [2, 1.5, 1, 1.5, 1.2], half: 9, ringR: 0.5,
+      // what each tube is, from the drawing's layers: 0 district heating, 1 sewer, 2 gas, 3 water, 4 power,
+      // 5 the gas lines measured in the excavation; laid from where the pipe comes in
+      kinds: true, kindNames: ['fjernvarme', 'kloak', 'gas', 'vand', 'el', 'gas, målt'],
+      lay: { from: [-1, 0, 0.0516], draw: 3, stagger: 0.5 },
+      // the profile: a section just in front of the pipe's own axis, with a ring where it cuts each pipe
+      section: { n: [0, -1, 0], from: 0.7444, to: 0.0089, ring: [-0.007, -0.0089, -0.0459] }, start: { cut: 1 },
+      // line groups: 0 the ground, the measured clearing and the manhole, 1 the straight way, 2 the measures,
+      // 3 the points measured in the excavation, 4 the ground where the section cuts it
+      pose: { yaw: 0, pitch: 0, zoom: 3.4, at: [-0.03, 0, -0.049], tall: { zoom: 3, at: [0, 0, -0.03] } },
+      beats: [
+        { at: 0, text: 'et profilsnit af en fjernvarmeledning.', lin: [0, 0, 0, 0, 0.5], cut: 1, kinds: [1, 0, 0, 0, 0, 0, 0, 0] },
+        { at: 3.5, text: 'det, den krydser, står som cirkler.', lin: [0, 0, 0, 0, 0.5], cut: 1, sizes: 1, kinds: [1, 0, 0, 0, 0, 0, 0, 0],
+          pose: { yaw: 0, pitch: 0, zoom: 3.6, at: [-0.02, 0, -0.045], tall: { zoom: 3.1, at: [0, 0, -0.03] } } },
+        { at: 8, text: 'i 3d bliver cirklerne til ledninger.', lin: [0.6, 0, 0, 0, 0], kinds: [1, 1, 1, 1, 1, 1, 0, 0],
+          pose: { yaw: 32, pitch: 26, zoom: 2.1, at: [0, -0.1, -0.02], w: 4, tall: { zoom: 1.5 } } },
+        { at: 13, text: 'den lige vej var spærret af gas, og under gassen lå kloakken.', lin: [0.4, 1, 0, 0, 0], kinds: [0.5, 0.8, 1, 0.3, 0.3, 1, 0, 0],
+          pose: { yaw: 18, pitch: 16, zoom: 4.2, at: [0, 0, 0.03], tall: { zoom: 2.8 } } },
+        { at: 18, text: 'så den dykker 1,75 m og går 0,29 m under kloakken.', lin: [0, 0.5, 1, 0, 0.5], cut: 1, kinds: [1, 0.15, 0.1, 0.1, 0.1, 0.1, 0, 0],
+          pose: { yaw: 0, pitch: 0, zoom: 3.4, at: [-0.06, 0, -0.049], tall: { zoom: 2.4, at: [-0.07, 0, -0.04] } } },
+        { at: 23, text: 'gas og kloak målt i udgravningen, punkt for punkt.', lin: [0.8, 0, 0, 1, 0], kinds: [0.6, 0.6, 0.6, 0.4, 0.4, 1, 0, 0],
+          pose: { yaw: -30, pitch: 52, zoom: 2.6, at: [0, 0, 0], tall: { zoom: 2.6 } } },
+        { at: 27, text: 'fra et snit på papir til et kryds, man kan gå rundt om.', lin: [0.6, 0.25, 0, 0.6, 0], kinds: [0.9, 0.8, 0.7, 0.6, 0.6, 0.7, 0, 0],
+          pose: { yaw: 35, pitch: 32, zoom: 1.15, at: [0, 0, -0.03], w: 4, tall: { zoom: 1.25 } } },
+      ],
+      // [where, text, from, to]: what each pipe is, while the camera goes round it
+      notes: [[[0.2, -0.0089, 0.171], 'terræn', 0.6, 7.6], [[0.2, -0.0089, 0.171], 'terræn', 18.6, 22.6],
+        [[-0.8222, 0, 0.096], 'fjernvarme ø560', 8.6, 12.8], [[0.0862, -0.1778, -0.0016], 'kloak ø567', 9, 12.8],
+        [[-0.1645, -0.5778, 0.0496], 'gas ø180', 9.4, 12.8], [[-0.0863, 0.5556, 0.022], 'vand ø110', 9.8, 12.8],
+        [[0.0634, 0.3333, 0.1176], 'el', 10.2, 12.8], [[0.0979, 0.0835, 0.0181], 'gas ø65, målt', 10.6, 12.8],
+        [[-0.007, 0, 0.0516], 'den lige vej', 13.6, 17.6]],
+      // [where, text, group, when]: the two measures from the profile drawing
+      dims: [[[-0.44, 0, -0.0459], '1,75 m', 2, 18.6], [[0.1442, 0, -0.0961], '0,29 m', 2, 19]],
+    },
+    {
       slug: 'fabrik', id: 'fabrik', name: 'fabrik', pts: true, lin: true, length: 19, draw: [3.5, 4],
       row: 'laserscanning · 498 stålbjælker',
       meta: ['laserscanning', [1695, 'elementer'], [498, 'stålbjælker'], [144, 'stålsøjler']],
@@ -511,15 +549,15 @@
     uniform vec4 uClip;
     uniform float uGain, uNear, uFar, uKeyed, uPartK;
     uniform float uPartW[16];
-    uniform vec4 uAlpha, uReveal;
+    uniform float uAlpha[8], uReveal[8];
     varying float vI, vClip;
     void main() {
       vec4 p = uMVP * vec4(aPos, 1.0);
       gl_Position = p;
       vClip = dot(aPos, uClip.xyz) - uClip.w;
-      float g = floor(aN2.w * 127.0 + 0.5);
-      float a = g < 0.5 ? uAlpha.x : g < 1.5 ? uAlpha.y : g < 2.5 ? uAlpha.z : uAlpha.w;
-      float r = g < 0.5 ? uReveal.x : g < 1.5 ? uReveal.y : g < 2.5 ? uReveal.z : uReveal.w;
+      int g = int(clamp(floor(aN2.w * 127.0 + 0.5), 0.0, 7.0));
+      float a = uAlpha[g];
+      float r = uReveal[g];
       // a sharp edge always shows; a smooth one where its faces turn opposite ways seen from the eye,
       // tested at the edge's middle so both ends agree
       vec3 v = uEye - 0.5 * (aPos + aOther);
@@ -721,14 +759,28 @@
         return [da <= db, Math.min(da, db)];
       };
       const reach = L ? Math.max(...Array.from({ length: f.T }, (_, t) => near(t)[1])) || 1 : 1;
+      // the way along the track at each point, the mean of the segments on either side, so the outlines of two
+      // segments meet at a bend instead of leaving a gap on its outer side
+      const dir = (a, b) => {
+        const q = [0, 1, 2].map((j) => f.xyz[b * 3 + j] - f.xyz[a * 3 + j]), l = Math.hypot(...q);
+        return l > 1e-9 ? q.map((x) => x / l) : null;
+      };
       let v = 0;
       for (let t = 0; t < f.T; t++) {
         const [fwd, dist] = near(t), start = L ? (L.stagger || 0.5) * (dist / reach) : 0, span = 1 - start;
-        for (let i = f.offs[t]; i < f.offs[t + 1] - 1; i++) {
+        const lo = f.offs[t], hi = f.offs[t + 1] - 1;
+        for (let i = lo; i < hi; i++) {
+          const d = dir(i, i + 1) || [1, 0, 0];
           for (const [a, b, sg] of [[i, i + 1, 1], [i + 1, i, -1], [i, i + 1, -1], [i + 1, i, 1]]) {
-            for (let j = 0; j < 3; j++) { pos[v * 3 + j] = f.xyz[a * 3 + j]; oth[v * 3 + j] = f.xyz[b * 3 + j]; }
+            const m = [0, 0, 0];
+            for (const q of [a > lo ? dir(a - 1, a) : null, a < hi ? dir(a, a + 1) : null]) if (q) for (let j = 0; j < 3; j++) m[j] += q[j];
+            const ml = Math.hypot(...m), T = ml > 1e-6 ? m.map((x) => x / ml) : d;
+            const cos = T[0] * d[0] + T[1] * d[1] + T[2] * d[2], w = b > a ? 1 : -1;
+            for (let j = 0; j < 3; j++) { pos[v * 3 + j] = f.xyz[a * 3 + j]; oth[v * 3 + j] = f.xyz[a * 3 + j] + T[j] * w; }
             const u = f.lens[t] ? f.cum[a] / f.lens[t] : 0;
-            side[v] = sg; r[v] = f.rad[t]; cl[v] = f.cls ? f.cls[t] : 0; lay[v] = start + span * (fwd ? u : 1 - u); v++;
+            // a mitre: wider at a sharp bend, so the outline keeps the tube's width round it
+            side[v] = sg; r[v] = f.rad[t] / Math.max(0.55, cos); cl[v] = f.cls ? f.cls[t] : 0;
+            lay[v] = start + span * (fwd ? u : 1 - u); v++;
           }
         }
       }
@@ -827,6 +879,11 @@
     const words = [];
     // a scan reveals what lies along the route up to where its band has come
     const scanned = STILL || !P.scan ? 9 : value(P, 'ride', undefined, t, P.rideW || 8);
+    if (sec && sec.ring) {   // a still section that rings the cables it cuts around one point (moved onto the plane)
+      const k = value(P, 'cut', undefined, t, 2.4), n = sec.n, c = sec.ring;
+      const off = n[0] * c[0] + n[1] * c[1] + n[2] * c[2] - clip[3];
+      if (k > 0.002) cut = { c: c.map((v, e) => v - off * n[e]), n, k };
+    }
     if (P.route) {   // a section across the route where the ride has come to; what lies before it fades away
       const k = value(P, 'cut', undefined, t, 2.4);
       const { pos: c, tan: n } = routeAt(P, value(P, 'ride', undefined, t, P.rideW || 8));
@@ -852,7 +909,7 @@
       gl.depthMask(false); gl.depthFunc(gl.LEQUAL);
     }
     if (d.lin) {
-      const a = [0, 1, 2, 3].map((gr) => value(P, 'lin', gr, t, FADE_W) * alpha);
+      const a = [0, 1, 2, 3, 4, 5, 6, 7].map((gr) => value(P, 'lin', gr, t, FADE_W) * alpha);
       if (Math.max(...a) > 0.002) {
         const p = S.prog.lin;
         gl.useProgram(p.p);
@@ -878,8 +935,8 @@
         gl.uniform1fv(p.u.uPartW, pw);
         gl.uniform1f(p.u.uGain, ((P.gain && P.gain.lin) || 1) * (S.max ? 1 : 0.6));
         gl.uniform1f(p.u.uNear, near); gl.uniform1f(p.u.uFar, far);
-        gl.uniform4fv(p.u.uAlpha, a);
-        gl.uniform4fv(p.u.uReveal, [0, 1, 2, 3].map((gr) => (P.scan && gr === P.scan.group ? scanned : shown('lin', gr))));
+        gl.uniform1fv(p.u.uAlpha, a);
+        gl.uniform1fv(p.u.uReveal, a.map((_, gr) => (P.scan && gr === P.scan.group ? scanned : shown('lin', gr))));
         gl.drawArrays(gl.LINES, 0, d.lin.m * 2);
       }
     }
@@ -1052,7 +1109,7 @@
         const top = hs.reduce((a, b) => ((b.q[2] + b.r) > (a.q[2] + a.r) ? b : a));
         const mm = Math.round(top.r * 2 * P.half * 1000);
         const [sx, y] = screen(mvp, top.q.map((v, e) => v + top.r * 1.8 * up[e]));   // over its topmost ring
-        return { key: 'k' + k, text: P.kindNames[k] + ' · ø' + mm, x: sx, y: y - 9, o };
+        return { key: 'k' + k, text: P.kindNames[k] + ' · ø' + mm, x: sx, y: y - 9, o, up: true };
       });
     }
     let v = 0;
@@ -1274,7 +1331,7 @@
         for (let k = 0; k < 6; k++) {
           const hit = placed.find((q) => x < q[0] + q[2] + 6 && q[0] < x + (el.w || 0) + 6 && Math.abs(y - q[1]) < 15);
           if (!hit) break;
-          y = hit[1] + 15;
+          y = hit[1] + (w_.up ? -15 : 15);
         }
         placed.push([x, y, el.w || 0]);
       }
