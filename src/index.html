@@ -101,6 +101,7 @@
   .labels span {   /* a word on the drawing (a measure, a name), centred where the player puts it */
     position: absolute; left: 0; top: 0; z-index: 1; color: var(--dim); font-size: 12px; white-space: nowrap;
     pointer-events: none; opacity: 0; font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 3px #000, 0 0 7px #000;   /* readable over lines and the damage's coloured points */
   }
   .run { height: 1px; margin-top: 14px; background: var(--line); }
   .run i { display: block; height: 1px; background: var(--fg); transform-origin: left; transform: scaleX(0); }

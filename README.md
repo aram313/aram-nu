@@ -13,7 +13,9 @@ buehal, georadar, fabrik, gammelt hus, tagværk, værktøj). A tap plays the pro
 the whole screen, by itself, in the style that fits it: a pipe bridge scanned setup by setup
 from the places its 16 scanners stood, its points pulled onto the steel (the ones off the model
 by more than 2 mm left behind), the model drawn part by part in hidden lines, a bearing's bolt
-pattern with its measures and the damaged chord sighted along with its two measures, a
+pattern with its measures, and the damaged chord with its two measures, its scan points yellow
+to red by how far it is pushed out of line, seen from the side as the camera goes slowly round
+to its other side and out to the whole bridge again, a
 datacenter crossing built element by element with light in its cables, a section riding
 along a bundle of cables (each cable a ring of its own diameter where the section cuts it)
 and out to a long view of the route, a georadar band running a street with what lies under
@@ -75,6 +77,8 @@ Then open http://localhost:8790. (Without npm: `py -m http.server 8790 --directo
     float32 xyz, and a float32 radius per track. The light runs along these, and tubes and
     section rings are drawn from them.
   - `<id>.mini` the miniature: count, int16 xyz of the model's longest edges.
+  - `<id>.hot` points with a value: count, flags, xyz, a uint8 value per point (how far that
+    part is pushed out of line), drawn yellow to red.
   The files are made in Aram's private workspace from the models and scans (not in this
   repository, since the sources carry client names).
 - `?p=<project>&t=<seconds>` opens one project held at one moment, for checking a frame;

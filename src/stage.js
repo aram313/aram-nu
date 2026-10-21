@@ -12,7 +12,7 @@
 (() => {
   const PROJECTS = [
     {
-      slug: 'roerbro', id: 'bro', name: 'rørbro', pts: true, lin: true, tri: true, hidden: true, length: 25,
+      slug: 'roerbro', id: 'bro', name: 'rørbro', pts: true, lin: true, tri: true, hidden: true, hot: true, length: 35.5,
       row: 'laserscanning · 130 mio. punkter',
       meta: ['laserscanning', [16, 'opstillinger'], [130246832, 'punkter'], '94 % inden for 2 mm'],
       gain: { pts: 0.5, lin: 0.85 }, ptsDraw: 4, draw: [3.6, 3.6, 1, 1], half: 8.221,
@@ -31,11 +31,16 @@
         { at: 14.4, text: 'boltgrupperne målt ind, så det nye stål passer på de gamle bolte.', pts: [0.08, 0.03], condense: 1, lin: [1, 1, 1, 0],
           pose: { yaw: 35, pitch: 42, zoom: 24, at: [-0.8202, -0.1808, 0.1839] } },
         { at: 19.2, text: 'og skaden målt: undergurten er presset 227 mm ud af sin linje.', pts: [0.04, 0.02], condense: 1,
-          lin: [0.1, 1, 0, 1], pose: { yaw: 70, pitch: 5, zoom: 7.5, at: [0.0387, -0.1683, 0.2047] } },
+          lin: [0.1, 0.45, 0, 1], pose: { yaw: -12, pitch: 14, zoom: 4.6, at: [0.0387, -0.1683, 0.2047], w: 3.2 } },
+        { at: 21.6, text: 'og skaden målt: undergurten er presset 227 mm ud af sin linje.', pts: [0.04, 0.02], condense: 1, lin: [0.1, 0.45, 0, 1], hot: 1 },
+        { at: 23.2, text: 'og skaden målt: undergurten er presset 227 mm ud af sin linje.', pts: [0.04, 0.02], condense: 1,
+          lin: [0.1, 0.45, 0, 1], hot: 1, pose: { yaw: 168, pitch: 14, zoom: 4.6, at: [0.0387, -0.1683, 0.2047], w: 7.5 } },
+        { at: 30.8, text: 'og skaden målt: undergurten er presset 227 mm ud af sin linje.', pts: [0.04, 0.02], condense: 1,
+          lin: [0.7, 0.8, 0, 0], hot: 1, pose: { yaw: 198, pitch: 22, zoom: 1.25, at: [0, 0, 0], w: 3.6 } },
       ],
       // [where, text, group, when]: the bearing's hole pattern (mm, from the delivered bolt table), then the damage
       dims: [[[-0.8298, -0.2021, 0.1877], '60', 2, 15.2], [[-0.8146, -0.2021, 0.1877], '189', 2, 15.5], [[-0.7897, -0.1809, 0.1877], '161', 2, 15.8],
-        [[0.0387, -0.1683, 0.2319], '227 mm', 3, 19.8], [[0.0507, -0.1339, 0.2048], '140 mm', 3, 20.3]],
+        [[0.0387, -0.1683, 0.2362], '227 mm', 3, 22], [[0.0507, -0.1284, 0.2048], '140 mm', 3, 22.4]],
     },
     {
       slug: 'datacenter', id: 'datacenter', name: 'datacenter', lin: true, tri: true, hidden: true, flo: true, length: 22,
@@ -326,7 +331,7 @@
     if (!files.has(url)) files.set(url, unpack(url).catch(() => null));
     return files.get(url);
   }
-  function parse(pb, lb, fb, tb) {
+  function parse(pb, lb, fb, tb, hb) {
     const d = {};
     if (pb) {
       const [n, flags] = new Int32Array(pb, 0, 2);
@@ -379,13 +384,19 @@
       o += o % 4;
       d.tri.idx = new Uint32Array(tb, o, ni);
     }
+    if (hb) {   // scan points with a value: how far that part is pushed out of line
+      const [n, flags] = new Int32Array(hb, 0, 2);
+      const F = flags & 1 ? Float32Array : Int16Array, size = flags & 1 ? 4 : 2;
+      d.hot = { n, float: !!(flags & 1), pos: new F(hb, 8, n * 3), v: new Uint8Array(hb, 8 + n * 3 * size, n) };
+    }
     return d;
   }
   function load(P) {
     if (!P.data) {
       P.data = Promise.all([P.pts ? fetchBin(`pts/${P.id}.pts`) : null, P.lin ? fetchBin(`pts/${P.id}.lin`) : null,
-                            P.flo ? fetchBin(`pts/${P.id}.flo`) : null, P.tri ? fetchBin(`pts/${P.id}.tri`) : null])
-        .then(([pb, lb, fb, tb]) => { P.cpu = parse(pb, lb, fb, tb); return P.cpu; });
+                            P.flo ? fetchBin(`pts/${P.id}.flo`) : null, P.tri ? fetchBin(`pts/${P.id}.tri`) : null,
+                            P.hot ? fetchBin(`pts/${P.id}.hot`) : null])
+        .then(([pb, lb, fb, tb, hb]) => { P.cpu = parse(pb, lb, fb, tb, hb); return P.cpu; });
     }
     return P.data;
   }
@@ -526,6 +537,25 @@
     precision mediump float;
     uniform float uI;
     void main() { gl_FragColor = vec4(vec3(uI), 1.0); }`;
+  // a damage map: each point yellow to red by how far its part is pushed out of line
+  const VS_HOT = `
+    attribute vec3 aPos;
+    attribute float aV;
+    uniform mat4 uMVP;
+    uniform float uSize, uNear, uFar, uAlpha, uReveal;
+    varying vec3 vC;
+    void main() {
+      vec4 p = uMVP * vec4(aPos, 1.0);
+      gl_Position = p;
+      gl_PointSize = uSize;
+      float seen = clamp((aV - (1.0 - uReveal)) * 5.0, 0.0, 1.0) * smoothstep(0.0, 0.05, aV);
+      float depth = clamp((p.w - uNear) / (uFar - uNear), 0.0, 1.0);
+      vC = mix(vec3(1.0, 0.8, 0.22), vec3(0.96, 0.2, 0.13), aV) * seen * mix(1.0, 0.4, depth) * uAlpha;
+    }`;
+  const FS_HOT = `
+    precision mediump float;
+    varying vec3 vC;
+    void main() { gl_FragColor = vec4(vC, 1.0); }`;
   const FS = `
     precision mediump float;
     varying float vI;
@@ -570,6 +600,7 @@
       tube: program(gl, VS_TUBE, FS_LIN, ['uMVP', 'uEye', 'uClip', 'uKeep', 'uGain', 'uNear', 'uFar', 'uAlpha', 'uReveal', 'uKeyDir', 'uKeyRange']),
       tri: program(gl, VS_TRI, FS_TRI, ['uMVP', 'uClip']),
       run: program(gl, VS_RUN, FS, ['uMVP', 'uSize', 'uAlpha', 'uRef', 'uNear', 'uFar']),
+      hot: program(gl, VS_HOT, FS_HOT, ['uMVP', 'uSize', 'uNear', 'uFar', 'uAlpha', 'uReveal']),
     };
     S = c;
     return true;
@@ -590,6 +621,7 @@
       g.lp = buffer(gl, d.lin.pos); g.lo = buffer(gl, d.lin.other); g.l1 = buffer(gl, d.lin.n1); g.l2 = buffer(gl, d.lin.n2);
       if (d.lin.key) g.lk = buffer(gl, d.lin.key);
     }
+    if (d.hot) { g.hp = buffer(gl, d.hot.pos); g.hv = buffer(gl, d.hot.v); }
     if (d.tri && S.uint) {
       g.tp = buffer(gl, d.tri.pos);
       g.ti = buffer(gl, d.tri.idx, gl.STATIC_DRAW, gl.ELEMENT_ARRAY_BUFFER);
@@ -824,6 +856,21 @@
       }
     }
     if (P.stations) scanners(P, g, mvp, shownPts(0), (1 - value(P, 'condense', undefined, t, 1.6)) * value(P, 'pts', 0, t, FADE_W) * alpha);
+    const ha = value(P, 'hot', undefined, t, FADE_W) * alpha;
+    if (g.hp && ha > 0.002) {
+      const p = S.prog.hot;
+      gl.useProgram(p.p);
+      gl.blendEquation(S.max || gl.FUNC_ADD); gl.blendFunc(gl.ONE, gl.ONE);
+      attrib(gl, p.p, 'aPos', g.hp, 3, d.hot.float ? gl.FLOAT : gl.SHORT, !d.hot.float);
+      attrib(gl, p.p, 'aV', g.hv, 1, gl.UNSIGNED_BYTE, true);
+      gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
+      gl.uniform1f(p.u.uSize, Math.max(1.5, 2.2 * dpr));
+      gl.uniform1f(p.u.uNear, near); gl.uniform1f(p.u.uFar, far);
+      gl.uniform1f(p.u.uAlpha, ha);
+      gl.uniform1f(p.u.uReveal, STILL ? 9 : (t - firstShown(P, 'hot')) / 1.8);
+      gl.drawArrays(gl.POINTS, 0, d.hot.n);
+      gl.blendEquation(gl.FUNC_ADD);
+    }
     const fl = value(P, 'flow', undefined, t, FADE_W) * alpha;
     if (d.flo && g.runs && fl > 0.002 && !STILL) {
       const f = d.flo, speed = P.flowSpeed || 0.02, gap = speed * 0.035;

@@ -58,7 +58,9 @@ Owner's rules for the projects (2026-10-21):
 
 - Real projects, altered a little and taken out of context; no client name, place or case
   number anywhere (text, alt text, file names).
-- The point look is only for real scan data; models are white wireframe, no colours.
+- The point look is only for real scan data; models are white wireframe, no colours. The one
+  colour is where it measures something: rørbro's damage, its scan points yellow to red by how
+  far the chord is pushed out of line (Aram asked for it, 2026-10-21).
 - Each project tells a story visually: scan to model to finding, or overview to detail.
 - The list stays minimal: at most one line per project (a small live miniature is fine). Not
   scroll-driven; the story plays full screen on a tap.
