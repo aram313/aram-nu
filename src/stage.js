@@ -286,9 +286,9 @@
         { at: 10.5, text: 'resten, 636 stykker, er skønnet ud fra dem.', lin: [0.22, 1, 0],
           pose: { yaw: 48, pitch: 8, zoom: 15, at: [-0.3, 0, 0] } },
         { at: 15, text: 'skæve, bøjede og buede stykker er skrevet på.', lin: [0.45, 0.3, 1],
-          pose: { yaw: 22, pitch: 24, zoom: 1.7, at: [0, 0, 0], w: 3.5, tall: { yaw: 80, pitch: 16, zoom: 14, at: [-0.55, 0, 0] } } },
+          pose: { yaw: 22, pitch: 24, zoom: 1.7, at: [0, 0, 0], w: 3.5, tall: { yaw: 86, pitch: 18, zoom: 5, at: [-0.45, 0.02, 0.01] } } },
         { at: 20, text: '1.232 stykker tømmer, 165 m tag.', lin: [1, 0.7, 0.4],
-          pose: { yaw: 14, pitch: 34, zoom: 1.08, at: [0, 0, 0], w: 4, tall: { yaw: 80, pitch: 16, zoom: 11, at: [-0.5, 0, 0] } } },
+          pose: { yaw: 14, pitch: 34, zoom: 1.08, at: [0, 0, 0], w: 4, tall: { yaw: 92, pitch: 20, zoom: 7, at: [-0.25, 0.02, 0.01] } } },
       ],
       // [where, text, from, to]: the model's notes on three pieces
       notes: [[[-0.6524, 0.0183, 0.0111], 'buet', 15.6, 19.6], [[-0.2323, 0.0222, 0.0173], 'skæv', 15.9, 19.6],
