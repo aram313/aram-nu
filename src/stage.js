@@ -1028,7 +1028,7 @@
         gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
         gl.uniform3fv(p.u.uSweep, sweep);
         gl.uniform1f(p.u.uSize, Math.max(1, 1.25 * px));
-        gl.uniform1f(p.u.uGain, ((P.gain && P.gain.pts) || 1) * Math.min(1, (0.16 * w * h) / (d.pts.n * dpr * dpr)));
+        gl.uniform1f(p.u.uGain, ((P.gain && P.gain.pts) || 1) * Math.min(1, (0.16 * w * h) / (d.pts.n * dpr)));
         gl.uniform1f(p.u.uNear, near); gl.uniform1f(p.u.uFar, far);
         gl.uniform1f(p.u.uCondense, value(P, 'condense', undefined, t, P.condenseW || 3.2));
         gl.uniform4fv(p.u.uAlpha, a);

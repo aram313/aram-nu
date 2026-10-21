@@ -54,6 +54,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   upright, and words on the drawing step clear of each other.
 - Points and lights keep their size against the drawing, so they no longer grow over the
   picture on a phone.
+- Scan points are as bright on a sharp phone screen as on a desktop: their brightness is shared
+  out over the screen's real pixels, not its CSS pixels, so a phone at 3x no longer dims them to a third.
 - Tubes keep their outline round bends: the two outlines of neighbouring segments meet
   instead of leaving a gap on the outside of each bend.
 - Lines can come in eight groups instead of four.
