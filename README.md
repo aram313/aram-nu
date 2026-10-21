@@ -21,7 +21,9 @@ and power, pipes on top, light only in the ducts for data, a section through the
 bank with its depth), a section riding
 along a bundle of cables (each cable a ring of its own diameter where the section cuts it)
 and out to a long view of the route, a georadar band running a street with what lies under
-the asphalt appearing behind it, a garden lit through by the radar slice by slice down to
+the asphalt appearing behind it (the radar finds where, not what: each line is drawn as a
+300 mm pipe at the depth it was found, three are measured from the ground, and the wells
+stand at their surveyed sizes), a garden lit through by the radar slice by slice down to
 2 m (the strongest echo a grate at the surface, the old oil tank lying quiet by the gable,
 measured in from the house's corners), a district heating pipe first seen as the profile
 drawing shows it (the pipes it crosses as circles), then in 3D with every pipe at its real

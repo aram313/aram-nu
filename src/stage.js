@@ -133,24 +133,33 @@
       dims: [[[0.8203, -0.0416, -0.4546], '1915', 2, 18.40], [[0.6668, -0.0931, -0.4546], '1923', 2, 18.52], [[0.5132, -0.1447, -0.4546], '1917', 2, 18.64], [[0.3596, -0.1963, -0.4546], '1923', 2, 18.76], [[0.2057, -0.2479, -0.4546], '1923', 2, 18.88], [[0.0524, -0.2994, -0.4546], '1909', 2, 19.00], [[-0.1008, -0.3508, -0.4546], '1921', 2, 19.12], [[-0.2545, -0.4024, -0.4546], '1920', 2, 19.24], [[-0.4081, -0.4540, -0.4546], '1920', 2, 19.36], [[-0.5619, -0.5056, -0.4546], '1927', 2, 19.48], [[-0.7159, -0.5573, -0.4546], '1922', 2, 19.60]],
     },
     {
-      slug: 'georadar', id: 'gade', name: 'georadar', lin: true, tri: true, hidden: true, flo: true, tube: true, length: 21,
-      row: 'georadar · 672 rør og kabler',
-      meta: ['georadar', [672, 'rør og kabler'], '150 m gade'],
-      gain: { lin: 0.9, tube: 0.95 }, rideW: 9, ringR: 0.16, half: 58.27,
+      slug: 'georadar', id: 'gade', name: 'georadar', lin: true, tri: true, hidden: true, flo: true, tube: true, length: 25,
+      row: 'georadar · 85 ledninger under en gade',
+      meta: ['georadar', [85, 'ledninger'], [47, 'brønde'], '90 m gade'],
+      gain: { lin: 0.9, tube: 0.95 }, rideW: 9, ringR: 0.16, half: 58.27, draw: [3.5, 3.5, 3.5, 1.2],
       // the radar's way down the middle of the street at ground level; its band spans the street
       route: [[0.0474, -1.0159, -0.099], [0.0474, 0.5286, -0.099]],
       scan: { group: 0, width: [-0.1288, 0.1288], depth: 0.0687 },
+      // line groups: 0 the wells, 1 the buildings, 2 the ground, 3 three pipes measured from the ground down
       pose: { yaw: 8, pitch: 34, zoom: 2.6, at: [0.047, -0.55, -0.1] },
       beats: [
         { at: 0, text: 'en gade mellem to bygninger.', lin: [0, 0.4, 0.25] },
         { at: 2.6, text: 'georadaren kører gaden igennem.', lin: [1, 0.3, 0.2], tube: 1, cut: 1, ride: 1,
           pose: { follow: true, yaw: 0, pitch: 38, zoom: 6.5, w: 3 } },
-        { at: 6.8, text: 'det, der ligger under asfalten, dukker op.', lin: [1, 0.3, 0.2], tube: 1, cut: 1, ride: 1 },
-        { at: 12, text: 'rør, kabler og brønde, ført ind i revit.', lin: [1, 0.3, 0.18], tube: 1, ride: 1,
+        { at: 6.8, text: 'den ser, hvor der ligger noget, ikke hvad det er.', lin: [1, 0.3, 0.2], tube: 1, cut: 1, ride: 1 },
+        { at: 11.6, text: 'hver ledning er tegnet som et rør på 300 mm, i den dybde, radaren fandt.', lin: [0.35, 0.15, 0.12, 1], tube: 1, ride: 1,
+          pose: { yaw: 8, pitch: 18, zoom: 10, at: [0.0078, -0.3256, -0.1159], w: 3.5, tall: { zoom: 12.5 } } },
+        { at: 16.6, text: 'brøndene står, som de blev målt i gaden.', lin: [1, 0.3, 0.15, 0], tube: 0.5, ride: 1,
+          pose: { yaw: 30, pitch: 40, zoom: 9, at: [0.099, -0.4099, -0.0989], w: 3.5, tall: { zoom: 7.5 } } },
+        { at: 21, text: '85 ledninger og 47 brønde, så de kan ses, før nogen graver.', lin: [1, 0.3, 0.18, 0], tube: 1, ride: 1,
           pose: { yaw: 30, pitch: 48, zoom: 2.0, at: [0.05, -0.25, -0.13], w: 4 } },
-        { at: 16.5, text: 'så de kan ses, før nogen graver.', lin: [1, 0.3, 0.18], tube: 1, ride: 1,
-          pose: { yaw: 52, pitch: 30, zoom: 4.2, at: [0.05, -0.55, -0.14], w: 4 } },
       ],
+      // [where, text, from, to]: the wells' surveyed sizes
+      notes: [[[0.1131, -0.3577, -0.0886], 'brønd ø860', 17.2, 21], [[0.0693, -0.3646, -0.0886], 'brønd ø444', 17.5, 21],
+        [[0.1145, -0.5074, -0.0886], 'brønd ø1117', 17.8, 21]],
+      // [where, text, group, when]: how deep three of the pipes lie, from the ground to their top
+      dims: [[[-0.0625, -0.3974, -0.1076], '0,5 m', 3, 12.2], [[0.0198, -0.3125, -0.1193], '2,4 m', 3, 12.5],
+        [[0.0943, -0.267, -0.1097], '1,0 m', 3, 12.8]],
     },
     {
       slug: 'olietank', id: 'tank', name: 'olietank', pts: true, lin: true, length: 27,

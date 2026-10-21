@@ -72,6 +72,11 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - georadar: a radar band with a faint curtain into the ground runs the street, and the pipes
   and wells appear behind it as it passes; the buildings are reduced to walls, floors and
   columns, drawn faintly.
+- georadar: the words say what the model knows: the radar finds where something lies, not
+  what it is, so every line is drawn as a 300 mm pipe at the depth it was found (as the
+  model's own types say); three pipes are measured from the ground down (0,5, 2,4 and 1,0 m)
+  and three wells carry their surveyed sizes. The numbers now count lines, not pipe pieces:
+  85 lines, 47 wells, 90 m of street.
 - værktøj: a sheet of twelve prints with their names; the camera visits four of them, from
   330 mm down to 28 mm, and draws each one's width, depth and height.
 
