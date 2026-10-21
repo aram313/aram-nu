@@ -81,6 +81,9 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   that settled onto the model were invented); the steel is drawn member by member from the
   ground, and four members are lit and named by the profile they were fitted with (upe 160,
   upe 220, ipe 120, w8x15). The numbers count what is shown: 326 steel beams, 32 m high.
+- gammelt hus: the section marks the model's own levels beside the cut, as a section drawing does
+  (kælder, stueetage, 1. sal, loft); then a cut wall's thickness (500 mm, up to 560 mm) and the
+  roof's timber (130 × 130 mm).
 - værktøj: a sheet of twelve prints with their names; the camera visits four of them, from
   330 mm down to 28 mm, and draws each one's width, depth and height.
 
