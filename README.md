@@ -29,7 +29,8 @@ measured in from the house's corners), a district heating pipe first seen as the
 drawing shows it (the pipes it crosses as circles), then in 3D with every pipe at its real
 diameter, the straight way that gas blocked, the 1,75 m dip and 0,29 m under the sewer, and the
 points measured in the excavation, a house drawn in hidden lines and cut open, a factory's
-steel settling out of a cloud of points, a sheet of twelve 3D-printed tools where the camera
+steel tower drawn member by member from the ground, four of its members named by the profile
+they were fitted to the scan with, a sheet of twelve 3D-printed tools where the camera
 visits four and measures each in three directions. One lowercase line tells each beat, over
 the project's numbers. A tap or Esc closes it; the arrow keys or a swipe go to the next
 project.

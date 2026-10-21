@@ -77,6 +77,10 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   model's own types say); three pipes are measured from the ground down (0,5, 2,4 and 1,0 m)
   and three wells carry their surveyed sizes. The numbers now count lines, not pipe pieces:
   85 lines, 47 wells, 90 m of street.
+- fabrik: no made-up points any more (the scan itself is not part of the site, so the points
+  that settled onto the model were invented); the steel is drawn member by member from the
+  ground, and four members are lit and named by the profile they were fitted with (upe 160,
+  upe 220, ipe 120, w8x15). The numbers count what is shown: 326 steel beams, 32 m high.
 - værktøj: a sheet of twelve prints with their names; the camera visits four of them, from
   330 mm down to 28 mm, and draws each one's width, depth and height.
 
