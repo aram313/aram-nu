@@ -189,7 +189,7 @@
       dims: [[[0.2416, -0.4137, 0.0985], '1,72 m', 3, 20.2], [[0.3377, -0.5048, 0.0985], '0,89 m', 3, 20.5]],
     },
     {
-      slug: 'fjernvarme', id: 'fv', name: 'fjernvarme', lin: true, flo: true, tube: true, length: 31,
+      slug: 'fjernvarme', id: 'fv', name: 'fjernvarme', lin: true, flo: true, tube: true, length: 31, miniPitch: 10,
       row: 'profilsnit · 6 ledninger',
       meta: ['profilsnit', [6, 'ledninger'], [24, 'punkter'], '1,75 m ned'],
       gain: { lin: 0.9, tube: 0.95 }, draw: [2, 1.5, 1, 1.5, 1.2], half: 9, ringR: 0.5,
