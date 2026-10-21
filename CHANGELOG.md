@@ -99,6 +99,9 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - værktøj: on a phone the sheet turns upright, so all twelve prints fit the screen.
 - værktøj: each print's name arrives with the print as the sheet is drawn.
 - A word whose point is off the screen no longer shows, instead of being pushed in at the edge.
+- Words stand a little above the thing they name, not on top of it.
+- olietank: the last picture keeps its words (the tank, the metal object 1 m down, the district
+  heating) while the story holds its end.
 
 ---
 

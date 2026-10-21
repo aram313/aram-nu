@@ -183,8 +183,8 @@
           pose: { yaw: 222, pitch: 36, zoom: 1.05, at: [0, 0, 0.02], w: 3.2 } },
       ],
       // [where, text, from, to]: what each thing is
-      notes: [[[0.0287, -0.3082, 0.1175], 'rist', 10.6, 15.2], [[0.4711, 0.2961, 0.0014], 'metal, 1 m nede', 11.5, 15.2],
-        [[0.2577, -0.4912, 0.0647], 'olietank', 15.6, 27], [[-0.3898, 0.3485, 0.0480], 'fjernvarme', 20.2, 27]],
+      notes: [[[0.0287, -0.3082, 0.1175], 'rist', 10.6, 15.2], [[0.4711, 0.2961, 0.0014], 'metal, 1 m nede', 24.6, 99],
+        [[0.2577, -0.4912, 0.0647], 'olietank', 15.6, 99], [[-0.3898, 0.3485, 0.0480], 'fjernvarme', 20.2, 99]],
       // [where, text, group, when]: the distances from the house's corners to the tank, from the report
       dims: [[[0.2416, -0.4137, 0.0985], '1,72 m', 3, 20.2], [[0.3377, -0.5048, 0.0985], '0,89 m', 3, 20.5]],
     },
@@ -1083,7 +1083,8 @@
       P.notes.forEach(([xyz, text, from, to], k) => {
         const [x, y] = screen(mvp, xyz);
         // held still (reduced motion), only the words that belong to the last picture
-        words.push({ key: 'm' + k, text, x, y, o: alpha * (STILL ? +(t >= from && t <= to) : ease((t - from) / 0.8) * (1 - ease((t - to) / 0.8))) });
+        // a little above its point, so the word does not lie on the thing it names
+        words.push({ key: 'm' + k, text, x, y: y - 11, o: alpha * (STILL ? +(t >= from && t <= to) : ease((t - from) / 0.8) * (1 - ease((t - to) / 0.8))) });
       });
     }
     if (P.dims) {
