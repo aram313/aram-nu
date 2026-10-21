@@ -28,6 +28,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 
 ### Changed
 
+- kabeltracé: the section names each group of rings from the model's own types: the two
+  132 kV feeders (one in reserve), 10 kV, fibre and the earth conductor, each with its size.
 - datacenter: everything under the ground is drawn as tubes of its real diameter and sorted by
   what it carries, from the model's own worksets and systems: cables for data and for power,
   rain and sewage, water and fire water. The tubes are laid out from the crossing, and light

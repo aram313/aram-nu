@@ -78,7 +78,9 @@
       slug: 'kabeltrace', id: 'kabel', name: 'kabeltracé', flo: true, tube: true, length: 23,
       row: 'as-built · 178 km kabler',
       meta: ['as-built', [3, 'datacentergrunde'], [178, 'km kabler'], [66715, 'elementer']],
-      gain: { tube: 0.92 }, flowSpeed: 0.0105, runs: 500, rideW: 7.6, miniPitch: 64, start: { cut: 1 }, half: 625,
+      gain: { tube: 0.92 }, flowSpeed: 0.0105, runs: 500, rideW: 7.6, miniPitch: 64,
+      // what the model calls each duct, in plain words (its types: 132 kV feeders, 10 kV, earth, fibre, drilling)
+      kindNames: ['132 kV', '132 kV reserve', '10 kV', 'jordleder', 'fiber', 'underboring'], start: { cut: 1 }, half: 625,
       // where the section and the camera ride: the middle of one bundle of cables, every 5 m
       route: [[-0.33403, -0.15136, 0.0031], [-0.33145, -0.15634, 0.00309], [-0.32777, -0.16335, 0.00309], [-0.32402, -0.17042, 0.00309],
         [-0.32025, -0.17748, 0.00312], [-0.31646, -0.18452, 0.00315], [-0.31266, -0.19154, 0.00316], [-0.30884, -0.19858, 0.00315],
@@ -90,7 +92,7 @@
       pose: { follow: true, yaw: 6, pitch: 15, zoom: 320 },
       beats: [
         { at: 0, text: 'et kabeltracé i snit.', tube: 1, cut: 1 },
-        { at: 2.6, text: 'hvert rør i sin rigtige diameter.', tube: 1, cut: 1, sizes: 1 },
+        { at: 2.6, text: '132 kV, 10 kV, fiber og jordleder, hvert rør i sin rigtige diameter.', tube: 1, cut: 1, sizes: 1 },
         { at: 6.2, text: 'som de ligger i jorden, meter for meter.', tube: 1, cut: 1, ride: 1,
           pose: { follow: true, yaw: 14, pitch: 21, zoom: 270, w: 3.5 } },
         { at: 14, text: 'kilometer efter kilometer.', tube: 1, ride: 1, flow: 1,
@@ -975,7 +977,7 @@
         if (i > f.offs[tr] && (s0 > 0) !== (s1 > 0)) {
           const u = s0 / (s0 - s1), q = [0, 1, 2].map((j) => f.xyz[(i - 1) * 3 + j] + (f.xyz[i * 3 + j] - f.xyz[(i - 1) * 3 + j]) * u);
           if (Math.hypot(q[0] - c[0], q[1] - c[1], q[2] - c[2]) < R) {
-            hits.push({ q, r: f.rad[tr], x: (q[0] - c[0]) * side[0] + (q[1] - c[1]) * side[1] });
+            hits.push({ q, r: f.rad[tr], tr, x: (q[0] - c[0]) * side[0] + (q[1] - c[1]) * side[1] });
           }
         }
         s0 = s1;
@@ -992,10 +994,23 @@
         if (!sizes.has(mm) || score > sizes.get(mm).score) sizes.set(mm, { h, score });
       }
     }
-    const words = [...sizes].map(([mm, { h }]) => {
+    let words = [...sizes].map(([mm, { h }]) => {
       const [x, y] = screen(mvp, h.q.map((v, e) => v + h.r * side[e]));
       return { key: 'r' + mm, text: 'ø' + mm, x: x + 7, y, o, side: true };
     });
+    if (P.kindNames && f.cls && o > 0.002) {   // or, where the model says what they are, each kind once over its rings
+      const groups = new Map();
+      for (const h of hits) {
+        const k = f.cls[h.tr];
+        if (P.kindNames[k]) (groups.get(k) || groups.set(k, []).get(k)).push(h);
+      }
+      words = [...groups].map(([k, hs]) => {
+        const top = hs.reduce((a, b) => ((b.q[2] + b.r) > (a.q[2] + a.r) ? b : a));
+        const mm = Math.round(top.r * 2 * P.half * 1000);
+        const [sx, y] = screen(mvp, top.q.map((v, e) => v + top.r * 1.8 * up[e]));   // over its topmost ring
+        return { key: 'k' + k, text: P.kindNames[k] + ' · ø' + mm, x: sx, y: y - 9, o };
+      });
+    }
     let v = 0;
     hits.slice(0, RINGS).forEach((h, k) => {
       const arc = STILL ? 1 : ease((t - t0 - 0.35 - k * 0.06) / 0.9);
