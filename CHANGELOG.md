@@ -28,6 +28,9 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 
 ### Changed
 
+- buehal: the scan builds up setup by setup from where its 26 scanners stood; the hall is
+  drawn in hidden lines; at the end it is cut open along its length and the measured spacing
+  between the twelve arches stands as a chain of measures at 1 m height (1909 to 1927 mm).
 - kabeltracé: the section names each group of rings from the model's own types: the two
   132 kV feeders (one in reserve), 10 kV, fibre and the earth conductor, each with its size.
 - datacenter: everything under the ground is drawn as tubes of its real diameter and sorted by
