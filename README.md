@@ -16,7 +16,9 @@ by more than 2 mm left behind), the model drawn part by part in hidden lines, a 
 pattern with its measures, and the damaged chord with its two measures, its scan points yellow
 to red by how far it is pushed out of line, seen from the side as the camera goes slowly round
 to its other side and out to the whole bridge again, a
-datacenter crossing built element by element with light in its cables, a section riding
+datacenter crossing built as it was laid (wells named for what they carry, ducts for data
+and power, pipes on top, light only in the ducts for data, a section through the data duct
+bank with its depth), a section riding
 along a bundle of cables (each cable a ring of its own diameter where the section cuts it)
 and out to a long view of the route, a georadar band running a street with what lies under
 the asphalt appearing behind it, a house drawn in hidden lines and cut open, a factory's

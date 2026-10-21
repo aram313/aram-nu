@@ -69,6 +69,11 @@ Owner's rules for the projects (2026-10-21):
 - Grey numbers say how big and how detailed a project is; they must come from the data.
 - A datacenter may show its building, never the ring of pipes along the property line.
 - Check a frame with `?p=<id>&t=<seconds>`.
+- The phone comes first (Aram, 2026-10-21): check every change at phone size before desktop.
+  Point and light sizes follow the drawing, not the screen (`px` in stage.js), so they never
+  grow over the picture on a tall screen.
+- Say what is modelled, in plain words, where it helps (a cable well that carries data is not a
+  drain well); the model's own types decide, not a guess.
 
 <!-- Anything that differs from, or adds to, the workspace standard. If nothing
      differs, say so explicitly so the next session does not go looking. -->

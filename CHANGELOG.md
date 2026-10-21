@@ -28,6 +28,16 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 
 ### Changed
 
+- datacenter: everything under the ground is drawn as tubes of its real diameter and sorted by
+  what it carries, from the model's own worksets and systems: cables for data and for power,
+  rain and sewage, water and fire water. The tubes are laid out from the crossing, and light
+  runs only in the ducts that carry data. At the crossing, the wells are named (the cable well
+  for data, the sewer and pump wells) and built first, then the ducts, then the pipes on top.
+  A section across the data duct bank shows its 24 ducts in rings, the ground and how deep it
+  lies (1,35 m there), and the story ends on the whole site again. On a phone the site turns
+  upright, and words on the drawing step clear of each other.
+- Points and lights keep their size against the drawing, so they no longer grow over the
+  picture on a phone.
 - rørbro: the scan builds up setup by setup from where the 16 scanners stood; the points are
   pulled onto the steel and the 6 % that lie more than 2 mm off the model stay behind; the model
   is drawn part by part from the bottom in hidden lines; a bearing's bolt group is shown close

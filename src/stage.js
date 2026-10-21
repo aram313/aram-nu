@@ -43,21 +43,36 @@
         [[0.0387, -0.1683, 0.2362], '227 mm', 3, 22], [[0.0507, -0.1284, 0.2048], '140 mm', 3, 22.4]],
     },
     {
-      slug: 'datacenter', id: 'datacenter', name: 'datacenter', lin: true, tri: true, hidden: true, flo: true, length: 22,
+      slug: 'datacenter', id: 'datacenter', name: 'datacenter', lin: true, tri: true, hidden: true, flo: true, tube: true, length: 28,
       row: 'as-built · 63 km kabelrør',
       meta: ['as-built', [19185, 'elementer'], [63, 'km kabelrør'], [17, 'km rør']],
-      gain: { lin: 0.95 }, flowSpeed: 0.03, draw: [2.4, 3.2, 4.2, 3.4],
-      pose: { yaw: 18, pitch: 52, zoom: 1.12 },
+      gain: { lin: 0.95, tube: 0.9 }, flowSpeed: 0.03, runs: 900, draw: [3, 2.6, 2.6, 1], half: 142, ringR: 0.085,
+      // what each tube carries, from the model's worksets and systems: 0 data, 1 power, 2 rain and sewage,
+      // 3 water and fire water; 4 to 7 the same at the crossing, laid there one kind after the other
+      kinds: true, lit: [0, 4], lay: { from: [-0.8521, -0.3239, -0.0303], draw: 4, stagger: 0.6 },
+      // the section across the data duct bank
+      route: [[-0.8521, -0.2851, -0.0194], [-0.8500, -0.2851, -0.0194]],
+      pose: { yaw: 18, pitch: 52, zoom: 1.12, tall: { yaw: 104, zoom: 1.7 } },
       beats: [
-        { at: 0, text: 'alt under jorden rundt om et datacenter.', lin: [0.8, 0, 0, 0] },
-        { at: 5, text: 'én krydsning, bygget op element for element. først brøndene.', lin: [0.1, 1, 0, 0],
-          pose: { yaw: 35, pitch: 30, zoom: 11, at: [-0.852, -0.324, -0.06] } },
-        { at: 9, text: 'så kabelrørene, bundt for bundt.', lin: [0.08, 0.7, 0.85, 0], flow: 1 },
-        { at: 13, text: 'og rørene, et for et.', lin: [0.08, 0.6, 0.75, 1], flow: 1,
-          pose: { yaw: 112, pitch: 18, zoom: 14, at: [-0.852, -0.324, -0.062] } },
-        { at: 17.5, text: 'lagt ind, som det ligger, så den næste, der graver, ved hvad der er.', lin: [0.1, 0.6, 0.75, 1], flow: 1,
-          pose: { yaw: 160, pitch: 24, zoom: 12, at: [-0.852, -0.324, -0.062] } },
+        { at: 0, text: 'alt under jorden rundt om et datacenter.', lin: [0.45, 0, 0, 0], kinds: [0.85, 0.6, 0.5, 0.5, 0, 0, 0, 0], flow: 0.5 },
+        { at: 5, text: 'én krydsning, bygget op, som den blev lagt: først brøndene.', lin: [0.1, 1, 1, 0],
+          kinds: [0.08, 0.06, 0.06, 0.06, 0, 0, 0, 0], pose: { yaw: 35, pitch: 30, zoom: 11, at: [-0.8520, -0.3040, -0.0200] } },
+        { at: 9.5, text: 'så kabelrørene til data og strøm, bundt for bundt.', lin: [0.1, 0.5, 0.5, 0],
+          kinds: [0.08, 0.06, 0.06, 0.06, 1, 0.8, 0, 0], flow: 1, pose: { yaw: 70, pitch: 24, zoom: 13, at: [-0.8520, -0.3040, -0.0200] } },
+        { at: 14, text: 'og rørene ovenpå: regn- og spildevand, vand og brandvand.', lin: [0.1, 0.5, 0.5, 0],
+          kinds: [0.08, 0.06, 0.06, 0.06, 1, 0.8, 0.85, 0.85], flow: 1, pose: { yaw: 120, pitch: 20, zoom: 13, at: [-0.8520, -0.3040, -0.0200] } },
+        { at: 18.5, text: 'i snit: hvad der ligger over hvad, og hvor dybt.', lin: [0.1, 0.4, 0.4, 1], cut: 1,
+          kinds: [0.15, 0.1, 0.1, 0.1, 1, 0.8, 0.85, 0.85], flow: 0.6, pose: { yaw: 82, pitch: 13, zoom: 50, at: [-0.8521, -0.2968, -0.0158] } },
+        { at: 23.5, text: 'lagt ind, som det ligger, så den næste, der graver, ved hvad der er.', lin: [0.5, 0.3, 0.3, 0],
+          kinds: [0.85, 0.6, 0.55, 0.55, 0.85, 0.6, 0.55, 0.55], flow: 0.8, pose: { yaw: 30, pitch: 48, zoom: 1.12, at: [0, 0, 0], w: 4, tall: { yaw: 112, zoom: 1.7 } } },
       ],
+      // [where, text, from, to]: what each well and each kind is, while it is in view
+      notes: [[[-0.9098, -0.2857, -0.0089], 'kabelbrønd til data', 6, 17], [[-0.8380, -0.2765, -0.0035], 'kabelbrønd til styring', 6.4, 17],
+        [[-0.8606, -0.2507, -0.0022], 'spildevandsbrønd', 6.8, 17], [[-0.7909, -0.2790, -0.0073], 'pumpebrønd til regnvand', 7.2, 17],
+        [[-0.8521, -0.2895, -0.0135], 'kabelrør til data', 19.3, 23], [[-0.8521, -0.3443, -0.0087], 'kabelrør til strøm', 19.6, 23],
+        [[-0.8521, -0.3002, -0.0040], 'terræn', 19, 23]],
+      // [where, text, group, when]: how deep the data duct bank lies under the ground, in the section
+      dims: [[[-0.8521, -0.3002, -0.0112], '1,35 m', 3, 19.2]],
     },
     {
       slug: 'kabeltrace', id: 'kabel', name: 'kabeltracé', flo: true, tube: true, length: 23,
@@ -269,8 +284,10 @@
   }
   // the camera at time t. A pose with follow rides along the project's route: it looks at the place
   // the ride has reached, its yaw turned from the route's heading there.
+  let TALL = false;   // a tall (phone) screen: poses use their "tall" variant where they have one
   function poseAt(P, t) {
-    const base = Object.assign({ at: [0, 0, 0] }, P.pose);
+    const v = (p) => (p && TALL && p.tall ? Object.assign({}, p, p.tall) : p);
+    const base = Object.assign({ at: [0, 0, 0] }, v(P.pose));
     const where = (p, k) => {
       if (!p.follow) return p;
       const s = value(P, 'ride', undefined, k, P.rideW || 8);
@@ -291,7 +308,7 @@
       if (!b.pose) continue;
       from = mix(live ? where(live, b.at) : from, where(to, b.at), ease((b.at - at) / wide));
       live = to.follow && b.pose.follow ? to : null;
-      to = Object.assign({}, to, { follow: false }, b.pose, { at: b.pose.at || to.at });
+      to = Object.assign({}, to, { follow: false }, v(b.pose), { at: b.pose.at || to.at });
       at = b.at;
       wide = b.pose.w || POSE_W;
     }
@@ -374,6 +391,7 @@
       d.flo = { T, offs, xyz, cum, lens };
       const ro = 8 + (T + 1) * 4 + N * 12;   // each track's radius, in newer files
       if (fb.byteLength >= ro + T * 4) d.flo.rad = new Float32Array(fb, ro, T);
+      if (fb.byteLength >= ro + T * 5) d.flo.cls = new Uint8Array(fb, ro + T * 4, T);   // and its kind
     }
     if (tb) {
       const [nv, ni, flags] = new Int32Array(tb, 0, 3);
@@ -484,11 +502,12 @@
   // set off from the centre line by its radius, so it is drawn whole at any distance
   const VS_TUBE = `
     attribute vec3 aPos, aOther;
-    attribute float aSide, aRad;
+    attribute float aSide, aRad, aCls, aLay;
     uniform mat4 uMVP;
     uniform vec3 uEye;
     uniform vec4 uClip;
-    uniform float uGain, uNear, uFar, uAlpha, uReveal;
+    uniform float uGain, uNear, uFar, uAlpha, uReveal, uLaid;
+    uniform float uClsW[8], uClsR[8];
     uniform vec3 uKeyDir;
     uniform vec2 uKeyRange;
     varying float vI, vClip;
@@ -500,10 +519,12 @@
       gl_Position = p;
       vClip = dot(aPos, uClip.xyz) - uClip.w;
       float depth = clamp((p.w - uNear) / (uFar - uNear), 0.0, 1.0);
-      float age = uReveal - (dot(aPos, uKeyDir) - uKeyRange.x) / (uKeyRange.y - uKeyRange.x);
-      float seen = clamp(age * 14.0, 0.0, 1.0);
-      float flash = 1.0 + 1.8 * clamp(1.0 - age * 6.0, 0.0, 1.0) * seen;
-      vI = uAlpha * seen * flash * mix(1.0, 0.32, depth) * uGain;
+      // each kind has its own strength; laid tubes grow along their length as their kind's reveal goes on
+      int c = int(clamp(aCls + 0.5, 0.0, 7.0));
+      float age = uLaid > 0.5 ? uClsR[c] - aLay : uReveal - (dot(aPos, uKeyDir) - uKeyRange.x) / (uKeyRange.y - uKeyRange.x);
+      float seen = clamp(age * (uLaid > 0.5 ? 30.0 : 14.0), 0.0, 1.0);
+      float flash = 1.0 + 1.8 * clamp(1.0 - age * (uLaid > 0.5 ? 10.0 : 6.0), 0.0, 1.0) * seen;
+      vI = uAlpha * uClsW[c] * seen * flash * mix(1.0, 0.32, depth) * uGain;
     }`;
   const VS_TRI = `
     attribute vec3 aPos;
@@ -597,7 +618,8 @@
       pts: program(gl, VS_PTS, FS, ['uMVP', 'uSweep', 'uSize', 'uGain', 'uNear', 'uFar', 'uCondense', 'uAlpha', 'uReveal', 'uKeyed']),
       lin: program(gl, VS_LIN, FS_LIN, ['uMVP', 'uEye', 'uSweep', 'uClip', 'uKeep', 'uGain', 'uNear', 'uFar', 'uKeyed', 'uAlpha', 'uReveal',
                                         'uPartK', 'uPartW']),
-      tube: program(gl, VS_TUBE, FS_LIN, ['uMVP', 'uEye', 'uClip', 'uKeep', 'uGain', 'uNear', 'uFar', 'uAlpha', 'uReveal', 'uKeyDir', 'uKeyRange']),
+      tube: program(gl, VS_TUBE, FS_LIN, ['uMVP', 'uEye', 'uClip', 'uKeep', 'uGain', 'uNear', 'uFar', 'uAlpha', 'uReveal', 'uKeyDir', 'uKeyRange',
+                                          'uLaid', 'uClsW', 'uClsR']),
       tri: program(gl, VS_TRI, FS_TRI, ['uMVP', 'uClip']),
       run: program(gl, VS_RUN, FS, ['uMVP', 'uSize', 'uAlpha', 'uRef', 'uNear', 'uFar']),
       hot: program(gl, VS_HOT, FS_HOT, ['uMVP', 'uSize', 'uNear', 'uFar', 'uAlpha', 'uReveal']),
@@ -628,10 +650,13 @@
     }
     if (d.flo) {
       const k = Math.min(P.runs || 2400, d.flo.T * 8);
-      const total = d.flo.lens.reduce((a, b) => a + b, 0);
-      g.runs = Array.from({ length: k }, () => {   // a track chosen in proportion to its length
+      // a track chosen in proportion to its length, of the kinds that carry light when the project says
+      const carries = (t) => !P.lit || !d.flo.cls || P.lit.includes(d.flo.cls[t]);
+      const lens = d.flo.lens.map((l, t) => (carries(t) ? l : 0));
+      const total = lens.reduce((a, b) => a + b, 0) || 1;
+      g.runs = Array.from({ length: k }, () => {
         let r = Math.random() * total, t = 0;
-        while (t < d.flo.T - 1 && r > d.flo.lens[t]) { r -= d.flo.lens[t]; t++; }
+        while (t < d.flo.T - 1 && r > lens[t]) { r -= lens[t]; t++; }
         return { t, s: Math.random() * d.flo.lens[t], v: 0.6 + Math.random() * 0.8 };
       });
       g.runPos = new Float32Array(k * 3 * TRAIL);
@@ -643,17 +668,28 @@
       let n = 0;
       for (let t = 0; t < f.T; t++) n += f.offs[t + 1] - f.offs[t] - 1;
       const pos = new Float32Array(n * 12), oth = new Float32Array(n * 12), side = new Float32Array(n * 4), r = new Float32Array(n * 4);
+      const cl = new Float32Array(n * 4), lay = new Float32Array(n * 4);
+      const L = P.lay, near = (t) => {   // the track's end nearest the point it is laid from, and how far that is
+        const a = f.offs[t] * 3, b = (f.offs[t + 1] - 1) * 3, o = L ? L.from : [0, 0, 0];
+        const da = Math.hypot(f.xyz[a] - o[0], f.xyz[a + 1] - o[1], f.xyz[a + 2] - o[2]);
+        const db = Math.hypot(f.xyz[b] - o[0], f.xyz[b + 1] - o[1], f.xyz[b + 2] - o[2]);
+        return [da <= db, Math.min(da, db)];
+      };
+      const reach = L ? Math.max(...Array.from({ length: f.T }, (_, t) => near(t)[1])) || 1 : 1;
       let v = 0;
       for (let t = 0; t < f.T; t++) {
+        const [fwd, dist] = near(t), start = L ? (L.stagger || 0.5) * (dist / reach) : 0, span = 1 - start;
         for (let i = f.offs[t]; i < f.offs[t + 1] - 1; i++) {
           for (const [a, b, sg] of [[i, i + 1, 1], [i + 1, i, -1], [i, i + 1, -1], [i + 1, i, 1]]) {
             for (let j = 0; j < 3; j++) { pos[v * 3 + j] = f.xyz[a * 3 + j]; oth[v * 3 + j] = f.xyz[b * 3 + j]; }
-            side[v] = sg; r[v] = f.rad[t]; v++;
+            const u = f.lens[t] ? f.cum[a] / f.lens[t] : 0;
+            side[v] = sg; r[v] = f.rad[t]; cl[v] = f.cls ? f.cls[t] : 0; lay[v] = start + span * (fwd ? u : 1 - u); v++;
           }
         }
       }
       g.tubeN = v;
       g.tubeP = buffer(gl, pos); g.tubeO = buffer(gl, oth); g.tubeS = buffer(gl, side); g.tubeR = buffer(gl, r);
+      g.tubeC = buffer(gl, cl); g.tubeL = buffer(gl, lay);
       // each track's bounds, so a section only looks at the tracks near it
       g.tbox = [];
       for (let t = 0; t < f.T; t++) {
@@ -730,10 +766,13 @@
     P.used = clock;
     const drift = STILL ? 0 : 0.035 * Math.sin(clock * 0.21);
     const aspect = w / h;
+    TALL = aspect < 0.8;
     const cam = camera(poseAt(P, t), aspect, aspect < 1 ? 0.24 : 0.1, P.ortho, drift + mx * 0.09, my * 0.05);
     const { mvp, D } = cam;
     const sweep = P.sweep || [1, 0, 0];
     const R = Math.max(D * 0.85, 0.02), near = D - R, far = D + R * 1.6;
+    // points keep their size against the drawing: a tall phone screen stands the camera back, so they shrink
+    const px = Math.min(2.2, Math.max(0.45, h / Math.max(1, Math.pow(1.6 / aspect, 0.7)) / 900));
     const drawSec = (gr) => (P.draw && P.draw[gr]) || DRAW;
     const shown = (key, gr) => (STILL ? 9 : (t - firstShown(P, key, gr)) / drawSec(gr) * 1.15);
     const shownPts = (gr) => (STILL ? 9 : (t - firstShown(P, 'pts', gr)) / (P.ptsDraw || drawSec(gr)) * 1.15);
@@ -802,7 +841,8 @@
     if (P.parts) words.push(...sheet(P, g, cam, mvp, t, alpha));
     gl.disable(gl.DEPTH_TEST);
     if (g.tubeN) {
-      const a = value(P, 'tube', undefined, t, FADE_W) * alpha;
+      // a project with kinds sets each kind's strength in its beats; others fade all tubes together
+      const a = (P.kinds ? 1 : value(P, 'tube', undefined, t, FADE_W)) * alpha;
       if (d.tri && g.ti && P.hidden) gl.enable(gl.DEPTH_TEST);   // behind the buildings' faces
       if (a > 0.002) {
         const p = S.prog.tube;
@@ -818,6 +858,12 @@
         attrib(gl, p.p, 'aOther', g.tubeO, 3, gl.FLOAT, false);
         attrib(gl, p.p, 'aSide', g.tubeS, 1, gl.FLOAT, false);
         attrib(gl, p.p, 'aRad', g.tubeR, 1, gl.FLOAT, false);
+        attrib(gl, p.p, 'aCls', g.tubeC, 1, gl.FLOAT, false);
+        attrib(gl, p.p, 'aLay', g.tubeL, 1, gl.FLOAT, false);
+        const kinds = [0, 1, 2, 3, 4, 5, 6, 7];
+        gl.uniform1fv(p.u.uClsW, kinds.map((c) => (P.kinds ? value(P, 'kinds', c, t, FADE_W) : 1)));
+        gl.uniform1fv(p.u.uClsR, kinds.map((c) => (STILL || !P.lay ? 9 : (t - firstShown(P, 'kinds', c)) / (P.lay.draw || 3) * 1.1)));
+        gl.uniform1f(p.u.uLaid, P.lay ? 1 : 0);
         gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
         gl.uniform3fv(p.u.uEye, cam.eye);
         gl.uniform4fv(p.u.uClip, clip);
@@ -846,7 +892,7 @@
         gl.uniform1f(p.u.uKeyed, g.pk ? 1 : 0);
         gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
         gl.uniform3fv(p.u.uSweep, sweep);
-        gl.uniform1f(p.u.uSize, Math.max(1, 1.25 * dpr));
+        gl.uniform1f(p.u.uSize, Math.max(1, 1.25 * px));
         gl.uniform1f(p.u.uGain, ((P.gain && P.gain.pts) || 1) * Math.min(1, (0.16 * w * h) / (d.pts.n * dpr * dpr)));
         gl.uniform1f(p.u.uNear, near); gl.uniform1f(p.u.uFar, far);
         gl.uniform1f(p.u.uCondense, value(P, 'condense', undefined, t, P.condenseW || 3.2));
@@ -864,7 +910,7 @@
       attrib(gl, p.p, 'aPos', g.hp, 3, d.hot.float ? gl.FLOAT : gl.SHORT, !d.hot.float);
       attrib(gl, p.p, 'aV', g.hv, 1, gl.UNSIGNED_BYTE, true);
       gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
-      gl.uniform1f(p.u.uSize, Math.max(1.5, 2.2 * dpr));
+      gl.uniform1f(p.u.uSize, Math.max(1, 2.2 * px));
       gl.uniform1f(p.u.uNear, near); gl.uniform1f(p.u.uFar, far);
       gl.uniform1f(p.u.uAlpha, ha);
       gl.uniform1f(p.u.uReveal, STILL ? 9 : (t - firstShown(P, 'hot')) / 1.8);
@@ -892,10 +938,16 @@
       attrib(gl, p.p, 'aPos', g.rp, 3, gl.FLOAT, false);
       attrib(gl, p.p, 'aI', g.ri, 1, gl.FLOAT, false);
       gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
-      gl.uniform1f(p.u.uSize, 3.4 * dpr);
+      gl.uniform1f(p.u.uSize, Math.max(1, 3.4 * px));
       gl.uniform1f(p.u.uRef, D); gl.uniform1f(p.u.uNear, near); gl.uniform1f(p.u.uFar, far);
       gl.uniform1f(p.u.uAlpha, fl);
       gl.drawArrays(gl.POINTS, 0, g.runs.length * TRAIL);
+    }
+    if (P.notes) {   // [where, text, from, to]: a word on the drawing for a stretch of the story
+      P.notes.forEach(([xyz, text, from, to], k) => {
+        const [x, y] = screen(mvp, xyz);
+        words.push({ key: 'm' + k, text, x, y, o: alpha * (STILL ? 1 : ease((t - from) / 0.8) * (1 - ease((t - to) / 0.8))) });
+      });
     }
     if (P.dims) {
       P.dims.forEach(([xyz, text, group, when], k) => {
@@ -930,7 +982,7 @@
       }
     }
     hits.sort((a, b) => a.x - b.x);
-    const t0 = firstShown(P, 'tube'), I = cut.k * alpha;
+    const t0 = Math.min(firstShown(P, 'tube'), firstShown(P, 'cut')), I = cut.k * alpha;   // when the section first appears
     // each size once, beside its ring furthest right and up
     const sizes = new Map(), o = value(P, 'sizes', undefined, t, 0.8) * cut.k * alpha;
     if (o > 0.002) {
@@ -1121,7 +1173,7 @@
   // centred on their point (or starting at it, beside a ring), and kept inside the screen
   function labels(words) {
     const old = new Map([...labelsEl.children].map((el) => [el.dataset.k, el]));
-    const cw = canvas.clientWidth, M = 12;
+    const cw = canvas.clientWidth, M = 12, placed = [];
     for (const w_ of words) {
       let el = old.get(w_.key);
       if (!el) { el = document.createElement('span'); el.dataset.k = w_.key; labelsEl.append(el); }
@@ -1130,8 +1182,17 @@
       if (!el.w && w_.o > 0.002) el.w = el.offsetWidth;   // measured once per text
       const half = w_.side ? 0 : (el.w || 0) / 2;
       const x = Math.min(cw - M - (w_.side ? el.w || 0 : half), Math.max(M + half, w_.x)) - half;
+      let y = w_.y;
+      if (w_.o > 0.05) {   // step clear of the words already placed
+        for (let k = 0; k < 6; k++) {
+          const hit = placed.find((q) => x < q[0] + q[2] + 6 && q[0] < x + (el.w || 0) + 6 && Math.abs(y - q[1]) < 15);
+          if (!hit) break;
+          y = hit[1] + 15;
+        }
+        placed.push([x, y, el.w || 0]);
+      }
       el.style.opacity = w_.o.toFixed(3);
-      el.style.transform = `translate(${x.toFixed(1)}px, ${w_.y.toFixed(1)}px) translateY(-50%)`;
+      el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translateY(-50%)`;
     }
     for (const el of old.values()) el.remove();
   }
