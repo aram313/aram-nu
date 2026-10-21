@@ -25,6 +25,11 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   measures). Lines blend with "max" and hide behind faces; numbers come from the models.
   Arrow keys or a swipe for the next project, tap or Esc to close. Player in `src/stage.js`,
   data gzipped in `src/pts/` (about 13 MB, loaded one project at a time).
+- olietank: a garden scanned with georadar, 2 m down. The radar's strongest reflections
+  appear slice by slice as a level outline sinks through the ground; the strongest echo is a
+  grate at the surface, not the tank; the tank lies by the gable, 0,5 m down and 1,8 × 1,7 m,
+  measured in from the house's corners (1,72 m and 0,89 m), with the pipes at their depths and
+  the district heating named.
 
 ### Changed
 

@@ -153,6 +153,33 @@
       ],
     },
     {
+      slug: 'olietank', id: 'tank', name: 'olietank', pts: true, lin: true, length: 27,
+      row: 'georadar · en have, 2 m ned',
+      meta: ['georadar', [30, 'kanaler'], '600 mhz', '2 m ned'],
+      gain: { pts: 0.75, lin: 0.9 }, ptsDraw: 5, half: 10.873,
+      // the scanned area at the ground and 2 m down, for the slice that sinks through it
+      slice: { lo: [-0.9896, -0.9753, 0.0939], hi: [0.8574, 0.9753, -0.0900] },
+      pose: { yaw: 210, pitch: 42, zoom: 1.05, at: [0, 0, 0.02], tall: { zoom: 0.95 } },
+      beats: [
+        { at: 0, text: 'en have, hvor der måske ligger en gammel olietank.', lin: [0.8, 0, 0, 0] },
+        { at: 3.5, text: 'georadaren lyser haven igennem, skive for skive, 2 m ned.', lin: [0.5, 0, 0, 0], pts: [0.9, 1, 1, 0.9],
+          pose: { yaw: 228, pitch: 26, zoom: 1.15, at: [0, 0, 0] } },
+        { at: 10, text: 'det kraftigste ekko kom fra en rist i overfladen, ikke fra tanken.', lin: [0.3, 0, 0, 0], pts: [0.12, 1, 0.3, 0.12],
+          pose: { yaw: 250, pitch: 18, zoom: 3.2, at: [0.0287, -0.3082, 0.0575] } },
+        { at: 15, text: 'tanken lå stille ved gavlen: 0,5 m nede, 1,8 × 1,7 m.', lin: [0.45, 0, 1, 0], pts: [0.1, 0.2, 0.2, 0.6],
+          pose: { yaw: 200, pitch: 34, zoom: 3.4, at: [0.2577, -0.4912, 0.0555], tall: { zoom: 4.4 } } },
+        { at: 19.5, text: 'målt ind fra husets hjørner, så den kan findes med en spade.', lin: [0.6, 0.6, 1, 1], pts: [0.08, 0.15, 0.15, 0.4],
+          pose: { yaw: 180, pitch: 58, zoom: 2.6, at: [0.2497, -0.4525, 0.0555], tall: { zoom: 4 } } },
+        { at: 24, text: 'tank, rør og fjernvarme, samlet på én tegning.', lin: [0.7, 0.6, 1, 0], pts: [0.12, 0.3, 0.3, 0.4],
+          pose: { yaw: 222, pitch: 36, zoom: 1.05, at: [0, 0, 0.02], w: 3.2 } },
+      ],
+      // [where, text, from, to]: what each thing is
+      notes: [[[0.0287, -0.3082, 0.1175], 'rist', 10.6, 15.2], [[0.4711, 0.2961, 0.0014], 'metal, 1 m nede', 11.5, 15.2],
+        [[0.2577, -0.4912, 0.0555], 'olietank', 15.6, 27], [[-0.3898, 0.3485, 0.0480], 'fjernvarme', 20.2, 27]],
+      // [where, text, group, when]: the distances from the house's corners to the tank, from the report
+      dims: [[[0.2416, -0.4137, 0.0985], '1,72 m', 3, 20.2], [[0.3377, -0.5048, 0.0985], '0,89 m', 3, 20.5]],
+    },
+    {
       slug: 'fabrik', id: 'fabrik', name: 'fabrik', pts: true, lin: true, length: 19, draw: [3.5, 4],
       row: 'laserscanning · 498 stålbjælker',
       meta: ['laserscanning', [1695, 'elementer'], [498, 'stålbjælker'], [144, 'stålsøjler']],
@@ -920,6 +947,7 @@
       }
     }
     if (P.stations) scanners(P, g, mvp, shownPts(0), (1 - value(P, 'condense', undefined, t, 1.6)) * value(P, 'pts', 0, t, FADE_W) * alpha);
+    if (P.slice) slice(P, g, mvp, shownPts(0), alpha);
     const ha = value(P, 'hot', undefined, t, FADE_W) * alpha;
     if (g.hp && ha > 0.002) {
       const p = S.prog.hot;
@@ -1052,6 +1080,34 @@
     gl.uniform1f(p.u.uAlpha, 1);
     gl.drawArrays(gl.LINES, 0, v);
     return words;
+  }
+
+  // a level outline of the scanned area that sinks through the ground while a radar's points come in, slice
+  // by slice, then fades
+  function slice(P, g, mvp, r, alpha) {
+    const { lo, hi } = P.slice, k = Math.min(1, Math.max(0, r)), I = alpha * (1 - ease((r - 1) / 0.25)) * ease(r / 0.05);
+    if (I < 0.002) return;
+    const z = lo[2] + (hi[2] - lo[2]) * k;
+    const c = [[lo[0], lo[1]], [hi[0], lo[1]], [hi[0], hi[1]], [lo[0], hi[1]]];
+    g.slicePos = g.slicePos || new Float32Array(8 * 3); g.sliceI = g.sliceI || new Float32Array(8);
+    if (!g.sp2) { g.sp2 = buffer(S.gl, g.slicePos, S.gl.DYNAMIC_DRAW); g.si2 = buffer(S.gl, g.sliceI, S.gl.DYNAMIC_DRAW); }
+    for (let i = 0; i < 4; i++) {
+      g.slicePos.set([c[i][0], c[i][1], z], i * 6); g.slicePos.set([c[(i + 1) % 4][0], c[(i + 1) % 4][1], z], i * 6 + 3);
+      g.sliceI[i * 2] = g.sliceI[i * 2 + 1] = I * 0.8;
+    }
+    const gl = S.gl, p = S.prog.run;
+    gl.useProgram(p.p);
+    gl.blendEquation(S.max || gl.FUNC_ADD); gl.blendFunc(gl.ONE, gl.ONE);
+    gl.bindBuffer(gl.ARRAY_BUFFER, g.sp2); gl.bufferSubData(gl.ARRAY_BUFFER, 0, g.slicePos);
+    gl.bindBuffer(gl.ARRAY_BUFFER, g.si2); gl.bufferSubData(gl.ARRAY_BUFFER, 0, g.sliceI);
+    attrib(gl, p.p, 'aPos', g.sp2, 3, gl.FLOAT, false);
+    attrib(gl, p.p, 'aI', g.si2, 1, gl.FLOAT, false);
+    gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
+    gl.uniform1f(p.u.uSize, 1);
+    gl.uniform1f(p.u.uRef, 1e9); gl.uniform1f(p.u.uNear, 0); gl.uniform1f(p.u.uFar, 1e9);
+    gl.uniform1f(p.u.uAlpha, 1);
+    gl.drawArrays(gl.LINES, 0, 8);
+    gl.blendEquation(gl.FUNC_ADD);
   }
 
   // where the scanners stood: a small ring at the scanner's head and its tripod down to the ground, lit

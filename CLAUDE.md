@@ -81,7 +81,8 @@ Owner's rules for the projects (2026-10-21):
 ## Constraints and gotchas
 
 - Headless Edge screenshots narrower than about 500 px are laid out wider than the picture
-  and cut off on the right. Check phone sizes in the browser pane's mobile preset instead.
+  and cut off on the right. Take phone frames with Playwright and Edge as a real phone
+  (390 × 844, 3× pixels, `is_mobile`, a fresh context so no old `stage.js` is cached).
 
 <!-- Things that will bite someone who does not know them. External services that
      must be running, ports in use, data that must be seeded first, known-fragile

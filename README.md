@@ -9,7 +9,7 @@ Khabar editor writes about the day's news (refreshed every five minutes).
 
 Under **projekter** each of Aram's projects is one line: a small live miniature of the model,
 its name and a short grey line of what it is and how big (rørbro, datacenter, kabeltracé,
-buehal, georadar, fabrik, gammelt hus, tagværk, værktøj). A tap plays the project's story on
+buehal, georadar, olietank, fabrik, gammelt hus, tagværk, værktøj). A tap plays the project's story on
 the whole screen, by itself, in the style that fits it: a pipe bridge scanned setup by setup
 from the places its 16 scanners stood, its points pulled onto the steel (the ones off the model
 by more than 2 mm left behind), the model drawn part by part in hidden lines, a bearing's bolt
@@ -21,7 +21,9 @@ and power, pipes on top, light only in the ducts for data, a section through the
 bank with its depth), a section riding
 along a bundle of cables (each cable a ring of its own diameter where the section cuts it)
 and out to a long view of the route, a georadar band running a street with what lies under
-the asphalt appearing behind it, a house drawn in hidden lines and cut open, a factory's
+the asphalt appearing behind it, a garden lit through by the radar slice by slice down to
+2 m (the strongest echo a grate at the surface, the old oil tank lying quiet by the gable,
+measured in from the house's corners), a house drawn in hidden lines and cut open, a factory's
 steel settling out of a cloud of points, a sheet of twelve 3D-printed tools where the camera
 visits four and measures each in three directions. One lowercase line tells each beat, over
 the project's numbers. A tap or Esc closes it; the arrow keys or a swipe go to the next
@@ -63,7 +65,9 @@ Then open http://localhost:8790. (Without npm: `py -m http.server 8790 --directo
   `follow` keeps the camera on that place, and `cut` puts a section across it there. The
   section cuts away what lies before it and draws a ring where it cuts each cable; with
   `scan` (georadar) it cuts nothing and instead reveals what lies behind it, as a band
-  across the street with a faint curtain into the ground. With `parts` (the tool sheet) each
+  across the street with a faint curtain into the ground. With `slice` (olietank) a level
+  outline sinks through the scanned volume, and the radar's points appear as it passes. With
+  `notes` words name what is what for a stretch of the story. With `parts` (the tool sheet) each
   part has its name under it, and `focus` gives one part its width, depth and height.
 - The data is in `src/pts/`, gzipped (`.gz`, unpacked in the page). Every file starts with int32
   count and int32 flags (1 = float32 positions instead of int16, 2 = targets, 4 = keys):
