@@ -24,6 +24,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      # the player and its data carry this deploy's version, so no browser mixes new code with old cached data
+      - name: Stamp the version
+        run: sed -i "s|src=\"stage.js\"|src=\"stage.js?v=${GITHUB_SHA::8}\"|" src/index.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: src

@@ -52,7 +52,8 @@ Requirements: Python (`py`).
 npm run dev
 ```
 
-Then open http://localhost:8790. (Without npm: `py -m http.server 8790 --directory src`.)
+Then open http://localhost:8790. (Without npm: `py scripts/serve.py 8790`.) It serves `src/` with caching
+turned off and stamps `stage.js` with the newest file's time, so the browser never runs old code on new data.
 
 ## How it is built
 
@@ -106,7 +107,8 @@ Then open http://localhost:8790. (Without npm: `py -m http.server 8790 --directo
 
 ## Publishing
 
-`.github/workflows/pages.yml` publishes `src/` to GitHub Pages on every push to `main`.
+`.github/workflows/pages.yml` publishes `src/` to GitHub Pages on every push to `main`. It stamps
+`stage.js?v=<commit>` into the page first; the player asks for its data with the same version.
 The repository `aram313/aram-nu` has Pages set to "GitHub Actions" and the custom domain
 `aram.nu`. DNS at Simply.com (set 2026-10-20): four `A` records for `aram.nu` to
 185.199.108.153, 185.199.109.153, 185.199.110.153 and 185.199.111.153, and a `CNAME` for

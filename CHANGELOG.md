@@ -101,6 +101,13 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - Words stand a little above the thing they name, not on top of it.
 - A shared link to aram.nu shows a picture: the steel bridge as scan points on black
   (`src/img/del.jpg`, 1200 × 630), with the page's title and a short line.
+- Code and data always come from the same version: the deploy stamps `stage.js?v=<commit>` and the
+  player asks for its data with the same version, so a browser that kept old files from before a
+  push no longer runs new code on old data (or the other way round). A file that could not be had
+  is asked for again (three tries) instead of leaving the story black. `scripts/serve.py` serves
+  the page locally without caching.
+- tagværk: the roof is drawn starting where the camera first looks, so the story never opens on a
+  black screen.
 - While a story's data is still on its way, a faint light runs along its progress line (a still
   line with reduced motion), so a slow connection does not look like a broken page.
 

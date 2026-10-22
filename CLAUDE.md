@@ -33,7 +33,7 @@ distorting, and keep them out of footers or decorative backgrounds.
 | Task | Command |
 |---|---|
 | Install dependencies | none |
-| Run in development | `npm run dev` (http://localhost:8790) |
+| Run in development | `npm run dev` (http://localhost:8790, no caching: `scripts/serve.py`) |
 | Run tests | none; check the page at 375 px and 1440 px |
 | Build for production | none; `src/` is served as it is |
 | Remake tile images | `python scripts/prepare-images.py <lightroom folders>` (needs Pillow) |
@@ -80,6 +80,9 @@ Owner's rules for the projects (2026-10-21):
 
 ## Constraints and gotchas
 
+- A browser keeps old files: serve locally with `scripts/serve.py` (no-store), never a plain
+  `http.server`, or the page runs an old `stage.js` on new data. On GitHub Pages the deploy stamps
+  `stage.js?v=<commit>` and the player asks for its data with the same version.
 - Headless Edge screenshots narrower than about 500 px are laid out wider than the picture
   and cut off on the right. Take phone frames with Playwright and Edge as a real phone
   (390 × 844, 3× pixels, `is_mobile`, a fresh context so no old `stage.js` is cached).

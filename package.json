@@ -4,7 +4,7 @@
   "description": "Aram's minimal project page at aram.nu: khabar.nu with today's line, and his 3D, BIM and electronics work",
   "private": true,
   "scripts": {
-    "dev": "py -m http.server 8790 --directory src"
+    "dev": "py scripts/serve.py 8790"
   },
   "author": "AramJ",
   "license": "MIT"

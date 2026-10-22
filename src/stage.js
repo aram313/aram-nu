@@ -399,18 +399,21 @@
   const texts = (P) => P.beats.map((b) => b.text).filter((x, k, a) => !k || x !== a[k - 1]);
 
   // ---------------------------------------------------------------- data
-  // the data comes gzipped; it is unpacked here, unless the server already did (no gzip mark left)
+  // the data comes gzipped; it is unpacked here, unless the server already did (no gzip mark left). A deploy
+  // stamps this script's address with a version (stage.js?v=...), and the data is asked for with the same one,
+  // so a browser never mixes new code with old data from its cache
+  const VER = new URL(document.currentScript.src).searchParams.get('v');
   const files = new Map();
   async function unpack(url) {
-    const r = await fetch(url + '.gz');
+    const r = await fetch(url + '.gz' + (VER ? '?v=' + VER : ''));
     if (!r.ok) return null;
     const b = await r.arrayBuffer();
     const z = new Uint8Array(b, 0, 2);
     if (z[0] !== 0x1f || z[1] !== 0x8b) return b;
     return new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
   }
-  function fetchBin(url) {
-    if (!files.has(url)) files.set(url, unpack(url).catch(() => null));
+  function fetchBin(url) {   // a file that could not be had is asked for again next time, not remembered as missing
+    if (!files.has(url)) files.set(url, unpack(url).catch(() => null).then((b) => { if (!b) files.delete(url); return b; }));
     return files.get(url);
   }
   function parse(pb, lb, fb, tb, hb) {
@@ -479,7 +482,14 @@
       P.data = Promise.all([P.pts ? fetchBin(`pts/${P.id}.pts`) : null, P.lin ? fetchBin(`pts/${P.id}.lin`) : null,
                             P.flo ? fetchBin(`pts/${P.id}.flo`) : null, P.tri ? fetchBin(`pts/${P.id}.tri`) : null,
                             P.hot ? fetchBin(`pts/${P.id}.hot`) : null])
-        .then(([pb, lb, fb, tb, hb]) => { P.cpu = parse(pb, lb, fb, tb, hb); return P.cpu; });
+        .then(([pb, lb, fb, tb, hb]) => {
+          if ((P.pts && !pb) || (P.lin && !lb) || (P.flo && !fb) || (P.tri && !tb) || (P.hot && !hb)) {
+            P.data = null;   // a file is missing: the story is not ready, and is asked for again
+            throw new Error('missing data for ' + P.id);
+          }
+          P.cpu = parse(pb, lb, fb, tb, hb);
+          return P.cpu;
+        });
     }
     return P.data;
   }
@@ -1341,14 +1351,15 @@
     ready = false;
     play.classList.add('wait');
     caption(P);
-    load(P).then(() => {
+    const go = (tries) => load(P).then(() => {
       if (cur !== i) return;
       ready = true;
       play.classList.remove('wait');
       if (!STILL && !HOLD) countUp();
       kick();
-    });
-    load(PROJECTS[(i + 1) % PROJECTS.length]);   // the next one, ahead of time
+    }, () => { if (cur === i && tries > 0) setTimeout(() => go(tries - 1), 900); });   // a hiccup on the way: try again
+    go(3);
+    load(PROJECTS[(i + 1) % PROJECTS.length]).catch(() => {});   // the next one, ahead of time
   }
   function open(i) {
     if (!S && !init()) return;
