@@ -76,9 +76,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   that settled onto the model were invented); the steel is drawn member by member from the
   ground, and four members are lit and named by the profile they were fitted with (upe 160,
   upe 220, ipe 120, w8x15). The numbers count what is shown: 326 steel beams, 32 m high.
-- gammelt hus: the section marks the model's own levels beside the cut, as a section drawing does
-  (kælder, stueetage, 1. sal, loft); then a cut wall's thickness (500 mm, up to 560 mm) and the
-  roof's timber (85 pieces, most of them 130 × 130 mm).
+- gammelt hus: after the section opens the house, the camera goes up close to the roof truss and
+  out again; nothing is written on the drawing.
 - tagværk: told from the model's own types: first the 596 pieces of timber the scanner saw
   (surveyed), then the 636 estimated from them, then three pieces the model notes as bowed,
   crooked and bent; the end runs along the whole 165 m roof (on a phone, seen down its length).

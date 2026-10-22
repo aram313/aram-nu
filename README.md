@@ -23,8 +23,7 @@ along a bundle of cables (each cable a ring of its own diameter where the sectio
 and out to a long view of the route, a georadar band running a street with what lies under
 the asphalt appearing behind it (the radar finds where, not what: each line is drawn as a
 300 mm pipe at the depth it was found, three are measured from the ground, and the wells
-stand at their surveyed sizes), a house drawn in hidden lines and cut open (its levels marked beside the section with
-the model's own names, a wall's thickness and the roof's timber size), an old roof drawn
+stand at their surveyed sizes), a house drawn in hidden lines and cut open, with a close look at its roof truss, an old roof drawn
 rafter by rafter, first the timber the scanner saw, then the timber estimated from it, then the
 pieces the model notes as crooked, bent or bowed, a factory's
 steel tower drawn member by member from the ground, four of its members named by the profile
