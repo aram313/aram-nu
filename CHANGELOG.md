@@ -75,7 +75,9 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - fabrik: no made-up points any more (the scan itself is not part of the site, so the points
   that settled onto the model were invented); the steel is drawn member by member from the
   ground, and four members are lit and named by the profile they were fitted with (upe 160,
-  upe 220, ipe 120, w8x15). The numbers count what is shown: 326 steel beams, 32 m high.
+  upe 220, ipe 120, w8x15). The numbers count what is shown: 298 steel beams, 32 m high. The
+  stair stringers of the lower building next to the tower rise with that building, not with the
+  tower's steel, so nothing is built in the air beside the tower.
 - gammelt hus: after the section opens the house, the camera goes up close to the roof truss and
   out again; nothing is written on the drawing.
 - tagværk: told from the model's own types: first the 596 pieces of timber the scanner saw

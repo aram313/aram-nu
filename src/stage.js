@@ -163,8 +163,8 @@
     },
     {
       slug: 'fabrik', id: 'fabrik', name: 'fabrik', lin: true, length: 22, draw: [6, 4, 1.2],
-      row: 'laserscanning · 326 stålbjælker',
-      meta: ['laserscanning', [326, 'stålbjælker'], '32 m højt'],
+      row: 'laserscanning · 298 stålbjælker',
+      meta: ['laserscanning', [298, 'stålbjælker'], '32 m højt'],
       gain: { lin: 0.85 },
       // line groups: 0 the steel, element by element from the bottom, 1 floors, grates, stairs and walls,
       // 2 the four members that get a word
