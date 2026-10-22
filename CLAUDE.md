@@ -75,6 +75,20 @@ Owner's rules for the projects (2026-10-21):
 - Say what is modelled, in plain words, where it helps (a cable well that carries data is not a
   drain well); the model's own types decide, not a guess.
 
+Owner's rules from his review (2026-10-22), the first is the most important:
+
+- Every project's story and effects are tailored to that project. Views and effects need not be
+  the same across projects; it is better that they differ. Do not carry an effect (words on the
+  drawing, measures, names) to a project just because another one has it: gammelt hus has no
+  measures, for one.
+- Make it look good: do not show dumb, ugly geometry that does not translate (raw boxes, cluttered
+  facades, ground triangles); draw it clean or stylised instead (georadar's wells are round shafts
+  of their surveyed size, its buildings plain wall planes).
+- Only what belongs to a project's building is built in its story (fabrik: the other building's
+  stairs rise with that building, not with the tower).
+- Pipes and cables are drawn as pipes in every view, flex pieces included.
+- olietank and fjernvarme were taken off the site; do not bring them back.
+
 <!-- Anything that differs from, or adds to, the workspace standard. If nothing
      differs, say so explicitly so the next session does not go looking. -->
 
