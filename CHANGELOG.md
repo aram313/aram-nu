@@ -47,6 +47,10 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   out over the screen's real pixels, not its CSS pixels, so a phone at 3x no longer dims them to a third.
 - Tubes keep their outline round bends: the two outlines of neighbouring segments meet
   instead of leaving a gap on the outside of each bend.
+- Tubes read as pipes at any distance: a faint body between their outlines, and the two outlines
+  never close up into one line far away (they keep at least about 2 px between them).
+- kabeltracé: the short flex pieces that join the pipe lengths are part of their cables again
+  (the rules could not name them, so they were left as tiny loose pieces and dropped).
 - Lines can come in eight groups instead of four.
 - With reduced motion, the list keeps its miniatures as still drawings (they light up under the
   pointer but do not turn), and a story's last picture shows only the words that belong to it.

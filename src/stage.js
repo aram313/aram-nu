@@ -554,12 +554,17 @@
     uniform float uClsW[8], uClsR[8];
     uniform vec3 uKeyDir;
     uniform vec2 uKeyRange;
+    uniform vec2 uHalf;      // half the drawing buffer, in pixels
+    uniform float uMinPx;    // the least half width a tube keeps on screen, in pixels
     varying float vI, vClip;
     void main() {
       vec3 s = cross(aOther - aPos, uEye - aPos);
       float l = length(s);
       vec3 o = l > 0.0 ? s * (aRad * aSide / l) : vec3(0.0);
-      vec4 p = uMVP * vec4(aPos + o, 1.0);
+      // far away a thin tube would close up into one line: keep its two outlines at least uMinPx apart
+      vec4 c0 = uMVP * vec4(aPos, 1.0), c1 = uMVP * vec4(aPos + o, 1.0);
+      float w = length((c1.xy / c1.w - c0.xy / c0.w) * uHalf);
+      vec4 p = w > 1e-6 && w < uMinPx ? uMVP * vec4(aPos + o * (uMinPx / w), 1.0) : c1;
       gl_Position = p;
       vClip = dot(aPos, uClip.xyz) - uClip.w;
       float depth = clamp((p.w - uNear) / (uFar - uNear), 0.0, 1.0);
@@ -663,7 +668,7 @@
       lin: program(gl, VS_LIN, FS_LIN, ['uMVP', 'uEye', 'uSweep', 'uClip', 'uKeep', 'uGain', 'uNear', 'uFar', 'uKeyed', 'uAlpha', 'uReveal',
                                         'uPartK', 'uPartW']),
       tube: program(gl, VS_TUBE, FS_LIN, ['uMVP', 'uEye', 'uClip', 'uKeep', 'uGain', 'uNear', 'uFar', 'uAlpha', 'uReveal', 'uKeyDir', 'uKeyRange',
-                                          'uLaid', 'uClsW', 'uClsR']),
+                                          'uLaid', 'uClsW', 'uClsR', 'uHalf', 'uMinPx']),
       tri: program(gl, VS_TRI, FS_TRI, ['uMVP', 'uClip']),
       run: program(gl, VS_RUN, FS, ['uMVP', 'uSize', 'uAlpha', 'uRef', 'uNear', 'uFar']),
       hot: program(gl, VS_HOT, FS_HOT, ['uMVP', 'uSize', 'uNear', 'uFar', 'uAlpha', 'uReveal']),
@@ -748,6 +753,11 @@
       g.tubeN = v;
       g.tubeP = buffer(gl, pos); g.tubeO = buffer(gl, oth); g.tubeS = buffer(gl, side); g.tubeR = buffer(gl, r);
       g.tubeC = buffer(gl, cl); g.tubeL = buffer(gl, lay);
+      if (S.uint || v < 65536) {   // the inside of each segment, two triangles between its outlines
+        const fill = S.uint ? new Uint32Array((v / 4) * 6) : new Uint16Array((v / 4) * 6);
+        for (let k = 0, q = 0; k < v; k += 4, q += 6) fill.set([k, k + 1, k + 2, k + 2, k + 1, k + 3], q);
+        g.tubeF = buffer(gl, fill, gl.STATIC_DRAW, gl.ELEMENT_ARRAY_BUFFER); g.tubeFN = fill.length; g.tubeFT = S.uint ? gl.UNSIGNED_INT : gl.UNSIGNED_SHORT;
+      }
       // each track's bounds, so a section only looks at the tracks near it
       g.tbox = [];
       for (let t = 0; t < f.T; t++) {
@@ -928,8 +938,15 @@
         gl.uniform1f(p.u.uKeep, keep);
         gl.uniform1f(p.u.uGain, ((P.gain && P.gain.tube) || 1) * (S.max ? 1 : 0.6));
         gl.uniform1f(p.u.uNear, near); gl.uniform1f(p.u.uFar, far);
+        gl.uniform2f(p.u.uHalf, w / 2, h / 2);   // w and h are the drawing buffer's own pixels
+        gl.uniform1f(p.u.uMinPx, (P.tubeMin === undefined ? 0.9 : P.tubeMin) * dpr);
         gl.uniform1f(p.u.uAlpha, a);
         gl.drawArrays(gl.LINES, 0, g.tubeN);
+        if (g.tubeF) {   // and a faint body, so a tube reads as a pipe and not as two lines
+          gl.uniform1f(p.u.uAlpha, a * (P.tubeFill === undefined ? 0.16 : P.tubeFill));
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, g.tubeF);
+          gl.drawElements(gl.TRIANGLES, g.tubeFN, g.tubeFT, 0);
+        }
       }
       if (cut) words.push(...rings(P, g, cut, mvp, t, alpha));
       if (cut && P.scan) band(P, g, cut, mvp, alpha);
