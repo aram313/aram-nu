@@ -162,71 +162,6 @@
         [[0.0943, -0.267, -0.1097], '1,0 m', 3, 12.8]],
     },
     {
-      slug: 'olietank', id: 'tank', name: 'olietank', pts: true, lin: true, length: 27,
-      row: 'georadar · en have, 2 m ned',
-      meta: ['georadar', [30, 'kanaler'], '600 mhz', '2 m ned'],
-      gain: { pts: 0.75, lin: 0.9 }, ptsDraw: 5, half: 10.873,
-      // the scanned area at the ground and 2 m down, for the slice that sinks through it
-      slice: { lo: [-0.9896, -0.9753, 0.0939], hi: [0.8574, 0.9753, -0.0900] },
-      pose: { yaw: 210, pitch: 42, zoom: 1.05, at: [0, 0, 0.02], tall: { zoom: 0.95 } },
-      beats: [
-        { at: 0, text: 'en have, hvor der måske ligger en gammel olietank.', lin: [0.8, 0, 0, 0] },
-        { at: 3.5, text: 'georadaren lyser haven igennem, skive for skive, 2 m ned.', lin: [0.5, 0, 0, 0], pts: [0.9, 1, 1, 0.9],
-          pose: { yaw: 228, pitch: 26, zoom: 1.15, at: [0, 0, 0] } },
-        { at: 10, text: 'det kraftigste ekko kom fra en rist i overfladen, ikke fra tanken.', lin: [0.3, 0, 0, 0], pts: [0.12, 1, 0.3, 0.12],
-          pose: { yaw: 250, pitch: 18, zoom: 3.2, at: [0.0287, -0.3082, 0.0575] } },
-        { at: 15, text: 'tanken lå stille ved gavlen: 0,4 m nede, 1,8 × 0,6 m.', lin: [0.45, 0, 1, 0], pts: [0.1, 0.2, 0.2, 0.6],
-          pose: { yaw: 200, pitch: 34, zoom: 3.4, at: [0.2577, -0.4912, 0.0647], tall: { zoom: 4.4 } } },
-        { at: 19.5, text: 'målt ind fra husets hjørner, så den kan findes med en spade.', lin: [0.6, 0.6, 1, 1], pts: [0.08, 0.15, 0.15, 0.4],
-          pose: { yaw: 180, pitch: 58, zoom: 2.6, at: [0.2497, -0.4525, 0.0647], tall: { zoom: 4 } } },
-        { at: 24, text: 'tank, rør og fjernvarme, samlet på én tegning.', lin: [0.7, 0.6, 1, 0], pts: [0.12, 0.3, 0.3, 0.4],
-          pose: { yaw: 222, pitch: 36, zoom: 1.05, at: [0, 0, 0.02], w: 3.2 } },
-      ],
-      // [where, text, from, to]: what each thing is
-      notes: [[[0.0287, -0.3082, 0.1175], 'rist', 10.6, 15.2], [[0.4711, 0.2961, 0.0014], 'metal, 1 m nede', 24.6, 99],
-        [[0.2577, -0.4912, 0.0647], 'olietank', 15.6, 99], [[-0.3898, 0.3485, 0.0480], 'fjernvarme', 20.2, 99]],
-      // [where, text, group, when]: the distances from the house's corners to the tank, from the report
-      dims: [[[0.2416, -0.4137, 0.0985], '1,72 m', 3, 20.2], [[0.3377, -0.5048, 0.0985], '0,89 m', 3, 20.5]],
-    },
-    {
-      slug: 'fjernvarme', id: 'fv', name: 'fjernvarme', lin: true, flo: true, tube: true, length: 31, miniPitch: 10,
-      row: 'profilsnit · 6 ledninger',
-      meta: ['profilsnit', [6, 'ledninger'], [24, 'punkter'], '1,75 m ned'],
-      gain: { lin: 0.9, tube: 0.95 }, draw: [2, 1.5, 1, 1.5, 1.2], half: 9, ringR: 0.5,
-      // what each tube is, from the drawing's layers: 0 district heating, 1 sewer, 2 gas, 3 water, 4 power,
-      // 5 the gas lines measured in the excavation; laid from where the pipe comes in
-      kinds: true, kindNames: ['fjernvarme', 'kloak', 'gas', 'vand', 'el', 'gas, målt'],
-      lay: { from: [-1, 0, 0.0516], draw: 3, stagger: 0.5 },
-      // the profile: a section just in front of the pipe's own axis, with a ring where it cuts each pipe
-      section: { n: [0, -1, 0], from: 0.7444, to: 0.0089, ring: [-0.007, -0.0089, -0.0459] }, start: { cut: 1 },
-      // line groups: 0 the ground, the measured clearing and the manhole, 1 the straight way, 2 the measures,
-      // 3 the points measured in the excavation, 4 the ground where the section cuts it
-      pose: { yaw: 0, pitch: 0, zoom: 3.4, at: [-0.03, 0, -0.049], tall: { zoom: 3, at: [0, 0, -0.03] } },
-      beats: [
-        { at: 0, text: 'et profilsnit af en fjernvarmeledning.', lin: [0, 0, 0, 0, 0.5], cut: 1, kinds: [1, 0, 0, 0, 0, 0, 0, 0] },
-        { at: 3.5, text: 'det, den krydser, står som cirkler.', lin: [0, 0, 0, 0, 0.5], cut: 1, sizes: 1, kinds: [1, 0, 0, 0, 0, 0, 0, 0],
-          pose: { yaw: 0, pitch: 0, zoom: 3.6, at: [-0.02, 0, -0.045], tall: { zoom: 3.1, at: [0, 0, -0.03] } } },
-        { at: 8, text: 'i 3d bliver cirklerne til ledninger.', lin: [0.6, 0, 0, 0, 0], kinds: [1, 1, 1, 1, 1, 1, 0, 0],
-          pose: { yaw: 32, pitch: 26, zoom: 2.1, at: [0, -0.1, -0.02], w: 4, tall: { zoom: 2.4, at: [-0.02, -0.12, -0.02] } } },
-        { at: 13, text: 'den lige vej var spærret af gas, og under gassen lå kloakken.', lin: [0.4, 1, 0, 0, 0], kinds: [0.5, 0.8, 1, 0.3, 0.3, 1, 0, 0],
-          pose: { yaw: 18, pitch: 16, zoom: 4.2, at: [0, 0, 0.03], tall: { zoom: 2.8 } } },
-        { at: 18, text: 'så den dykker 1,75 m og går 0,29 m under kloakken.', lin: [0, 0.5, 1, 0, 0.5], cut: 1, kinds: [1, 0.15, 0.1, 0.1, 0.1, 0.1, 0, 0],
-          pose: { yaw: 0, pitch: 0, zoom: 3.4, at: [-0.06, 0, -0.049], tall: { zoom: 2.4, at: [-0.07, 0, -0.04] } } },
-        { at: 23, text: 'gas og kloak målt i udgravningen, punkt for punkt.', lin: [0.8, 0, 0, 1, 0], kinds: [0.6, 0.6, 0.6, 0.4, 0.4, 1, 0, 0],
-          pose: { yaw: -30, pitch: 52, zoom: 2.6, at: [0, 0, 0], tall: { zoom: 2.6 } } },
-        { at: 27, text: 'fra et snit på papir til et kryds, man kan gå rundt om.', lin: [0.6, 0.25, 0, 0.6, 0], kinds: [0.9, 0.8, 0.7, 0.6, 0.6, 0.7, 0, 0],
-          pose: { yaw: 35, pitch: 32, zoom: 1.15, at: [0, 0, -0.03], w: 4, tall: { zoom: 1.25 } } },
-      ],
-      // [where, text, from, to]: what each pipe is, while the camera goes round it
-      notes: [[[0.2, -0.0089, 0.171], 'terræn', 0.6, 7.6], [[0.2, -0.0089, 0.171], 'terræn', 18.6, 22.6],
-        [[-0.8222, 0, 0.096], 'fjernvarme ø560', 8.6, 12.8], [[0.0862, -0.1778, -0.0016], 'kloak ø567', 9, 12.8],
-        [[-0.1645, -0.5778, 0.0496], 'gas ø180', 9.4, 12.8], [[-0.0863, 0.5556, 0.022], 'vand ø110', 9.8, 12.8],
-        [[0.0634, 0.3333, 0.1176], 'el', 10.2, 12.8], [[0.0979, 0.0835, 0.0181], 'gas ø65, målt', 10.6, 12.8],
-        [[-0.007, 0, 0.0516], 'den lige vej', 13.6, 17.6]],
-      // [where, text, group, when]: the two measures from the profile drawing
-      dims: [[[-0.44, 0, -0.0459], '1,75 m', 2, 18.6], [[0.1442, 0, -0.0961], '0,29 m', 2, 19]],
-    },
-    {
       slug: 'fabrik', id: 'fabrik', name: 'fabrik', lin: true, length: 22, draw: [6, 4, 1.2],
       row: 'laserscanning · 326 stålbjælker',
       meta: ['laserscanning', [326, 'stålbjælker'], '32 m højt'],
@@ -912,11 +847,6 @@
     const words = [];
     // a scan reveals what lies along the route up to where its band has come
     const scanned = STILL || !P.scan ? 9 : value(P, 'ride', undefined, t, P.rideW || 8);
-    if (sec && sec.ring) {   // a still section that rings the cables it cuts around one point (moved onto the plane)
-      const k = value(P, 'cut', undefined, t, 2.4), n = sec.n, c = sec.ring;
-      const off = n[0] * c[0] + n[1] * c[1] + n[2] * c[2] - clip[3];
-      if (k > 0.002) cut = { c: c.map((v, e) => v - off * n[e]), n, k };
-    }
     if (P.route) {   // a section across the route where the ride has come to; what lies before it fades away
       const k = value(P, 'cut', undefined, t, 2.4);
       const { pos: c, tan: n } = routeAt(P, value(P, 'ride', undefined, t, P.rideW || 8));
@@ -1037,7 +967,6 @@
       }
     }
     if (P.stations) scanners(P, g, mvp, shownPts(0), (1 - value(P, 'condense', undefined, t, 1.6)) * value(P, 'pts', 0, t, FADE_W) * alpha);
-    if (P.slice) slice(P, g, mvp, shownPts(0), alpha);
     const ha = value(P, 'hot', undefined, t, FADE_W) * alpha;
     if (g.hp && ha > 0.002) {
       const p = S.prog.hot;
@@ -1172,34 +1101,6 @@
     gl.uniform1f(p.u.uAlpha, 1);
     gl.drawArrays(gl.LINES, 0, v);
     return words;
-  }
-
-  // a level outline of the scanned area that sinks through the ground while a radar's points come in, slice
-  // by slice, then fades
-  function slice(P, g, mvp, r, alpha) {
-    const { lo, hi } = P.slice, k = Math.min(1, Math.max(0, r)), I = alpha * (1 - ease((r - 1) / 0.25)) * ease(r / 0.05);
-    if (I < 0.002) return;
-    const z = lo[2] + (hi[2] - lo[2]) * k;
-    const c = [[lo[0], lo[1]], [hi[0], lo[1]], [hi[0], hi[1]], [lo[0], hi[1]]];
-    g.slicePos = g.slicePos || new Float32Array(8 * 3); g.sliceI = g.sliceI || new Float32Array(8);
-    if (!g.sp2) { g.sp2 = buffer(S.gl, g.slicePos, S.gl.DYNAMIC_DRAW); g.si2 = buffer(S.gl, g.sliceI, S.gl.DYNAMIC_DRAW); }
-    for (let i = 0; i < 4; i++) {
-      g.slicePos.set([c[i][0], c[i][1], z], i * 6); g.slicePos.set([c[(i + 1) % 4][0], c[(i + 1) % 4][1], z], i * 6 + 3);
-      g.sliceI[i * 2] = g.sliceI[i * 2 + 1] = I * 0.8;
-    }
-    const gl = S.gl, p = S.prog.run;
-    gl.useProgram(p.p);
-    gl.blendEquation(S.max || gl.FUNC_ADD); gl.blendFunc(gl.ONE, gl.ONE);
-    gl.bindBuffer(gl.ARRAY_BUFFER, g.sp2); gl.bufferSubData(gl.ARRAY_BUFFER, 0, g.slicePos);
-    gl.bindBuffer(gl.ARRAY_BUFFER, g.si2); gl.bufferSubData(gl.ARRAY_BUFFER, 0, g.sliceI);
-    attrib(gl, p.p, 'aPos', g.sp2, 3, gl.FLOAT, false);
-    attrib(gl, p.p, 'aI', g.si2, 1, gl.FLOAT, false);
-    gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
-    gl.uniform1f(p.u.uSize, 1);
-    gl.uniform1f(p.u.uRef, 1e9); gl.uniform1f(p.u.uNear, 0); gl.uniform1f(p.u.uFar, 1e9);
-    gl.uniform1f(p.u.uAlpha, 1);
-    gl.drawArrays(gl.LINES, 0, 8);
-    gl.blendEquation(gl.FUNC_ADD);
   }
 
   // where the scanners stood: a small ring at the scanner's head and its tripod down to the ground, lit

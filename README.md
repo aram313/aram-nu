@@ -9,7 +9,7 @@ Khabar editor writes about the day's news (refreshed every five minutes).
 
 Under **projekter** each of Aram's projects is one line: a small live miniature of the model,
 its name and a short grey line of what it is and how big (rørbro, datacenter, kabeltracé,
-buehal, georadar, olietank, fjernvarme, fabrik, gammelt hus, tagværk, værktøj). A tap plays the project's story on
+buehal, georadar, fabrik, gammelt hus, tagværk, værktøj). A tap plays the project's story on
 the whole screen, by itself, in the style that fits it: a pipe bridge scanned setup by setup
 from the places its 16 scanners stood, its points pulled onto the steel (the ones off the model
 by more than 2 mm left behind), the model drawn part by part in hidden lines, a bearing's bolt
@@ -23,12 +23,7 @@ along a bundle of cables (each cable a ring of its own diameter where the sectio
 and out to a long view of the route, a georadar band running a street with what lies under
 the asphalt appearing behind it (the radar finds where, not what: each line is drawn as a
 300 mm pipe at the depth it was found, three are measured from the ground, and the wells
-stand at their surveyed sizes), a garden lit through by the radar slice by slice down to
-2 m (the strongest echo a grate at the surface, the old oil tank lying quiet by the gable,
-measured in from the house's corners), a district heating pipe first seen as the profile
-drawing shows it (the pipes it crosses as circles), then in 3D with every pipe at its real
-diameter, the straight way that gas blocked, the 1,75 m dip and 0,29 m under the sewer, and the
-points measured in the excavation, a house drawn in hidden lines and cut open (its levels marked beside the section with
+stand at their surveyed sizes), a house drawn in hidden lines and cut open (its levels marked beside the section with
 the model's own names, a wall's thickness and the roof's timber size), an old roof drawn
 rafter by rafter, first the timber the scanner saw, then the timber estimated from it, then the
 pieces the model notes as crooked, bent or bowed, a factory's
@@ -74,11 +69,8 @@ Then open http://localhost:8790. (Without npm: `py -m http.server 8790 --directo
   `follow` keeps the camera on that place, and `cut` puts a section across it there. The
   section cuts away what lies before it and draws a ring where it cuts each cable; with
   `scan` (georadar) it cuts nothing and instead reveals what lies behind it, as a band
-  across the street with a faint curtain into the ground. A still `section` with `ring`
-  (fjernvarme) cuts away what lies in front of it and rings the pipes it cuts around that
-  point, as a profile drawing does. Tube outlines meet at bends (each point's direction is the
-  mean of its two segments, with a mitre at sharp ones). With `slice` (olietank) a level
-  outline sinks through the scanned volume, and the radar's points appear as it passes. With
+  across the street with a faint curtain into the ground. Tube outlines meet at bends (each
+  point's direction is the mean of its two segments, with a mitre at sharp ones). With
   `notes` words name what is what for a stretch of the story. With `parts` (the tool sheet) each
   part has its name under it, and `focus` gives one part its width, depth and height.
 - The data is in `src/pts/`, gzipped (`.gz`, unpacked in the page). Every file starts with int32

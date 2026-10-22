@@ -25,18 +25,6 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   measures). Lines blend with "max" and hide behind faces; numbers come from the models.
   Arrow keys or a swipe for the next project, tap or Esc to close. Player in `src/stage.js`,
   data gzipped in `src/pts/` (about 13 MB, loaded one project at a time).
-- olietank: a garden scanned with georadar, 2 m down. The radar's strongest reflections
-  appear slice by slice as a level outline sinks through the ground; the strongest echo is a
-  grate at the surface, not the tank; the tank lies by the gable, 0,4 m down and 1,8 × 0,6 m
-  (the operator's own turned outline, not the 1,8 × 1,7 m box around it),
-  measured in from the house's corners (1,72 m and 0,89 m), with the pipes at their depths and
-  the district heating named.
-- fjernvarme: a district heating pipe that dips under a sewer, told from its profile drawing.
-  It opens as the drawing shows it, the pipes it crosses as circles with their names and
-  sizes; in 3D the circles become pipes at their real diameters (sewer, gas, water, power and
-  the gas lines measured in the excavation); a dashed ghost shows the straight way that the gas
-  blocked; back in profile, the dip of 1,75 m and the 0,29 m under the sewer; then the 24 points
-  measured in the excavation, and the whole crossing.
 
 ### Changed
 
@@ -104,8 +92,6 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   (`src/img/del.jpg`, 1200 × 630), with the page's title and a short line.
 - While a story's data is still on its way, a faint light runs along its progress line (a still
   line with reduced motion), so a slow connection does not look like a broken page.
-- olietank: the last picture keeps its words (the tank, the metal object 1 m down, the district
-  heating) while the story holds its end.
 
 ---
 
