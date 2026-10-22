@@ -12,10 +12,11 @@ its name and a short grey line of what it is and how big (rørbro, datacenter, k
 buehal, georadar, fabrik, gammelt hus, tagværk, værktøj). A tap plays the project's story on
 the whole screen, by itself, in the style that fits it: a pipe bridge scanned setup by setup
 from the places its 16 scanners stood, its points pulled onto the steel (the ones off the model
-by more than 2 mm left behind), the model drawn part by part in hidden lines, a bearing's bolt
-pattern with its measures, and the damaged chord with its two measures, its scan points yellow
-to red by how far it is pushed out of line, seen from the side as the camera goes slowly round
-to its other side and out to the whole bridge again, a
+by more than 2 mm left behind), the model drawn part by part in hidden lines, and then the damage
+in slow motion: seen from the road below, the bottom chord stands straight as it was built and
+slowly bends to its measured shape, shown three times enlarged (and marked so), its scan points
+glowing yellow to red by how far they are pushed, before the true measures (227 mm sideways,
+140 mm up) and the whole bridge again, a
 datacenter crossing built as it was laid (wells named for what they carry, ducts for data
 and power, pipes on top, light only in the ducts for data, a section through the data duct
 bank with its depth), a section riding
@@ -73,6 +74,9 @@ turned off and stamps `stage.js` with the newest file's time, so the browser nev
   point's direction is the mean of its two segments, with a mitre at sharp ones). With
   `notes` words name what is what for a stretch of the story. With `parts` (the tool sheet) each
   part has its name under it, and `focus` gives one part its width, depth and height.
+- A measured bend (`bend` in the build, `bendk` in the beats): the lines, faces and damage points of a
+  member store how far they move from straight to as measured, and the player draws position +
+  bend × bendk (−1 straight, 0 as measured, 2 three times enlarged), easing over `bendW` seconds.
 - The data is in `src/pts/`, gzipped (`.gz`, unpacked in the page). Every file starts with int32
   count and int32 flags (1 = float32 positions instead of int16, 2 = targets, 4 = keys):
   - `<id>.pts` points: xyz (centred, longest half-axis 1), the point each one is pulled to on
@@ -89,6 +93,9 @@ turned off and stamps `stage.js` with the newest file's time, so the browser nev
   - `<id>.mini` the miniature: count, int16 xyz of the model's longest edges.
   - `<id>.hot` points with a value: count, flags, xyz, a uint8 value per point (how far that
     part is pushed out of line), drawn yellow to red.
+    With flag 2, after the values (padded to an even length) int16 xyz per point: how far it moves
+    with the bend. `.lin` with flag 8 has the same per end after its keys, and `.tri` with flag 2 per
+    vertex after its indices.
   The files are made in Aram's private workspace from the models and scans (not in this
   repository, since the sources carry client names).
 - A section may also lie flat: `section: { n: [0, 0, 1] }` sinks a level cut (buehal's plan at

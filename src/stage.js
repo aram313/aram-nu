@@ -12,7 +12,7 @@
 (() => {
   const PROJECTS = [
     {
-      slug: 'roerbro', id: 'bro', name: 'rørbro', pts: true, lin: true, tri: true, hidden: true, hot: true, length: 35.5,
+      slug: 'roerbro', id: 'bro', name: 'rørbro', pts: true, lin: true, tri: true, hidden: true, hot: true, length: 34,
       row: 'laserscanning · 130 mio. punkter',
       meta: [[130, 'mio. punkter'], '94 % inden for 2 mm'],
       gain: { pts: 0.5, lin: 0.85 }, ptsDraw: 4, draw: [3.6, 3.6, 1, 1], half: 8.221,
@@ -22,25 +22,28 @@
         [-0.6262, -0.3770, -0.2414], [-1.1100, -0.2786, -0.2413], [-0.9428, -0.0063, -0.2224], [-0.6049, 0.4091, -0.2399],
         [-1.1293, 0.2907, -0.2092], [-0.5280, -0.7282, -0.2416], [0.1766, -0.3771, -0.2534], [0.7028, 0.7200, -0.2248]],
       pose: { yaw: -30, pitch: 24, zoom: 0.92 },
+      // the damaged bottom chord bends from straight to its measured shape (bendk: -1 straight, 0 as measured,
+      // 2 three times enlarged), seen from the road while the camera glides along it at one steady speed
+      bendW: 5, glide: 12,
+      route: [[-0.27, -0.1816, 0.1964], [0.33, -0.1821, 0.1961]],
       beats: [
         { at: 0, text: 'en skadet rørbro i stål, scannet fra 16 opstillinger.', pts: [1, 1] },
         { at: 4.8, text: 'punkterne trækkes ind på stålet, og 94 % ligger inden for 2 mm.', pts: [1, 0.3], condense: 1,
-          pose: { yaw: -14, pitch: 16, zoom: 1.3 } },
+          pose: { yaw: -14, pitch: 16, zoom: 1.3, tall: { zoom: 1.05 } } },
         { at: 9.6, text: 'hvert profil og hver plade tegnet op i 3d, 156 dele.', pts: [0.2, 0.08], condense: 1, lin: [1, 1, 0, 0],
-          pose: { yaw: 22, pitch: 20, zoom: 1.4 } },
-        { at: 14.4, text: 'boltgrupperne målt ind, så det nye stål passer på de gamle bolte.', pts: [0.08, 0.03], condense: 1, lin: [1, 1, 1, 0],
-          pose: { yaw: 35, pitch: 42, zoom: 24, at: [-0.8202, -0.1808, 0.1839] } },
-        { at: 19.2, text: 'og skaden målt: undergurten er presset 227 mm ud af sin linje.', pts: [0.04, 0.02], condense: 1,
-          lin: [0.1, 0.45, 0, 1], pose: { yaw: -12, pitch: 14, zoom: 4.6, at: [0.0387, -0.1683, 0.2047], w: 3.2 } },
-        { at: 21.6, text: 'og skaden målt: undergurten er presset 227 mm ud af sin linje.', pts: [0.04, 0.02], condense: 1, lin: [0.1, 0.45, 0, 1], hot: 1 },
-        { at: 23.2, text: 'og skaden målt: undergurten er presset 227 mm ud af sin linje.', pts: [0.04, 0.02], condense: 1,
-          lin: [0.1, 0.45, 0, 1], hot: 1, pose: { yaw: 168, pitch: 14, zoom: 4.6, at: [0.0387, -0.1683, 0.2047], w: 7.5 } },
-        { at: 30.8, text: 'og skaden målt: undergurten er presset 227 mm ud af sin linje.', pts: [0.04, 0.02], condense: 1,
-          lin: [0.7, 0.8, 0, 0], hot: 1, pose: { yaw: 198, pitch: 22, zoom: 1.25, at: [0, 0, 0], w: 3.6 } },
+          pose: { yaw: 22, pitch: 20, zoom: 1.4, tall: { zoom: 1.0 } } },
+        { at: 14, text: 'sådan stod undergurten, da den var ny.', condense: 1, lin: [0.16, 1, 0, 0], bendk: -1, ride: 1,
+          pose: { follow: true, yaw: -90, pitch: -52, zoom: 4.2, w: 3.4, tall: { yaw: -60, zoom: 8 } } },
+        { at: 18.2, text: 'og sådan er den presset ud, her vist 3 gange forstørret.', condense: 1, lin: [0.16, 1, 0, 0], bendk: 2, hot: 1, ride: 1 },
+        { at: 25, text: 'i virkeligheden 227 mm til siden og 140 mm op.', condense: 1, lin: [0.3, 0.6, 0, 1], hot: 1,
+          pose: { yaw: -12, pitch: 14, zoom: 4.6, at: [0.0387, -0.1683, 0.2047], w: 3.2, tall: { zoom: 8 } } },
+        { at: 30, text: 'målt ±2 mm, så det nye stål passer på det gamle.', condense: 1, lin: [0.75, 0.85, 0, 0], hot: 1,
+          pose: { yaw: 198, pitch: 22, zoom: 1.25, at: [0, 0, 0], w: 3.6, tall: { zoom: 0.82 } } },
       ],
-      // [where, text, group, when]: the bearing's hole pattern (mm, from the delivered bolt table), then the damage
-      dims: [[[-0.8298, -0.2021, 0.1877], '60', 2, 15.2], [[-0.8146, -0.2021, 0.1877], '189', 2, 15.5], [[-0.7897, -0.1809, 0.1877], '161', 2, 15.8],
-        [[0.0387, -0.1683, 0.2362], '227 mm', 3, 22], [[0.0507, -0.1284, 0.2048], '140 mm', 3, 22.4]],
+      // [where, text, from, to]: the enlarged bend is marked as enlarged
+      notes: [[[0.0387, -0.1683, 0.2047], '3 × forstørret', 19.4, 24.6]],
+      // [where, text, group, when]: the damage's two measures, as in the delivered report
+      dims: [[[0.0387, -0.1683, 0.2362], '227 mm', 3, 25.6], [[0.0507, -0.1284, 0.2048], '140 mm', 3, 26]],
     },
     {
       slug: 'datacenter', id: 'datacenter', name: 'datacenter', lin: true, tri: true, hidden: true, flo: true, tube: true, length: 28,
@@ -436,11 +439,16 @@
       let o = 8 + m * 6 * size;
       d.lin.n1 = new Int8Array(lb, o, m * 8); o += m * 8;
       d.lin.n2 = new Int8Array(lb, o, m * 8); o += m * 8;
-      if (flags & 4) d.lin.key = new Uint16Array(lb.slice(o, o + m * 4));
+      if (flags & 4) { d.lin.key = new Uint16Array(lb.slice(o, o + m * 4)); o += m * 4; }
       // each end also needs the other end, for the silhouette test at the edge's middle
-      const other = new F(m * 6);
-      for (let e = 0; e < m; e++) for (let j = 0; j < 3; j++) { other[e * 6 + j] = d.lin.pos[e * 6 + 3 + j]; other[e * 6 + 3 + j] = d.lin.pos[e * 6 + j]; }
-      d.lin.other = other;
+      const swap = (a) => {
+        const b = new a.constructor(m * 6);
+        for (let e = 0; e < m; e++) for (let j = 0; j < 3; j++) { b[e * 6 + j] = a[e * 6 + 3 + j]; b[e * 6 + 3 + j] = a[e * 6 + j]; }
+        return b;
+      };
+      d.lin.other = swap(d.lin.pos);
+      // with flag 8, how far each end moves with a measured bend (a damaged member straight, as measured, enlarged)
+      if (flags & 8) { d.lin.bend = new Int16Array(lb.slice(o, o + m * 12)); d.lin.bendO = swap(d.lin.bend); }
     }
     if (fb) {
       const [T, N] = new Int32Array(fb, 0, 2);
@@ -469,11 +477,15 @@
       o += nv * 3 * size;
       o += o % 4;
       d.tri.idx = new Uint32Array(tb, o, ni);
+      o += ni * 4;
+      if (flags & 2) d.tri.bend = new Int16Array(tb.slice(o, o + nv * 6));   // the faces bend with the lines
     }
     if (hb) {   // scan points with a value: how far that part is pushed out of line
       const [n, flags] = new Int32Array(hb, 0, 2);
       const F = flags & 1 ? Float32Array : Int16Array, size = flags & 1 ? 4 : 2;
       d.hot = { n, float: !!(flags & 1), pos: new F(hb, 8, n * 3), v: new Uint8Array(hb, 8 + n * 3 * size, n) };
+      const o = 8 + n * 3 * size + n + (n % 2);
+      if (flags & 2) d.hot.bend = new Int16Array(hb.slice(o, o + n * 6));   // and the points with them
     }
     return d;
   }
@@ -533,26 +545,27 @@
       vI = aShade * mix(1.0, 0.25, depth) * seen * flash * uGain * a;
     }`;
   const VS_LIN = `
-    attribute vec3 aPos, aOther;
+    attribute vec3 aPos, aOther, aBend, aBendO;
     attribute vec4 aN1, aN2;
     attribute float aKey;
     uniform mat4 uMVP;
     uniform vec3 uEye, uSweep;
     uniform vec4 uClip;
-    uniform float uGain, uNear, uFar, uKeyed, uPartK;
+    uniform float uGain, uNear, uFar, uKeyed, uPartK, uBendK;
     uniform float uPartW[16];
     uniform float uAlpha[8], uReveal[8];
     varying float vI, vClip;
     void main() {
-      vec4 p = uMVP * vec4(aPos, 1.0);
+      vec3 P0 = aPos + aBend * uBendK, P1 = aOther + aBendO * uBendK;   // moved with a measured bend
+      vec4 p = uMVP * vec4(P0, 1.0);
       gl_Position = p;
-      vClip = dot(aPos, uClip.xyz) - uClip.w;
+      vClip = dot(P0, uClip.xyz) - uClip.w;
       int g = int(clamp(floor(aN2.w * 127.0 + 0.5), 0.0, 7.0));
       float a = uAlpha[g];
       float r = uReveal[g];
       // a sharp edge always shows; a smooth one where its faces turn opposite ways seen from the eye,
       // tested at the edge's middle so both ends agree
-      vec3 v = uEye - 0.5 * (aPos + aOther);
+      vec3 v = uEye - 0.5 * (P0 + P1);
       float on = max(step(0.5, aN1.w), step(dot(aN1.xyz, v) * dot(aN2.xyz, v), 0.0));
       float key = uKeyed > 0.5 ? aKey : dot(aPos, uSweep) * 0.5 + 0.5;
       float age = r - key;
@@ -607,11 +620,12 @@
       vI = uAlpha * uClsW[c] * seen * flash * mix(1.0, 0.32, depth) * uGain;
     }`;
   const VS_TRI = `
-    attribute vec3 aPos;
+    attribute vec3 aPos, aBend;
     uniform mat4 uMVP;
     uniform vec4 uClip;
+    uniform float uBendK;
     varying float vClip;
-    void main() { gl_Position = uMVP * vec4(aPos, 1.0); vClip = dot(aPos, uClip.xyz) - uClip.w; }`;
+    void main() { vec3 q = aPos + aBend * uBendK; gl_Position = uMVP * vec4(q, 1.0); vClip = dot(q, uClip.xyz) - uClip.w; }`;
   const FS_TRI = `
     precision mediump float;
     varying float vClip;
@@ -640,13 +654,13 @@
     void main() { gl_FragColor = vec4(vec3(uI), 1.0); }`;
   // a damage map: each point yellow to red by how far its part is pushed out of line
   const VS_HOT = `
-    attribute vec3 aPos;
+    attribute vec3 aPos, aBend;
     attribute float aV;
     uniform mat4 uMVP;
-    uniform float uSize, uNear, uFar, uAlpha, uReveal;
+    uniform float uSize, uNear, uFar, uAlpha, uReveal, uBendK;
     varying vec3 vC;
     void main() {
-      vec4 p = uMVP * vec4(aPos, 1.0);
+      vec4 p = uMVP * vec4(aPos + aBend * uBendK, 1.0);
       gl_Position = p;
       gl_PointSize = uSize;
       float seen = clamp((aV - (1.0 - uReveal)) * 5.0, 0.0, 1.0) * smoothstep(0.0, 0.05, aV);
@@ -697,12 +711,12 @@
     c.prog = {
       pts: program(gl, VS_PTS, FS, ['uMVP', 'uSweep', 'uSize', 'uGain', 'uNear', 'uFar', 'uCondense', 'uAlpha', 'uReveal', 'uKeyed']),
       lin: program(gl, VS_LIN, FS_LIN, ['uMVP', 'uEye', 'uSweep', 'uClip', 'uKeep', 'uGain', 'uNear', 'uFar', 'uKeyed', 'uAlpha', 'uReveal',
-                                        'uPartK', 'uPartW']),
+                                        'uPartK', 'uPartW', 'uBendK']),
       tube: program(gl, VS_TUBE, FS_LIN, ['uMVP', 'uEye', 'uClip', 'uKeep', 'uGain', 'uNear', 'uFar', 'uAlpha', 'uReveal', 'uKeyDir', 'uKeyRange',
                                           'uLaid', 'uClsW', 'uClsR', 'uHalf', 'uMinPx']),
-      tri: program(gl, VS_TRI, FS_TRI, ['uMVP', 'uClip']),
+      tri: program(gl, VS_TRI, FS_TRI, ['uMVP', 'uClip', 'uBendK']),
       run: program(gl, VS_RUN, FS, ['uMVP', 'uSize', 'uAlpha', 'uRef', 'uNear', 'uFar']),
-      hot: program(gl, VS_HOT, FS_HOT, ['uMVP', 'uSize', 'uNear', 'uFar', 'uAlpha', 'uReveal']),
+      hot: program(gl, VS_HOT, FS_HOT, ['uMVP', 'uSize', 'uNear', 'uFar', 'uAlpha', 'uReveal', 'uBendK']),
     };
     S = c;
     return true;
@@ -722,11 +736,13 @@
     if (d.lin) {
       g.lp = buffer(gl, d.lin.pos); g.lo = buffer(gl, d.lin.other); g.l1 = buffer(gl, d.lin.n1); g.l2 = buffer(gl, d.lin.n2);
       if (d.lin.key) g.lk = buffer(gl, d.lin.key);
+      if (d.lin.bend) { g.lb = buffer(gl, d.lin.bend); g.lbo = buffer(gl, d.lin.bendO); }
     }
-    if (d.hot) { g.hp = buffer(gl, d.hot.pos); g.hv = buffer(gl, d.hot.v); }
+    if (d.hot) { g.hp = buffer(gl, d.hot.pos); g.hv = buffer(gl, d.hot.v); if (d.hot.bend) g.hb = buffer(gl, d.hot.bend); }
     if (d.tri && S.uint) {
       g.tp = buffer(gl, d.tri.pos);
       g.ti = buffer(gl, d.tri.idx, gl.STATIC_DRAW, gl.ELEMENT_ARRAY_BUFFER);
+      if (d.tri.bend) g.tb = buffer(gl, d.tri.bend);
     }
     if (d.flo) {
       const k = Math.min(P.runs || 2400, d.flo.T * 8);
@@ -890,6 +906,8 @@
       if (k > 0.002) cut = { c, n, k };
     }
 
+    // a measured bend: 0 as measured, -1 straight, 2 three times enlarged (beats set "bendk")
+    const bk = P.bendW ? value(P, 'bendk', undefined, t, P.bendW) : 0;
     gl.disable(gl.DEPTH_TEST);
     if (d.tri && g.ti && P.hidden) {   // the faces into the depth buffer only, so lines behind them hide
       const p = S.prog.tri;
@@ -898,8 +916,12 @@
       gl.colorMask(false, false, false, false);
       gl.enable(gl.POLYGON_OFFSET_FILL); gl.polygonOffset(3.0, 8.0);
       attrib(gl, p.p, 'aPos', g.tp, 3, d.tri.float ? gl.FLOAT : gl.SHORT, !d.tri.float);
+      attrib(gl, p.p, 'aBend', g.tb || null, 3, gl.SHORT, true);
+      gl.uniform1f(p.u.uBendK, bk);
       gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
-      gl.uniform4fv(p.u.uClip, clip);
+      // faces beyond a section are left out only where it really cuts (or a scan reveals); a route that is only
+      // followed by the camera cuts nothing
+      gl.uniform4fv(p.u.uClip, P.scan || keep < 0.999 ? clip : [0, 0, 0, 1]);
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, g.ti);
       gl.drawElements(gl.TRIANGLES, d.tri.ni, gl.UNSIGNED_INT, 0);
       gl.disable(gl.POLYGON_OFFSET_FILL);
@@ -918,6 +940,9 @@
         attrib(gl, p.p, 'aN1', g.l1, 4, gl.BYTE, true);
         attrib(gl, p.p, 'aN2', g.l2, 4, gl.BYTE, true);
         attrib(gl, p.p, 'aKey', g.lk || null, 1, gl.UNSIGNED_SHORT, true);
+        attrib(gl, p.p, 'aBend', g.lb || null, 3, gl.SHORT, true);
+        attrib(gl, p.p, 'aBendO', g.lbo || null, 3, gl.SHORT, true);
+        gl.uniform1f(p.u.uBendK, bk);
         gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
         gl.uniform3fv(p.u.uEye, cam.eye);
         gl.uniform3fv(p.u.uSweep, sweep);
@@ -1016,6 +1041,8 @@
       gl.blendEquation(S.max || gl.FUNC_ADD); gl.blendFunc(gl.ONE, gl.ONE);
       attrib(gl, p.p, 'aPos', g.hp, 3, d.hot.float ? gl.FLOAT : gl.SHORT, !d.hot.float);
       attrib(gl, p.p, 'aV', g.hv, 1, gl.UNSIGNED_BYTE, true);
+      attrib(gl, p.p, 'aBend', g.hb || null, 3, gl.SHORT, true);
+      gl.uniform1f(p.u.uBendK, bk);
       gl.uniformMatrix4fv(p.u.uMVP, false, mvp);
       gl.uniform1f(p.u.uSize, Math.max(1, 2.2 * px));
       gl.uniform1f(p.u.uNear, near); gl.uniform1f(p.u.uFar, far);
