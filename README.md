@@ -90,6 +90,8 @@ Then open http://localhost:8790. (Without npm: `py -m http.server 8790 --directo
     part is pushed out of line), drawn yellow to red.
   The files are made in Aram's private workspace from the models and scans (not in this
   repository, since the sources carry client names).
+- A section may also lie flat: `section: { n: [0, 0, 1] }` sinks a level cut (buehal's plan at
+  1 m). A camera looking straight down does not drift round.
 - `?p=<project>&t=<seconds>` opens one project held at one moment, for checking a frame;
   `?id=<data file>&yaw=&pitch=&zoom=&at=x,y,z` shows any data file on its own, for tuning a
   camera. Reduced motion shows each project's last beat, still.

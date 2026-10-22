@@ -102,35 +102,43 @@
       ],
     },
     {
-      slug: 'buehal', id: 'buehal', name: 'buehal', pts: true, lin: true, tri: true, hidden: true, length: 27,
+      slug: 'buehal', id: 'buehal', name: 'buehal', pts: true, lin: true, tri: true, hidden: true, length: 30,
       row: 'laserscanning · 12 stålbuer',
       meta: ['laserscanning', [39, 'mio. punkter'], [12, 'stålbuer']],
       gain: { pts: 0.55, lin: 1 }, ptsDraw: 4, half: 11.849,
-      // a cut along the hall, 2 m in from the arches' feet, that opens it to show the measures
-      section: { n: [-0.31828, 0.948, 0], from: 1.2, to: -0.103 },
+      // a level cut that sinks from over the roof to just above the measuring height: the plan of the measures
+      section: { n: [0, 0, 1], from: 0.5, to: -0.3039 },
       // where the 26 scanners stood, in the order they scanned
-      stations: [[0.8144, -0.0131, -0.3894], [0.4483, -0.0554, -0.3913], [0.0864, -0.2180, -0.3921], [0.0864, -0.2180, -0.3921],
-        [0.0864, -0.2180, -0.3921], [-0.4211, -0.3582, -0.3908], [-0.7152, -0.5659, -0.3912], [-0.8882, -0.1919, -0.3912],
-        [0.7432, 0.3276, -0.3895], [0.0998, 0.0839, -0.3913], [0.8506, 0.0814, -0.1199], [0.7151, 0.1458, -0.1195],
-        [0.0967, -0.0624, -0.1207], [-0.6203, -0.3030, -0.1196], [-0.7247, -0.5528, -0.1193], [-0.2813, -0.4051, -0.1199],
-        [0.0695, -0.2868, -0.1204], [0.4269, -0.1673, -0.1198], [0.6742, -0.0840, -0.1194], [0.8061, 0.0691, 0.1509],
-        [0.1191, -0.0536, 0.1506], [-0.4575, -0.2486, 0.1506], [-0.5619, -0.4976, 0.1505], [-0.2617, -0.3978, 0.1502],
-        [0.1902, -0.2461, 0.1501], [0.6666, -0.0863, 0.1505]],
-      pose: { yaw: 35, pitch: 24, zoom: 1.0 },
+      stations: [[0.8144, -0.2194, -0.4009], [0.4538, -0.1434, -0.4029], [0.0590, -0.1827, -0.4036],
+        [0.0590, -0.1827, -0.4036], [0.0590, -0.1827, -0.4036], [-0.4667, -0.1547, -0.4024],
+        [-0.8116, -0.2583, -0.4027], [-0.8570, 0.1513, -0.4028], [0.8550, 0.1262, -0.4010],
+        [0.1675, 0.0993, -0.4028], [0.8787, -0.1413, -0.1315], [0.7706, -0.0372, -0.1310],
+        [0.1181, -0.0384, -0.1322], [-0.6382, -0.0391, -0.1311], [-0.8164, -0.2429, -0.1309],
+        [-0.3490, -0.2435, -0.1314], [0.0211, -0.2426, -0.1319], [0.3980, -0.2427, -0.1313],
+        [0.6589, -0.2422, -0.1310], [0.8326, -0.1389, 0.1393], [0.1422, -0.0372, 0.1391], [-0.4665, -0.0392, 0.1391],
+        [-0.6445, -0.2422, 0.1390], [-0.3281, -0.2429, 0.1387], [0.1485, -0.2424, 0.1385], [0.6510, -0.2420, 0.1389]],
+      // low and outside, the hall's length across the picture, so the twelve arches stand in a row
+      pose: { yaw: 205, pitch: 8, zoom: 1.22, at: [0, -0.0172, 0.03], tall: { yaw: 236, pitch: 6, zoom: 1.05 } },
       beats: [
-        { at: 0, text: 'en hal under tolv stålbuer, scannet fra 26 opstillinger.', pts: [1, 0] },
-        { at: 4.6, text: 'stålet skilt ud af scanningen, bue for bue.', pts: [0.08, 1], pose: { yaw: 45, pitch: 20, zoom: 1.15 } },
-        { at: 9, text: 'og trukket ind på buerne i modellen.', pts: [0.05, 1], condense: 1, lin: [0.45, 0.1],
-          pose: { yaw: 60, pitch: 12, zoom: 1.35 } },
-        { at: 13.5, text: 'hallen bygget op i revit omkring dem.', pts: [0.04, 0.25], condense: 1, lin: [1, 0.35],
-          pose: { yaw: 88, pitch: 4, zoom: 1.7 } },
-        { at: 18, text: 'og buerne målt i 1 m højde: 1909 til 1927 mm imellem dem.', pts: [0.03, 0.15], condense: 1, lin: [1, 0.3, 1], cut: 1,
-          pose: { yaw: 161, pitch: 10, zoom: 1.8, at: [0.06, -0.26, -0.40], tall: { yaw: 150, pitch: 12, zoom: 1.5 } } },
-        { at: 23.5, text: 'og buerne målt i 1 m højde: 1909 til 1927 mm imellem dem.', pts: [0.03, 0.15], condense: 1, lin: [1, 0.35, 0],
-          pose: { yaw: 215, pitch: 24, zoom: 1.0, at: [0, 0, 0], w: 3.4 } },
+        { at: 0, text: 'en hal under tolv stålbuer, scannet fra 26 opstillinger.', pts: [0.4, 0.75] },
+        { at: 4.6, text: 'stålet skilt ud af scanningen, bue for bue.', pts: [0.05, 1],
+          pose: { yaw: 214, pitch: 10, zoom: 1.26, at: [0, -0.0172, 0.03], w: 4.4, tall: { yaw: 240, pitch: 8, zoom: 1.1 } } },
+        { at: 9, text: 'og trukket ind på buerne i modellen.', pts: [0.03, 1], condense: 1, lin: [0.6, 0.08],
+          pose: { yaw: 226, pitch: 12, zoom: 1.3, at: [0, -0.0172, 0.03], w: 4.5, tall: { yaw: 246, pitch: 10, zoom: 1.15 } } },
+        { at: 13.5, text: 'hallen bygget op i revit omkring dem.', pts: [0.03, 0.25], condense: 1, lin: [1, 0.4],
+          pose: { yaw: 60, pitch: 22, zoom: 1.25, at: [0, 0, 0], w: 4.5, tall: { zoom: 1.1 } } },
+        { at: 18.5, text: 'buerne målt i 1 m højde: 1909 til 1927 mm imellem dem.', pts: [0, 0], condense: 1, lin: [1, 0.5, 1], cut: 1,
+          pose: { yaw: 0, pitch: 90, zoom: 1.63, at: [0.0005, -0.0172, -0.3165], w: 3.2, tall: { yaw: 90, zoom: 1.4, at: [0.0005, -0.0172, -0.3165] } } },
+        { at: 25, text: 'tolv buer, målt og tegnet, som de står.', pts: [0.03, 0.15], condense: 1, lin: [1, 0.4, 0], cut: 0,
+          pose: { yaw: 215, pitch: 24, zoom: 1.0, at: [0, 0, 0], w: 4 } },
       ],
-      // [where, text, group, when]: the measured spacing between each pair of arches (mm)
-      dims: [[[0.8203, -0.0416, -0.4546], '1915', 2, 18.40], [[0.6668, -0.0931, -0.4546], '1923', 2, 18.52], [[0.5132, -0.1447, -0.4546], '1917', 2, 18.64], [[0.3596, -0.1963, -0.4546], '1923', 2, 18.76], [[0.2057, -0.2479, -0.4546], '1923', 2, 18.88], [[0.0524, -0.2994, -0.4546], '1909', 2, 19.00], [[-0.1008, -0.3508, -0.4546], '1921', 2, 19.12], [[-0.2545, -0.4024, -0.4546], '1920', 2, 19.24], [[-0.4081, -0.4540, -0.4546], '1920', 2, 19.36], [[-0.5619, -0.5056, -0.4546], '1927', 2, 19.48], [[-0.7159, -0.5573, -0.4546], '1922', 2, 19.60]],
+      // [where, text, group, when]: the measured spacing between each pair of arches (mm), beside the chain
+      dims: [[[0.8109, -0.2331, -0.3165], '1915', 2, 20.00], [[0.6490, -0.2331, -0.3165], '1923', 2, 20.12],
+        [[0.4870, -0.2331, -0.3165], '1917', 2, 20.24], [[0.3249, -0.2331, -0.3165], '1923', 2, 20.36],
+        [[0.1626, -0.2331, -0.3165], '1923', 2, 20.48], [[0.0009, -0.2331, -0.3165], '1909', 2, 20.60],
+        [[-0.1607, -0.2331, -0.3165], '1921', 2, 20.72], [[-0.3228, -0.2331, -0.3165], '1920', 2, 20.84],
+        [[-0.4848, -0.2331, -0.3165], '1920', 2, 20.96], [[-0.6471, -0.2331, -0.3165], '1927', 2, 21.08],
+        [[-0.8095, -0.2331, -0.3165], '1922', 2, 21.20]],
     },
     {
       slug: 'georadar', id: 'gade', name: 'georadar', lin: true, tri: true, hidden: true, flo: true, tube: true, length: 25,
@@ -280,7 +288,7 @@
       tri: Q.has('tri'), hidden: Q.has('tri'), ortho: Q.has('ortho'),
       length: 10, row: '', meta: [], hidden_row: true, flowSpeed: n('speed', 0.02), gain: { lin: n('gain', 0.9), pts: n('pgain', 0.5) },
       pose: { yaw: n('yaw', 30), pitch: n('pitch', 30), zoom: n('zoom', 1), at: (Q.get('at') || '0,0,0').split(',').map(Number) },
-      beats: [{ at: 0, text: Q.get('id'), lin: [n('g0', 1), n('g1', 1), n('g2', 1), n('g3', 1)], pts: [1, 1, 1, 1], flow: 1 }] });
+      beats: [{ at: 0, text: Q.get('id'), lin: [n('g0', 1), n('g1', 1), n('g2', 1), n('g3', 1)], pts: [n('p0', 1), n('p1', 1), 1, 1], flow: 1 }] });
     Q.set('p', '_test');
   }
   const HOLD = Q.get('p');
@@ -848,7 +856,8 @@
     const drift = STILL ? 0 : 0.035 * Math.sin(clock * 0.21);
     const aspect = w / h;
     TALL = aspect < 0.8;
-    const cam = camera(poseAt(P, t), aspect, aspect < 1 ? 0.24 : 0.1, P.ortho, drift + mx * 0.09, my * 0.05);
+    const pose = poseAt(P, t), flat = Math.cos(rad(Math.min(90, Math.abs(pose.pitch))));   // a top view does not drift round
+    const cam = camera(pose, aspect, aspect < 1 ? 0.24 : 0.1, P.ortho, (drift + mx * 0.09) * flat, my * 0.05 * flat);
     const { mvp, D } = cam;
     const sweep = P.sweep || [1, 0, 0];
     const R = Math.max(D * 0.85, 0.02), near = D - R, far = D + R * 1.6;
