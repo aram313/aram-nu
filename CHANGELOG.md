@@ -76,6 +76,10 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   model's own types say); three pipes are measured from the ground down (0,5, 2,4 and 1,0 m)
   and three wells carry their surveyed sizes. The numbers now count lines, not pipe pieces:
   85 lines, 47 wells, 90 m of street.
+- georadar: drawn clean instead of as the model's raw geometry: each well and manhole a round
+  shaft of its surveyed size and depth, the buildings plain wall planes from the walls' own lines
+  and heights (no windows, panels, beams or ground triangles). The radar runs the whole street at
+  one steady speed while the story goes on, instead of slowing to a stop half way.
 - fabrik: no made-up points any more (the scan itself is not part of the site, so the points
   that settled onto the model were invented); the steel is drawn member by member from the
   ground, and four members are lit and named by the profile they were fitted with (upe 160,

@@ -65,7 +65,7 @@ Then open http://localhost:8790. (Without npm: `py -m http.server 8790 --directo
 - Cables and pipes with a centre line are drawn as tubes: two outlines set off from the centre
   line by the radius, where the tube turns away from the eye, so they are whole at any
   distance, with a faint body between them; far away the outlines keep a least gap on screen. A project with a `route` can ride it: `ride` moves along it, a pose with
-  `follow` keeps the camera on that place, and `cut` puts a section across it there. The
+  `follow` keeps the camera on that place (with `glide` the ride keeps one steady speed from start to end), and `cut` puts a section across it there. The
   section cuts away what lies before it and draws a ring where it cuts each cable; with
   `scan` (georadar) it cuts nothing and instead reveals what lies behind it, as a band
   across the street with a faint curtain into the ground. Tube outlines meet at bends (each

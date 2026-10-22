@@ -136,22 +136,24 @@
       slug: 'georadar', id: 'gade', name: 'georadar', lin: true, tri: true, hidden: true, flo: true, tube: true, length: 25,
       row: 'georadar · 85 ledninger',
       meta: ['georadar', [85, 'ledninger'], [47, 'brønde'], '90 m gade'],
-      gain: { lin: 0.9, tube: 0.95 }, rideW: 9, ringR: 0.16, half: 58.27, draw: [3.5, 3.5, 3.5, 1.2],
-      // the radar's way down the middle of the street at ground level; its band spans the street
+      gain: { lin: 0.9, tube: 0.95 }, glide: 18, ringR: 0.16, half: 58.27, draw: [3.5, 3.5, 3.5, 1.2],
+      // the radar's way down the middle of the street at ground level; its band spans the street, and it
+      // runs the whole street at one steady speed while the story goes on
       route: [[0.0474, -1.0159, -0.099], [0.0474, 0.5286, -0.099]],
       scan: { group: 0, width: [-0.1288, 0.1288], depth: 0.0687 },
-      // line groups: 0 the wells, 1 the buildings, 2 the ground, 3 three pipes measured from the ground down
+      // line groups, drawn clean: 0 the wells, each a round shaft of its surveyed size, 1 the buildings as
+      // plain wall planes, 3 three pipes measured from the ground down
       pose: { yaw: 8, pitch: 34, zoom: 2.6, at: [0.047, -0.55, -0.1] },
       beats: [
-        { at: 0, text: 'en gade mellem to bygninger.', lin: [0, 0.4, 0.25] },
-        { at: 2.6, text: 'georadaren kører gaden igennem.', lin: [1, 0.3, 0.2], tube: 1, cut: 1, ride: 1,
+        { at: 0, text: 'en gade mellem to bygninger.', lin: [0, 0.8, 0, 0] },
+        { at: 2.6, text: 'georadaren kører gaden igennem.', lin: [1, 0.5, 0, 0], tube: 1, cut: 1, ride: 1,
           pose: { follow: true, yaw: 0, pitch: 38, zoom: 6.5, w: 3 } },
-        { at: 6.8, text: 'den ser, hvor der ligger noget, ikke hvad det er.', lin: [1, 0.3, 0.2], tube: 1, cut: 1, ride: 1 },
-        { at: 11.6, text: 'hver ledning er tegnet som et rør på 300 mm, i den dybde, radaren fandt.', lin: [0.35, 0.15, 0.12, 1], tube: 1, ride: 1,
+        { at: 6.8, text: 'den ser, hvor der ligger noget, ikke hvad det er.', lin: [1, 0.5, 0, 0], tube: 1, cut: 1, ride: 1 },
+        { at: 11.6, text: 'hver ledning er tegnet som et rør på 300 mm, i den dybde, radaren fandt.', lin: [0.35, 0.18, 0, 1], tube: 1, cut: 1, ride: 1,
           pose: { yaw: 8, pitch: 18, zoom: 10, at: [0.0078, -0.3256, -0.1159], w: 3.5, tall: { zoom: 12.5 } } },
-        { at: 16.6, text: 'brøndene står, som de blev målt i gaden.', lin: [1, 0.3, 0.15, 0], tube: 0.5, ride: 1,
+        { at: 16.6, text: 'brøndene står, som de blev målt i gaden.', lin: [1, 0.35, 0, 0], tube: 0.5, cut: 1, ride: 1,
           pose: { yaw: 30, pitch: 40, zoom: 9, at: [0.099, -0.4099, -0.0989], w: 3.5, tall: { zoom: 7.5 } } },
-        { at: 21, text: '85 ledninger og 47 brønde, så de kan ses, før nogen graver.', lin: [1, 0.3, 0.18, 0], tube: 1, ride: 1,
+        { at: 21, text: '85 ledninger og 47 brønde, så de kan ses, før nogen graver.', lin: [1, 0.6, 0, 0], tube: 1, ride: 1,
           pose: { yaw: 30, pitch: 48, zoom: 2.0, at: [0.05, -0.25, -0.13], w: 4 } },
       ],
       // [where, text, from, to]: the wells' surveyed sizes
@@ -326,6 +328,17 @@
     }
     return lerp(from, to, ease((t - at) / w));
   }
+  // how far along its route a project has ridden at time t (0..1). With glide the ride keeps one steady
+  // speed from start to end (a short speed-up and slow-down only), so it never dies away half way
+  function ride(P, t) {
+    if (!P.glide) return value(P, 'ride', undefined, t, P.rideW || 8);
+    const x = Math.min(1, Math.max(0, (t - firstShown(P, 'ride')) / P.glide)), e = 0.12;
+    // constant speed in the middle; the ends are quarter-sine ramps that meet it with the same speed
+    const r = (2 * e) / Math.PI, v = 1 / (1 - 2 * e + 2 * r);   // a ramp's length at speed 1, and the middle speed
+    if (x < e) return v * r * (1 - Math.cos((x / e) * (Math.PI / 2)));
+    if (x > 1 - e) return 1 - v * r * (1 - Math.cos(((1 - x) / e) * (Math.PI / 2)));
+    return v * r + v * (x - e);
+  }
   // the camera at time t. A pose with follow rides along the project's route: it looks at the place
   // the ride has reached, its yaw turned from the route's heading there.
   let TALL = false;   // a tall (phone) screen: poses use their "tall" variant where they have one
@@ -334,7 +347,7 @@
     const base = Object.assign({ at: [0, 0, 0] }, v(P.pose));
     const where = (p, k) => {
       if (!p.follow) return p;
-      const s = value(P, 'ride', undefined, k, P.rideW || 8);
+      const s = ride(P, k);
       const a = routeAt(P, s - 0.1).pos, b = routeAt(P, s + 0.1).pos;
       return Object.assign({}, p, { at: routeAt(P, s).pos, yaw: p.yaw + (Math.atan2(b[0] - a[0], b[1] - a[1]) * 180) / Math.PI });
     };
@@ -849,10 +862,10 @@
     let keep = 0, cut = null;
     const words = [];
     // a scan reveals what lies along the route up to where its band has come
-    const scanned = STILL || !P.scan ? 9 : value(P, 'ride', undefined, t, P.rideW || 8);
+    const scanned = STILL || !P.scan ? 9 : ride(P, t);
     if (P.route) {   // a section across the route where the ride has come to; what lies before it fades away
       const k = value(P, 'cut', undefined, t, 2.4);
-      const { pos: c, tan: n } = routeAt(P, value(P, 'ride', undefined, t, P.rideW || 8));
+      const { pos: c, tan: n } = routeAt(P, ride(P, t));
       clip = [-n[0], -n[1], -n[2], -(c[0] * n[0] + c[1] * n[1] + c[2] * n[2])];
       keep = P.scan ? 1 : 1 - k;
       if (k > 0.002) cut = { c, n, k };
