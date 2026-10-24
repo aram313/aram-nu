@@ -166,9 +166,6 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .say .btn { min-height: 40px; padding: 0 12px; }
 .out { margin-top: 14px; font-size: 22px; font-weight: 200; font-variant-numeric: tabular-nums; }
 .out small { color: var(--dim); font-size: 15px; font-weight: 300; }
-.stepper { display: flex; align-items: center; border-bottom: 1px solid var(--edge); }
-.stepper button { width: 44px; height: 44px; background: none; border: 0; font-size: 24px; font-weight: 200; cursor: pointer; }
-.stepper output { flex: 1; text-align: center; font-size: 30px; font-weight: 200; font-variant-numeric: tabular-nums; }
 .sizeQ { margin-top: 14px; color: var(--dim); }
 .sizeBig { margin-top: 16px; font-size: 36px; font-weight: 200; line-height: 1.15; }
 .sizeBig small { font-size: 15px; font-weight: 300; color: var(--dim); margin-left: 8px; }
@@ -292,15 +289,6 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
       <div class="say" id="yenSay" hidden></div>
       <p class="hint" id="taxLine" hidden></p>
       <p class="hint" id="rateLine"></p>
-    </section>
-    <section class="tool" aria-label="del regningen">
-      <h2>del regningen</h2>
-      <div class="conv">
-        <label class="cur"><span>regningen</span><span class="inp"><input id="billIn" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0"><i>¥</i></span></label>
-        <div class="cur"><span>personer</span><div class="stepper"><button type="button" data-p="-1" aria-label="færre">−</button><output id="billN">2</output><button type="button" data-p="1" aria-label="flere">+</button></div></div>
-      </div>
-      <p class="out" id="billOut" hidden></p>
-      <p class="hint">man giver ikke drikkepenge i japan. betaler i hver for sig, så brug kortet "kan vi betale hver for sig?" i parløren.</p>
     </section>
     <section class="tool" aria-label="størrelser">
       <h2>størrelser</h2>
@@ -696,22 +684,6 @@ $("krIn").addEventListener("input", e => {
   yenSay(n);
 });
 rateLine();
-
-/* split the bill */
-let billN = 2;
-try { billN = Math.min(20, Math.max(2, +store.get("tokyo-persons") || 2)); } catch (e) {}
-function renderBill() {
-  $("billN").textContent = billN;
-  const total = yenOf($("billIn").value), out = $("billOut");
-  if (!(total > 0)) { out.hidden = true; return; }
-  const each = Math.ceil(total / billN);
-  out.innerHTML = `${fmt(each, 0)} ¥ <small>hver · ${krFmt(each * RATE.r)} kr</small>`;
-  out.hidden = false;
-}
-$("billIn").addEventListener("input", renderBill);
-$("billIn").addEventListener("blur", e => { const n = yenOf(e.target.value); if (!isNaN(n)) e.target.value = fmt(n, 0); });
-document.querySelector(".stepper").addEventListener("click", e => { const b = e.target.closest("[data-p]"); if (!b) return; billN = Math.min(20, Math.max(2, billN + +b.dataset.p)); renderBill(); });
-renderBill();
 
 /* any number, said */
 $("numIn").addEventListener("input", e => {
