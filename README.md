@@ -120,8 +120,11 @@ Danish, in the front page's look (black, white text, lowercase, the device's own
 hairlines, grey for anything secondary), built like a phone app with four tabs in a bar at the bottom:
 
 - **spis**: 64 halal Japanese places to eat, shown nearest first (from the phone's location, a station
-  or pasted hotel coordinates), by dish with a dish and an area filter, or as 15 foods to taste.
-- **se**: 16 sights, each with the nearest halal places and the walk to them.
+  or pasted hotel coordinates), by dish with a dish and an area filter, or as 15 foods to taste. A tap
+  on a place opens a sheet with its Japanese address, the map, and cards that ask the way or tell a
+  taxi driver where to go, in Japanese with the name and address.
+- **se**: 16 sights, each with the nearest halal places and the walk to them, and "spørg om vej" with
+  its Japanese name and address.
 - **parlør**: a halal card, a search, the phrase cards in seven categories, and "godt at vide". A card
   shows the Japanese full screen for staff, black on white (sized to fit, ○ and ✕ answer buttons in
   green and red on yes/no questions, counters

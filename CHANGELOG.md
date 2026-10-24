@@ -55,6 +55,12 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   300, hairlines instead of boxes (no web fonts any more), and the staff card is white on black. A fourth
   tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
   categories to pick from, and the staff card closes with a button at the bottom or by pulling it down.
+- `aram.nu/tokyo`: a tap on a place to eat (in the list, near a sight or under a food) opens a sheet with
+  its Japanese address and three choices: the map, "spørg om vej" and "vis til taxachaufføren". The last
+  two show staff or a driver the question in Japanese with the place's name and address
+  (〒, ward, district and block numbers in Japanese order, made from Google's addresses for all 109
+  places and sights). Every sight has "spørg om vej" with its Japanese name. Dish headings carry their
+  kanji again.
 - `aram.nu/tokyo`: the staff card is black on white again (the page's colours turned round), and the
   answer buttons carry Japan's ○ (maru, yes) in green and ✕ (batsu, no) in red, as on OK/NG signs; the
   answer shows large in the same colour.

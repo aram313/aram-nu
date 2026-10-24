@@ -1,7 +1,7 @@
 // Keeps aram.nu/tokyo working without internet.
 // The page itself: network first (so updates arrive when online), cached copy when offline.
 // Google Fonts: cache first, so the fonts still show offline after the first visit.
-const CACHE = "tokyo-2bb52635ae";
+const CACHE = "tokyo-a85a518510";
 const CORE = ["./", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", event => {
