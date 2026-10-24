@@ -72,7 +72,7 @@ h1 { font-family: var(--display); font-weight: 700; font-size: 30px; line-height
 .seg button { font: 500 14px var(--body); color: var(--fg); background: none; border: 0; padding: 8px 14px; cursor: pointer; }
 .seg button[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
 .ctl { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
-.ctl select, .ctl input[type="text"] { flex: 1; min-width: 0; font: 500 15px var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; }
+.ctl select, .ctl input[type="text"], .ctl input[type="search"] { flex: 1; min-width: 0; font: 500 15px var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; min-width: 0; }
 .chip { font: 500 13px/1 var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 12px; cursor: pointer; }
 .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
@@ -160,21 +160,40 @@ li.item:first-child { border-top: 0; }
 .links a:hover { color: var(--accent); }
 
 /* Parlør */
+.halalCard { width: 100%; margin-top: 18px; text-align: left; font: inherit; background: var(--accent); color: var(--bg); border: 0; border-radius: 14px; padding: 14px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 3px; }
+.halalCard .hc1 { font-family: var(--display); font-weight: 700; font-size: 18px; }
+.halalCard .hc2 { font-size: 14px; opacity: 0.9; }
 .talkGroup h2 { font-size: 17px; margin: 22px 0 8px; }
 .talkNote { margin: -4px 0 8px; font-size: 14px; font-weight: 600; color: var(--fg); font-variant-numeric: tabular-nums; }
 .talkGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
 .phrase { text-align: left; font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; min-height: 86px; }
 .phrase:active { background: var(--accent-soft); }
+.phrase.special { border-color: var(--accent); }
 .phrase .da { font-weight: 600; font-size: 15px; line-height: 1.3; }
 .phrase .ja { font-family: var(--display); font-size: 13px; color: var(--muted); line-height: 1.4; overflow-wrap: normal; line-break: strict; }
 /* The big card is always black on white, so staff can read it in any theme or light */
-.big { position: fixed; inset: 0; z-index: 50; background: #ffffff; color: #111111; display: flex; flex-direction: column;
-  padding: calc(env(safe-area-inset-top, 0px) + 12px) max(20px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 20px) max(20px, env(safe-area-inset-left, 0px)); }
-.bigClose { align-self: flex-end; font: 600 16px var(--body); color: #111111; background: #eef0ee; border: 0; border-radius: 999px; padding: 10px 18px; cursor: pointer; }
-.bigBody { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; overflow-y: auto; }
-.bigJa { font-family: var(--display); font-weight: 700; font-size: clamp(34px, 11vw, 92px); line-height: 1.35; margin: 0; text-wrap: balance; word-break: normal; overflow-wrap: normal; line-break: strict; }
-.bigRo { margin: 18px 0 0; font-size: 16px; color: #55605a; }
-.bigDa { margin: 4px 0 0; font-size: 16px; color: #55605a; }
+.big { position: fixed; inset: 0; z-index: 50; background: #ffffff; color: #111111; display: flex; flex-direction: column; gap: 10px;
+  padding: calc(env(safe-area-inset-top, 0px) + 12px) max(20px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 16px) max(20px, env(safe-area-inset-left, 0px)); }
+.bigTop { display: flex; justify-content: flex-end; gap: 8px; }
+.bigBtn { font: 600 16px var(--body); color: #111111; background: #eef0ee; border: 0; border-radius: 999px; padding: 10px 18px; cursor: pointer; }
+.bigBody { flex: 1; min-height: 0; display: flex; align-items: center; overflow: hidden; }
+.bigText { width: 100%; margin: 0; font-family: var(--display); font-weight: 700; line-height: 1.3; white-space: pre-line; text-wrap: balance; word-break: normal; overflow-wrap: normal; line-break: strict; }
+.bigText:lang(da) { font-family: var(--body); }
+.bigText .ln { display: block; text-wrap: balance; }
+.bigText.nw .ln { white-space: nowrap; }
+.bigText.jp .ln { word-break: keep-all; }
+.bigSub { margin: 0; font-size: 15px; line-height: 1.45; color: #4f5852; }
+.bigSub .sj { font-family: var(--display); font-size: 17px; color: #111111; font-weight: 700; }
+.ask { margin: 4px 0 8px; font: 700 16px var(--display); color: #111111; }
+.ans { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 8px; }
+.ans button { font-size: 20px; white-space: nowrap; }
+.ans button, .step button, .formBtns button, .backBtn { font: 700 22px var(--display); color: #111111; background: #ffffff; border: 2px solid #111111; border-radius: 14px; padding: 12px 6px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.ans button small { font: 500 13px var(--body); color: #4f5852; }
+.step { display: flex; align-items: center; justify-content: center; gap: 18px; }
+.step button { width: 64px; height: 64px; padding: 0; border-radius: 50%; font-size: 30px; justify-content: center; }
+.backBtn, .formBtns button { font: 600 17px var(--body); padding: 12px 16px; width: 100%; }
+.formBtns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.hotelInput { width: 100%; min-height: 120px; font: 500 18px var(--display); color: #111111; background: #f6f7f6; border: 1px solid #c9cfca; border-radius: 12px; padding: 12px; resize: vertical; }
 
 footer { padding-block: 26px 40px; color: var(--muted); font-size: 13.5px; }
 footer h3 { font-family: var(--display); color: var(--fg); font-size: 16px; margin: 18px 0 6px; }
@@ -264,18 +283,21 @@ footer .src { margin-top: 18px; font-size: 12px; }
 
 <div id="viewTalk" role="tabpanel" aria-labelledby="tabTalk" hidden>
   <div class="wrap">
-    <p class="tryIntro">Tryk på et kort for at vise det stort.</p>
+    <button class="halalCard" id="halalCard" type="button"><span class="hc1">Halal-kortet</span><span class="hc2">Forklarer alt på én gang: intet svinekød, intet fra svin, ingen alkohol.</span></button>
+    <div class="ctl"><input type="search" id="talkSearch" placeholder="Søg, fx toilet, regning, taxa" aria-label="Søg i parløren" autocomplete="off"></div>
     <div id="talk"></div>
+    <p class="empty" id="talkEmpty" hidden>Ingen kort passer. Prøv et andet ord.</p>
   </div>
 </div>
 
-<div class="big" id="big" role="dialog" aria-modal="true" aria-labelledby="bigJa" hidden>
-  <button class="bigClose" id="bigClose" type="button">Luk</button>
-  <div class="bigBody">
-    <p class="bigJa" id="bigJa" lang="ja"></p>
-    <p class="bigRo" id="bigRo"></p>
-    <p class="bigDa" id="bigDa"></p>
+<div class="big" id="big" role="dialog" aria-modal="true" aria-label="Kort til personalet" hidden>
+  <div class="bigTop">
+    <button class="bigBtn" id="bigSpeak" type="button" hidden>Læs højt</button>
+    <button class="bigBtn" id="bigClose" type="button">Luk</button>
   </div>
+  <div class="bigBody" id="bigBody"><p class="bigText" id="bigText"></p></div>
+  <p class="bigSub" id="bigSub"></p>
+  <div class="bigAct" id="bigAct"></div>
 </div>
 
 <div class="wrap">
@@ -478,41 +500,42 @@ function renderSee() {
 /* ---------- Parlør ---------- */
 const PHRASES = [
   ["Halal", "", [
-    ["Er det her halal?", "これはハラールですか？", "Kore wa harāru desu ka?"],
-    ["Har I en halal-menu?", "ハラールメニューはありますか？", "Harāru menyū wa arimasu ka?"],
+    ["Er det her halal?", "これはハラールですか？", "Kore wa harāru desu ka?", 1],
+    ["Har I en halal-menu?", "ハラールメニューはありますか？", "Harāru menyū wa arimasu ka?", 1],
     ["Jeg er muslim.", "私はイスラム教徒です。", "Watashi wa isuramu-kyōto desu."],
     ["Jeg spiser ikke svinekød.", "豚肉は食べられません。", "Butaniku wa taberaremasen."],
-    ["Er der svinekød eller alkohol i?", "豚肉やアルコールは入っていますか？", "Butaniku ya arukōru wa haitte imasu ka?"],
-    ["Er suppen lavet på svinekød eller svineknogler?", "スープに豚骨や豚肉は使っていますか？", "Sūpu ni tonkotsu ya butaniku wa tsukatte imasu ka?"],
+    ["Er der svinekød eller alkohol i?", "豚肉やアルコールは入っていますか？", "Butaniku ya arukōru wa haitte imasu ka?", 1],
+    ["Er suppen lavet på svinekød eller svineknogler?", "スープに豚骨や豚肉は使っていますか？", "Sūpu ni tonkotsu ya butaniku wa tsukatte imasu ka?", 1],
     ["Brug venligst ikke sake eller mirin.", "お酒やみりんを使わないでください。", "Osake ya mirin o tsukawanaide kudasai."],
     ["Heller ikke sake eller mirin i madlavningen.", "料理に使うお酒やみりんも食べられません。", "Ryōri ni tsukau osake ya mirin mo taberaremasen."],
-    ["Er der gelatine i?", "ゼラチンは入っていますか？", "Zerachin wa haitte imasu ka?"],
-    ["Er kødet halal-certificeret?", "このお肉はハラール認証済みですか？", "Kono oniku wa harāru ninshō-zumi desu ka?"],
-    ["Er der mirin eller sake i sushirisen?", "シャリにみりんやお酒は入っていますか？", "Shari ni mirin ya osake wa haitte imasu ka?"],
-    ["Må jeg bruge min egen sojasauce?", "自分の醤油を使ってもいいですか？", "Jibun no shōyu o tsukatte mo ii desu ka?"],
+    ["Er der gelatine i?", "ゼラチンは入っていますか？", "Zerachin wa haitte imasu ka?", 1],
+    ["Er kødet halal-certificeret?", "このお肉はハラール認証済みですか？", "Kono oniku wa harāru ninshō-zumi desu ka?", 1],
+    ["Er der mirin eller sake i sushirisen?", "シャリにみりんやお酒は入っていますか？", "Shari ni mirin ya osake wa haitte imasu ka?", 1],
+    ["Må jeg bruge min egen sojasauce?", "自分の醤油を使ってもいいですか？", "Jibun no shōyu o tsukatte mo ii desu ka?", 1],
     ["Uden råt æg, tak.", "生卵なしでお願いします。", "Nama tamago nashi de onegaishimasu."],
-    ["Er der et sted, hvor jeg kan bede?", "お祈りできる場所はありますか？", "Oinori dekiru basho wa arimasu ka?"],
+    ["Er der et sted, hvor jeg kan bede?", "お祈りできる場所はありますか？", "Oinori dekiru basho wa arimasu ka?", 1],
     ["Hvor er den nærmeste moské?", "一番近いモスクはどこですか？", "Ichiban chikai mosuku wa doko desu ka?"]
   ]],
   ["På restauranten", "", [
     ["Undskyld! (for at kalde)", "すみません！", "Sumimasen!"],
-    ["Er der ledige pladser?", "席は空いていますか？", "Seki wa aite imasu ka?"],
+    ["Vi er … personer", "◯名です。", "… -mei desu.", 0, "persons"],
+    ["Er der ledige pladser?", "席は空いていますか？", "Seki wa aite imasu ka?", 1],
     ["Hvor længe skal vi vente?", "どのくらい待ちますか？", "Dono kurai machimasu ka?"],
     ["Vi har reserveret bord.", "予約しています。", "Yoyaku shite imasu."],
     ["Hvad anbefaler I?", "おすすめは何ですか？", "Osusume wa nan desu ka?"],
     ["Den her, tak.", "これをお願いします。", "Kore o onegaishimasu."],
     ["Ikke stærk, tak.", "辛くしないでください。", "Karaku shinaide kudasai."],
     ["Vand, tak.", "お水をください。", "Omizu o kudasai."],
-    ["Kan vi tage det med?", "持ち帰りできますか？", "Mochikaeri dekimasu ka?"],
+    ["Kan vi tage det med?", "持ち帰りできますか？", "Mochikaeri dekimasu ka?", 1],
     ["Regningen, tak.", "お会計をお願いします。", "Okaikei o onegaishimasu."],
-    ["Kan vi betale hver for sig?", "別々に払えますか？", "Betsubetsu ni haraemasu ka?"],
-    ["Kan jeg betale med kort?", "カードで払えますか？", "Kādo de haraemasu ka?"],
+    ["Kan vi betale hver for sig?", "別々に払えますか？", "Betsubetsu ni haraemasu ka?", 1],
+    ["Kan jeg betale med kort?", "カードで払えますか？", "Kādo de haraemasu ka?", 1],
     ["Tak for maden.", "ごちそうさまでした。", "Gochisōsama deshita."]
   ]],
   ["Indkøb", "", [
     ["Hvad koster det?", "これはいくらですか？", "Kore wa ikura desu ka?"],
-    ["Kan jeg købe det momsfrit?", "免税できますか？", "Menzei dekimasu ka?"],
-    ["Har I den i en anden størrelse?", "他のサイズはありますか？", "Hoka no saizu wa arimasu ka?"],
+    ["Kan jeg købe det momsfrit?", "免税できますか？", "Menzei dekimasu ka?", 1],
+    ["Har I den i en anden størrelse?", "他のサイズはありますか？", "Hoka no saizu wa arimasu ka?", 1],
     ["Jeg kigger bare.", "見ているだけです。", "Mite iru dake desu."],
     ["En pose, tak.", "袋をください。", "Fukuro o kudasai."]
   ]],
@@ -521,12 +544,13 @@ const PHRASES = [
     ["Hvilket tog skal jeg tage for at komme hertil?", "ここへ行くには、どの電車に乗ればいいですか？", "Koko e iku ni wa, dono densha ni noreba ii desu ka?"],
     ["Hvor kan jeg fylde mit Suica-kort op?", "Suicaのチャージはどこでできますか？", "Suika no chāji wa doko de dekimasu ka?"],
     ["Hvor holder taxaerne?", "タクシー乗り場はどこですか？", "Takushī noriba wa doko desu ka?"],
+    ["Kør mig til mit hotel", "このホテルまでお願いします。", "Kono hoteru made onegaishimasu.", 0, "hotel"],
     ["Kør mig til denne adresse, tak.", "この住所までお願いします。", "Kono jūsho made onegaishimasu."],
     ["Stop her, tak.", "ここで止めてください。", "Koko de tomete kudasai."]
   ]],
   ["Hotel", "", [
     ["Jeg vil gerne tjekke ind.", "チェックインをお願いします。", "Chekku-in o onegaishimasu."],
-    ["Kan I opbevare vores bagage?", "荷物を預かってもらえますか？", "Nimotsu o azukatte moraemasu ka?"],
+    ["Kan I opbevare vores bagage?", "荷物を預かってもらえますか？", "Nimotsu o azukatte moraemasu ka?", 1],
     ["Hvad er koden til wi-fi?", "Wi-Fiのパスワードを教えてください。", "Waifai no pasuwādo o oshiete kudasai."]
   ]],
   ["Nødsituation", "Ambulance: 119 · Politi: 110", [
@@ -539,25 +563,139 @@ const PHRASES = [
   ["Praktisk", "", [
     ["Tak.", "ありがとうございます。", "Arigatō gozaimasu."],
     ["Jeg taler ikke japansk.", "日本語が話せません。", "Nihongo ga hanasemasen."],
-    ["Taler du engelsk?", "英語を話せますか？", "Eigo o hanasemasu ka?"],
-    ["Kan du skrive det ned?", "書いてもらえますか？", "Kaite moraemasu ka?"],
+    ["Taler du engelsk?", "英語を話せますか？", "Eigo o hanasemasu ka?", 1],
+    ["Kan du skrive det ned?", "書いてもらえますか？", "Kaite moraemasu ka?", 1],
     ["Hvor er toilettet?", "トイレはどこですか？", "Toire wa doko desu ka?"],
-    ["Vil du tage et billede af os?", "写真を撮ってもらえますか？", "Shashin o totte moraemasu ka?"]
+    ["Vil du tage et billede af os?", "写真を撮ってもらえますか？", "Shashin o totte moraemasu ka?", 1]
   ]]
 ];
+const HALAL_CARD = {
+  ja: "私はイスラム教徒です。\n次のものは食べられません。\n・豚肉と豚由来のもの\n（ラード、ゼラチン、豚骨スープなど）\n・アルコール\n（お酒、みりん、料理酒など）\nこの料理には入っていますか？",
+  da: "Jeg er muslim: intet svinekød, intet fra svin og ingen alkohol. Er der noget af det i retten?"
+};
+const ASK = "下のボタンを押してお答えください。";
+const ANSWERS = [["はい", "Ja"], ["いいえ", "Nej"], ["わかりません", "Ved ikke"]];
+const COUNT_RO = ["", "ichi", "ni", "san", "yon", "go", "roku", "nana", "hachi", "kyū", "jū"];
+const fold = s => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+
+let talkQuery = "";
 function renderTalk() {
-  $("talk").innerHTML = PHRASES.map(([group, note, list], gi) => `<section class="talkGroup"><h2>${esc(group)}</h2>${note ? `<p class="talkNote">${esc(note)}</p>` : ""}<div class="talkGrid">${list.map((p, i) =>
-    `<button class="phrase" type="button" data-g="${gi}" data-i="${i}"><span class="da">${esc(p[0])}</span><span class="ja" lang="ja">${esc(p[1])}</span></button>`).join("")}</div></section>`).join("");
+  const q = fold(talkQuery.trim());
+  let shown = 0;
+  $("talk").innerHTML = PHRASES.map(([group, note, list], gi) => {
+    const cards = list.map((p, i) => ({ p, i })).filter(({ p }) => !q || fold(p[0] + " " + p[1] + " " + p[2] + " " + group).includes(q));
+    if (!cards.length) return "";
+    shown += cards.length;
+    return `<section class="talkGroup"><h2>${esc(group)}</h2>${note && !q ? `<p class="talkNote">${esc(note)}</p>` : ""}<div class="talkGrid">${cards.map(({ p, i }) =>
+      `<button class="phrase${p[4] ? " special" : ""}" type="button" data-g="${gi}" data-i="${i}"><span class="da">${esc(p[0])}</span><span class="ja" lang="ja">${esc(p[1])}</span></button>`).join("")}</div></section>`;
+  }).join("");
+  $("talkEmpty").hidden = shown > 0;
 }
-let lastPhrase = null;
-function openBig(p, from) {
-  lastPhrase = from;
-  $("bigJa").textContent = p[1]; $("bigRo").textContent = p[2]; $("bigDa").textContent = p[0];
+
+/* the big card: one place for every mode */
+let lastPhrase = null, current = null, wake = null;
+/* Japanese has no spaces: find word starts so a line only breaks between words, never inside one,
+   never before 。、？ and never between a number and its counter. */
+const SEG = (typeof Intl !== "undefined" && Intl.Segmenter) ? new Intl.Segmenter("ja", { granularity: "word" }) : null;
+const strongStart = s => /^[一-鿿ァ-ヺ（「]/.test(s) || /^[おご][一-鿿]/.test(s);
+const PARTICLE = /^(は|が|を|へ|や|から|まで|には|では)$/;      /* always end a phrase */
+const SOFT = /^(に|で|も|と|の)$/;                          /* end a phrase only before a kanji or katakana word */
+/* A line may break: after a particle (は, を, に …), after 、。？！, or where a word that starts with
+   kanji or katakana follows hiragana. Never inside a compound, after the prefix お/ご, between a
+   number and its counter, or before 。、？！）ー. */
+function jaLine(line) {
+  if (!SEG) return esc(line);
+  let out = "", prev = "";
+  for (const { segment } of SEG.segment(line)) {
+    const ok = out && prev !== "お" && prev !== "ご" && !/[0-9０-９・]$/.test(prev) && !/^[、。！？）」ー]/.test(segment) &&
+      (PARTICLE.test(prev) || /[、。！？）」]$/.test(prev) || (/[ぁ-ゖ]$/.test(prev) && strongStart(segment)) || (SOFT.test(prev) && strongStart(segment)));
+    out += (ok ? "<wbr>" : (/・$/.test(prev) ? "\u2060" : "")) + esc(segment);
+    prev = segment;
+  }
+  return out;
+}
+
+/* Largest text that fits. Each line stays whole when that still gives big text (40 px or more);
+   otherwise lines may wrap, evenly balanced, so no word or 。 is left alone on a line. */
+function fitText() {
+  const box = $("bigBody"), el = $("bigText");
+  const largest = nowrap => {
+    el.classList.toggle("nw", nowrap);
+    let lo = 14, hi = Math.min(170, Math.max(window.innerWidth, 320) * 0.34);
+    for (let k = 0; k < 16; k++) {
+      const mid = (lo + hi) / 2;
+      el.style.fontSize = mid + "px";
+      if (el.scrollHeight <= box.clientHeight && el.scrollWidth <= box.clientWidth + 1) lo = mid; else hi = mid;
+    }
+    return Math.floor(lo);
+  };
+  const whole = largest(true);
+  if (whole >= 40) { el.classList.add("nw"); el.style.fontSize = whole + "px"; return; }
+  el.style.fontSize = largest(false) + "px";
+}
+function jaVoice() {
+  if (!("speechSynthesis" in window)) return null;
+  const v = speechSynthesis.getVoices();
+  return v.find(x => /^ja/i.test(x.lang)) || (v.length ? null : undefined);
+}
+function paint(view) {
+  current = view;
+  const t = $("bigText");
+  const ja = view.lang === "ja" && !!SEG;
+  t.classList.toggle("jp", ja);
+  t.innerHTML = String(view.text).split("\n").map(l => `<span class="ln">${ja ? jaLine(l) : esc(l)}</span>`).join("");
+  t.lang = view.lang;
+  $("bigSub").innerHTML = view.sub || "";
+  $("bigAct").innerHTML = view.act || "";
+  const voice = jaVoice();
+  $("bigSpeak").hidden = !(view.lang === "ja" && view.say && voice !== null);
+  requestAnimationFrame(fitText);
+}
+function phraseView(p) {
+  return {
+    text: p[1], lang: "ja", say: p[1],
+    sub: `${esc(p[2])}<br>${esc(p[0])}`,
+    act: p[3] ? answerButtons() : "",
+    back: p
+  };
+}
+function answerButtons() {
+  return `<p class="ask" lang="ja">${ASK}</p><div class="ans">${ANSWERS.map(([ja, da], i) => `<button type="button" data-ans="${i}" lang="ja">${ja}<small lang="da">${da}</small></button>`).join("")}</div>`;
+}
+function answerView(i, back) {
+  const [ja, da] = ANSWERS[i];
+  return { text: da, lang: "da", sub: `<span class="sj" lang="ja">${ja}</span><br>Svaret fra personalet`, act: `<button class="backBtn" type="button" data-back="1">Tilbage til spørgsmålet</button>`, backTo: back };
+}
+let persons = 2, hotel = "";
+try { persons = Math.min(10, Math.max(1, +store.get("tokyo-persons") || 2)); hotel = store.get("tokyo-hotel") || ""; } catch (e) {}
+function personsView() {
+  return { text: `${persons}名です。`, lang: "ja", say: `${persons}名です。`,
+    sub: `${COUNT_RO[persons]}-mei desu.<br>Vi er ${persons} ${persons === 1 ? "person" : "personer"}.`,
+    act: `<div class="step"><button type="button" data-step="-1" aria-label="Færre">−</button><button type="button" data-step="1" aria-label="Flere">+</button></div>`, kind: "persons" };
+}
+function hotelView() {
+  if (!hotel) return hotelEdit();
+  return { text: "このホテルまでお願いします。\n" + hotel, lang: "ja", say: "このホテルまでお願いします。",
+    sub: "Kono hoteru made onegaishimasu.<br>Kør mig til dette hotel, tak.",
+    act: `<button class="backBtn" type="button" data-edit="1">Ret adressen</button>`, kind: "hotel" };
+}
+function hotelEdit() {
+  return { text: "Hvor bor I?", lang: "da",
+    sub: "Indsæt hotellets adresse på japansk. Du finder den i bookingbekræftelsen eller på hotellets side i Google Maps.",
+    act: `<textarea class="hotelInput" id="hotelInput" lang="ja" placeholder="東京都新宿区…">${esc(hotel)}</textarea><div class="formBtns"><button type="button" data-cancel="1">Annuller</button><button type="button" data-save="1">Gem</button></div>`, kind: "hotelEdit" };
+}
+async function openBig(view, from) {
+  lastPhrase = from || null;
   $("big").hidden = false; document.body.style.overflow = "hidden";
+  paint(view);
   $("bigClose").focus();
+  try { if ("wakeLock" in navigator) wake = await navigator.wakeLock.request("screen"); } catch (e) { wake = null; }
 }
 function closeBig() {
   $("big").hidden = true; document.body.style.overflow = "";
+  try { if ("speechSynthesis" in window) speechSynthesis.cancel(); } catch (e) {}
+  try { if (wake) wake.release(); } catch (e) {}
+  wake = null;
   if (lastPhrase) lastPhrase.focus();
 }
 
@@ -619,8 +757,33 @@ $("tabEat").addEventListener("click", () => { tab = "eat"; render(); });
 $("tabTry").addEventListener("click", () => { tab = "try"; render(); window.scrollTo({ top: 0 }); });
 $("tabSee").addEventListener("click", () => { tab = "see"; render(); window.scrollTo({ top: 0 }); });
 $("tabTalk").addEventListener("click", () => { tab = "talk"; render(); window.scrollTo({ top: 0 }); });
-$("talk").addEventListener("click", e => { const b = e.target.closest(".phrase"); if (!b) return; openBig(PHRASES[+b.dataset.g][2][+b.dataset.i], b); });
-$("big").addEventListener("click", closeBig);
+$("talk").addEventListener("click", e => {
+  const b = e.target.closest(".phrase"); if (!b) return;
+  const p = PHRASES[+b.dataset.g][2][+b.dataset.i];
+  openBig(p[4] === "persons" ? personsView() : p[4] === "hotel" ? hotelView() : phraseView(p), b);
+});
+$("halalCard").addEventListener("click", e => openBig({ text: HALAL_CARD.ja, lang: "ja", say: HALAL_CARD.ja.replace(/[・（）]/g, " "), sub: esc(HALAL_CARD.da), act: answerButtons() }, e.currentTarget));
+$("talkSearch").addEventListener("input", e => { talkQuery = e.target.value; renderTalk(); });
+$("bigClose").addEventListener("click", closeBig);
+$("bigSpeak").addEventListener("click", () => {
+  if (!current || !current.say || !("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(current.say);
+  u.lang = "ja-JP"; u.rate = 0.9;
+  const v = jaVoice(); if (v) u.voice = v;
+  speechSynthesis.speak(u);
+});
+$("bigAct").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.ans) { paint(answerView(+b.dataset.ans, current)); return; }
+  if (b.dataset.back && current && current.backTo) { paint(current.backTo); return; }
+  if (b.dataset.step) { persons = Math.min(10, Math.max(1, persons + +b.dataset.step)); store.set("tokyo-persons", String(persons)); paint(personsView()); return; }
+  if (b.dataset.edit) { paint(hotelEdit()); setTimeout(() => { const i = $("hotelInput"); if (i) i.focus(); }, 50); return; }
+  if (b.dataset.cancel) { if (hotel) paint(hotelView()); else closeBig(); return; }
+  if (b.dataset.save) { const v = ($("hotelInput").value || "").trim(); if (!v) { $("hotelInput").focus(); return; } hotel = v; store.set("tokyo-hotel", hotel); paint(hotelView()); }
+});
+window.addEventListener("resize", () => { if (!$("big").hidden && current && current.kind !== "hotelEdit") fitText(); });
+if ("speechSynthesis" in window) { try { speechSynthesis.onvoiceschanged = () => { if (!$("big").hidden && current) paint(current); }; } catch (e) {} }
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("big").hidden) closeBig(); });
 renderTry();
 renderSee();

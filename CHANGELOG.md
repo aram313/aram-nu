@@ -45,6 +45,12 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - `aram.nu/tokyo`: the phrasebook has 53 cards in seven groups (halal, restaurant, shopping, transport,
   hotel, emergency with 119 and 110, practical), each Japanese line checked for meaning, politeness and
   romaji.
+- `aram.nu/tokyo`: the phrasebook is smarter. A halal card at the top explains everything in one go (no
+  pork, nothing from pigs, no alcohol, mirin included); yes/no questions show はい / いいえ / わかりません
+  buttons for staff, and their answer appears large in Danish; "Vi er … personer" counts with − and +;
+  "Kør mig til mit hotel" keeps the hotel's address on the phone; a search box finds cards by word.
+  The Japanese is sized to fill the screen and breaks only between phrases, "Læs højt" reads it aloud
+  where the phone has a Japanese voice, and the screen stays on while a card is shown. 55 cards.
 - buehal: the story opens low beside the hall, the twelve arches in a row as the scan builds up
   setup by setup (the scanners now stand where they stood: their positions had not been turned into
   the hall's frame with the points). The measures end as a plan cut at 1 m: the chain of measures
