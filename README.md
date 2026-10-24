@@ -116,23 +116,27 @@ turned off and stamps `stage.js` with the newest file's time, so the browser nev
 ## The Tokyo page
 
 `src/tokyo/index.html` is a separate page at https://aram.nu/tokyo: Aram's travel guide to Tokyo in
-Danish, built like a phone app with three tabs in a bar at the bottom:
+Danish, in the front page's look (black, white text, lowercase, the device's own sans at weight 300,
+hairlines, grey for anything secondary), built like a phone app with four tabs in a bar at the bottom:
 
-- **Spis**: 64 halal Japanese places to eat, shown nearest first (from the phone's location, a station
+- **spis**: 64 halal Japanese places to eat, shown nearest first (from the phone's location, a station
   or pasted hotel coordinates), by dish with a dish and an area filter, or as 15 foods to taste.
-- **Se**: 16 sights, each with the nearest halal places and the walk to them.
-- **Parlør**: a halal card, three tools (yen to kroner at the ECB rate, Japanese numbers, Danish to
-  Japanese clothes and shoe sizes) and phrase cards that show the Japanese full screen for staff (sized
-  to fit, answer buttons on yes/no questions, counters for people and items, a hotel card), plus
-  "Godt at vide".
+- **se**: 16 sights, each with the nearest halal places and the walk to them.
+- **parlør**: a halal card, a search, the phrase cards in seven categories, and "godt at vide". A card
+  shows the Japanese full screen for staff (sized to fit, answer buttons on yes/no questions, counters
+  for people and items, a hotel card); it closes with the button at the bottom or by pulling it down.
+- **omregn**: yen and kroner both ways at the ECB rate with how the price is said (read aloud where the
+  phone has a Japanese voice) and the tax-free refund, splitting the bill, Danish to Japanese sizes for
+  shoes and clothes with a card to ask staff, any number said in Japanese with a table of numbers and
+  counting words, and the time in Tokyo and Denmark.
 
-The page remembers the last tab, view and tool in `localStorage`. It is not linked from the front page,
-carries `noindex`, and does not follow the front page's black lowercase look. The page (data, styles,
-script) is `index.html`; next to it, `sw.js` keeps it working offline (the page network first, Google
-Fonts from the cache; its cache name carries a version, so a new page replaces the old cache), and
-`manifest.webmanifest` with the icons (a bowl with chopsticks in front of a red sun) makes it a full-screen app when added
-to a phone's home screen. Like the front page, it does not zoom. The exchange rate is fetched from `api.frankfurter.dev` when online; offline
-the built-in rate is used. Location needs the page on https, which Pages gives.
+The page remembers the last tab, view, category and tool choices in `localStorage`. It is not linked
+from the front page and carries `noindex`. The page (data, styles, script) is `index.html`; next to it,
+`sw.js` keeps it working offline (the page network first; its cache name carries a version, so a new
+page replaces the old cache), and `manifest.webmanifest` with the icons (a white bowl with chopsticks in
+front of a red sun, on black) makes it a full-screen app when added to a phone's home screen. Like the
+front page, it does not zoom. The exchange rate is fetched from `api.frankfurter.dev` when online;
+offline the built-in rate is used. Location needs the page on https, which Pages gives.
 
 ## Publishing
 

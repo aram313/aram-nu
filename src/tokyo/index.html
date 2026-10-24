@@ -4,356 +4,341 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex">
-<meta name="description" content="Halal japansk mad, seværdigheder og parlør til Tokyo.">
-<meta name="theme-color" content="#f4f6f3" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#111412" media="(prefers-color-scheme: dark)">
+<meta name="description" content="halal japansk mad, seværdigheder, parlør og omregning til tokyo.">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="application-name" content="Tokyo">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="application-name" content="tokyo">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<meta name="apple-mobile-web-app-title" content="Tokyo">
-<title>Tokyo</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<meta name="apple-mobile-web-app-title" content="tokyo">
+<title>tokyo</title>
 <style>
-/* App layout, phone first. Each view has its own title; Spis keeps its filters in a sticky bar;
-   the tab bar is fixed at the bottom, in thumb reach. Every tap target is at least 44 px, and one
-   segment, one chip, one list and one card style are used throughout. */
+/* The same look as aram.nu: black, white text, lowercase, the device's own sans at weight 300, hairlines
+   instead of boxes, grey for anything secondary. Phone first: four tabs at the bottom in thumb reach,
+   44 px tap targets, and the card for staff closes from the bottom or by pulling it down. */
 :root {
-  --bg: #f4f6f3;
-  --surface: #ffffff;
-  --fg: #181c1a;
-  --muted: #5b645f;
-  --line: #dde2dd;
-  --accent: #23468a;
-  --accent-soft: #e3e9f5;
-  --gold: #8a5d0c;
-  --gold-soft: #f6eedd;
-  --ill-fill: #dfe6f3;
-  --display: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Noto Sans JP", system-ui, sans-serif;
-  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --r: 14px;
-  --nav: 64px;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #111412; --surface: #1a1e1b; --fg: #e8ece8; --muted: #9ba59f; --line: #2c332f;
-    --accent: #95b4ef; --accent-soft: #1f2b42; --gold: #dcae4f; --gold-soft: #2a2416; --ill-fill: #24324d; color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #111412; --surface: #1a1e1b; --fg: #e8ece8; --muted: #9ba59f; --line: #2c332f;
-  --accent: #95b4ef; --accent-soft: #1f2b42; --gold: #dcae4f; --gold-soft: #2a2416; --ill-fill: #24324d; color-scheme: dark;
+  --bg: #000;
+  --fg: #fff;
+  --dim: #8c8c8c;
+  --line: #1f1f1f;
+  --edge: #3a3a3a;
+  --press: #141414;
+  --sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Roboto, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  --ja: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Noto Sans CJK JP", "Yu Gothic", Meiryo, sans-serif;
+  --nav: 58px;
+  color-scheme: dark;
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-html { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+html { background: var(--bg); -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 body {
   margin: 0; background: var(--bg); color: var(--fg);
-  font: 16px/1.5 var(--body);
-  -webkit-text-size-adjust: 100%;
+  font-family: var(--sans); font-weight: 300; font-size: 15px; line-height: 1.6; letter-spacing: 0.01em;
+  text-transform: lowercase; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%;
   overflow-x: clip; overflow-wrap: anywhere;
-  padding-bottom: calc(var(--nav) + env(safe-area-inset-bottom, 0px) + 24px);
+  padding-bottom: calc(var(--nav) + env(safe-area-inset-bottom, 0px) + 28px);
 }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
-.wrap {
-  max-width: 760px; margin: 0 auto;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-}
-button, select, input, textarea { font-family: inherit; }
-button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+[lang="ja"] { font-family: var(--ja); text-transform: none; letter-spacing: 0; }
+.wrap { max-width: 560px; margin: 0 auto; padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); }
+.top { padding-top: calc(env(safe-area-inset-top, 0px) + max(3vh, 12px)); }
+h1, h2, h3, p, ul, ol { margin: 0; font-weight: inherit; font-size: inherit; }
+a { color: inherit; text-decoration: none; }
+button, select, input, textarea, output { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; }
+:focus-visible { outline: 1px solid var(--dim); outline-offset: 2px; }
+.dim { color: var(--dim); }
+.offline { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 8; margin: 0; padding: 8px 24px; text-align: center; color: var(--dim); background: var(--bg); border-bottom: 1px solid var(--line); }
 
-/* view title and status */
-.vhead { padding-top: calc(env(safe-area-inset-top, 0px) + 20px); padding-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-h1 { font: 700 28px/1.15 var(--display); letter-spacing: -0.01em; margin: 0; }
-.offline { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 8; margin: 0; padding: 8px 16px; text-align: center; font-size: 13.5px; font-weight: 600; color: var(--gold); background: var(--gold-soft); }
-
-/* bottom tab bar */
-.tabbar {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
-  background: var(--surface); border-top: 1px solid var(--line);
-  padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px));
-}
-.tabbar .in { display: flex; max-width: 520px; margin: 0 auto; }
-.tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 52px; padding: 2px 0; font: 600 12.5px var(--body); color: var(--muted); background: none; border: 0; cursor: pointer; }
-.tab .ic { width: 60px; height: 30px; border-radius: 999px; display: grid; place-items: center; transition: background-color .15s; }
-.tab svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+/* the tab bar */
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--bg); border-top: 1px solid var(--line);
+  padding: 2px max(8px, env(safe-area-inset-right, 0px)) calc(2px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); }
+.tabbar .in { display: flex; max-width: 560px; margin: 0 auto; }
+.tab { flex: 1; min-height: 54px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: none; border: 0; color: var(--dim); font-size: 12px; cursor: pointer; }
+.tab svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
 .tab[aria-selected="true"] { color: var(--fg); }
-.tab[aria-selected="true"] .ic { background: var(--accent-soft); color: var(--accent); }
 
-/* segmented control, selects, chips, buttons */
-.seg { display: flex; gap: 3px; padding: 3px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
-.seg button { flex: 1; min-height: 40px; padding: 0 6px; font: 600 14px var(--body); color: var(--muted); background: none; border: 0; border-radius: 9px; cursor: pointer; white-space: nowrap; }
-.seg button[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
-.ctl { display: flex; gap: 8px; margin-top: 8px; }
-.field {
-  flex: 1; min-width: 0; min-height: 44px; padding: 0 12px;
-  font: 500 16px var(--body); color: var(--fg); background-color: var(--surface);
-  border: 1px solid var(--line); border-radius: 12px;
-}
-select.field {
-  -webkit-appearance: none; appearance: none; padding-left: 11px; padding-right: 28px; text-overflow: ellipsis;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%238a938d' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 11px center; background-size: 11px 7px;
-}
-.toggleBtn { flex: none; min-width: 44px; min-height: 44px; padding: 0 12px; font-size: 17px !important; font: 600 14px var(--body); color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; cursor: pointer; white-space: nowrap; }
-.toggleBtn[aria-pressed="true"] { color: var(--gold); background: var(--gold-soft); border-color: var(--gold); }
+/* words in a row as a switch: the chosen one white, underlined */
+.seg { display: flex; gap: 22px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; }
+.seg::-webkit-scrollbar { display: none; }
+.seg button { flex: none; min-height: 44px; padding: 0; background: none; border: 0; border-bottom: 1px solid transparent; margin-bottom: -1px; color: var(--dim); cursor: pointer; white-space: nowrap; }
+.seg button[aria-pressed="true"] { color: var(--fg); border-bottom-color: var(--fg); }
+.ctl { display: flex; gap: 8px; margin-top: 12px; }
+.field { flex: 1; min-width: 0; min-height: 44px; padding: 0 12px; font-size: 16px; background: var(--bg); border: 1px solid var(--edge); border-radius: 2px; }
+select.field { -webkit-appearance: none; appearance: none; padding-right: 30px; text-overflow: ellipsis;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%238c8c8c' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; background-size: 11px 7px; }
+input.field::placeholder { color: var(--dim); }
+.toggleBtn { flex: none; min-width: 44px; min-height: 44px; padding: 0 12px; background: none; border: 1px solid var(--edge); border-radius: 2px; color: var(--dim); cursor: pointer; font-size: 16px; }
+.toggleBtn[aria-pressed="true"] { color: var(--fg); border-color: var(--fg); }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; font: 500 14px var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; cursor: pointer; text-decoration: none; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-a.chip { color: var(--accent); }
-.chip[aria-pressed="true"], .chip.hit { background: var(--accent); border-color: var(--accent); color: var(--bg); }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 16px; font: 600 14.5px var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; cursor: pointer; text-decoration: none; }
-.btn.primary { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+.chip { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border: 1px solid var(--edge); border-radius: 999px; background: none; cursor: pointer; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+.chip[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+a.chip::after { content: " ↗"; color: var(--dim); white-space: pre; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 16px; border: 1px solid var(--edge); border-radius: 2px; background: none; cursor: pointer; }
+.btn.primary { border-color: var(--fg); }
 .btn.wide { width: 100%; }
-.hint { font-size: 13px; color: var(--muted); margin: 8px 0 0; line-height: 1.45; }
-.hint.err { color: var(--gold); }
-.empty { color: var(--muted); padding: 24px 0; margin: 0; }
+a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
+.hint { color: var(--dim); margin-top: 10px; font-size: 13.5px; line-height: 1.55; }
+.empty { color: var(--dim); padding: 24px 0; }
 
-/* Spis */
-.filters { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 6px 10px; border-bottom: 1px solid var(--line); }
-.cat { padding-top: 20px; }
-.cat h2 { font: 700 19px var(--display); margin: 0 0 8px; }
-.cat.lux h2 { color: var(--gold); }
-.list { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
-.cat.lux .list { background: var(--gold-soft); }
+/* spis */
+.filters { position: sticky; top: 0; z-index: 5; background: var(--bg); padding-top: calc(env(safe-area-inset-top, 0px) + max(3vh, 12px)); padding-bottom: 14px; }
+.cat { padding-top: 26px; }
+.cat h2 { margin-bottom: 2px; }
+.list { list-style: none; margin: 0; padding: 0; }
 .item + .item { border-top: 1px solid var(--line); }
-.row { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 12px 14px; color: var(--fg); text-decoration: none; }
-.row:active { background: var(--accent-soft); }
-.rowMain { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.name { font-weight: 600; font-size: 16px; line-height: 1.3; }
-.name small { font-weight: 500; font-size: 13.5px; color: var(--muted); }
-.must { color: var(--gold); }
-.meta { display: flex; flex-wrap: wrap; gap: 2px 10px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.meta .dist { color: var(--fg); font-weight: 600; }
-.meta .kind { color: var(--gold); }
-.price { letter-spacing: 0.05em; }
-.price i { font-style: normal; opacity: 0.3; }
-.note { font-size: 14.5px; line-height: 1.45; color: var(--fg); opacity: 0.86; }
-.pin { flex: none; width: 22px; height: 22px; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.br { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 0 14px 12px; margin-top: -2px; font-size: 13px; color: var(--muted); }
-.more summary { display: flex; align-items: center; gap: 6px; min-height: 40px; margin-top: -6px; padding: 0 14px 4px; font-size: 13.5px; font-weight: 600; color: var(--accent); cursor: pointer; list-style: none; }
+.row { display: block; padding: 12px 0; }
+.row:active { background: var(--press); }
+.name::after { content: " ↗"; color: var(--dim); }
+.name small { color: var(--dim); font-size: inherit; }
+.meta { display: flex; flex-wrap: wrap; gap: 0 10px; color: var(--dim); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.meta .dist { color: var(--fg); }
+.price i { font-style: normal; opacity: 0.35; }
+.note { display: block; color: var(--dim); }
+.br { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-bottom: 12px; color: var(--dim); }
+.more summary { display: flex; align-items: center; gap: 8px; min-height: 40px; margin-top: -8px; color: var(--dim); cursor: pointer; list-style: none; }
 .more summary::-webkit-details-marker { display: none; }
-.more summary::after { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); }
-.more[open] summary::after { transform: translateY(2px) rotate(-135deg); }
-.from { margin: 16px 0 8px; font-size: 15px; }
-.from span { color: var(--muted); font-size: 13.5px; }
-.pick { margin: 16px 0 0; padding: 16px; background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r); color: var(--muted); }
+.more summary::after { content: "+"; }
+.more[open] summary::after { content: "−"; }
+.from { margin-top: 22px; color: var(--dim); }
+.from b { color: var(--fg); font-weight: inherit; }
+.pick { margin-top: 22px; color: var(--dim); }
 
-/* cards: Smag på and Seværdigheder */
-.grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding-top: 16px; }
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px 16px; min-width: 0; }
-.card h3 { font: 700 18px/1.3 var(--display); margin: 0; }
-.card p { margin: 6px 0 0; font-size: 14.5px; line-height: 1.5; }
-.card .sub { font-size: 12.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
-.kanji { font-family: var(--display); font-weight: 700; font-size: 13px; color: var(--accent); letter-spacing: 0.06em; margin-left: 6px; }
-.food { display: grid; grid-template-columns: 56px 1fr; gap: 12px; }
+/* smag på and seværdigheder: one block each, lines between */
+.blocks > article { padding: 24px 0; }
+.blocks > article + article { border-top: 1px solid var(--line); }
+.blocks h3 { color: var(--fg); }
+.blocks p { color: var(--dim); margin-top: 4px; }
+.blocks .area { display: block; color: var(--dim); font-size: 13.5px; }
+.tip b { color: var(--fg); font-weight: inherit; }
+.food { display: grid; grid-template-columns: 44px 1fr; gap: 16px; }
 .food > div { min-width: 0; }
-.ill { width: 56px; height: 56px; border-radius: 12px; background: var(--accent-soft); display: grid; place-items: center; }
-.ill svg { width: 42px; height: 42px; fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-.ill svg .f { fill: var(--ill-fill); }
-.lbl { display: block; margin: 12px 0 6px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
-.acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.tip { color: var(--muted); }
-.tip b { color: var(--gold); font-weight: 600; }
-.near { margin: 12px -16px 0; border-top: 1px solid var(--line); }
-.nrow { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 16px; color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--line); }
-.nrow:active { background: var(--accent-soft); }
-.nrow .nm { flex: 1; min-width: 0; font-weight: 600; color: var(--accent); }
-.nrow .nm small { font-weight: 500; color: var(--muted); }
-.nrow .d { flex: none; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.near .farNote { margin: 0; padding: 12px 16px; font-size: 14px; color: var(--muted); border-bottom: 1px solid var(--line); }
+.ill svg { width: 44px; height: 44px; fill: none; stroke: var(--fg); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.ill svg .f { fill: none; }
+.kanji { color: var(--dim); margin-left: 8px; }
+.lbl { display: block; margin: 14px 0 8px; color: var(--fg); }
+.nrow { display: flex; align-items: center; gap: 10px; min-height: 44px; border-top: 1px solid var(--line); }
+.nrow:active { background: var(--press); }
+.nrow .nm { flex: 1; min-width: 0; }
+.nrow .nm small { color: var(--dim); font-size: inherit; }
+.nrow .d { flex: none; color: var(--dim); font-variant-numeric: tabular-nums; }
+.near .farNote { padding: 10px 0; border-top: 1px solid var(--line); }
+.acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 
-/* Parlør */
-.halalCard { width: 100%; margin-top: 8px; text-align: left; font: inherit; background: var(--accent); color: var(--bg); border: 0; border-radius: var(--r); padding: 14px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 3px; }
-.halalCard .hc1 { font-family: var(--display); font-weight: 700; font-size: 18px; }
-.halalCard .hc2 { font-size: 14px; opacity: 0.9; }
-.tools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
-.tool { min-height: 64px; font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 8px 6px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; text-align: center; }
-.tool b { font: 700 16px var(--display); }
-.tool span { font-size: 12px; color: var(--muted); line-height: 1.25; }
-.tool[aria-expanded="true"] { border-color: var(--accent); background: var(--accent-soft); }
-.toolPanel { margin-top: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
-.conv { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+/* parlør */
+.halalCard { display: block; width: 100%; text-align: left; background: none; border: 1px solid var(--fg); border-radius: 2px; padding: 14px 16px; cursor: pointer; }
+.halalCard:active { background: var(--press); }
+.halalCard .hc2 { display: block; color: var(--dim); margin-top: 2px; }
+#talkCats { flex-wrap: wrap; column-gap: 20px; overflow: visible; }
+.catbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); margin-top: 8px; }
+.talkGroup h2 { margin: 24px 0 10px; }
+.talkNote { margin: -6px 0 10px; color: var(--dim); font-variant-numeric: tabular-nums; }
+.talkGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.phrase { text-align: left; background: none; border: 1px solid var(--line); border-radius: 2px; padding: 12px 14px; min-height: 84px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; }
+.phrase:active { background: var(--press); }
+.phrase.special { border-color: var(--edge); }
+.phrase .ja { color: var(--dim); font-size: 13px; line-height: 1.45; line-break: strict; overflow-wrap: normal; }
+.info { margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--line); }
+.info h2 { margin-bottom: 8px; }
+.info ul { padding-left: 18px; color: var(--dim); }
+.info li + li { margin-top: 6px; }
+.src { margin-top: 14px; color: var(--dim); font-size: 12.5px; }
+
+/* omregn */
+.tool { padding: 24px 0; }
+.tool + .tool { border-top: 1px solid var(--line); }
+.tool h2 { margin-bottom: 12px; }
+.conv { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .cur { display: block; min-width: 0; }
-.cur > span:first-child { display: block; font-size: 12.5px; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
-.inp { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); padding: 0 12px; }
-.inp:focus-within { outline: 2px solid var(--accent); outline-offset: 1px; }
-.inp input { flex: 1; min-width: 0; width: 100%; font: 700 24px var(--display); color: var(--fg); background: none; border: 0; padding: 9px 0; outline: none; font-variant-numeric: tabular-nums; }
-.inp i { font-style: normal; font-weight: 600; color: var(--muted); margin-left: 4px; }
-.toolPanel .chips { margin-top: 10px; }
-.say { margin: 12px 0 0; font-size: 15px; line-height: 1.45; }
-.say b { font-weight: 600; }
-.say .kj { font-family: var(--display); color: var(--muted); white-space: nowrap; }
-.nums { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-.nums th { text-align: left; font-size: 12.5px; font-weight: 600; color: var(--muted); padding: 0 8px 6px 0; }
+.cur > span:first-child { display: block; color: var(--dim); }
+.inp { display: flex; align-items: baseline; gap: 6px; border-bottom: 1px solid var(--edge); }
+.inp:focus-within { border-bottom-color: var(--fg); }
+.inp input { flex: 1; min-width: 0; width: 100%; padding: 4px 0 6px; font-size: 30px; font-weight: 200; background: none; border: 0; outline: none; font-variant-numeric: tabular-nums; }
+.inp input::placeholder { color: #444; }
+.inp i { font-style: normal; color: var(--dim); }
+.tool .chips { margin-top: 14px; }
+.say { margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+.say .kj { color: var(--dim); }
+.say .btn { min-height: 40px; padding: 0 12px; }
+.out { margin-top: 14px; font-size: 22px; font-weight: 200; font-variant-numeric: tabular-nums; }
+.out small { color: var(--dim); font-size: 15px; font-weight: 300; }
+.stepper { display: flex; align-items: center; border-bottom: 1px solid var(--edge); }
+.stepper button { width: 44px; height: 44px; background: none; border: 0; font-size: 24px; font-weight: 200; cursor: pointer; }
+.stepper output { flex: 1; text-align: center; font-size: 30px; font-weight: 200; font-variant-numeric: tabular-nums; }
+.sizeQ { margin-top: 14px; color: var(--dim); }
+.sizeBig { margin-top: 16px; font-size: 36px; font-weight: 200; line-height: 1.15; }
+.sizeBig small { font-size: 15px; font-weight: 300; color: var(--dim); margin-left: 8px; }
+.sizeNote { margin: 4px 0 14px; color: var(--dim); }
+.nums { width: 100%; border-collapse: collapse; margin-top: 18px; font-variant-numeric: tabular-nums; }
+.nums th { text-align: left; color: var(--dim); font-weight: inherit; padding: 0 8px 6px 0; }
 .nums td { padding: 7px 8px 7px 0; border-top: 1px solid var(--line); }
-.nums td.n { font-weight: 600; text-align: right; padding-right: 14px; white-space: nowrap; }
-.nums td.kj { font: 700 17px var(--display); }
-.sizeQ { margin: 12px 0 0; font-size: 12.5px; font-weight: 600; color: var(--muted); }
-.sizeBig { margin: 14px 0 0; font: 700 36px/1.15 var(--display); }
-.sizeBig small { font: 500 15px var(--body); color: var(--muted); margin-left: 8px; }
-.sizeNote { margin: 4px 0 12px; font-size: 14px; color: var(--muted); }
-.search { margin-top: 14px; }
-.search .field { -webkit-appearance: none; appearance: none; padding-left: 40px; background-repeat: no-repeat; background-position: left 13px center; background-size: 18px 18px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7' fill='none' stroke='%238a938d' stroke-width='2'/%3E%3Cpath d='M20 20l-3.5-3.5' stroke='%238a938d' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"); }
-.talkGroup h2 { font: 700 17px var(--display); margin: 22px 0 8px; }
-.talkNote { margin: -4px 0 8px; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
-.talkGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-.phrase { text-align: left; font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; min-height: 86px; }
-.phrase:active { background: var(--accent-soft); }
-.phrase.special { border-color: var(--accent); }
-.phrase .da { font-weight: 600; font-size: 15px; line-height: 1.3; }
-.phrase .ja { font-family: var(--display); font-size: 13px; color: var(--muted); line-height: 1.4; overflow-wrap: normal; line-break: strict; }
-.info { margin-top: 28px; }
-.info h2 { font: 700 17px var(--display); margin: 0 0 8px; }
-.info ul { margin: 0; padding: 14px 16px 14px 34px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); font-size: 14.5px; }
-.info li + li { margin-top: 8px; }
-.src { margin: 14px 0 0; font-size: 12.5px; color: var(--muted); }
+.nums td.n { text-align: right; padding-right: 16px; white-space: nowrap; }
+.nums td.kj { font-size: 17px; }
+.clock { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.clock b { display: block; font-size: 36px; font-weight: 200; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.clock small { color: var(--dim); font-size: inherit; }
 
-/* The big card is always black on white, so staff can read it in any theme or light */
-.big { position: fixed; inset: 0; z-index: 50; background: #ffffff; color: #111111; display: flex; flex-direction: column; gap: 10px;
-  padding: calc(env(safe-area-inset-top, 0px) + 12px) max(20px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 16px) max(20px, env(safe-area-inset-left, 0px)); }
-.bigTop { display: flex; justify-content: flex-end; gap: 8px; }
-.bigBtn { min-height: 44px; font: 600 16px var(--body); color: #111111; background: #eef0ee; border: 0; border-radius: 999px; padding: 0 18px; cursor: pointer; }
+/* the card for staff: full screen, white on black; answers and close at the bottom; pull down to close */
+.big { position: fixed; inset: 0; z-index: 50; background: var(--bg); color: var(--fg); display: flex; flex-direction: column; gap: 12px;
+  padding: calc(env(safe-area-inset-top, 0px) + 6px) max(20px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 12px) max(20px, env(safe-area-inset-left, 0px));
+  touch-action: none; overscroll-behavior: contain; transition: transform 0.26s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.26s ease; }
+.big textarea { touch-action: auto; }
+.grab { flex: none; align-self: center; width: 44px; height: 4px; border-radius: 2px; background: var(--edge); margin: 6px 0 2px; }
 .bigBody { flex: 1; min-height: 0; display: flex; align-items: center; overflow: hidden; }
-.bigText { width: 100%; margin: 0; font-family: var(--display); font-weight: 700; line-height: 1.3; white-space: pre-line; text-wrap: balance; word-break: normal; overflow-wrap: normal; line-break: strict; }
-.bigText:lang(da) { font-family: var(--body); }
+.bigText { width: 100%; margin: 0; font-weight: 400; line-height: 1.3; white-space: pre-line; text-wrap: balance; word-break: normal; overflow-wrap: normal; line-break: strict; }
+.bigText:lang(da) { font-weight: 300; }
 .bigText .ln { display: block; text-wrap: balance; }
 .bigText.nw .ln { white-space: nowrap; }
 .bigText.jp .ln { word-break: keep-all; }
-.bigSub { margin: 0; font-size: 15px; line-height: 1.45; color: #4f5852; }
-.bigSub .sj { font-family: var(--display); font-size: 17px; color: #111111; font-weight: 700; }
-.ask { margin: 4px 0 8px; font: 700 16px var(--display); color: #111111; }
+.bigSub { color: var(--dim); }
+.bigSub .sj { color: var(--fg); font-size: 17px; }
+.ask { margin: 2px 0 8px; }
 .ans { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 8px; }
-.ans button, .step button, .formBtns button, .backBtn { font: 700 22px var(--display); color: #111111; background: #ffffff; border: 2px solid #111111; border-radius: 14px; padding: 12px 6px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; }
-.ans button { font-size: 20px; white-space: nowrap; }
-.ans button small { font: 500 13px var(--body); color: #4f5852; }
-.step { display: flex; align-items: center; justify-content: center; gap: 18px; }
-.step button { width: 64px; height: 64px; padding: 0; border-radius: 50%; font-size: 30px; justify-content: center; }
-.backBtn, .formBtns button { font: 600 17px var(--body); padding: 12px 16px; width: 100%; }
+.ans button { min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: none; border: 1px solid var(--fg); border-radius: 2px; font-size: 20px; white-space: nowrap; cursor: pointer; }
+.ans button small { font-family: var(--sans); font-size: 12.5px; color: var(--dim); text-transform: lowercase; }
+.step { display: flex; align-items: center; justify-content: center; gap: 20px; }
+.step button { width: 64px; height: 64px; border-radius: 50%; background: none; border: 1px solid var(--fg); font-size: 28px; font-weight: 200; cursor: pointer; }
+.backBtn, .formBtns button { width: 100%; min-height: 48px; background: none; border: 1px solid var(--edge); border-radius: 2px; cursor: pointer; }
 .formBtns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-.hotelInput { width: 100%; min-height: 120px; font: 500 18px var(--display); color: #111111; background: #f6f7f6; border: 1px solid #c9cfca; border-radius: 12px; padding: 12px; resize: vertical; }
+.hotelInput { width: 100%; min-height: 120px; font-size: 18px; color: var(--fg); background: var(--press); border: 1px solid var(--edge); border-radius: 2px; padding: 12px; resize: vertical; }
+.bigBar { display: flex; gap: 8px; }
+.bigBtn { flex: 1; min-height: 52px; background: none; border: 1px solid var(--edge); border-radius: 2px; cursor: pointer; }
 
-@media (min-width: 640px) {
-  .grid { grid-template-columns: 1fr 1fr; align-items: start; }
-  h1 { font-size: 32px; }
-}
-@media (prefers-reduced-motion: reduce) { .tab .ic { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .big { transition: none; } }
 </style>
 
 </head>
 <body>
 <!--body-->
-<p class="offline" id="offline" hidden>Du er offline. Alt virker, undtagen kortlinks.</p>
+<p class="offline" id="offline" hidden>offline: alt virker, undtagen kort og dagens kurs.</p>
 
 <div id="viewEat" role="tabpanel" aria-labelledby="tabEat">
-  <div class="wrap vhead"><h1>Spisesteder</h1></div>
   <div class="filters">
     <div class="wrap">
-      <div class="seg" role="group" aria-label="Visning">
-        <button type="button" id="modeNear" aria-pressed="false">Nærmest</button>
-        <button type="button" id="modeDish" aria-pressed="true">Efter ret</button>
-        <button type="button" id="modeTry" aria-pressed="false">Smag på</button>
+      <div class="seg" role="group" aria-label="visning">
+        <button type="button" id="modeNear" aria-pressed="false">nærmest</button>
+        <button type="button" id="modeDish" aria-pressed="true">efter ret</button>
+        <button type="button" id="modeTry" aria-pressed="false">smag på</button>
       </div>
       <div class="ctl" id="dishCtl">
-        <select class="field" id="dishSel" aria-label="Ret"></select>
-        <select class="field" id="areaSel" aria-label="Område"></select>
-        <button class="toggleBtn mustBtn" type="button" aria-pressed="false" aria-label="Kun steder, der er et must">★</button>
+        <select class="field" id="dishSel" aria-label="ret"></select>
+        <select class="field" id="areaSel" aria-label="område"></select>
+        <button class="toggleBtn mustBtn" type="button" aria-pressed="false" aria-label="kun steder, der er et must">★</button>
       </div>
       <div id="nearCtl" hidden>
         <div class="ctl">
-          <select class="field" id="origin" aria-label="Afstand fra"></select>
-          <button class="toggleBtn mustBtn" type="button" aria-pressed="false" aria-label="Kun steder, der er et must">★</button>
+          <select class="field" id="origin" aria-label="afstand fra"></select>
+          <button class="toggleBtn mustBtn" type="button" aria-pressed="false" aria-label="kun steder, der er et must">★</button>
         </div>
         <div id="customBox" hidden>
-          <div class="ctl"><input class="field" type="text" id="coords" inputmode="decimal" placeholder="Indsæt koordinater, fx 35.6938, 139.7034" aria-label="Koordinater for dit hotel"></div>
-          <p class="hint" id="coordsHint">Hold fingeren på dit hotel i Google Maps. Koordinaterne vises øverst; tryk på dem for at kopiere, og indsæt dem her.</p>
+          <div class="ctl"><input class="field" type="text" id="coords" inputmode="decimal" placeholder="indsæt koordinater, fx 35.6938, 139.7034" aria-label="koordinater for dit hotel"></div>
+          <p class="hint" id="coordsHint">hold fingeren på dit hotel i google maps. koordinaterne vises øverst; tryk på dem for at kopiere, og indsæt dem her.</p>
         </div>
       </div>
     </div>
   </div>
   <div class="wrap">
     <div id="list"></div>
-    <p class="empty" id="empty" hidden>Intet passer. Prøv Alle retter eller Hele Tokyo.</p>
-    <div class="grid" id="tryGrid" hidden></div>
+    <p class="empty" id="empty" hidden>intet passer. prøv alle retter eller hele tokyo.</p>
+    <div class="blocks" id="tryGrid" hidden></div>
   </div>
 </div>
 
 <div id="viewSee" role="tabpanel" aria-labelledby="tabSee" hidden>
-  <div class="wrap vhead"><h1>Seværdigheder</h1></div>
-  <div class="wrap">
-    <div class="grid" id="seeList"></div>
+  <div class="wrap top">
+    <div class="blocks" id="seeList"></div>
   </div>
 </div>
 
 <div id="viewTalk" role="tabpanel" aria-labelledby="tabTalk" hidden>
-  <div class="wrap vhead"><h1>Parlør</h1></div>
+  <div class="wrap top">
+    <button class="halalCard" id="halalCard" type="button"><span class="hc1">halal-kortet</span><span class="hc2">forklarer alt på én gang: intet svinekød, intet fra svin, ingen alkohol.</span></button>
+    <div class="ctl"><input class="field" type="search" id="talkSearch" placeholder="søg, fx toilet, regning, taxa" aria-label="søg i parløren" autocomplete="off"></div>
+  </div>
+  <div class="catbar"><div class="wrap"><div class="seg" id="talkCats" role="group" aria-label="kategorier"></div></div></div>
   <div class="wrap">
-    <button class="halalCard" id="halalCard" type="button"><span class="hc1">Halal-kortet</span><span class="hc2">Forklarer alt på én gang: intet svinekød, intet fra svin, ingen alkohol.</span></button>
-    <div class="tools">
-      <button class="tool" type="button" data-tool="yen" aria-expanded="false" aria-controls="toolYen"><b>¥ ⇄ kr</b><span>Omregn priser</span></button>
-      <button class="tool" type="button" data-tool="num" aria-expanded="false" aria-controls="toolNum"><b>Tal</b><span>Tæl og forstå priser</span></button>
-      <button class="tool" type="button" data-tool="size" aria-expanded="false" aria-controls="toolSize"><b>Størrelser</b><span>Tøj og sko</span></button>
-    </div>
-    <section class="toolPanel" id="toolYen" aria-label="Yen og kroner" hidden>
-      <div class="conv">
-        <label class="cur"><span>Yen</span><span class="inp"><input id="yenIn" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0"><i>¥</i></span></label>
-        <label class="cur"><span>Kroner</span><span class="inp"><input id="krIn" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0"><i>kr</i></span></label>
-      </div>
-      <div class="chips" id="yenQuick"></div>
-      <p class="say" id="yenSay" hidden></p>
-      <p class="hint" id="rateLine"></p>
-    </section>
-    <section class="toolPanel" id="toolNum" aria-label="Tal på japansk" hidden>
-      <table class="nums"><thead><tr><th></th><th>Skrives</th><th>Siges</th><th>Antal ting</th></tr></thead><tbody id="numBody"></tbody></table>
-      <p class="hint">Antal ting bruger du, når du bestiller: <i>kore o futatsu kudasai</i> er "to af den her, tak". Store tal tælles i titusinder (<i>man</i>): 30.000 ¥ er <i>sanman en</i>. Nogle tal skifter lyd: 300 <i>sanbyaku</i>, 600 <i>roppyaku</i>, 800 <i>happyaku</i>, 3.000 <i>sanzen</i>, 8.000 <i>hassen</i>. Skriv et beløb under ¥ ⇄ kr, så ser du, hvordan prisen siges.</p>
-    </section>
-    <section class="toolPanel" id="toolSize" aria-label="Størrelser" hidden>
-      <div class="seg" id="sizeKind"><button type="button" data-k="shoe" aria-pressed="true">Sko</button><button type="button" data-k="men" aria-pressed="false">Herretøj</button><button type="button" data-k="women" aria-pressed="false">Dametøj</button></div>
-      <p class="sizeQ">Din danske størrelse</p>
-      <div class="chips" id="sizeChips" style="margin-top:8px"></div>
-      <div id="sizeOut"></div>
-    </section>
-    <div class="search"><input class="field" type="search" id="talkSearch" placeholder="Søg, fx toilet, regning, taxa" aria-label="Søg i parløren" autocomplete="off" style="width:100%"></div>
     <div id="talk"></div>
-    <p class="empty" id="talkEmpty" hidden>Ingen kort passer. Prøv et andet ord.</p>
-    <section class="info">
-      <h2>Godt at vide</h2>
+    <p class="empty" id="talkEmpty" hidden>ingen kort passer. prøv et andet ord.</p>
+    <section class="info" id="info">
+      <h2>godt at vide</h2>
       <ul>
-        <li>Bed om sushiris uden mirin (<i>mirin nashi</i>), og tag halal-sojasauce med.</li>
-        <li>Undgå 豚 (svinekød), ラード (svinefedt), ゼラチン (gelatine) og 酒 (alkohol) på varer.</li>
-        <li>Moskeer: As-Salaam Masjid i Okachimachi og Tokyo Camii i Yoyogi-Uehara.</li>
-        <li>Haneda til Shinjuku: lufthavnsbussen, ca. 1 time.</li>
-        <li>Tax free: fra 1. november 2026 betaler du moms i butikken og får de 10 % tilbage i lufthavnen, når du rejser hjem. Det gælder køb over 5.000 ¥ i én butik på en dag. Tag pas med, gem kvitteringerne, og hav varerne med i håndbagagen til tjekket.</li>
-        <li>Nødnumre: ambulance 119, politi 110.</li>
-        <li id="offlineTip" hidden>Siden virker også uden internet. Læg den på hjemmeskærmen (Del → Føj til hjemmeskærm), så åbner den som en app.</li>
+        <li>bed om sushiris uden mirin (mirin nashi), og tag halal-sojasauce med.</li>
+        <li>undgå <span lang="ja">豚</span> (svinekød), <span lang="ja">ラード</span> (svinefedt), <span lang="ja">ゼラチン</span> (gelatine) og <span lang="ja">酒</span> (alkohol) på varer.</li>
+        <li>moskeer: as-salaam masjid i okachimachi og tokyo camii i yoyogi-uehara.</li>
+        <li>haneda til shinjuku: lufthavnsbussen, ca. 1 time.</li>
+        <li>tax free: fra 1. november 2026 betaler du moms i butikken og får de 10 % tilbage i lufthavnen, når du rejser hjem. det gælder køb over 5.000 ¥ i én butik på en dag. tag pas med, gem kvitteringerne, og hav varerne med i håndbagagen til tjekket.</li>
+        <li>stikkontakter: type a, 100 volt. tag en adapter med; telefon- og computeropladere virker.</li>
+        <li>nødnumre: ambulance 119, politi 110.</li>
+        <li id="offlineTip" hidden>siden virker også uden internet. læg den på hjemmeskærmen (del → føj til hjemmeskærm), så åbner den som en app.</li>
       </ul>
-      <p class="src">Google Maps, Time Out, Tokyo Cheapo og Coto Academy, okt. 2026. Tjek åbningstider.</p>
+      <p class="src">google maps, time out, tokyo cheapo og coto academy, okt. 2026. tjek åbningstider.</p>
     </section>
   </div>
 </div>
 
-<nav class="tabbar" aria-label="Sider">
+<div id="viewCalc" role="tabpanel" aria-labelledby="tabCalc" hidden>
+  <div class="wrap top">
+    <section class="tool" aria-label="yen og kroner">
+      <h2>yen og kroner</h2>
+      <div class="conv">
+        <label class="cur"><span>yen</span><span class="inp"><input id="yenIn" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0"><i>¥</i></span></label>
+        <label class="cur"><span>kroner</span><span class="inp"><input id="krIn" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0"><i>kr</i></span></label>
+      </div>
+      <div class="chips" id="yenQuick"></div>
+      <div class="say" id="yenSay" hidden></div>
+      <p class="hint" id="taxLine" hidden></p>
+      <p class="hint" id="rateLine"></p>
+    </section>
+    <section class="tool" aria-label="del regningen">
+      <h2>del regningen</h2>
+      <div class="conv">
+        <label class="cur"><span>regningen</span><span class="inp"><input id="billIn" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0"><i>¥</i></span></label>
+        <div class="cur"><span>personer</span><div class="stepper"><button type="button" data-p="-1" aria-label="færre">−</button><output id="billN">2</output><button type="button" data-p="1" aria-label="flere">+</button></div></div>
+      </div>
+      <p class="out" id="billOut" hidden></p>
+      <p class="hint">man giver ikke drikkepenge i japan. betaler i hver for sig, så brug kortet "kan vi betale hver for sig?" i parløren.</p>
+    </section>
+    <section class="tool" aria-label="størrelser">
+      <h2>størrelser</h2>
+      <div class="seg" id="sizeKind" role="group" aria-label="slags"><button type="button" data-k="shoe" aria-pressed="true">sko</button><button type="button" data-k="men" aria-pressed="false">herretøj</button><button type="button" data-k="women" aria-pressed="false">dametøj</button></div>
+      <p class="sizeQ">din danske størrelse</p>
+      <div class="chips" id="sizeChips"></div>
+      <div id="sizeOut"></div>
+    </section>
+    <section class="tool" aria-label="tal">
+      <h2>tal</h2>
+      <label class="cur"><span>skriv et tal, så ser du, hvordan det siges</span><span class="inp"><input id="numIn" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0"></span></label>
+      <div class="say" id="numSay" hidden></div>
+      <table class="nums"><thead><tr><th></th><th>skrives</th><th>siges</th><th>antal ting</th></tr></thead><tbody id="numBody"></tbody></table>
+      <p class="hint">antal ting bruger du, når du bestiller: kore o futatsu kudasai er "to af den her, tak". store tal tælles i titusinder (man): 30.000 er sanman. nogle tal skifter lyd: 300 sanbyaku, 600 roppyaku, 800 happyaku, 3.000 sanzen, 8.000 hassen.</p>
+    </section>
+    <section class="tool" aria-label="klokken">
+      <h2>klokken</h2>
+      <div class="clock"><div><small>tokyo</small><b id="clkT">–</b></div><div><small>danmark</small><b id="clkD">–</b></div></div>
+      <p class="hint" id="clkDiff"></p>
+    </section>
+  </div>
+</div>
+
+<nav class="tabbar" aria-label="sider">
   <div class="in" role="tablist">
-    <button class="tab" role="tab" id="tabEat" aria-selected="true" aria-controls="viewEat" type="button"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.5h17a8.5 8.5 0 0 1-17 0Z"/><path d="M8.5 20.5h7"/><path d="M13 3.5 10 10M19.5 4 14 10"/></svg></span>Spis</button>
-    <button class="tab" role="tab" id="tabSee" aria-selected="false" aria-controls="viewSee" type="button"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5v3"/><path d="M10 5.5h4l3.5 15h-11z"/><path d="M8.2 13h7.6"/><path d="M4.5 20.5h15"/></svg></span>Se</button>
-    <button class="tab" role="tab" id="tabTalk" aria-selected="false" aria-controls="viewTalk" type="button"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10.5H10l-5 4v-4H4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span>Parlør</button>
+    <button class="tab" role="tab" id="tabEat" aria-selected="true" aria-controls="viewEat" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.5h17a8.5 8.5 0 0 1-17 0Z"/><path d="M8.5 20.5h7"/><path d="M13 3.5 10 10M19.5 4 14 10"/></svg>spis</button>
+    <button class="tab" role="tab" id="tabSee" aria-selected="false" aria-controls="viewSee" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5v3"/><path d="M10 5.5h4l3.5 15h-11z"/><path d="M8.2 13h7.6"/><path d="M4.5 20.5h15"/></svg>se</button>
+    <button class="tab" role="tab" id="tabTalk" aria-selected="false" aria-controls="viewTalk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10.5H10l-5 4v-4H4z"/><path d="M8 9.5h8M8 12.5h5"/></svg>parlør</button>
+    <button class="tab" role="tab" id="tabCalc" aria-selected="false" aria-controls="viewCalc" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h15l-3.5-3.5"/><path d="M20 15.5H5l3.5 3.5"/></svg>omregn</button>
   </div>
 </nav>
 
-<div class="big" id="big" role="dialog" aria-modal="true" aria-label="Kort til personalet" hidden>
-  <div class="bigTop">
-    <button class="bigBtn" id="bigSpeak" type="button" hidden>Læs højt</button>
-    <button class="bigBtn" id="bigClose" type="button">Luk</button>
-  </div>
+<div class="big" id="big" role="dialog" aria-modal="true" aria-label="kort til personalet" hidden>
+  <div class="grab" aria-hidden="true"></div>
   <div class="bigBody" id="bigBody"><p class="bigText" id="bigText"></p></div>
   <p class="bigSub" id="bigSub"></p>
   <div class="bigAct" id="bigAct"></div>
+  <div class="bigBar"><button class="bigBtn" id="bigSpeak" type="button" hidden>læs højt</button><button class="bigBtn" id="bigClose" type="button">luk</button></div>
 </div>
 
 <script>
@@ -396,7 +381,7 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 };
 
-const TABS = ["eat", "see", "talk"], MODES = ["near", "dish", "try"];
+const TABS = ["eat", "see", "talk", "calc"], MODES = ["near", "dish", "try"];
 let tab = store.get("tokyo-tab"), mode = store.get("tokyo-mode"), dish = "All", area = "All", mustOnly = false, originIdx = GPS ? -2 : -1, custom = null;
 const modeChosen = MODES.includes(mode);
 if (!TABS.includes(tab)) tab = "eat";
@@ -407,6 +392,7 @@ try {
   if (h === "try") { tab = "eat"; mode = "try"; }
   else if (h === "sevaerdigheder") tab = "see";
   else if (h === "parlor") tab = "talk";
+  else if (h === "omregn") tab = "calc";
   else if (h === "nearest") { tab = "eat"; mode = "near"; }
   else { const m = AREAS.find(a => slug(a) === h); if (m) { tab = "eat"; mode = "dish"; area = m; } }
 } catch (e) {}
@@ -433,9 +419,9 @@ function distLabel(d) {
 
 /* ---------- By dish ---------- */
 const PIN = '<svg class="pin" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.4 12 21 12 21Z"/><circle cx="12" cy="10.5" r="2.3"/></svg>';
-const star = m => m ? ' <span class="must" title="Et must" aria-label="et must">★</span>' : "";
+const star = m => m ? ' <span class="must" title="et must" aria-label="et must">★</span>' : "";
 function rowHTML(u, name, sub, m, meta, note, extra) {
-  return `<li class="item"><a class="row" href="${u}" target="_blank" rel="noopener"><span class="rowMain"><span class="name">${esc(name)}${sub ? ` <small>· ${esc(sub)}</small>` : ""}${star(m)}</span><span class="meta">${meta}</span><span class="note">${esc(note)}</span></span>${PIN}</a>${extra || ""}</li>`;
+  return `<li class="item"><a class="row" href="${u}" target="_blank" rel="noopener"><span class="name">${esc(name)}${sub ? ` <small>· ${esc(sub)}</small>` : ""}${star(m)}</span><span class="meta">${meta}</span><span class="note">${esc(note)}</span></a>${extra || ""}</li>`;
 }
 function itemHTML(it, splurge) {
   const branchHit = area !== "All" && it.a !== area && it.b.some(b => b.a === area);
@@ -544,7 +530,7 @@ function renderSee() {
     const pick = [], seen = new Set();
     for (const r of near) { if (r.d > 2) break; if (seen.has(r.n)) continue; seen.add(r.n); pick.push(r); if (pick.length === 3) break; }
     const extra = s.x.map(x => `<a class="btn" href="${x.u}" target="_blank" rel="noopener">${esc(x.l)}</a>`).join("");
-    return `<article class="card"><p class="sub" style="margin:0">${esc(s.a)}</p><h3>${esc(s.n)}</h3><p>${esc(s.t)}</p><p class="tip"><b>Tip:</b> ${esc(s.tip)}</p><span class="lbl">Spis i nærheden</span><div class="near">${!pick.length ? `<p class="farNote">${esc(s.far || "Ingen halal-steder fra listen i gåafstand.")}</p>` : ""}${pick.map(r => `<a class="nrow" href="${r.u}" target="_blank" rel="noopener"><span class="nm">${esc(r.n)}${r.sub ? ` <small>· ${esc(r.sub)}</small>` : ""}${star(r.m)}</span><span class="d">${walkLabel(r.d)}</span></a>`).join("")}</div><div class="acts"><a class="btn primary" href="${s.u}" target="_blank" rel="noopener">${PIN.replace('class="pin"', 'class="pin" style="stroke:currentColor;width:18px;height:18px"')}Vis på kort</a>${extra}<a class="btn" href="${s.p}" target="_blank" rel="noopener">Billeder</a></div></article>`;
+    return `<article><span class="area">${esc(s.a)}</span><h3>${esc(s.n)}</h3><p>${esc(s.t)}</p><p class="tip"><b>tip:</b> ${esc(s.tip)}</p><span class="lbl">spis i nærheden</span><div class="near">${!pick.length ? `<p class="farNote">${esc(s.far || "Ingen halal-steder fra listen i gåafstand.")}</p>` : ""}${pick.map(r => `<a class="nrow" href="${r.u}" target="_blank" rel="noopener"><span class="nm">${esc(r.n)}${r.sub ? ` <small>· ${esc(r.sub)}</small>` : ""}${star(r.m)}</span><span class="d">${walkLabel(r.d)}</span></a>`).join("")}</div><div class="acts"><a class="btn primary" href="${s.u}" target="_blank" rel="noopener">vis på kort</a>${extra}<a class="btn" href="${s.p}" target="_blank" rel="noopener">billeder</a></div></article>`;
   }).join("");
 }
 
@@ -661,12 +647,30 @@ function rateLine() {
   const [y, m, d] = RATE.d.split("-");
   $("rateLine").textContent = `Kurs: 1 kr = ${fmt(1 / RATE.r, 1)} ¥ (ECB, ${+d}.${+m}.${y}). Dit kort kan lægge et lille gebyr oveni.`;
 }
+/* "say it" lines: words, kanji and a button that reads the Japanese aloud where the phone has a voice */
+function sayHTML(w, kj) {
+  const v = jaVoice();
+  return `<span>siges: ${esc(w)}</span><span class="kj" lang="ja">${esc(kj)}</span>${v !== null && "speechSynthesis" in window ? `<button class="btn" type="button" data-say="${esc(kj)}">læs højt</button>` : ""}`;
+}
+function numWords(n) {
+  if (n === 0) return { ro: "zero (rei)", kj: "〇" };
+  const man = Math.floor(n / 10000), rest = n % 10000, ro = [];
+  let kj = "";
+  if (man) { const w = under10k(man, true); ro.push(w.ro + "man"); kj += w.kj + "万"; }
+  if (rest) { const w = under10k(rest, false); ro.push(w.ro); kj += w.kj; }
+  return { ro: ro.join(" "), kj };
+}
 function yenSay(n) {
-  const el = $("yenSay");
-  if (!(n >= 1 && n < 1e8)) { el.hidden = true; return; }
+  const el = $("yenSay"), tax = $("taxLine");
+  if (!(n >= 1 && n < 1e8)) { el.hidden = tax.hidden = true; return; }
   const w = yenWords(n);
-  el.innerHTML = `Siges: <b>${w.ro}</b> <span class="kj" lang="ja">${w.kj}</span>`;
-  el.hidden = false;
+  el.innerHTML = sayHTML(w.ro, w.kj); el.hidden = false;
+  /* tax free from 1 Nov 2026: 5,000 ¥ before tax in one shop in one day, the 10 % comes back at the airport */
+  if (n >= 5500) {
+    const back = Math.floor(n * 10 / 110);
+    tax.textContent = `tax free: er det købt i én butik på én dag, får du op til ca. ${fmt(back, 0)} ¥ (${fmt(back * RATE.r, 0)} kr) tilbage i lufthavnen.`;
+    tax.hidden = false;
+  } else tax.hidden = true;
 }
 const yenOf = v => { const n = parseInt(String(v).replace(/\D/g, ""), 10); return isNaN(n) ? NaN : n; };
 function krOf(v) {
@@ -675,9 +679,10 @@ function krOf(v) {
   else if (/\.\d{3}$/.test(t)) t = t.replace(/\./g, "");
   return parseFloat(t);
 }
+const krFmt = k => fmt(k, k < 100 ? 1 : 0);
 function fromYen(n, setField) {
   if (setField) $("yenIn").value = isNaN(n) ? "" : fmt(n, 0);
-  $("krIn").value = isNaN(n) ? "" : fmt(n * RATE.r, n * RATE.r < 100 ? 1 : 0);
+  $("krIn").value = isNaN(n) ? "" : krFmt(n * RATE.r);
   yenSay(n);
 }
 $("yenQuick").innerHTML = [500, 1000, 3000, 5000, 10000].map(n => `<button class="chip" type="button" data-y="${n}">${fmt(n, 0)} ¥</button>`).join("");
@@ -692,11 +697,52 @@ $("krIn").addEventListener("input", e => {
 });
 rateLine();
 
+/* split the bill */
+let billN = 2;
+try { billN = Math.min(20, Math.max(2, +store.get("tokyo-persons") || 2)); } catch (e) {}
+function renderBill() {
+  $("billN").textContent = billN;
+  const total = yenOf($("billIn").value), out = $("billOut");
+  if (!(total > 0)) { out.hidden = true; return; }
+  const each = Math.ceil(total / billN);
+  out.innerHTML = `${fmt(each, 0)} ¥ <small>hver · ${krFmt(each * RATE.r)} kr</small>`;
+  out.hidden = false;
+}
+$("billIn").addEventListener("input", renderBill);
+$("billIn").addEventListener("blur", e => { const n = yenOf(e.target.value); if (!isNaN(n)) e.target.value = fmt(n, 0); });
+document.querySelector(".stepper").addEventListener("click", e => { const b = e.target.closest("[data-p]"); if (!b) return; billN = Math.min(20, Math.max(2, billN + +b.dataset.p)); renderBill(); });
+renderBill();
+
+/* any number, said */
+$("numIn").addEventListener("input", e => {
+  const n = yenOf(e.target.value), el = $("numSay");
+  if (isNaN(n) || n >= 1e8) { el.hidden = true; return; }
+  const w = numWords(n); el.innerHTML = sayHTML(w.ro, w.kj); el.hidden = false;
+});
+$("numIn").addEventListener("blur", e => { const n = yenOf(e.target.value); if (!isNaN(n)) e.target.value = fmt(n, 0); });
 $("numBody").innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 1000, 10000].map(n => {
   const ro = n < 10 ? D_RO[n] + (n === 4 ? " / shi" : n === 7 ? " / shichi" : n === 9 ? " / ku" : "") : n === 10 ? "jū" : n === 100 ? "hyaku" : n === 1000 ? "sen" : "ichiman";
   const kj = n < 10 ? D_KJ[n] : n === 10 ? "十" : n === 100 ? "百" : n === 1000 ? "千" : "一万";
   return `<tr><td class="n">${fmt(n, 0)}</td><td class="kj" lang="ja">${kj}</td><td>${ro}</td><td>${n < 10 ? TSU[n] : n === 10 ? "tō" : ""}</td></tr>`;
 }).join("");
+
+/* the time in Tokyo and at home */
+const clockFmt = tz => new Intl.DateTimeFormat("da-DK", { timeZone: tz, weekday: "short", hour: "2-digit", minute: "2-digit" });
+function wallMinutes(tz, d) {
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }).formatToParts(d).map(x => [x.type, x.value]));
+  return Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute) / 60000;
+}
+function tick() {
+  try {
+    const d = new Date();
+    const split = s => { const m = s.match(/^(\S+)\.?\s+(.*)$/); return m ? `${m[2].replace(".", ":")} <small>${m[1].replace(".", "")}</small>` : s; };
+    $("clkT").innerHTML = split(clockFmt("Asia/Tokyo").format(d));
+    $("clkD").innerHTML = split(clockFmt("Europe/Copenhagen").format(d));
+    const h = (wallMinutes("Asia/Tokyo", d) - wallMinutes("Europe/Copenhagen", d)) / 60;
+    $("clkDiff").textContent = `tokyo er ${fmt(h, 1)} timer foran danmark. ringer i hjem kl. 20 i tokyo, er klokken ${String((20 - h + 24) % 24).padStart(2, "0")} i danmark.`;
+  } catch (e) { $("clkDiff").textContent = ""; }
+}
+setInterval(() => { if (tab === "calc" && !document.hidden) tick(); }, 20000);
 
 /* Danish size → Japanese. Shoes: Japan gives the foot's length in cm; brands differ by about half a size. */
 const SIZES = {
@@ -741,25 +787,24 @@ $("sizeChips").addEventListener("click", e => { const b = e.target.closest("[dat
 $("sizeOut").addEventListener("click", e => { if (e.target.id === "sizeShow") { const p = sizeCard(); if (p) openBig(phraseView(p), e.target); } });
 renderSize();
 
-let tool = "";
-try { tool = store.get("tokyo-tool") || ""; } catch (e) {}
-function renderTools() {
-  document.querySelectorAll(".tool").forEach(b => b.setAttribute("aria-expanded", String(b.dataset.tool === tool)));
-  $("toolYen").hidden = tool !== "yen"; $("toolNum").hidden = tool !== "num"; $("toolSize").hidden = tool !== "size";
-}
-document.querySelector(".tools").addEventListener("click", e => {
-  const b = e.target.closest(".tool"); if (!b) return;
-  tool = tool === b.dataset.tool ? "" : b.dataset.tool; store.set("tokyo-tool", tool); renderTools();
-});
-renderTools();
+/* every "læs højt" outside the big card */
+document.addEventListener("click", e => { const b = e.target.closest("[data-say]"); if (b && !b.closest("#big")) speakJa(b.dataset.say); });
 
 const fold = s => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
 let talkQuery = "";
+const CAT_SHORT = { "Halal": "halal", "På restauranten": "restaurant", "Indkøb": "indkøb", "Transport": "transport", "Hotel": "hotel", "Nødsituation": "nød", "Praktisk": "praktisk" };
+let talkCat = store.get("tokyo-cat") || "all";
+if (talkCat !== "all" && !PHRASES.some(g => g[0] === talkCat)) talkCat = "all";
+function renderCats() {
+  $("talkCats").innerHTML = [["all", "alle"], ...PHRASES.map(([g]) => [g, CAT_SHORT[g] || g])].map(([k, l]) =>
+    `<button type="button" data-c="${esc(k)}" aria-pressed="${!talkQuery.trim() && k === talkCat}">${esc(l)}</button>`).join("");
+}
 function renderTalk() {
   const q = fold(talkQuery.trim());
   let shown = 0;
   $("talk").innerHTML = PHRASES.map(([group, note, list], gi) => {
+    if (!q && talkCat !== "all" && group !== talkCat) return "";
     const cards = list.map((p, i) => ({ p, i })).filter(({ p }) => !q || fold(p[0] + " " + p[1] + " " + p[2] + " " + group).includes(q));
     if (!cards.length) return "";
     shown += cards.length;
@@ -767,6 +812,8 @@ function renderTalk() {
       `<button class="phrase${p[4] ? " special" : ""}" type="button" data-g="${gi}" data-i="${i}"><span class="da">${esc(p[0])}</span><span class="ja" lang="ja">${esc(p[1])}</span></button>`).join("")}</div></section>`;
   }).join("");
   $("talkEmpty").hidden = shown > 0;
+  $("info").hidden = !!q || talkCat !== "all";
+  renderCats();
 }
 
 /* the big card: one place for every mode */
@@ -867,32 +914,77 @@ function hotelEdit() {
     sub: "Indsæt hotellets adresse på japansk. Du finder den i bookingbekræftelsen eller på hotellets side i Google Maps.",
     act: `<textarea class="hotelInput" id="hotelInput" lang="ja" placeholder="東京都新宿区…">${esc(hotel)}</textarea><div class="formBtns"><button type="button" data-cancel="1">Annuller</button><button type="button" data-save="1">Gem</button></div>`, kind: "hotelEdit" };
 }
+const reduceMotion = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+let closing = 0;
+function speakJa(text) {
+  if (!text || !("speechSynthesis" in window)) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "ja-JP"; u.rate = 0.9;
+    const v = jaVoice(); if (v) u.voice = v;
+    speechSynthesis.speak(u);
+  } catch (e) {}
+}
 async function openBig(view, from) {
   lastPhrase = from || null;
-  $("big").hidden = false; document.body.style.overflow = "hidden";
+  const el = $("big");
+  clearTimeout(closing);
+  el.style.pointerEvents = "";
+  if (!reduceMotion) { el.style.transition = "none"; el.style.transform = "translateY(48px)"; el.style.opacity = "0"; }
+  el.hidden = false; document.body.style.overflow = "hidden";
   paint(view);
-  $("bigClose").focus();
+  void el.offsetHeight;
+  el.style.transition = ""; el.style.transform = ""; el.style.opacity = "";
+  try { $("bigClose").focus({ preventScroll: true }); } catch (e) {}
   try { if ("wakeLock" in navigator) wake = await navigator.wakeLock.request("screen"); } catch (e) { wake = null; }
 }
 function closeBig() {
-  $("big").hidden = true; document.body.style.overflow = "";
+  const el = $("big");
+  if (el.hidden) return;
+  clearTimeout(closing);
+  el.style.transition = ""; el.style.pointerEvents = "none";
+  el.style.transform = "translateY(100%)"; el.style.opacity = "0";
+  closing = setTimeout(() => { el.hidden = true; el.style.transform = el.style.opacity = el.style.pointerEvents = ""; }, reduceMotion ? 0 : 260);
+  document.body.style.overflow = "";
   try { if ("speechSynthesis" in window) speechSynthesis.cancel(); } catch (e) {}
   try { if (wake) wake.release(); } catch (e) {}
   wake = null;
-  if (lastPhrase) lastPhrase.focus();
+  try { if (lastPhrase) lastPhrase.focus({ preventScroll: true }); } catch (e) {}
 }
+/* pull the card down to close it: past 120 px, or a quick flick */
+let drag = null;
+$("big").addEventListener("touchstart", e => {
+  drag = (e.touches.length === 1 && !e.target.closest("button, textarea, input")) ? { y: e.touches[0].clientY, t: Date.now(), dy: 0 } : null;
+}, { passive: true });
+$("big").addEventListener("touchmove", e => {
+  if (!drag || e.touches.length !== 1) return;
+  drag.dy = Math.max(0, e.touches[0].clientY - drag.y);
+  const el = $("big");
+  el.style.transition = "none"; el.style.transform = `translateY(${drag.dy}px)`; el.style.opacity = String(Math.max(0.35, 1 - drag.dy / 700));
+}, { passive: true });
+function endDrag() {
+  if (!drag) return;
+  const el = $("big"), v = drag.dy / Math.max(1, Date.now() - drag.t);
+  el.style.transition = "";
+  if (drag.dy > 120 || (drag.dy > 40 && v > 0.5)) closeBig(); else { el.style.transform = ""; el.style.opacity = ""; }
+  drag = null;
+}
+$("big").addEventListener("touchend", endDrag);
+$("big").addEventListener("touchcancel", endDrag);
 
 /* ---------- Foods to try ---------- */
 function renderTry() {
-  $("tryGrid").innerHTML = DATA.try.map(x => `<article class="card food"><div class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${ICONS[x.id] || ""}</svg></div><div><h3>${esc(x.n)}<span class="kanji" lang="ja">${esc(x.j)}</span></h3><p>${esc(x.t)}</p><span class="lbl">Prøv det hos</span><div class="chips">${x.w.map(w => `<a class="chip" href="${w.u}" target="_blank" rel="noopener">${esc(w.l)}</a>`).join("")}</div><div class="acts"><a class="btn" href="${x.p}" target="_blank" rel="noopener">Se billeder</a></div></div></article>`).join("");
+  $("tryGrid").innerHTML = DATA.try.map(x => `<article class="food"><div class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${ICONS[x.id] || ""}</svg></div><div><h3>${esc(x.n)}<span class="kanji" lang="ja">${esc(x.j)}</span></h3><p>${esc(x.t)}</p><span class="lbl">prøv det hos</span><div class="chips">${x.w.map(w => `<a class="chip" href="${w.u}" target="_blank" rel="noopener">${esc(w.l)}</a>`).join("")}</div><div class="acts"><a class="btn" href="${x.p}" target="_blank" rel="noopener">se billeder</a></div></div></article>`).join("");
 }
 
 /* ---------- Controls ---------- */
 function render() {
-  for (const [t, id] of [["eat", "Eat"], ["see", "See"], ["talk", "Talk"]]) {
+  for (const [t, id] of [["eat", "Eat"], ["see", "See"], ["talk", "Talk"], ["calc", "Calc"]]) {
     $("tab" + id).setAttribute("aria-selected", String(tab === t));
     $("view" + id).hidden = tab !== t;
   }
+  if (tab === "calc") tick();
   if (tab !== "eat") return;
   for (const [m, id] of [["near", "Near"], ["dish", "Dish"], ["try", "Try"]]) $("mode" + id).setAttribute("aria-pressed", String(mode === m));
   $("dishCtl").hidden = mode !== "dish";
@@ -939,6 +1031,7 @@ $("coords").addEventListener("input", e => {
 $("tabEat").addEventListener("click", () => setTab("eat"));
 $("tabSee").addEventListener("click", () => setTab("see"));
 $("tabTalk").addEventListener("click", () => setTab("talk"));
+$("tabCalc").addEventListener("click", () => setTab("calc"));
 $("talk").addEventListener("click", e => {
   const b = e.target.closest(".phrase"); if (!b) return;
   const p = PHRASES[+b.dataset.g][2][+b.dataset.i];
@@ -947,15 +1040,16 @@ $("talk").addEventListener("click", e => {
 });
 $("halalCard").addEventListener("click", e => openBig({ text: HALAL_CARD.ja, lang: "ja", say: HALAL_CARD.ja.replace(/[・（）]/g, " "), sub: esc(HALAL_CARD.da), act: answerButtons() }, e.currentTarget));
 $("talkSearch").addEventListener("input", e => { talkQuery = e.target.value; renderTalk(); });
-$("bigClose").addEventListener("click", closeBig);
-$("bigSpeak").addEventListener("click", () => {
-  if (!current || !current.say || !("speechSynthesis" in window)) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(current.say);
-  u.lang = "ja-JP"; u.rate = 0.9;
-  const v = jaVoice(); if (v) u.voice = v;
-  speechSynthesis.speak(u);
+$("talkCats").addEventListener("click", e => {
+  const b = e.target.closest("[data-c]"); if (!b) return;
+  talkCat = b.dataset.c; store.set("tokyo-cat", talkCat);
+  if (talkQuery) { talkQuery = ""; $("talkSearch").value = ""; }
+  renderTalk();
+  const bar = document.querySelector(".catbar"), y = bar.getBoundingClientRect().top + window.scrollY;
+  if (window.scrollY > y - 1) window.scrollTo({ top: y });
 });
+$("bigClose").addEventListener("click", closeBig);
+$("bigSpeak").addEventListener("click", () => { if (current) speakJa(current.say); });
 $("bigAct").addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
   if (b.dataset.ans) { paint(answerView(+b.dataset.ans, current)); return; }
@@ -972,6 +1066,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("big").
 renderTry();
 renderSee();
 renderTalk();
+tick();
 
 /* ---------- Offline ---------- */
 const SITE = true;
