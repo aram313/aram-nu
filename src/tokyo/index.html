@@ -33,6 +33,7 @@
   --ja: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Noto Sans CJK JP", "Yu Gothic", Meiryo, sans-serif;
   --nav: 58px;
   --ok: #5fcf8a;
+  --box: #0d0d0d;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -107,8 +108,10 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 
 /* spis */
 .filters { position: sticky; top: 0; z-index: 5; background: var(--bg); padding-top: calc(env(safe-area-inset-top, 0px) + max(3vh, 12px)); padding-bottom: 14px; }
-.cat { padding-top: 14px; content-visibility: auto; contain-intrinsic-size: auto 900px; }
-.cat h2 { position: sticky; top: var(--fh); z-index: 3; display: flex; align-items: baseline; gap: 8px; margin: 0 -24px 2px; padding: 12px 24px 8px; background: var(--bg); border-bottom: 1px solid var(--line); font-size: 20px; font-weight: 500; }
+.cat { margin: 14px -12px 0; padding: 0 12px; background: var(--box); border: 1px solid var(--line); border-radius: 14px; content-visibility: auto; contain-intrinsic-size: auto 900px; }
+.cat h2 { position: sticky; top: var(--fh); z-index: 3; display: flex; align-items: baseline; gap: 8px; margin: 0 -12px; padding: 14px 12px 10px; background: var(--box); border-bottom: 1px solid var(--edge); border-radius: 14px 14px 0 0; font-size: 21px; font-weight: 500; }
+.about { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 0 14px; border-top: 1px solid var(--line); color: var(--dim); font-size: 13.5px; }
+#list > .about { border-top: 0; }
 .cat h2 .count { margin-left: auto; color: var(--dim); font-size: 13.5px; font-weight: 300; }
 .cat h2 .kanji, .cat h2 .count { flex: none; white-space: nowrap; }
 @media (max-width: 400px) { .cat h2 { font-size: 18px; } .cat h2 .kanji { display: none; } }
@@ -584,12 +587,12 @@ const firstSentence = t => { const m = String(t).match(/^.*?[.!?](\s|$)/); retur
 function dishesHTML(name) {
   const list = DATA.try.filter(x => DISH_OF[x.id] === name);
   if (!list.length) return "";
-  return `<span class="sub2">smag</span><div class="dishes">${list.map(x => `<button class="dish" type="button" data-dish="${esc(x.id)}"><span class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${ICONS[x.id] || ""}</svg></span><span><b>${esc(x.n)}<span class="kanji" lang="ja">${esc(x.j)}</span></b><small>${esc(x.t)}</small></span><span class="go">›</span></button>`).join("")}</div><span class="sub2">steder</span>`;
+  return `<div class="about"><span>om maden:</span>${list.map(x => `<button class="chip" type="button" data-dish="${esc(x.id)}">${esc(x.n)}</button>`).join("")}</div>`;
 }
 function sectionHTML(name, items, splurge) {
   const shown = items.filter(visible);
   if (!shown.length) return ["", 0];
-  return [`<section class="cat${splurge ? " lux" : ""}"><h2>${esc(name)}${KANJI[name] ? `<span class="kanji" lang="ja">${KANJI[name]}</span>` : ""}<span class="count">${shown.length} ${shown.length === 1 ? "sted" : "steder"}</span></h2>${splurge ? "" : dishesHTML(name)}<ul class="list">${shown.map(i => itemHTML(i, splurge)).join("")}</ul></section>`, shown.length];
+  return [`<section class="cat${splurge ? " lux" : ""}"><h2>${esc(name)}${KANJI[name] ? `<span class="kanji" lang="ja">${KANJI[name]}</span>` : ""}<span class="count">${shown.length} ${shown.length === 1 ? "sted" : "steder"}</span></h2><ul class="list">${shown.map(i => itemHTML(i, splurge)).join("")}</ul>${splurge ? "" : dishesHTML(name)}</section>`, shown.length];
 }
 function renderGrouped() {
   let html = "", total = 0;
@@ -645,8 +648,8 @@ function renderNearest(from) {
   rows.sort((a, b) => a.d - b.d);
   const top = rows.slice(0, 40);
   const dishes = dish !== "All" && dish !== "Luksus" ? dishesHTML(dish) : "";
-  $("list").innerHTML = `${dishes}<ul class="list">${top.map(r =>
-    rowHTML(r.u, r.n, r.sub, r.it.m, `<span class="dist">${distLabel(r.d)}</span>${dish === "All" ? `<span>${esc(DISH_SHORT[r.cat] || r.cat)}</span>` : `<span>${esc(r.a)}</span>`}`, r.it.t, "", pidOf(r.it.u))).join("")}</ul>${archNote()}`;
+  $("list").innerHTML = `<ul class="list">${top.map(r =>
+    rowHTML(r.u, r.n, r.sub, r.it.m, `<span class="dist">${distLabel(r.d)}</span>${dish === "All" ? `<span>${esc(DISH_SHORT[r.cat] || r.cat)}</span>` : `<span>${esc(r.a)}</span>`}`, r.it.t, "", pidOf(r.it.u))).join("")}</ul>${dishes}${archNote()}`;
   $("empty").hidden = !!top.length;
 }
 function renderEat() {

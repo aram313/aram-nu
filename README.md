@@ -123,7 +123,7 @@ Everything you tap opens the same sheet from the bottom, with the details and wh
 - **spis**: 85 halal places to eat, nearly all Japanese food (one section, "andre køkkener", has seven
   good Malaysian, Pakistani, Indian, Lebanese and Arab places for a break). Dish chips (a row that scrolls sideways, with a fade on each
   side where there is more) and one "where" choice: "hele tokyo" groups the places by dish, each dish
-  heading first listing the dishes to taste; "min placering", a station or "mit hotel" sorts them by
+  in its own frame with its places and, at the foot, the dishes to read about; "min placering", a station or "mit hotel" sorts them by
   distance, also within a dish. If the location is not ready, one line says why and the list stays. A
   place's sheet has its Japanese address, the map, and cards that ask the way or tell a taxi driver where
   to go, in Japanese with the name and address. At its foot, "planlæg" puts the place in the plan tab,
