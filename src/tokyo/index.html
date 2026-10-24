@@ -154,6 +154,22 @@ li.item:first-child { border-top: 0; }
 .links a { color: var(--muted); text-decoration: none; }
 .links a:hover { color: var(--accent); }
 
+/* Parlør */
+.talkGroup h2 { font-size: 17px; margin: 18px 0 8px; }
+.talkGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.phrase { text-align: left; font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; min-height: 86px; }
+.phrase:active { background: var(--accent-soft); }
+.phrase .da { font-weight: 600; font-size: 15px; line-height: 1.3; }
+.phrase .ja { font-family: var(--display); font-size: 13px; color: var(--muted); line-height: 1.4; overflow-wrap: normal; line-break: strict; }
+/* The big card is always black on white, so staff can read it in any theme or light */
+.big { position: fixed; inset: 0; z-index: 50; background: #ffffff; color: #111111; display: flex; flex-direction: column;
+  padding: calc(env(safe-area-inset-top, 0px) + 12px) max(20px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 20px) max(20px, env(safe-area-inset-left, 0px)); }
+.bigClose { align-self: flex-end; font: 600 16px var(--body); color: #111111; background: #eef0ee; border: 0; border-radius: 999px; padding: 10px 18px; cursor: pointer; }
+.bigBody { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; overflow-y: auto; }
+.bigJa { font-family: var(--display); font-weight: 700; font-size: clamp(34px, 11vw, 92px); line-height: 1.35; margin: 0; text-wrap: balance; word-break: normal; overflow-wrap: normal; line-break: strict; }
+.bigRo { margin: 18px 0 0; font-size: 16px; color: #55605a; }
+.bigDa { margin: 4px 0 0; font-size: 16px; color: #55605a; }
+
 footer { padding-block: 26px 40px; color: var(--muted); font-size: 13.5px; }
 footer h3 { font-family: var(--display); color: var(--fg); font-size: 16px; margin: 18px 0 6px; }
 footer ul { margin: 0; padding-left: 18px; }
@@ -189,9 +205,10 @@ footer .src { margin-top: 18px; font-size: 12px; }
     <h1>Halal Tokyo Eats</h1>
     <p class="lede"><b>64 halal japanske spisesteder</b> i Tokyo (93 adresser). Tryk på et navn for at åbne det i Google Maps. <span style="color:var(--gold)">★</span> betyder, at det er et must.</p>
     <div class="tabs" role="tablist">
-      <button class="tab" role="tab" id="tabEat" aria-selected="true" aria-controls="viewEat" type="button">Steder at spise</button>
+      <button class="tab" role="tab" id="tabEat" aria-selected="true" aria-controls="viewEat" type="button">Spisesteder</button>
       <button class="tab" role="tab" id="tabSee" aria-selected="false" aria-controls="viewSee" type="button">Seværdigheder</button>
-      <button class="tab" role="tab" id="tabTry" aria-selected="false" aria-controls="viewTry" type="button">Mad at prøve</button>
+      <button class="tab" role="tab" id="tabTry" aria-selected="false" aria-controls="viewTry" type="button">Mad</button>
+      <button class="tab" role="tab" id="tabTalk" aria-selected="false" aria-controls="viewTalk" type="button">Parlør</button>
     </div>
   </header>
 </div>
@@ -239,6 +256,22 @@ footer .src { margin-top: 18px; font-size: 12px; }
   <div class="wrap">
     <p class="tryIntro">Femten japanske retter og oplevelser, du kan få halal i Tokyo. Hver af dem linker til, hvor du kan prøve den, og til rigtige billeder.</p>
     <div class="grid" id="tryGrid"></div>
+  </div>
+</div>
+
+<div id="viewTalk" role="tabpanel" aria-labelledby="tabTalk" hidden>
+  <div class="wrap">
+    <p class="tryIntro">Tryk på et kort, så vises det stort på japansk. Vend telefonen mod personalet.</p>
+    <div id="talk"></div>
+  </div>
+</div>
+
+<div class="big" id="big" role="dialog" aria-modal="true" aria-labelledby="bigJa" hidden>
+  <button class="bigClose" id="bigClose" type="button">Luk</button>
+  <div class="bigBody">
+    <p class="bigJa" id="bigJa" lang="ja"></p>
+    <p class="bigRo" id="bigRo"></p>
+    <p class="bigDa" id="bigDa"></p>
   </div>
 </div>
 
@@ -307,6 +340,7 @@ try {
   const h = location.hash.slice(1);
   if (h === "try") tab = "try";
   else if (h === "sevaerdigheder") tab = "see";
+  else if (h === "parlor") tab = "talk";
   else if (h === "nearest") mode = "near";
   else { const m = AREAS.find(a => slug(a) === h); if (m) area = m; }
 } catch (e) {}
@@ -446,6 +480,53 @@ function renderSee() {
   }).join("");
 }
 
+/* ---------- Parlør ---------- */
+const PHRASES = [
+  ["Halal", [
+    ["Er det her halal?", "これはハラールですか？", "Kore wa harāru desu ka?"],
+    ["Jeg spiser ikke svinekød.", "豚肉は食べられません。", "Butaniku wa taberaremasen."],
+    ["Er der svinekød eller alkohol i?", "豚肉やアルコールは入っていますか？", "Butaniku ya arukōru wa haitte imasu ka?"],
+    ["Brug venligst ikke sake eller mirin.", "お酒やみりんを使わないでください。", "Osake ya mirin o tsukawanaide kudasai."],
+    ["Er der mirin eller sake i sushirisen?", "シャリにみりんやお酒は入っていますか？", "Shari ni mirin ya osake wa haitte imasu ka?"],
+    ["Må jeg bruge min egen sojasauce?", "自分の醤油を使ってもいいですか？", "Jibun no shōyu o tsukatte mo ii desu ka?"],
+    ["Uden råt æg, tak.", "生卵なしでお願いします。", "Nama tamago nashi de onegaishimasu."],
+    ["Jeg er muslim.", "私はイスラム教徒です。", "Watashi wa isuramu-kyōto desu."],
+    ["Er der et sted, hvor jeg kan bede?", "お祈りできる場所はありますか？", "Oinori dekiru basho wa arimasu ka?"],
+    ["Hvor er den nærmeste moské?", "一番近いモスクはどこですか？", "Ichiban chikai mosuku wa doko desu ka?"]
+  ]],
+  ["På restauranten", [
+    ["Undskyld! (for at kalde)", "すみません！", "Sumimasen!"],
+    ["Vi har reserveret bord.", "予約しています。", "Yoyaku shite imasu."],
+    ["Ikke stærk, tak.", "辛くしないでください。", "Karaku shinaide kudasai."],
+    ["Vand, tak.", "お水をください。", "Omizu o kudasai."],
+    ["Regningen, tak.", "お会計をお願いします。", "Okaikei o onegaishimasu."],
+    ["Kan jeg betale med kort?", "カードで払えますか？", "Kādo de haraemasu ka?"],
+    ["Tak for maden.", "ごちそうさまでした。", "Gochisōsama deshita."]
+  ]],
+  ["Praktisk", [
+    ["Tak.", "ありがとうございます。", "Arigatō gozaimasu."],
+    ["Jeg taler ikke japansk.", "日本語が話せません。", "Nihongo ga hanasemasen."],
+    ["Hvor er toilettet?", "トイレはどこですか？", "Toire wa doko desu ka?"],
+    ["Kør mig til denne adresse, tak.", "この住所までお願いします。", "Kono jūsho made onegaishimasu."],
+    ["Kan jeg købe det momsfrit?", "免税できますか？", "Menzei dekimasu ka?"]
+  ]]
+];
+function renderTalk() {
+  $("talk").innerHTML = PHRASES.map(([group, list], gi) => `<section class="talkGroup"><h2>${esc(group)}</h2><div class="talkGrid">${list.map((p, i) =>
+    `<button class="phrase" type="button" data-g="${gi}" data-i="${i}"><span class="da">${esc(p[0])}</span><span class="ja" lang="ja">${esc(p[1])}</span></button>`).join("")}</div></section>`).join("");
+}
+let lastPhrase = null;
+function openBig(p, from) {
+  lastPhrase = from;
+  $("bigJa").textContent = p[1]; $("bigRo").textContent = p[2]; $("bigDa").textContent = p[0];
+  $("big").hidden = false; document.body.style.overflow = "hidden";
+  $("bigClose").focus();
+}
+function closeBig() {
+  $("big").hidden = true; document.body.style.overflow = "";
+  if (lastPhrase) lastPhrase.focus();
+}
+
 /* ---------- Foods to try ---------- */
 function renderTry() {
   $("tryGrid").innerHTML = DATA.try.map(x => `<article class="card"><div class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${ICONS[x.id] || ""}</svg></div><div><h3>${esc(x.n)} <span class="kanji">${esc(x.j)}</span></h3><p>${esc(x.t)}</p><p class="br where"><span class="lbl">Prøv det hos:</span>${x.w.map(w => `<a href="${w.u}" target="_blank" rel="noopener">${esc(w.l)}</a>`).join("")}</p><a class="photos" href="${x.p}" target="_blank" rel="noopener">Se billeder ↗</a></div></article>`).join("");
@@ -456,6 +537,8 @@ function render() {
   $("tabEat").setAttribute("aria-selected", String(tab === "eat"));
   $("tabSee").setAttribute("aria-selected", String(tab === "see"));
   $("tabTry").setAttribute("aria-selected", String(tab === "try"));
+  $("tabTalk").setAttribute("aria-selected", String(tab === "talk"));
+  $("viewTalk").hidden = tab !== "talk";
   $("viewEat").hidden = tab !== "eat";
   $("viewSee").hidden = tab !== "see";
   $("viewTry").hidden = tab !== "try";
@@ -501,6 +584,10 @@ $("coords").addEventListener("input", e => {
 $("tabEat").addEventListener("click", () => { tab = "eat"; render(); });
 $("tabTry").addEventListener("click", () => { tab = "try"; render(); window.scrollTo({ top: 0 }); });
 $("tabSee").addEventListener("click", () => { tab = "see"; render(); window.scrollTo({ top: 0 }); });
+$("tabTalk").addEventListener("click", () => { tab = "talk"; render(); window.scrollTo({ top: 0 }); });
+$("talk").addEventListener("click", e => { const b = e.target.closest(".phrase"); if (!b) return; openBig(PHRASES[+b.dataset.g][1][+b.dataset.i], b); });
+$("big").addEventListener("click", closeBig);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("big").hidden) closeBig(); });
 $("index").addEventListener("click", e => {
   const a = e.target.closest("a"); if (!a) return;
   e.preventDefault();
@@ -509,6 +596,7 @@ $("index").addEventListener("click", e => {
 });
 renderTry();
 renderSee();
+renderTalk();
 render();
 </script>
 
