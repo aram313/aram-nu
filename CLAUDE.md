@@ -16,7 +16,7 @@ Owner's design rules for this page: black background, white text, **no capital l
 (CSS lowercase), a minimal font (the device's own sans, weight 300), little text, **no
 captions on the pictures**, only a few tiles ("fliserne fylder for meget").
 The Tokyo page (`src/tokyo/`) follows the same look since 2026-10-24 (Aram asked); its staff card is
-white on black and its icon is the text "/tokyo" in white on black (nothing religious).
+black on white and its icon is the text "/tokyo" in white on black (nothing religious).
 The tiles carry the shahada and Allah's name: never animate them falling, rotating or
 distorting, and keep them out of footers or decorative backgrounds.
 

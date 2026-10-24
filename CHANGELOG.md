@@ -55,6 +55,9 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   300, hairlines instead of boxes (no web fonts any more), and the staff card is white on black. A fourth
   tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
   categories to pick from, and the staff card closes with a button at the bottom or by pulling it down.
+- `aram.nu/tokyo`: the staff card is black on white again (the page's colours turned round), and the
+  answer buttons carry Japan's ○ (maru, yes) in green and ✕ (batsu, no) in red, as on OK/NG signs; the
+  answer shows large in the same colour.
 - `aram.nu/tokyo`: the app icon is the text "/tokyo" in white on black, and "del regningen" is gone again.
 - The front page sits at the top and fits a phone's screen without scrolling; the name "aram" is no
   longer shown (it stays for screen readers and search), and the rules around the sections start and end

@@ -179,8 +179,8 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .clock b { display: block; font-size: 36px; font-weight: 200; font-variant-numeric: tabular-nums; line-height: 1.2; }
 .clock small { color: var(--dim); font-size: inherit; }
 
-/* the card for staff: full screen, white on black; answers and close at the bottom; pull down to close */
-.big { position: fixed; inset: 0; z-index: 50; background: var(--bg); color: var(--fg); display: flex; flex-direction: column; gap: 12px;
+/* the card for staff: full screen, black on white (the page's colours turned round); answers and close at the bottom; pull down to close */
+.big { --bg: #fff; --fg: #000; --dim: #5c5c5c; --edge: #c8c8c8; --press: #f0f0f0; color-scheme: light; position: fixed; inset: 0; z-index: 50; background: var(--bg); color: var(--fg); display: flex; flex-direction: column; gap: 12px;
   padding: calc(env(safe-area-inset-top, 0px) + 6px) max(20px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 12px) max(20px, env(safe-area-inset-left, 0px));
   touch-action: none; overscroll-behavior: contain; transition: transform 0.26s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.26s ease; }
 .big textarea { touch-action: auto; }
@@ -196,6 +196,11 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .ask { margin: 2px 0 8px; }
 .ans { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 8px; }
 .ans button { min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: none; border: 1px solid var(--fg); border-radius: 2px; font-size: 20px; white-space: nowrap; cursor: pointer; }
+.ans .a-yes { color: #17803a; border-color: #17803a; background: #eef7f0; }
+.ans .a-no { color: #c62b26; border-color: #c62b26; background: #fbefee; }
+.ans .mk { font-family: var(--sans); }
+.bigText[data-tone="yes"] { color: #17803a; }
+.bigText[data-tone="no"] { color: #c62b26; }
 .ans button small { font-family: var(--sans); font-size: 12.5px; color: var(--dim); text-transform: lowercase; }
 .step { display: flex; align-items: center; justify-content: center; gap: 20px; }
 .step button { width: 64px; height: 64px; border-radius: 50%; background: none; border: 1px solid var(--fg); font-size: 28px; font-weight: 200; cursor: pointer; }
@@ -600,7 +605,8 @@ const HALAL_CARD = {
   da: "Jeg er muslim: intet svinekød, intet fra svin og ingen alkohol. Er der noget af det i retten?"
 };
 const ASK = "下のボタンを押してお答えください。";
-const ANSWERS = [["はい", "Ja"], ["いいえ", "Nej"], ["わかりません", "Ved ikke"]];
+/* ◯ (maru) is yes and ✕ (batsu) is no in Japan; green and red as on OK/NG signs */
+const ANSWERS = [["はい", "Ja", "○", "yes"], ["いいえ", "Nej", "✕", "no"], ["わかりません", "Ved ikke", "", ""]];
 const COUNT_RO = ["", "ichi", "ni", "san", "yon", "go", "roku", "nana", "hachi", "kyū", "jū"];
 const TSU = ["", "hitotsu", "futatsu", "mittsu", "yottsu", "itsutsu", "muttsu", "nanatsu", "yattsu", "kokonotsu"];
 
@@ -841,6 +847,7 @@ function paint(view) {
   t.classList.toggle("jp", ja);
   t.innerHTML = String(view.text).split("\n").map(l => `<span class="ln">${ja ? jaLine(l) : esc(l)}</span>`).join("");
   t.lang = view.lang;
+  t.dataset.tone = view.tone || "";
   $("bigSub").innerHTML = view.sub || "";
   $("bigAct").innerHTML = view.act || "";
   const voice = jaVoice();
@@ -856,11 +863,11 @@ function phraseView(p) {
   };
 }
 function answerButtons() {
-  return `<p class="ask" lang="ja">${ASK}</p><div class="ans">${ANSWERS.map(([ja, da], i) => `<button type="button" data-ans="${i}" lang="ja">${ja}<small lang="da">${da}</small></button>`).join("")}</div>`;
+  return `<p class="ask" lang="ja">${ASK}</p><div class="ans">${ANSWERS.map(([ja, da, mk, tone], i) => `<button type="button" data-ans="${i}" class="${tone ? "a-" + tone : ""}" lang="ja"><span>${mk ? `<span class="mk" aria-hidden="true">${mk}</span> ` : ""}${ja}</span><small lang="da">${da}</small></button>`).join("")}</div>`;
 }
 function answerView(i, back) {
-  const [ja, da] = ANSWERS[i];
-  return { text: da, lang: "da", sub: `<span class="sj" lang="ja">${ja}</span><br>Svaret fra personalet`, act: `<button class="backBtn" type="button" data-back="1">Tilbage til spørgsmålet</button>`, backTo: back };
+  const [ja, da, mk, tone] = ANSWERS[i];
+  return { text: tone ? `${mk} ${da}` : da, lang: "da", tone, sub: `<span class="sj" lang="ja">${ja}</span><br>Svaret fra personalet`, act: `<button class="backBtn" type="button" data-back="1">Tilbage til spørgsmålet</button>`, backTo: back };
 }
 let persons = 2, hotel = "";
 try { persons = Math.min(10, Math.max(1, +store.get("tokyo-persons") || 2)); hotel = store.get("tokyo-hotel") || ""; } catch (e) {}

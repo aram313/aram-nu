@@ -123,7 +123,8 @@ hairlines, grey for anything secondary), built like a phone app with four tabs i
   or pasted hotel coordinates), by dish with a dish and an area filter, or as 15 foods to taste.
 - **se**: 16 sights, each with the nearest halal places and the walk to them.
 - **parlør**: a halal card, a search, the phrase cards in seven categories, and "godt at vide". A card
-  shows the Japanese full screen for staff (sized to fit, answer buttons on yes/no questions, counters
+  shows the Japanese full screen for staff, black on white (sized to fit, ○ and ✕ answer buttons in
+  green and red on yes/no questions, counters
   for people and items, a hotel card); it closes with the button at the bottom or by pulling it down.
 - **omregn**: yen and kroner both ways at the ECB rate with how the price is said (read aloud where the
   phone has a Japanese voice) and the tax-free refund, Danish to Japanese sizes for
