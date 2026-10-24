@@ -55,6 +55,11 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   300, hairlines instead of boxes (no web fonts any more), and the staff card is white on black. A fourth
   tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
   categories to pick from, and the staff card closes with a button at the bottom or by pulling it down.
+- `aram.nu/tokyo` is easier to read and use: switches are real segmented controls with the chosen part
+  filled white, filters and buttons have clear borders and fills (main actions white), the chosen tab has
+  a marker, dish headings are larger, stick under the filter bar while scrolling and say how many places
+  they hold, titles and headings are heavier, the halal card is white, and the phrase categories are one
+  row of chips that scrolls sideways.
 - `aram.nu/tokyo`: a tap on a place to eat (in the list, near a sight or under a food) opens a sheet with
   its Japanese address and three choices: the map, "spørg om vej" and "vis til taxachaufføren". The last
   two show staff or a driver the question in Japanese with the place's name and address
