@@ -117,33 +117,37 @@ turned off and stamps `stage.js` with the newest file's time, so the browser nev
 
 `src/tokyo/index.html` is a separate page at https://aram.nu/tokyo: Aram's travel guide to Tokyo in
 Danish, in the front page's look (black, white text, lowercase, the device's own sans at weight 300,
-hairlines, grey for anything secondary), built like a phone app with four tabs in a bar at the bottom:
+hairlines, grey for anything secondary), built like a phone app with four tabs in a bar at the bottom.
+Everything you tap opens the same sheet from the bottom, with the details and what you can do.
 
-- **spis**: 64 halal Japanese places to eat, shown nearest first (from the phone's location, a station
-  or pasted hotel coordinates) or by dish with a dish and an area filter. Each dish heading first lists the
-  dishes to taste (15 in all), then the places. A tap on a dish or a place opens a sheet: a dish with its
-  tip and where to try it, a place with its Japanese address, the map, and cards that ask the way or tell
-  a taxi driver where to go, in Japanese with the name and address.
-- **oplev**: "steder", 16 sights, each with the nearest halal places, the walk to them and "spørg om vej"
-  with its Japanese name and address; and "overalt", 18 things met everywhere in Tokyo to try or to notice,
-  with their Japanese word and buttons into the halal card, phrase cards or omregn.
-- **parlør**: a halal card, a search, and 72 phrase cards in eight categories, one of them "det hører du"
-  (what staff say, with romaji, meaning and the answers to tap). A card shows the Japanese full screen for
-  staff, black on white, sized to fit, with a way to answer that you understand: ○ and ✕ buttons in green
-  and red on yes/no questions, buttons with a time or a direction, a keypad for a price (shown in yen and
-  kroner), a pad to write on with a finger, or a request to point at the menu. There are counters for
-  people and items and a hotel card; the card closes with the button at the bottom or by pulling it down.
+- **spis**: 64 halal Japanese places to eat. Dish chips (a row that scrolls sideways, with a fade on each
+  side where there is more) and one "where" choice: "hele tokyo" groups the places by dish, each dish
+  heading first listing the dishes to taste; "min placering", a station or "mit hotel" sorts them by
+  distance, also within a dish. If the location is not ready, one line says why and the list stays. A
+  place's sheet has its Japanese address, the map, and cards that ask the way or tell a taxi driver where
+  to go, in Japanese with the name and address.
+- **oplev**: "steder", 16 sights (sorted by distance when a point is chosen under spis), each with the
+  nearest halal places and "spørg om vej" with its Japanese name; and "overalt", 18 things met
+  everywhere in Tokyo to try or to notice, with buttons into the halal card, phrase cards, omregn or the
+  mosques on the map.
+- **parlør**: "vis frem" holds the halal card and 59 cards in seven categories to show staff; "forstå"
+  lists 24 things staff say, with romaji, meaning, "hør" and the answers to tap. A card shows the
+  Japanese full screen, black on white, with your Danish as one small grey line at the top and a way to
+  answer in Japanese only: yes/no (○ and ✕), "is it in the dish" (where yes is the bad answer), meat and
+  halal, a time, a direction, a keypad for a price or a platform, a pad to write on, or pointing at the
+  menu. The answer comes back large in Danish, green when it is good news and red when not.
 - **omregn**: yen and kroner both ways at the ECB rate with how the price is said (read aloud where the
-  phone has a Japanese voice) and the tax-free refund, Danish to Japanese sizes for
-  shoes and clothes with a card to ask staff, any number said in Japanese with a table of numbers and
-  counting words, and the time in Tokyo and Denmark.
+  phone has a Japanese voice) and the tax-free refund, Danish to Japanese sizes for shoes and clothes
+  with a card to ask staff, any number said in Japanese with a table of numbers and counting words, and
+  the time in Tokyo and Denmark.
 
-The page remembers the last tab, view, category and tool choices in `localStorage`. It is not linked
+The page remembers the last tab, views, dish, place and category in `localStorage`. It is not linked
 from the front page and carries `noindex`. The page (data, styles, script) is `index.html`; next to it,
 `sw.js` keeps it working offline (the page network first; its cache name carries a version, so a new
-page replaces the old cache), and `manifest.webmanifest` with the icons ("/tokyo" in white on black) makes it a full-screen app when added to a phone's home screen. Like the
-front page, it does not zoom. The exchange rate is fetched from `api.frankfurter.dev` when online;
-offline the built-in rate is used. Location needs the page on https, which Pages gives.
+page replaces the old cache), and `manifest.webmanifest` with the icons ("/tokyo" in white on black)
+makes it a full-screen app when added to a phone's home screen. Like the front page, it does not zoom.
+The exchange rate is fetched from `api.frankfurter.dev` when online; offline the built-in rate is used.
+Location needs the page on https, which Pages gives.
 
 ## Publishing
 

@@ -90,6 +90,18 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .hint { color: var(--dim); margin-top: 10px; font-size: 13.5px; line-height: 1.55; }
 .empty { color: var(--dim); padding: 24px 0; }
 
+/* a row of chips that scrolls sideways, edge to edge; a fade shows on each side where there is more */
+.scroller { position: relative; margin: 0 -24px; }
+.scroller > .row { display: flex; flex-wrap: nowrap; gap: 8px; overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; padding: 0 24px; scroll-padding: 0 24px; }
+.scroller > .row::-webkit-scrollbar { display: none; }
+.scroller::before, .scroller::after { content: ""; position: absolute; top: 0; bottom: 0; width: 36px; pointer-events: none; z-index: 1; opacity: 0; transition: opacity 0.15s; }
+.scroller::before { left: 0; background: linear-gradient(to right, var(--bg) 20%, transparent); }
+.scroller::after { right: 0; background: linear-gradient(to left, var(--bg) 20%, transparent); }
+.scroller.l::before, .scroller.r::after { opacity: 1; }
+.scroller .chip, .scroller button { flex: none; }
+.status { margin: 14px 0 0; padding: 10px 12px; color: var(--fg); background: var(--soft); border: 1px solid var(--line); border-radius: 10px; font-size: 14px; }
+.status b { font-weight: 500; }
+
 /* spis */
 .filters { position: sticky; top: 0; z-index: 5; background: var(--bg); padding-top: calc(env(safe-area-inset-top, 0px) + max(3vh, 12px)); padding-bottom: 14px; }
 .cat { padding-top: 14px; }
@@ -107,7 +119,7 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .meta { display: flex; flex-wrap: wrap; gap: 0 10px; color: var(--dim); font-size: 13.5px; font-variant-numeric: tabular-nums; }
 .meta .dist { color: var(--fg); }
 .price i { font-style: normal; opacity: 0.35; }
-.note { display: block; margin-top: 2px; color: var(--dim); }
+.note { display: block; margin-top: 2px; color: var(--dim); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .br { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-bottom: 12px; color: var(--dim); }
 .more summary { display: flex; align-items: center; gap: 8px; min-height: 40px; margin-top: -8px; color: var(--dim); cursor: pointer; list-style: none; }
 .more summary::-webkit-details-marker { display: none; }
@@ -140,17 +152,23 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 
 /* parlør */
-.halalCard { display: block; width: 100%; text-align: left; color: var(--bg); background: var(--fg); border: 0; border-radius: 12px; padding: 16px 18px; cursor: pointer; }
+.halalCard { display: block; width: 100%; margin-top: 14px; text-align: left; color: var(--bg); background: var(--fg); border: 0; border-radius: 12px; padding: 16px 18px; cursor: pointer; }
 .halalCard:active { opacity: 0.85; }
 .halalCard .hc1 { display: block; font-size: 19px; font-weight: 500; }
 .halalCard .hc2 { display: block; color: #444; margin-top: 2px; }
 /* one row of categories that scrolls sideways; the fade on the right says there are more */
-#talkCats { display: flex; flex-wrap: nowrap; gap: 8px; padding: 0 24px 0 0; background: none; border: 0; border-radius: 0; overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain;
-  -webkit-mask-image: linear-gradient(to right, #000 82%, transparent); mask-image: linear-gradient(to right, #000 82%, transparent); }
-#talkCats::-webkit-scrollbar { display: none; }
+#catScroll { margin-top: 10px; }
 #talkCats button { flex: none; min-height: 40px; padding: 0 14px; border: 1px solid var(--edge); border-radius: 999px; background: var(--soft); color: var(--fg); }
 #talkCats button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-.catbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); margin-top: 12px; padding: 8px 0 10px; border-bottom: 1px solid var(--line); }
+.hearIntro { margin: 14px 0 0; }
+.hearGroup h2 { position: sticky; top: var(--fh); z-index: 3; margin: 0 -24px; padding: 14px 24px 8px; background: var(--bg); border-bottom: 1px solid var(--line); font-size: 19px; font-weight: 500; }
+.hear { padding: 14px 0; }
+.hear + .hear { border-top: 1px solid var(--line); }
+.hear .hj { font-size: 19px; line-height: 1.4; }
+.hear .hr { color: var(--dim); font-size: 13.5px; }
+.hear .hd { margin-top: 2px; }
+.hear .chips { margin-top: 10px; }
+.hear .chips .lbl2 { align-self: center; color: var(--dim); font-size: 13px; margin-right: 2px; }
 .talkGroup h2 { margin: 24px 0 10px; font-size: 19px; font-weight: 500; }
 .talkNote { margin: -6px 0 10px; color: var(--dim); font-variant-numeric: tabular-nums; }
 .talkGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
@@ -158,8 +176,6 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .phrase:active { background: var(--press); }
 .phrase.special { border-color: var(--edge); }
 .phrase .da { font-weight: 400; }
-.phrase .ro { color: var(--dim); font-size: 12.5px; }
-.phrase.heard { border-style: dashed; border-color: var(--edge); }
 .phrase .ja { color: var(--dim); font-size: 13px; line-height: 1.45; line-break: strict; overflow-wrap: normal; }
 
 /* omregn */
@@ -181,6 +197,7 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .out { margin-top: 14px; font-size: 22px; font-weight: 200; font-variant-numeric: tabular-nums; }
 .out small { color: var(--dim); font-size: 15px; font-weight: 300; }
 .sizeQ { margin-top: 14px; color: var(--dim); }
+#sizeChips, .sizeBig { text-transform: none; }
 .sizeBig { margin-top: 16px; font-size: 36px; font-weight: 200; line-height: 1.15; }
 .sizeBig small { font-size: 15px; font-weight: 300; color: var(--dim); margin-left: 8px; }
 .sizeNote { margin: 4px 0 14px; color: var(--dim); }
@@ -192,6 +209,7 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .clock { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .clock b { display: block; font-size: 36px; font-weight: 200; font-variant-numeric: tabular-nums; line-height: 1.2; }
 .clock small { color: var(--dim); font-size: inherit; }
+.clock b small { font-size: 15px; font-weight: 300; margin-left: 6px; }
 
 /* a place: a sheet from the bottom with the map, asking the way and the taxi card */
 .sheet { position: fixed; inset: 0; z-index: 40; }
@@ -203,12 +221,15 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .shPanel h3 { font-size: 21px; font-weight: 500; line-height: 1.3; margin-top: 8px; }
 .shPanel h3 small { color: var(--dim); font-size: 15px; }
 .shMeta { color: var(--dim); font-size: 13.5px; margin-top: 2px; }
-.shNote { color: var(--dim); margin-top: 8px; }
-.shAddr { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
-.shAddr small { display: block; color: var(--dim); font-size: 13px; font-family: var(--sans); text-transform: lowercase; }
 .shActs { display: grid; gap: 8px; margin-top: 18px; }
-#shDishActs .shActs { margin-top: 14px; }
 .shIll { margin-top: 8px; }
+.shTitle .jn { display: block; color: var(--dim); font-size: 15px; font-weight: 300; margin-top: 2px; }
+.shText { margin-top: 10px; color: var(--fg); opacity: 0.88; }
+.shTip { margin-top: 10px; color: var(--dim); }
+.shTip b { color: var(--fg); font-weight: 500; }
+.shBlock { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); }
+.shBlock > small { display: block; margin-bottom: 6px; color: var(--dim); font-size: 13px; }
+.shBlock .near { margin: 0; }
 /* the dishes to taste at the top of each dish section */
 .dishes { display: grid; gap: 8px; margin: 12px 0 6px; }
 .dish { display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 12px; width: 100%; padding: 8px 12px; text-align: left; background: var(--soft); border: 1px solid var(--line); border-radius: 10px; cursor: pointer; }
@@ -218,6 +239,7 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .dish b { display: block; font-weight: 500; }
 .dish small { display: block; color: var(--dim); font-size: 13.5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 .dish .go { color: var(--dim); }
+.evList { display: grid; gap: 6px; margin: 12px 0 0; }
 .sub2 { display: block; margin: 16px 0 0; color: var(--dim); font-size: 13px; letter-spacing: 0.04em; }
 .evSec h2 { position: sticky; top: var(--fh); z-index: 3; margin: 0 -24px; padding: 14px 24px 8px; background: var(--bg); border-bottom: 1px solid var(--line); font-size: 20px; font-weight: 500; }
 .src { margin: 28px 0 0; color: var(--dim); font-size: 12.5px; }
@@ -225,7 +247,7 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .place b { display: block; font-size: 22px; font-weight: 500; line-height: 1.3; }
 .place i { display: block; font-style: normal; color: var(--dim); font-size: 14px; }
 .place span { display: block; font-size: 19px; line-height: 1.45; margin-top: 4px; }
-.place span, .shAddr span { word-break: keep-all; overflow-wrap: anywhere; }
+.place span, .shBlock span[lang="ja"] { word-break: keep-all; overflow-wrap: anywhere; }
 .pm { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .pm button { min-height: 48px; background: none; border: 1px solid var(--edge); border-radius: 2px; cursor: pointer; }
 .pm button[aria-pressed="true"] { border-color: var(--fg); background: var(--press); }
@@ -242,39 +264,40 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .bigText .ln { display: block; text-wrap: balance; }
 .bigText.nw .ln { white-space: nowrap; }
 .bigText.jp .ln { word-break: keep-all; }
-.bigSub { color: var(--dim); }
+.bigInfo { margin: 0; text-transform: none; font-size: 12.5px; line-height: 1.4; color: #8a8a8a; }
+.bigInfo span { color: #6a6a6a; }
+.bigSub { color: var(--dim); font-size: 14px; }
 .bigSub .sj { color: var(--fg); font-size: 17px; }
-.ask { margin: 2px 0 8px; }
-.ans { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 8px; }
-.ans button { min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: none; border: 1px solid var(--fg); border-radius: 2px; font-size: 20px; white-space: nowrap; cursor: pointer; }
-.ans .a-yes { color: #17803a; border-color: #17803a; background: #eef7f0; }
-.ans .a-no { color: #c62b26; border-color: #c62b26; background: #fbefee; }
-.ans .mk { font-family: var(--sans); }
-.bigText[data-tone="yes"] { color: #17803a; }
-.bigText[data-tone="no"] { color: #c62b26; }
-.ans button small { font-family: var(--sans); font-size: 12.5px; color: var(--dim); text-transform: lowercase; }
+.bigSub .place { font-size: 15px; }
+.ask { margin: 2px 0 10px; font-size: 18px; font-weight: 500; color: var(--fg); }
+.ask::before { content: "↓ "; }
+/* answer buttons for staff: plainly buttons, Japanese only */
 .ch { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.ch button { min-height: 56px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 4px; background: none; border: 1px solid var(--fg); border-radius: 10px; font-size: 18px; white-space: nowrap; cursor: pointer; }
-.ch button small { font-family: var(--sans); font-size: 12.5px; color: var(--dim); text-transform: lowercase; }
-.ch-time button:last-child { grid-column: 1 / -1; }
-.ch-2 { grid-template-columns: 1fr 1fr; }
-.ch-2 button { font-size: 16px; white-space: normal; text-align: center; padding: 8px 6px; }
+.ch button { min-height: 60px; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 4px; color: #111; background: #f1f1f1; border: 1.5px solid #9a9a9a; border-radius: 12px; box-shadow: 0 2px 0 #c9c9c9; font-size: 19px; font-weight: 500; line-height: 1.25; text-align: center; cursor: pointer; }
+.ch button:active { transform: translateY(2px); box-shadow: none; }
+.ch .a-yes { color: #126b30; background: #e9f6ed; border-color: #2e8b4e; box-shadow: 0 2px 0 #9cceb0; }
+.ch .a-no { color: #b42520; background: #fcecea; border-color: #c94a44; box-shadow: 0 2px 0 #e8a9a5; }
+.ch .mk { font-family: var(--sans); font-size: 1.1em; }
+.ch-yn, .ch-has { grid-template-columns: 1fr 1fr; }
+.ch-yn button:last-child, .ch-has button:last-child, .ch-time button:last-child { grid-column: 1 / -1; min-height: 48px; font-size: 17px; }
+.ch-meat { grid-template-columns: 1fr; }
+.ch-meat button { min-height: 52px; font-size: 18px; }
 .kpOut { margin: 0 0 8px; text-align: center; font-size: 32px; font-weight: 300; font-variant-numeric: tabular-nums; }
 .kp { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-.kp button { min-height: 46px; font-size: 22px; background: var(--press); border: 0; border-radius: 10px; cursor: pointer; font-variant-numeric: tabular-nums; }
+.kp button { min-height: 48px; font-size: 22px; color: #111; background: #f1f1f1; border: 1.5px solid #9a9a9a; border-radius: 12px; box-shadow: 0 2px 0 #c9c9c9; cursor: pointer; font-variant-numeric: tabular-nums; }
 .kp button[data-kp="OK"] { background: var(--fg); color: var(--bg); font-size: 18px; font-weight: 500; }
 .pad { display: block; width: 100%; height: 30vh; background: #fff; border: 1px solid var(--edge); border-radius: 10px; touch-action: none; }
 .drawn { display: block; max-width: 100%; max-height: 52vh; margin: 0 auto; border: 1px solid var(--edge); border-radius: 10px; }
-.formBtns button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
-.formBtns button small { font-family: var(--sans); font-size: 12px; color: var(--dim); }
-.bigSub .mean { color: var(--fg); font-size: 19px; font-weight: 500; }
+.formBtns button { font-size: 18px; color: #111; background: #f1f1f1; border: 1.5px solid #9a9a9a; border-radius: 12px; box-shadow: 0 2px 0 #c9c9c9; }
 .step { display: flex; align-items: center; justify-content: center; gap: 20px; }
 .step button { width: 64px; height: 64px; border-radius: 50%; background: none; border: 1px solid var(--fg); font-size: 28px; font-weight: 200; cursor: pointer; }
 .backBtn, .formBtns button { width: 100%; min-height: 48px; background: none; border: 1px solid var(--edge); border-radius: 2px; cursor: pointer; }
 .formBtns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
 .hotelInput { width: 100%; min-height: 120px; font-size: 18px; color: var(--fg); background: var(--press); border: 1px solid var(--edge); border-radius: 2px; padding: 12px; resize: vertical; }
-.bigBar { display: flex; gap: 8px; }
-.bigBtn { flex: 1; min-height: 52px; background: none; border: 1px solid var(--edge); border-radius: 2px; cursor: pointer; }
+/* your own buttons, quiet and apart from the staff's */
+.bigBar { display: flex; gap: 8px; padding-top: 8px; border-top: 1px solid #e6e6e6; }
+.bigBtn { flex: 1; min-height: 44px; color: #555; background: none; border: 0; border-radius: 10px; cursor: pointer; font-size: 15px; }
+.bigBtn:active { background: #f1f1f1; }
 
 @media (prefers-reduced-motion: reduce) { .big { transition: none; } }
 </style>
@@ -287,30 +310,21 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 <div id="viewEat" role="tabpanel" aria-labelledby="tabEat">
   <div class="filters">
     <div class="wrap">
-      <div class="seg" role="group" aria-label="visning">
-        <button type="button" id="modeNear" aria-pressed="false">nærmest</button>
-        <button type="button" id="modeDish" aria-pressed="true">efter ret</button>
+      <div class="scroller"><div class="row" id="dishChips" role="group" aria-label="ret"></div></div>
+      <div class="ctl">
+        <select class="field" id="where" aria-label="hvor"></select>
+        <button class="toggleBtn" type="button" id="mustBtn" aria-pressed="false" title="kun steder, der er et must">★ must</button>
       </div>
-      <div class="ctl" id="dishCtl">
-        <select class="field" id="dishSel" aria-label="ret"></select>
-        <select class="field" id="areaSel" aria-label="område"></select>
-        <button class="toggleBtn mustBtn" type="button" aria-pressed="false" aria-label="kun steder, der er et must" title="kun steder, der er et must">★</button>
-      </div>
-      <div id="nearCtl" hidden>
-        <div class="ctl">
-          <select class="field" id="origin" aria-label="afstand fra"></select>
-          <button class="toggleBtn mustBtn" type="button" aria-pressed="false" aria-label="kun steder, der er et must" title="kun steder, der er et must">★</button>
-        </div>
-        <div id="customBox" hidden>
-          <div class="ctl"><input class="field" type="text" id="coords" inputmode="decimal" placeholder="indsæt koordinater, fx 35.6938, 139.7034" aria-label="koordinater for dit hotel"></div>
-          <p class="hint" id="coordsHint">hold fingeren på dit hotel i google maps. koordinaterne vises øverst; tryk på dem for at kopiere, og indsæt dem her.</p>
-        </div>
+      <div id="customBox" hidden>
+        <div class="ctl"><input class="field" type="text" id="coords" inputmode="decimal" placeholder="indsæt koordinater, fx 35.6938, 139.7034" aria-label="koordinater for dit hotel"></div>
+        <p class="hint" id="coordsHint">hold fingeren på dit hotel i google maps. koordinaterne vises øverst; tryk på dem for at kopiere, og indsæt dem her.</p>
       </div>
     </div>
   </div>
   <div class="wrap">
+    <p class="status" id="status" hidden></p>
     <div id="list"></div>
-    <p class="empty" id="empty" hidden>intet passer. prøv alle retter eller hele tokyo.</p>
+    <p class="empty" id="empty" hidden>intet passer. prøv "alle" eller slå ★ must fra.</p>
     <p class="src">google maps, time out, tokyo cheapo og coto academy, okt. 2026. tjek åbningstider.</p>
   </div>
 </div>
@@ -323,21 +337,30 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
     </div>
   </div></div>
   <div class="wrap">
-    <div class="blocks" id="seeList"></div>
+    <p class="status" id="seeStatus" hidden></p>
+    <ul class="list" id="seeList"></ul>
     <div id="everyList" hidden></div>
     <p class="hint" id="offlineTip" hidden>siden virker også uden internet. læg den på hjemmeskærmen (del → føj til hjemmeskærm), så åbner den som en app.</p>
   </div>
 </div>
 
 <div id="viewTalk" role="tabpanel" aria-labelledby="tabTalk" hidden>
-  <div class="wrap top">
-    <button class="halalCard" id="halalCard" type="button"><span class="hc1">halal-kortet</span><span class="hc2">forklarer alt på én gang: intet svinekød, intet fra svin, ingen alkohol.</span></button>
+  <div class="filters"><div class="wrap">
+    <div class="seg" role="group" aria-label="visning">
+      <button type="button" id="talkShow" aria-pressed="true">vis frem</button>
+      <button type="button" id="talkHear" aria-pressed="false">forstå</button>
+    </div>
+    <div class="scroller" id="catScroll"><div class="row" id="talkCats" role="group" aria-label="kategorier"></div></div>
+  </div></div>
+  <div class="wrap" id="showView">
+    <button class="halalCard" id="halalCard" type="button"><span class="hc1">halal-kortet</span><span class="hc2">forklarer på japansk, hvad du ikke kan spise, og spørger, om det er i retten.</span></button>
     <div class="ctl"><input class="field" type="search" id="talkSearch" placeholder="søg, fx toilet, regning, taxa" aria-label="søg i parløren" autocomplete="off"></div>
-  </div>
-  <div class="catbar"><div class="wrap"><div class="seg" id="talkCats" role="group" aria-label="kategorier"></div></div></div>
-  <div class="wrap">
     <div id="talk"></div>
     <p class="empty" id="talkEmpty" hidden>ingen kort passer. prøv et andet ord.</p>
+  </div>
+  <div class="wrap" id="hearView" hidden>
+    <p class="hint hearIntro">det siger personalet til jer. tryk på et svar for at vise det på japansk.</p>
+    <div id="hearList"></div>
   </div>
 </div>
 
@@ -385,33 +408,20 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
   </div>
 </nav>
 
-<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shName" hidden>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="detaljer" hidden>
   <div class="shBack" id="shBack"></div>
   <div class="shPanel" id="shPanel">
     <div class="grab" aria-hidden="true"></div>
-    <div class="ill shIll" id="shIll" aria-hidden="true" hidden></div>
-    <h3 id="shName"></h3>
-    <p class="shMeta" id="shMeta"></p>
-    <p class="shNote" id="shNote"></p>
-    <p class="shAddr" id="shAddr"></p>
-    <div class="shActs" id="shPlaceActs">
-      <a class="btn primary wide" id="shMap" href="#" target="_blank" rel="noopener">vis på kort</a>
-      <button class="btn wide" id="shAsk" type="button">spørg om vej</button>
-      <button class="btn wide" id="shTaxi" type="button">vis til taxachaufføren</button>
-    </div>
-    <div id="shDishActs" hidden>
-      <span class="lbl">prøv det hos</span>
-      <div class="chips" id="shWhere"></div>
-      <div class="shActs"><a class="btn wide" id="shPhotos" href="#" target="_blank" rel="noopener">se billeder</a></div>
-    </div>
+    <div id="shContent"></div>
     <div class="shActs"><button class="btn wide" id="shClose" type="button">luk</button></div>
   </div>
 </div>
 
 <div class="big" id="big" role="dialog" aria-modal="true" aria-label="kort til personalet" hidden>
   <div class="grab" aria-hidden="true"></div>
+  <p class="bigInfo" id="bigInfo"></p>
   <div class="bigBody" id="bigBody"><p class="bigText" id="bigText"></p></div>
-  <p class="bigSub" id="bigSub"></p>
+  <div class="bigSub" id="bigSub"></div>
   <div class="bigAct" id="bigAct"></div>
   <div class="bigBar"><button class="bigBtn" id="bigSpeak" type="button" hidden>læs højt</button><button class="bigBtn" id="bigClose" type="button">luk</button></div>
 </div>
@@ -456,38 +466,41 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 };
 
-const TABS = ["eat", "see", "talk", "calc"], MODES = ["near", "dish"];
+const TABS = ["eat", "see", "talk", "calc"];
 let seeMode = store.get("tokyo-see") === "every" ? "every" : "places";
-let tab = store.get("tokyo-tab"), mode = store.get("tokyo-mode") === "try" ? "dish" : store.get("tokyo-mode"), dish = "All", area = "All", mustOnly = false, originIdx = GPS ? -2 : -1, custom = null;
-const modeChosen = MODES.includes(mode);
+let tab = store.get("tokyo-tab");
 if (!TABS.includes(tab)) tab = "eat";
-if (!modeChosen) mode = "dish";
+/* spis: which dish (a section name, "Luksus" or "All") and where from: "all" (all of Tokyo, by dish),
+   "gps", "st:<i>" (a station) or "hotel" (pasted coordinates). From a point the list is sorted by distance. */
+const DISH_CATS = DATA.cats.map(c => c.name).concat(["Luksus"]);
+const DISH_SHORT = { "Sushi": "sushi", "Wagyu-yakiniku & bøf": "wagyu & bøf", "Sukiyaki & shabu-shabu": "sukiyaki & shabu", "Ramen & udon": "ramen & udon",
+  "Måltider, tempura & karry": "måltider", "Wagyu-burgere": "burgere", "Matcha & snacks": "matcha & snacks", "Luksus": "luksus" };
+let dish = store.get("tokyo-dish"); if (!DISH_CATS.includes(dish)) dish = "All";
+let mustOnly = store.get("tokyo-must") === "1", custom = null;
+let where = store.get("tokyo-where");
+const whereChosen = !!where;
+if (!where) { const o = store.get("hte-origin"); where = o === "-2" ? "gps" : o !== null && o !== "" && +o >= 0 && +o < ORIGINS.length ? "st:" + o : o === String(ORIGINS.length) ? "hotel" : "all"; }
+if (!(where === "all" || where === "hotel" || (where === "gps" && GPS) || /^st:\d+$/.test(where) && +where.slice(3) < ORIGINS.length)) where = "all";
 let gps = null, gpsState = "idle", gpsWatch = null;
 try {
   const h = location.hash.slice(1);
-  if (h === "try") { tab = "eat"; mode = "dish"; }
+  if (h === "try" || h === "spis") tab = "eat";
   else if (h === "overalt") { tab = "see"; seeMode = "every"; }
   else if (h === "sevaerdigheder") tab = "see";
   else if (h === "parlor") tab = "talk";
   else if (h === "omregn") tab = "calc";
-  else if (h === "nearest") { tab = "eat"; mode = "near"; }
-  else { const m = AREAS.find(a => slug(a) === h); if (m) { tab = "eat"; mode = "dish"; area = m; } }
+  else if (h === "nearest") { tab = "eat"; where = GPS ? "gps" : "st:0"; }
 } catch (e) {}
-try {
-  const c = JSON.parse(store.get("hte-custom") || "null");
-  if (Array.isArray(c) && c.length === 2) custom = c;
-  const o = store.get("hte-origin");
-  if (o !== null && o !== "" && !isNaN(+o) && +o >= (GPS ? -2 : 0) && +o <= ORIGINS.length && +o !== -1) originIdx = +o;
-} catch (e) {}
+try { const c = JSON.parse(store.get("hte-custom") || "null"); if (Array.isArray(c) && c.length === 2) custom = c; } catch (e) {}
 
 /* every place by its Google place id, and the sights as see:0 … see:15, for the sheet and the cards that ask the way */
 const PL = {};
 const pidOf = u => { const m = /query_place_id=([^&]+)/.exec(u); return m ? m[1] : u; };
 for (const c of DATA.cats.concat([{ name: "Luksus", items: DATA.splurge }])) for (const it of c.items) {
-  PL[pidOf(it.u)] = { n: it.n, sub: "", a: it.a, t: it.t, u: it.u, j: it.j, cat: c.name };
-  for (const b of it.b) PL[pidOf(b.u)] = { n: it.n, sub: b.l, a: b.a || it.a, t: it.t, u: b.u, j: b.j, cat: c.name };
+  PL[pidOf(it.u)] = { n: it.n, sub: "", a: it.a, t: it.t, u: it.u, j: it.j, g: it.g, cat: c.name };
+  for (const b of it.b) PL[pidOf(b.u)] = { n: it.n, sub: b.l, a: b.a || it.a, t: it.t, u: b.u, j: b.j, g: b.g, cat: c.name };
 }
-DATA.see.forEach((s, i) => { PL["see:" + i] = { n: s.n, jn: s.jn, a: s.a, t: "", u: s.u, j: s.j, cat: "" }; });
+DATA.see.forEach((s, i) => { PL["see:" + i] = { n: s.n, jn: s.jn, a: s.a, t: "", u: s.u, j: s.j, g: s.g, cat: "" }; });
 const priceHTML = p => "¥".repeat(p) + "<i>" + "¥".repeat(3 - p) + "</i>";
 
 function km(a, b) {
@@ -509,19 +522,15 @@ function rowHTML(u, name, sub, m, meta, note, extra) {
   return `<li class="item"><button class="row" type="button" data-pl="${esc(pidOf(u))}"><span class="name">${esc(name)}${sub ? ` <small>· ${esc(sub)}</small>` : ""}${star(m)}</span><span class="meta">${meta}</span><span class="note">${esc(note)}</span></button>${extra || ""}</li>`;
 }
 function itemHTML(it, splurge) {
-  const branchHit = area !== "All" && it.a !== area && it.b.some(b => b.a === area);
   const meta = splurge
     ? `<span class="kind">${esc(it.x)}</span><span>${esc(it.a)}</span>`
     : `<span class="price" aria-label="prisniveau ${it.x} af 3">${priceHTML(it.x)}</span><span>${esc(it.a)}</span>`;
   const pills = list => list.map(b => `<button class="chip" type="button" data-pl="${esc(pidOf(b.u))}">${esc(b.l)}</button>`).join("");
-  /* branches: the ones in the chosen area are shown; the rest fold away behind one line */
-  const here = branchHit ? it.b.filter(b => b.a === area) : [];
-  const rest = it.b.filter(b => !here.includes(b));
-  let br = here.length ? `<div class="br"><span>Afdeling her:</span>${pills(here)}</div>` : "";
-  if (rest.length) br += `<details class="more"><summary>${rest.length === 1 ? "1 afdeling mere" : rest.length + " afdelinger mere"}</summary><div class="br">${pills(rest)}</div></details>`;
+  /* a chain's other branches fold away behind one line */
+  const br = it.b.length ? `<details class="more"><summary>${it.b.length === 1 ? "1 afdeling mere" : it.b.length + " afdelinger mere"}</summary><div class="br">${pills(it.b)}</div></details>` : "";
   return rowHTML(it.u, it.n, "", it.m, meta, it.t, br);
 }
-const visible = it => (!mustOnly || it.m) && (area === "All" || it.a === area || it.b.some(b => b.a === area));
+const visible = it => !mustOnly || it.m;
 /* the foods to taste, filed under their dish section */
 const DISH_OF = { yakiniku: "Wagyu-yakiniku & bøf", gyukatsu: "Wagyu-yakiniku & bøf", sukiyaki: "Sukiyaki & shabu-shabu", shabu: "Sukiyaki & shabu-shabu",
   sushi: "Sushi", ramen: "Ramen & udon", udon: "Ramen & udon", tempura: "Måltider, tempura & karry", curry: "Måltider, tempura & karry",
@@ -531,14 +540,14 @@ const firstSentence = t => { const m = String(t).match(/^.*?[.!?](\s|$)/); retur
 function dishesHTML(name) {
   const list = DATA.try.filter(x => DISH_OF[x.id] === name);
   if (!list.length) return "";
-  return `<span class="sub2">smag</span><div class="dishes">${list.map(x => `<button class="dish" type="button" data-dish="${esc(x.id)}"><span class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${ICONS[x.id] || ""}</svg></span><span><b>${esc(x.n)}<span class="kanji" lang="ja">${esc(x.j)}</span></b><small>${esc(firstSentence(x.t))}</small></span><span class="go">›</span></button>`).join("")}</div><span class="sub2">steder</span>`;
+  return `<span class="sub2">smag</span><div class="dishes">${list.map(x => `<button class="dish" type="button" data-dish="${esc(x.id)}"><span class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${ICONS[x.id] || ""}</svg></span><span><b>${esc(x.n)}<span class="kanji" lang="ja">${esc(x.j)}</span></b><small>${esc(x.t)}</small></span><span class="go">›</span></button>`).join("")}</div><span class="sub2">steder</span>`;
 }
 function sectionHTML(name, items, splurge) {
   const shown = items.filter(visible);
   if (!shown.length) return ["", 0];
   return [`<section class="cat${splurge ? " lux" : ""}"><h2>${esc(name)}${KANJI[name] ? `<span class="kanji" lang="ja">${KANJI[name]}</span>` : ""}<span class="count">${shown.length} ${shown.length === 1 ? "sted" : "steder"}</span></h2>${splurge ? "" : dishesHTML(name)}<ul class="list">${shown.map(i => itemHTML(i, splurge)).join("")}</ul></section>`, shown.length];
 }
-function renderDish() {
+function renderGrouped() {
   let html = "", total = 0;
   for (const c of DATA.cats) {
     if (dish !== "All" && dish !== c.name) continue;
@@ -549,10 +558,8 @@ function renderDish() {
   $("empty").hidden = !!total;
 }
 
-/* ---------- Nearest first ---------- */
-function originName() {
-  return originIdx === -2 ? "din placering" : originIdx === ORIGINS.length ? "dit hotel" : ORIGINS[originIdx][0];
-}
+/* ---------- where from ---------- */
+function whereName() { return where === "gps" ? "din placering" : where === "hotel" ? "dit hotel" : where.startsWith("st:") ? ORIGINS[+where.slice(3)][0] : ""; }
 function startGps() {
   if (!GPS || gpsWatch !== null) return;
   gpsState = "asking";
@@ -560,50 +567,49 @@ function startGps() {
     const p = [pos.coords.latitude, pos.coords.longitude];
     const moved = !gps || km(gps, p) > 0.05;
     gps = p; gpsState = "ok";
-    if (moved && mode === "near" && originIdx === -2) render();
+    if (moved && where === "gps") render();
   }, err => {
     gpsState = err.code === 1 ? "denied" : "failed";
     navigator.geolocation.clearWatch(gpsWatch); gpsWatch = null;
-    if (mode === "near" && originIdx === -2) render();
+    if (where === "gps") render();
   }, { enableHighAccuracy: false, maximumAge: 30000, timeout: 20000 });
 }
+const TOKYO = [35.68, 139.76];
+/* the point to measure from, or why there is none ([point, note]) */
 function originPoint() {
-  if (originIdx === -2) { if (!gps && gpsState !== "denied" && gpsState !== "failed") startGps(); return gps; }
-  if (originIdx < 0) return null;
-  if (originIdx === ORIGINS.length) return custom;
-  const o = ORIGINS[originIdx]; return [o[1], o[2]];
+  if (where === "all") return [null, ""];
+  if (where === "hotel") return custom ? [custom, ""] : [null, "indsæt dit hotels placering ovenfor, så sorteres listen efter afstand fra det."];
+  if (where.startsWith("st:")) { const o = ORIGINS[+where.slice(3)]; return [[o[1], o[2]], ""]; }
+  if (!gps && gpsState !== "denied" && gpsState !== "failed") startGps();
+  if (gpsState === "denied") return [null, "siden må ikke bruge din placering. tillad det i telefonens indstillinger, eller vælg en station."];
+  if (gpsState === "failed") return [null, "din placering kunne ikke findes. vælg en station i stedet."];
+  if (!gps) return [null, "finder din placering …"];
+  const away = km(gps, TOKYO);
+  if (away > 80) return [null, `du er ca. ${Math.round(away).toLocaleString("da-DK")} km fra tokyo, så afstande giver først mening derovre. vælg en station for at se, hvad der ligger tæt på den.`];
+  return [gps, ""];
 }
-function renderNear() {
-  const from = originPoint();
-  const away = originIdx === -2 && from ? km(from, [35.68, 139.76]) : 0;
-  if (away > 80) {
-    $("list").innerHTML = `<p class="pick">Du er ca. ${Math.round(away).toLocaleString("da-DK")} km fra Tokyo, så afstandene giver først mening, når I er der. Vælg en station ovenfor for at se, hvad der ligger tæt på den.</p>`;
-    $("empty").hidden = true; return;
-  }
-  if (!from) {
-    const msg = originIdx === -2
-      ? (gpsState === "denied" ? "Adgang til placering er blokeret for siden. Tillad placering for siden i browserens indstillinger og genindlæs, eller vælg en station ovenfor."
-        : gpsState === "failed" ? "Kunne ikke finde din placering. Tjek at placering er slået til, eller vælg en station ovenfor."
-        : "Finder din placering… Tillad adgang, når telefonen spørger.")
-      : originIdx === ORIGINS.length ? "Indsæt dit hotels koordinater ovenfor for at sortere efter afstand fra det."
-      : "Vælg et udgangspunkt ovenfor. Siden kan ikke se, hvor du er, så vælg stationen tættest på dit hotel, eller indsæt hotellets koordinater.";
-    $("list").innerHTML = `<p class="pick">${msg}</p>`;
-    $("empty").hidden = true; return;
-  }
+function renderNearest(from) {
   const rows = [];
-  const add = (it, cat, splurge) => {
+  const add = (it, cat) => {
     if (mustOnly && !it.m) return;
-    rows.push({ n: it.n, sub: "", u: it.u, g: it.g, it, cat, splurge });
-    for (const b of it.b) rows.push({ n: it.n, sub: b.l, u: b.u, g: b.g, it, cat, splurge });
+    rows.push({ n: it.n, sub: "", u: it.u, g: it.g, a: it.a, it, cat });
+    for (const b of it.b) rows.push({ n: it.n, sub: b.l, u: b.u, g: b.g, a: b.a || it.a, it, cat });
   };
-  for (const c of DATA.cats) for (const it of c.items) add(it, c.name, false);
-  for (const it of DATA.splurge) add(it, "Luksus", true);
+  for (const c of DATA.cats) if (dish === "All" || dish === c.name) for (const it of c.items) add(it, c.name);
+  if (dish === "All" || dish === "Luksus") for (const it of DATA.splurge) add(it, "Luksus");
   rows.forEach(r => r.d = km(from, r.g));
   rows.sort((a, b) => a.d - b.d);
   const top = rows.slice(0, 40);
-  $("list").innerHTML = `<p class="from">Afstand fra <b>${esc(originName())}</b>${originIdx === -2 ? "" : " <span>(ikke din placering)</span>"}</p><ul class="list">${top.map(r =>
-    rowHTML(r.u, r.n, r.sub, r.it.m, `<span class="dist">${distLabel(r.d)}</span><span>${esc(r.cat)}</span>`, r.it.t)).join("")}</ul>`;
+  const dishes = dish !== "All" && dish !== "Luksus" ? dishesHTML(dish) : "";
+  $("list").innerHTML = `${dishes}<ul class="list">${top.map(r =>
+    rowHTML(r.u, r.n, r.sub, r.it.m, `<span class="dist">${distLabel(r.d)}</span>${dish === "All" ? `<span>${esc(DISH_SHORT[r.cat] || r.cat)}</span>` : `<span>${esc(r.a)}</span>`}`, r.it.t)).join("")}</ul>`;
   $("empty").hidden = !!top.length;
+}
+function renderEat() {
+  const [from, note] = originPoint();
+  const st = $("status");
+  if (from) { st.innerHTML = `nærmest først fra <b>${esc(whereName())}</b>${where === "gps" ? "" : " (ikke din placering)"}`; st.hidden = false; renderNearest(from); }
+  else { st.textContent = note; st.hidden = !note; renderGrouped(); }
 }
 
 /* ---------- Seværdigheder ---------- */
@@ -619,115 +625,152 @@ function walkLabel(d) {
   const n1 = x => x.toLocaleString("da-DK", { maximumFractionDigits: 1, minimumFractionDigits: 1 });
   return walk <= 30 ? `${walk} min. gang` : `${n1(d)} km`;
 }
+function nearFood(s) {
+  const pick = [], seen = new Set();
+  for (const r of allSpots().map(r => ({ ...r, d: km(s.g, r.g) })).sort((a, b) => a.d - b.d)) {
+    if (r.d > 2) break; if (seen.has(r.n)) continue; seen.add(r.n); pick.push(r); if (pick.length === 3) break;
+  }
+  return pick;
+}
 function renderSee() {
-  const spots = allSpots();
-  $("seeList").innerHTML = DATA.see.map((s, si) => {
-    const near = spots.map(r => ({ ...r, d: km(s.g, r.g) })).sort((a, b) => a.d - b.d);
-    const pick = [], seen = new Set();
-    for (const r of near) { if (r.d > 2) break; if (seen.has(r.n)) continue; seen.add(r.n); pick.push(r); if (pick.length === 3) break; }
-    const extra = s.x.map(x => `<a class="btn" href="${x.u}" target="_blank" rel="noopener">${esc(x.l)}</a>`).join("");
-    return `<article><span class="area">${esc(s.a)}</span><h3>${esc(s.n)}</h3><p>${esc(s.t)}</p><p class="tip"><b>tip:</b> ${esc(s.tip)}</p><span class="lbl">spis i nærheden</span><div class="near">${!pick.length ? `<p class="farNote">${esc(s.far || "Ingen halal-steder fra listen i gåafstand.")}</p>` : ""}${pick.map(r => `<button class="nrow" type="button" data-pl="${esc(pidOf(r.u))}"><span class="nm">${esc(r.n)}${r.sub ? ` <small>· ${esc(r.sub)}</small>` : ""}${star(r.m)}</span><span class="d">${walkLabel(r.d)}</span></button>`).join("")}</div><div class="acts"><a class="btn primary" href="${s.u}" target="_blank" rel="noopener">vis på kort</a><button class="btn" type="button" data-ask="see:${si}">spørg om vej</button>${extra}<a class="btn" href="${s.p}" target="_blank" rel="noopener">billeder</a></div></article>`;
-  }).join("");
+  const [from] = originPoint();
+  const list = DATA.see.map((s, i) => ({ s, i, d: from ? km(from, s.g) : 0 }));
+  if (from) list.sort((a, b) => a.d - b.d);
+  $("seeStatus").innerHTML = from ? `nærmest først fra <b>${esc(whereName())}</b> (vælges under spis)` : "";
+  $("seeStatus").hidden = !from;
+  $("seeList").innerHTML = list.map(({ s, i, d }) => `<li class="item"><button class="row" type="button" data-sight="${i}"><span class="name">${esc(s.n)}</span><span class="meta">${from ? `<span class="dist">${distLabel(d)}</span>` : ""}<span>${esc(s.a)}</span></span><span class="note">${esc(s.t)}</span></button></li>`).join("");
+}
+function openSight(i, from) {
+  const s = DATA.see[i]; if (!s) return;
+  sheetPl = PL["see:" + i];
+  const pick = nearFood(s), d = distTo(s.g);
+  const extra = s.x.map(x => `<a class="btn wide" href="${x.u}" target="_blank" rel="noopener">${esc(x.l)}</a>`).join("");
+  sheet(`<h3 class="shTitle">${esc(s.n)}<span class="jn" lang="ja">${esc(s.jn)}</span></h3><p class="shMeta">${esc([s.a, d].filter(Boolean).join(" · "))}</p><p class="shText">${esc(s.t)}</p><p class="shTip"><b>tip:</b> ${esc(s.tip)}</p>
+    <div class="shBlock"><small>spis i nærheden</small><div class="near">${!pick.length ? `<p class="farNote">${esc(s.far || "ingen halal-steder fra listen i gåafstand.")}</p>` : ""}${pick.map(r => `<button class="nrow" type="button" data-pl="${esc(pidOf(r.u))}"><span class="nm">${esc(r.n)}${r.sub ? ` <small>· ${esc(r.sub)}</small>` : ""}${star(r.m)}</span><span class="d">${walkLabel(r.d)}</span></button>`).join("")}</div></div>
+    <div class="shActs"><a class="btn primary wide" href="${s.u}" target="_blank" rel="noopener">vis på kort</a><button class="btn wide" type="button" data-sh="ask">spørg om vej</button>${extra}<a class="btn wide" href="${s.p}" target="_blank" rel="noopener">se billeder</a></div>`, from);
 }
 
 /* ---------- Parlør ---------- */
+/* [Danish, Japanese, romaji, how staff answer, special]. How they answer:
+   yn: はい / いいえ (yes is the good answer), has: 入っています / 入っていません (yes is the bad answer),
+   meat: no meat / halal / not halal, time, dir (left, straight, right, up, down), dirNone (the same, or "there is none"),
+   price and track (a keypad), write (a pad to write on), point (point at the menu), "" for a statement. */
 const PHRASES = [
   ["Halal", "", [
-    ["Er det her halal?", "これはハラールですか？", "Kore wa harāru desu ka?", 1],
-    ["Har I en halal-menu?", "ハラールメニューはありますか？", "Harāru menyū wa arimasu ka?", 1],
-    ["Jeg er muslim.", "私はイスラム教徒です。", "Watashi wa isuramu-kyōto desu."],
-    ["Jeg spiser ikke svinekød.", "豚肉は食べられません。", "Butaniku wa taberaremasen."],
-    ["Er der svinekød eller alkohol i?", "豚肉やアルコールは入っていますか？", "Butaniku ya arukōru wa haitte imasu ka?", 1],
-    ["Er suppen lavet på svinekød eller svineknogler?", "スープに豚骨や豚肉は使っていますか？", "Sūpu ni tonkotsu ya butaniku wa tsukatte imasu ka?", 1],
-    ["Brug venligst ikke sake eller mirin.", "お酒やみりんを使わないでください。", "Osake ya mirin o tsukawanaide kudasai."],
-    ["Heller ikke sake eller mirin i madlavningen.", "料理に使うお酒やみりんも食べられません。", "Ryōri ni tsukau osake ya mirin mo taberaremasen."],
-    ["Er der gelatine i?", "ゼラチンは入っていますか？", "Zerachin wa haitte imasu ka?", 1],
-    ["Er kødet halal-certificeret?", "このお肉はハラール認証済みですか？", "Kono oniku wa harāru ninshō-zumi desu ka?", 1],
-    ["Er der mirin eller sake i sushirisen?", "シャリにみりんやお酒は入っていますか？", "Shari ni mirin ya osake wa haitte imasu ka?", 1],
-    ["Må jeg bruge min egen sojasauce?", "自分の醤油を使ってもいいですか？", "Jibun no shōyu o tsukatte mo ii desu ka?", 1],
-    ["Uden råt æg, tak.", "生卵なしでお願いします。", "Nama tamago nashi de onegaishimasu."],
-    ["Er der et sted, hvor jeg kan bede?", "お祈りできる場所はありますか？", "Oinori dekiru basho wa arimasu ka?", 1],
-    ["Hvor er den nærmeste moské?", "一番近いモスクはどこですか？", "Ichiban chikai mosuku wa doko desu ka?"]
-  ]],
-  ["Det hører du", "Det siger personalet til dig. Tryk for at se, hvad det betyder, og svar med et tryk.", [
-    ["Velkommen (du behøver ikke svare)", "いらっしゃいませ。", "Irasshaimase.", 0, "heard"],
-    ["Hvor mange er I?", "何名様ですか？", "Nan-mei-sama desu ka?", 0, "heard"],
-    ["Der er fuldt.", "満席です。", "Manseki desu.", 0, "heard"],
-    ["Et øjeblik, vent lidt.", "少々お待ちください。", "Shōshō omachi kudasai.", 0, "heard"],
-    ["Denne vej, værsgo.", "こちらへどうぞ。", "Kochira e dōzo.", 0, "heard"],
-    ["Er I klar til at bestille?", "ご注文はお決まりですか？", "Go-chūmon wa okimari desu ka?", 0, "heard"],
-    ["Spiser I her?", "店内でお召し上がりですか？", "Tennai de omeshiagari desu ka?", 0, "heard"],
-    ["Skal det med?", "お持ち帰りですか？", "Omochikaeri desu ka?", 0, "heard"],
-    ["Skal den varmes?", "温めますか？", "Atatamemasu ka?", 0, "heard"],
-    ["Vil du have en pose?", "袋はご利用ですか？", "Fukuro wa go-riyō desu ka?", 0, "heard"],
-    ["Vil du have spisepinde med?", "お箸はおつけしますか？", "Ohashi wa otsuke shimasu ka?", 0, "heard"],
-    ["Har du et pointkort?", "ポイントカードはお持ちですか？", "Pointo kādo wa omochi desu ka?", 0, "heard"],
-    ["Hvordan vil du betale?", "お支払いは？", "Oshiharai wa?", 0, "heard"],
-    ["Vil du have kvitteringen?", "レシートはご利用ですか？", "Reshīto wa go-riyō desu ka?", 0, "heard"],
-    ["Var det alt?", "以上でよろしいですか？", "Ijō de yoroshii desu ka?", 0, "heard"],
-    ["Sidste bestilling: køkkenet lukker snart.", "ラストオーダーです。", "Rasuto ōdā desu.", 0, "heard"]
+    ["Er det her halal?", "これはハラールですか？", "Kore wa harāru desu ka?", "yn"],
+    ["Har I en halal-menu?", "ハラールメニューはありますか？", "Harāru menyū wa arimasu ka?", "yn"],
+    ["Er der kød i? Er det halal?", "このお料理にお肉は入っていますか？\nハラールのお肉ですか？", "Kono oryōri ni oniku wa haitte imasu ka? Harāru no oniku desu ka?", "meat"],
+    ["Hvilke retter kan jeg spise?", "私が食べられる料理はどれですか？", "Watashi ga taberareru ryōri wa dore desu ka?", "point"],
+    ["Er der alkohol, sake eller mirin i?", "お酒やみりんは入っていますか？", "Osake ya mirin wa haitte imasu ka?", "has"],
+    ["Er suppen lavet på svin?", "スープに豚骨や豚肉は使っていますか？", "Sūpu ni tonkotsu ya butaniku wa tsukatte imasu ka?", "has"],
+    ["Er der gelatine eller svinefedt i?", "ゼラチンやラードは入っていますか？", "Zerachin ya rādo wa haitte imasu ka?", "has"],
+    ["Er der sake eller mirin i sushirisen?", "シャリにみりんやお酒は入っていますか？", "Shari ni mirin ya osake wa haitte imasu ka?", "has"],
+    ["Kan I lave den uden sake og mirin?", "お酒やみりんを使わずに作れますか？", "Osake ya mirin o tsukawazu ni tsukuremasu ka?", "yn"],
+    ["Må jeg bruge min egen sojasauce?", "自分の醤油を使ってもいいですか？", "Jibun no shōyu o tsukatte mo ii desu ka?", "yn"],
+    ["Er der et sted, hvor jeg kan bede?", "お祈りできる場所はありますか？", "Oinori dekiru basho wa arimasu ka?", "dirNone"]
   ]],
   ["På restauranten", "", [
-    ["Undskyld! (for at kalde)", "すみません！", "Sumimasen!"],
-    ["Vi er … personer", "◯名です。", "… -mei desu.", 0, "persons"],
-    ["Er der ledige pladser?", "席は空いていますか？", "Seki wa aite imasu ka?", 1],
-    ["Hvor længe skal vi vente?", "どのくらい待ちますか？", "Dono kurai machimasu ka?"],
-    ["Vi har reserveret bord.", "予約しています。", "Yoyaku shite imasu."],
-    ["Hvad anbefaler I?", "おすすめは何ですか？", "Osusume wa nan desu ka?"],
-    ["Den her, tak.", "これをお願いします。", "Kore o onegaishimasu."],
-    ["… af den her, tak (antal)", "これを◯つください。", "Kore o … kudasai.", 0, "items"],
-    ["Ikke stærk, tak.", "辛くしないでください。", "Karaku shinaide kudasai."],
-    ["Vand, tak.", "お水をください。", "Omizu o kudasai."],
-    ["Kan vi tage det med?", "持ち帰りできますか？", "Mochikaeri dekimasu ka?", 1],
-    ["Regningen, tak.", "お会計をお願いします。", "Okaikei o onegaishimasu."],
-    ["Kan vi betale hver for sig?", "別々に払えますか？", "Betsubetsu ni haraemasu ka?", 1],
-    ["Kan jeg betale med kort?", "カードで払えますか？", "Kādo de haraemasu ka?", 1],
-    ["Tak for maden.", "ごちそうさまでした。", "Gochisōsama deshita."]
+    ["Undskyld! (for at kalde)", "すみません！", "Sumimasen!", ""],
+    ["Vi er … personer", "◯名です。", "… -mei desu.", "", "persons"],
+    ["Er der ledige pladser?", "席は空いていますか？", "Seki wa aite imasu ka?", "yn"],
+    ["Hvor længe skal vi vente?", "どのくらい待ちますか？", "Dono kurai machimasu ka?", "time"],
+    ["Vi har reserveret bord.", "予約しています。", "Yoyaku shite imasu.", ""],
+    ["Har I en menu på engelsk?", "英語のメニューはありますか？", "Eigo no menyū wa arimasu ka?", "yn"],
+    ["Hvad anbefaler I?", "おすすめは何ですか？", "Osusume wa nan desu ka?", "point"],
+    ["Den her, tak.", "これをお願いします。", "Kore o onegaishimasu.", ""],
+    ["… af den her, tak (antal)", "これを◯つください。", "Kore o … kudasai.", "", "items"],
+    ["Ikke stærk, tak.", "辛くしないでください。", "Karaku shinaide kudasai.", ""],
+    ["Uden råt æg, tak.", "生卵なしでお願いします。", "Nama tamago nashi de onegaishimasu.", ""],
+    ["Vand, tak.", "お水をください。", "Omizu o kudasai.", ""],
+    ["Kan vi tage det med?", "持ち帰りできますか？", "Mochikaeri dekimasu ka?", "yn"],
+    ["Regningen, tak.", "お会計をお願いします。", "Okaikei o onegaishimasu.", ""],
+    ["Tak for maden.", "ごちそうさまでした。", "Gochisōsama deshita.", ""]
   ]],
   ["Indkøb", "", [
-    ["Hvad koster det?", "これはいくらですか？", "Kore wa ikura desu ka?"],
-    ["Kan jeg få tax free?", "免税できますか？", "Menzei dekimasu ka?", 1],
-    ["Har I den i en anden størrelse?", "他のサイズはありますか？", "Hoka no saizu wa arimasu ka?", 1],
-    ["Jeg kigger bare.", "見ているだけです。", "Mite iru dake desu."],
-    ["En pose, tak.", "袋をください。", "Fukuro o kudasai."]
+    ["Hvad koster det?", "これはいくらですか？", "Kore wa ikura desu ka?", "price"],
+    ["Kan jeg få tax free?", "免税できますか？", "Menzei dekimasu ka?", "yn"],
+    ["Må jeg prøve den?", "試着してもいいですか？", "Shichaku shite mo ii desu ka?", "yn"],
+    ["Har I den i en større størrelse?", "もっと大きいサイズはありますか？", "Motto ōkii saizu wa arimasu ka?", "yn"],
+    ["Har I den i en mindre størrelse?", "もっと小さいサイズはありますか？", "Motto chiisai saizu wa arimasu ka?", "yn"],
+    ["Jeg kigger bare.", "見ているだけです。", "Mite iru dake desu.", ""],
+    ["En pose, tak.", "袋をください。", "Fukuro o kudasai.", ""]
   ]],
   ["Transport", "", [
-    ["Hvor er stationen?", "駅はどこですか？", "Eki wa doko desu ka?"],
-    ["Hvilket tog skal jeg tage for at komme hertil?", "ここへ行くには、どの電車に乗ればいいですか？", "Koko e iku ni wa, dono densha ni noreba ii desu ka?"],
-    ["Hvor kan jeg fylde mit Suica-kort op?", "Suicaのチャージはどこでできますか？", "Suika no chāji wa doko de dekimasu ka?"],
-    ["Hvor holder taxaerne?", "タクシー乗り場はどこですか？", "Takushī noriba wa doko desu ka?"],
-    ["Kør mig til mit hotel", "このホテルまでお願いします。", "Kono hoteru made onegaishimasu.", 0, "hotel"],
-    ["Kør mig til denne adresse, tak.", "この住所までお願いします。", "Kono jūsho made onegaishimasu."],
-    ["Stop her, tak.", "ここで止めてください。", "Koko de tomete kudasai."]
+    ["Hvor er stationen?", "駅はどこですか？", "Eki wa doko desu ka?", "dir"],
+    ["Hvilket tog skal jeg tage hertil? (vis stedet)", "ここへ行くには、どの電車に乗ればいいですか？", "Koko e iku ni wa, dono densha ni noreba ii desu ka?", "write"],
+    ["Hvilket spor kører toget fra?", "何番線ですか？", "Nan-bansen desu ka?", "track"],
+    ["Hvor kan jeg fylde mit Suica-kort op?", "Suicaのチャージはどこでできますか？", "Suika no chāji wa doko de dekimasu ka?", "dir"],
+    ["Hvor holder taxaerne?", "タクシー乗り場はどこですか？", "Takushī noriba wa doko desu ka?", "dir"],
+    ["Kør mig til mit hotel", "このホテルまでお願いします。", "Kono hoteru made onegaishimasu.", "", "hotel"],
+    ["Stop her, tak.", "ここで止めてください。", "Koko de tomete kudasai.", ""]
   ]],
   ["Hotel", "", [
-    ["Jeg vil gerne tjekke ind.", "チェックインをお願いします。", "Chekku-in o onegaishimasu."],
-    ["Kan I opbevare vores bagage?", "荷物を預かってもらえますか？", "Nimotsu o azukatte moraemasu ka?", 1],
-    ["Hvad er koden til wi-fi?", "Wi-Fiのパスワードを教えてください。", "Waifai no pasuwādo o oshiete kudasai."]
+    ["Jeg vil gerne tjekke ind.", "チェックインをお願いします。", "Chekku-in o onegaishimasu.", ""],
+    ["Kan I opbevare vores bagage?", "荷物を預かってもらえますか？", "Nimotsu o azukatte moraemasu ka?", "yn"],
+    ["Kan I ringe efter en taxa?", "タクシーを呼んでもらえますか？", "Takushī o yonde moraemasu ka?", "yn"],
+    ["Hvad er koden til wi-fi?", "Wi-Fiのパスワードを教えてください。", "Waifai no pasuwādo o oshiete kudasai.", "write"]
   ]],
   ["Nødsituation", "Ambulance: 119 · Politi: 110", [
-    ["Hjælp!", "助けてください！", "Tasukete kudasai!"],
-    ["Ring efter en ambulance.", "救急車を呼んでください。", "Kyūkyūsha o yonde kudasai."],
-    ["Hvor er det nærmeste hospital?", "一番近い病院はどこですか？", "Ichiban chikai byōin wa doko desu ka?"],
-    ["Jeg er faret vild.", "道に迷いました。", "Michi ni mayoimashita."],
-    ["Jeg har mistet mit pas.", "パスポートをなくしました。", "Pasupōto o nakushimashita."]
+    ["Hjælp!", "助けてください！", "Tasukete kudasai!", ""],
+    ["Ring efter en ambulance.", "救急車を呼んでください。", "Kyūkyūsha o yonde kudasai.", ""],
+    ["Hvor er det nærmeste hospital?", "一番近い病院はどこですか？", "Ichiban chikai byōin wa doko desu ka?", "write"],
+    ["Hvor er politiet (kōban)?", "交番はどこですか？", "Kōban wa doko desu ka?", "dir"],
+    ["Jeg er faret vild.", "道に迷いました。", "Michi ni mayoimashita.", ""],
+    ["Jeg har mistet mit pas.", "パスポートをなくしました。", "Pasupōto o nakushimashita.", ""]
   ]],
   ["Praktisk", "", [
-    ["Tak.", "ありがとうございます。", "Arigatō gozaimasu."],
-    ["Jeg taler ikke japansk.", "日本語が話せません。", "Nihongo ga hanasemasen."],
-    ["Taler du engelsk?", "英語を話せますか？", "Eigo o hanasemasu ka?", 1],
-    ["Kan du skrive det ned?", "書いてもらえますか？", "Kaite moraemasu ka?", 1],
-    ["Hvor er toilettet?", "トイレはどこですか？", "Toire wa doko desu ka?"],
-    ["Vil du tage et billede af os?", "写真を撮ってもらえますか？", "Shashin o totte moraemasu ka?", 1]
+    ["Tak.", "ありがとうございます。", "Arigatō gozaimasu.", ""],
+    ["Jeg taler ikke japansk.", "日本語が話せません。", "Nihongo ga hanasemasen.", ""],
+    ["Taler du engelsk?", "英語を話せますか？", "Eigo o hanasemasu ka?", "yn"],
+    ["Kan du skrive det ned?", "書いてもらえますか？", "Kaite moraemasu ka?", "write"],
+    ["Hvor er toilettet?", "トイレはどこですか？", "Toire wa doko desu ka?", "dir"],
+    ["Hvor er den nærmeste konbini?", "一番近いコンビニはどこですか？", "Ichiban chikai konbini wa doko desu ka?", "dir"],
+    ["Hvor er der en hæveautomat?", "ATMはどこですか？", "Ētīemu wa doko desu ka?", "dir"],
+    ["Kan jeg betale med kort?", "カードで払えますか？", "Kādo de haraemasu ka?", "yn"],
+    ["Vil du tage et billede af os?", "写真を撮ってもらえますか？", "Shashin o totte moraemasu ka?", "yn"]
   ]]
 ];
+/* The halal card asks one question: is any of this in the dish? Yes is the bad answer. */
 const HALAL_CARD = {
-  ja: "私はイスラム教徒です。\n次のものは食べられません。\n・豚肉と豚由来のもの\n（ラード、ゼラチン、豚骨スープなど）\n・アルコール\n（お酒、みりん、料理酒など）\nこの料理には入っていますか？",
-  da: "Jeg er muslim: intet svinekød, intet fra svin og ingen alkohol. Er der noget af det i retten?"
+  ja: "私はイスラム教徒です。\n次のものは食べられません。\n・豚肉と豚由来のもの\n（ラード、ゼラチン、豚骨スープなど）\n・アルコール\n（お酒、みりん、料理酒など）\n・ハラールではないお肉\n（牛肉、鶏肉など）\n魚、野菜、卵は大丈夫です。\nこの料理に、上のものは入っていますか？",
+  da: "Jeg er muslim: intet svin, ingen alkohol, kun halal-kød; fisk, grøntsager og æg er fint. Er noget af det i retten?"
 };
-const ASK = "下のボタンを押してお答えください。";
-/* ◯ (maru) is yes and ✕ (batsu) is no in Japan; green and red as on OK/NG signs */
-const ANSWERS = [["はい", "Ja", "○", "yes"], ["いいえ", "Nej", "✕", "no"], ["わかりません", "Ved ikke", "", ""]];
+/* what staff say to you: [Japanese, romaji, Danish, answers to tap ([Japanese, Danish, romaji]) or "persons"] */
+const YES = ["はい、お願いします。", "ja tak", "Hai, onegaishimasu."], NO = ["いいえ、大丈夫です。", "nej tak", "Iie, daijōbu desu."];
+const HEAR = [
+  ["når I kommer ind", [
+    ["いらっしゃいませ。", "Irasshaimase.", "Velkommen. Det siger alle butikker; du behøver ikke svare.", []],
+    ["何名様ですか？", "Nan-mei-sama desu ka?", "Hvor mange er I?", "persons"],
+    ["ご予約はされていますか？", "Go-yoyaku wa sarete imasu ka?", "Har I reserveret?", [["はい、予約しています。", "ja, vi har reserveret", "Hai, yoyaku shite imasu."], ["いいえ。", "nej", "Iie."]]],
+    ["満席です。", "Manseki desu.", "Der er fuldt.", []],
+    ["お名前を書いてお待ちください。", "Onamae o kaite omachi kudasai.", "Skriv jeres navn på listen, og vent.", []],
+    ["少々お待ちください。", "Shōshō omachi kudasai.", "Et øjeblik, vent lidt.", []],
+    ["こちらへどうぞ。", "Kochira e dōzo.", "Denne vej, værsgo.", []],
+    ["お好きな席へどうぞ。", "Osuki na seki e dōzo.", "Sæt jer, hvor I vil.", []],
+    ["食券を買ってください。", "Shokken o katte kudasai.", "Køb først en madbillet i automaten ved døren.", []]
+  ]],
+  ["når I bestiller", [
+    ["ご注文はお決まりですか？", "Go-chūmon wa okimari desu ka?", "Er I klar til at bestille?", [["はい。", "ja", "Hai."], ["もう少し待ってください。", "lidt mere tid, tak", "Mō sukoshi matte kudasai."]]],
+    ["お決まりになりましたらお呼びください。", "Okimari ni narimashitara oyobi kudasai.", "Kald på os, når I er klar.", []],
+    ["辛さはどうしますか？", "Karasa wa dō shimasu ka?", "Hvor stærk vil du have den?", [["辛くしないでください。", "ikke stærk", "Karaku shinaide kudasai."], ["普通でお願いします。", "normal", "Futsū de onegaishimasu."], ["辛口でお願いします。", "stærk", "Karakuchi de onegaishimasu."]]],
+    ["店内でお召し上がりですか？", "Tennai de omeshiagari desu ka?", "Spiser I her?", [["はい、店内で。", "ja, vi spiser her", "Hai, tennai de."], ["持ち帰りで。", "nej, det skal med", "Mochikaeri de."]]],
+    ["お持ち帰りですか？", "Omochikaeri desu ka?", "Skal det med?", [["はい、持ち帰りで。", "ja, det skal med", "Hai, mochikaeri de."], ["いいえ、店内で。", "nej, vi spiser her", "Iie, tennai de."]]],
+    ["以上でよろしいですか？", "Ijō de yoroshii desu ka?", "Var det alt?", [["はい、以上です。", "ja, det var alt", "Hai, ijō desu."], ["まだあります。", "nej, der er mere", "Mada arimasu."]]],
+    ["ラストオーダーです。", "Rasuto ōdā desu.", "Sidste bestilling: køkkenet lukker snart.", []]
+  ]],
+  ["når I betaler", [
+    ["お会計はレジでお願いします。", "Okaikei wa reji de onegaishimasu.", "Betal ved kassen.", []],
+    ["お支払いは？", "Oshiharai wa?", "Hvordan vil du betale?", [["カードで。", "med kort", "Kādo de."], ["現金で。", "kontant", "Genkin de."]]],
+    ["現金のみです。", "Genkin nomi desu.", "Kun kontanter.", []],
+    ["ポイントカードはお持ちですか？", "Pointo kādo wa omochi desu ka?", "Har du et pointkort?", [["いいえ、持っていません。", "nej, det har jeg ikke", "Iie, motte imasen."]]],
+    ["レシートはご利用ですか？", "Reshīto wa go-riyō desu ka?", "Vil du have kvitteringen? Sig ja, hvis du vil have tax free.", [YES, NO]]
+  ]],
+  ["i konbini og butikker", [
+    ["温めますか？", "Atatamemasu ka?", "Skal den varmes?", [YES, NO]],
+    ["袋はご利用ですか？", "Fukuro wa go-riyō desu ka?", "Vil du have en pose?", [YES, NO]],
+    ["お箸はおつけしますか？", "Ohashi wa otsuke shimasu ka?", "Vil du have spisepinde med?", [YES, NO]]
+  ]]
+];
 const COUNT_RO = ["", "ichi", "ni", "san", "yon", "go", "roku", "nana", "hachi", "kyū", "jū"];
 const TSU = ["", "hitotsu", "futatsu", "mittsu", "yottsu", "itsutsu", "muttsu", "nanatsu", "yattsu", "kokonotsu"];
 
@@ -874,7 +917,7 @@ function renderSize() {
     note = `Japanske skostørrelser er fodens længde i cm, og mærkerne varierer, så prøv ${fmt(row[1] - 0.5, 1)} til ${fmt(row[1] + 0.5, 1)}. Mål gerne din fod hjemmefra.`;
   } else if (sizeKind === "men") {
     big = `${row[1]}${row[2] ? `<small>også skrevet ${row[2]}</small>` : ""}`;
-    note = "Japansk tøj er mindre og smallere, så tag én størrelse større end hjemme.";
+    note = "Japansk tøj er mindre og smallere end hjemme, så størrelsen her er allerede én større end din danske.";
   } else {
     big = `${row[1]}号<small>(${row[2]})</small>`;
     note = `Dametøj har numre (号, gō) i Japan. Bogstavet i parentes er cirka, og pasformen er smallere end hjemme.`;
@@ -892,14 +935,13 @@ document.addEventListener("click", e => { const b = e.target.closest("[data-say]
 const fold = s => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
 let talkQuery = "";
-const CAT_SHORT = { "Halal": "halal", "Det hører du": "det hører du", "På restauranten": "restaurant", "Indkøb": "indkøb", "Transport": "transport", "Hotel": "hotel", "Nødsituation": "nød", "Praktisk": "praktisk" };
+const CAT_SHORT = { "Halal": "halal", "På restauranten": "restaurant", "Indkøb": "indkøb", "Transport": "transport", "Hotel": "hotel", "Nødsituation": "nød", "Praktisk": "praktisk" };
 let talkCat = store.get("tokyo-cat") || "all";
 if (talkCat !== "all" && !PHRASES.some(g => g[0] === talkCat)) talkCat = "all";
+let talkMode = store.get("tokyo-talk") === "hear" ? "hear" : "show";
 function renderCats() {
   $("talkCats").innerHTML = [["all", "alle"], ...PHRASES.map(([g]) => [g, CAT_SHORT[g] || g])].map(([k, l]) =>
-    `<button type="button" data-c="${esc(k)}" aria-pressed="${!talkQuery.trim() && k === talkCat}">${esc(l)}</button>`).join("");
-  const on = $("talkCats").querySelector('[aria-pressed="true"]');
-  if (on) $("talkCats").scrollLeft = Math.max(0, on.offsetLeft - 60);
+    `<button class="chip" type="button" data-c="${esc(k)}" aria-pressed="${!talkQuery.trim() && k === talkCat}">${esc(l)}</button>`).join("");
 }
 function renderTalk() {
   const q = fold(talkQuery.trim());
@@ -910,10 +952,22 @@ function renderTalk() {
     if (!cards.length) return "";
     shown += cards.length;
     return `<section class="talkGroup"><h2>${esc(group)}</h2>${note && !q ? `<p class="talkNote">${esc(note)}</p>` : ""}<div class="talkGrid">${cards.map(({ p, i }) =>
-      `<button class="phrase${p[4] === "heard" ? " heard" : p[4] ? " special" : ""}" type="button" data-g="${gi}" data-i="${i}"><span class="da">${esc(p[0])}</span><span class="ja" lang="ja">${esc(p[1])}</span>${p[4] === "heard" ? `<span class="ro">${esc(p[2])}</span>` : ""}</button>`).join("")}</div></section>`;
+      `<button class="phrase${p[4] ? " special" : ""}" type="button" data-g="${gi}" data-i="${i}"><span class="da">${esc(p[0])}</span><span class="ja" lang="ja">${esc(p[1])}</span></button>`).join("")}</div></section>`;
   }).join("");
   $("talkEmpty").hidden = shown > 0;
   renderCats();
+}
+/* "forstå": what staff say, to read and hear, with the answers to tap */
+function renderHear() {
+  const v = jaVoice(), canSay = v !== null && "speechSynthesis" in window;
+  $("hearList").innerHTML = HEAR.map(([g, list], gi) => `<section class="hearGroup"><h2>${esc(g)}</h2>${list.map(([ja, ro, da, rep], i) => `<div class="hear">
+    <p class="hj" lang="ja">${esc(ja)}</p><p class="hr">${esc(ro)}</p><p class="hd">${esc(da)}</p>
+    <div class="chips">${canSay ? `<button class="chip" type="button" data-say="${esc(ja)}" aria-label="læs højt">▶ hør</button>` : ""}${rep === "persons" ? `<span class="lbl2">svar:</span><button class="chip" type="button" data-hp="1">vi er … personer</button>` : rep.length ? `<span class="lbl2">svar:</span>${rep.map((r, k) => `<button class="chip" type="button" data-hr="${gi}.${i}.${k}">${esc(r[1])}</button>`).join("")}` : ""}</div></div>`).join("")}</section>`).join("");
+}
+function renderTalkMode() {
+  $("talkShow").setAttribute("aria-pressed", String(talkMode === "show")); $("talkHear").setAttribute("aria-pressed", String(talkMode === "hear"));
+  $("showView").hidden = talkMode !== "show"; $("hearView").hidden = talkMode !== "hear"; $("catScroll").hidden = talkMode !== "show";
+  syncFh(); const s = $("catScroll"); if (s.upd) s.upd();
 }
 
 /* the big card: one place for every mode */
@@ -971,6 +1025,7 @@ function paint(view) {
   t.innerHTML = view.img ? `<img class="drawn" src="${view.img}" alt="det personalet skrev">` : String(view.text).split("\n").map(l => `<span class="ln">${ja ? jaLine(l) : esc(l)}</span>`).join("");
   t.lang = view.lang;
   t.dataset.tone = view.tone || "";
+  $("bigInfo").innerHTML = view.info || "";
   $("bigSub").innerHTML = view.sub || "";
   $("bigAct").innerHTML = view.act || "";
   const voice = jaVoice();
@@ -978,40 +1033,51 @@ function paint(view) {
   if (view.img) t.style.fontSize = ""; else requestAnimationFrame(fitText);
   if (view.kind === "write") requestAnimationFrame(() => requestAnimationFrame(initPad));
 }
-/* How staff answer: yes/no buttons, buttons with a time or a direction, the price on a keypad, writing with
-   a finger, or pointing at the menu. Every answer is shown large in Danish. */
-const ANSWER_TYPE = {
-  "Hvor længe skal vi vente?": "time", "Hvad anbefaler I?": "point", "Hvad koster det?": "price",
-  "Hvor er stationen?": "dir", "Hvor kan jeg fylde mit Suica-kort op?": "dir", "Hvor holder taxaerne?": "dir",
-  "Hvor er toilettet?": "dir", "Hvor er det nærmeste hospital?": "dir", "Hvor er den nærmeste moské?": "dir",
-  "Hvilket tog skal jeg tage for at komme hertil?": "write", "Hvad er koden til wi-fi?": "write", "Kan du skrive det ned?": "write"
-};
+/* How staff answer, by the kind of question. Staff see only Japanese on the buttons; you see the answer
+   large in Danish, green when it is good news for you and red when it is not. */
+const ASK = "下のボタンでお答えください。";
+const ASK_FOR = { price: "金額を入力してください。", track: "番線を入力してください。", write: "ここに指で書いていただけますか？", point: "メニューを指さしていただけますか？" };
+/* [Japanese on the button, Danish answer, tone: yes = good for you, no = bad, "" = neither] */
 const CHOICES = {
+  yn: [["はい", "ja", "yes"], ["いいえ", "nej", "no"], ["わかりません", "ved ikke", ""]],
+  has: [["入っています", "ja, det er i retten", "no"], ["入っていません", "nej, det er ikke i retten", "yes"], ["わかりません", "ved ikke", ""]],
+  meat: [["お肉は入っていません", "der er ikke kød i", "yes"], ["ハラールのお肉です", "ja, kødet er halal", "yes"], ["ハラールではないお肉です", "kødet er ikke halal", "no"], ["わかりません", "ved ikke", ""]],
   time: [["5分", "ca. 5 min."], ["10分", "ca. 10 min."], ["15分", "ca. 15 min."], ["20分", "ca. 20 min."], ["30分", "ca. 30 min."], ["1時間以上", "over en time"], ["わかりません", "ved ikke"]],
-  dir: [["← 左", "← til venstre"], ["↑ まっすぐ", "↑ ligeud"], ["右 →", "til højre →"], ["上の階", "en etage op"], ["下の階", "en etage ned"], ["わかりません", "ved ikke"]]
+  dir: [["← 左", "← til venstre"], ["↑ まっすぐ", "↑ ligeud"], ["右 →", "til højre →"], ["上の階", "en etage op"], ["下の階", "en etage ned"], ["わかりません", "ved ikke"]],
+  dirNone: [["← 左", "← til venstre"], ["↑ まっすぐ", "↑ ligeud"], ["右 →", "til højre →"], ["上の階", "en etage op"], ["下の階", "en etage ned"], ["ありません", "nej, det er der ikke", "no"]]
 };
-const ASK_FOR = { price: "金額を入力してください。", write: "ここに指で書いていただけますか？", point: "メニューを指さしていただけますか？" };
+/* yes/no keeps Japan's ○ and ✕ on the buttons */
+const MARK = { yn: ["○", "✕", ""] };
 const backBtn = (l = "tilbage til spørgsmålet") => `<button class="backBtn" type="button" data-back="1">${l}</button>`;
-let kp = "";
+let kp = "", kpUnit = "";
 function answerFor(type) {
-  if (type === "yn") return answerButtons();
-  if (CHOICES[type]) return `<p class="ask" lang="ja">${ASK}</p><div class="ch ch-${type}">${CHOICES[type].map(([ja, da], i) => `<button type="button" data-ch="${type}.${i}" lang="ja"><span>${ja}</span><small lang="da">${da}</small></button>`).join("")}</div>`;
-  if (type === "price") { kp = ""; return `<p class="ask" lang="ja">${ASK_FOR.price}</p><p class="kpOut" id="kpOut">0 ¥</p><div class="kp">${["1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "OK"].map(k => `<button type="button" data-kp="${k}">${k}</button>`).join("")}</div>`; }
-  if (type === "write") return `<p class="ask" lang="ja">${ASK_FOR.write}</p><canvas class="pad" id="pad" aria-label="felt at skrive i"></canvas><div class="formBtns"><button type="button" data-pad="clear" lang="ja">消す<small lang="da">slet</small></button><button type="button" data-pad="done" lang="ja">できました<small lang="da">færdig</small></button></div>`;
+  if (CHOICES[type]) {
+    const m = MARK[type];
+    return `<p class="ask" lang="ja">${ASK}</p><div class="ch ch-${type}">${CHOICES[type].map(([ja], i) =>
+      `<button type="button" data-ch="${type}.${i}" lang="ja" class="${m && m[i] ? (i ? "a-no" : "a-yes") : ""}">${m && m[i] ? `<span class="mk" aria-hidden="true">${m[i]}</span> ` : ""}${ja}</button>`).join("")}</div>`;
+  }
+  if (type === "price" || type === "track") {
+    kp = ""; kpUnit = type === "price" ? "¥" : "番線";
+    return `<p class="ask" lang="ja">${ASK_FOR[type]}</p><p class="kpOut" id="kpOut">0 ${kpUnit}</p><div class="kp">${["1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "OK"].map(k => `<button type="button" data-kp="${k}">${k}</button>`).join("")}</div>`;
+  }
+  if (type === "write") return `<p class="ask" lang="ja">${ASK_FOR.write}</p><canvas class="pad" id="pad" aria-label="felt at skrive i"></canvas><div class="formBtns"><button type="button" data-pad="clear" lang="ja">消す</button><button type="button" data-pad="done" lang="ja">できました</button></div>`;
   if (type === "point") return `<p class="ask" lang="ja">${ASK_FOR.point}</p>`;
   return "";
 }
+const info = (ro, da) => `${esc(ro)} · <span>${esc(da)}</span>`;
 function phraseView(p) {
-  const type = ANSWER_TYPE[p[0]] || (p[3] ? "yn" : "");
-  return { text: p[1], lang: "ja", say: p[1], sub: `${esc(p[2])}<br>${esc(p[0])}`, act: answerFor(type), back: p, kind: type };
+  const type = p[3] === 1 ? "yn" : p[3] || "";
+  return { text: p[1], lang: "ja", say: p[1].replace(/\n/g, ""), info: info(p[2], p[0]), act: answerFor(type), back: p, kind: type };
 }
 function choiceView(type, i, back) {
-  const [ja, da] = CHOICES[type][i];
-  return { text: da, lang: "da", sub: `<span class="sj" lang="ja">${esc(ja)}</span><br>svaret fra personalet`, act: backBtn(), backTo: back };
+  const [ja, da, tone] = CHOICES[type][i];
+  const mk = tone === "yes" ? "○ " : tone === "no" ? "✕ " : "";
+  return { text: mk + da, lang: "da", tone, sub: `<span class="sj" lang="ja">${esc(ja)}</span> · svaret fra personalet`, act: backBtn(), backTo: back };
 }
-function priceView(n, back) {
+function numberView(n, back) {
+  if (kpUnit === "番線") return { text: `spor ${n}`, lang: "da", sub: `<span class="sj" lang="ja">${n}番線</span> · svaret fra personalet. kig efter ${n}番線 på skiltene.`, act: backBtn(), backTo: back };
   const w = yenWords(n);
-  return { text: `${fmt(n, 0)} ¥`, lang: "da", sub: `<span class="sj">ca. ${krFmt(n * RATE.r)} kr</span><br>${esc(w.ro)} · beløbet fra personalet`, act: backBtn(), backTo: back };
+  return { text: `${fmt(n, 0)} ¥`, lang: "da", sub: `<span class="sj">ca. ${krFmt(n * RATE.r)} kr</span> · ${esc(w.ro)} · beløbet fra personalet`, act: backBtn(), backTo: back };
 }
 function drawingView(url, back) {
   return { img: url, text: "", lang: "da", sub: "skrevet af personalet. sammenlign med skiltene, eller vis det til den næste, du spørger.", act: backBtn("skriv igen"), backTo: back };
@@ -1026,49 +1092,26 @@ function initPad() {
   c.onpointermove = e => { if (!last) return; g.beginPath(); g.moveTo(last[0], last[1]); g.lineTo(e.offsetX, e.offsetY); g.stroke(); last = [e.offsetX, e.offsetY]; };
   c.onpointerup = c.onpointercancel = () => { last = null; };
 }
-/* what staff say, and the answers to tap */
-const YES = ["はい、お願いします。", "Ja tak.", "Hai, onegaishimasu."], NO = ["いいえ、大丈夫です。", "Nej tak.", "Iie, daijōbu desu."];
-const HEARD_REPLY = {
-  "何名様ですか？": "persons",
-  "ご注文はお決まりですか？": [["はい。", "Ja.", "Hai."], ["もう少し待ってください。", "Lidt mere tid, tak.", "Mō sukoshi matte kudasai."]],
-  "店内でお召し上がりですか？": [["はい、店内で。", "Ja, vi spiser her.", "Hai, tennai de."], ["持ち帰りで。", "Nej, det skal med.", "Mochikaeri de."]],
-  "お持ち帰りですか？": [["はい、持ち帰りで。", "Ja, det skal med.", "Hai, mochikaeri de."], ["いいえ、店内で。", "Nej, vi spiser her.", "Iie, tennai de."]],
-  "温めますか？": [YES, NO], "袋はご利用ですか？": [YES, NO], "お箸はおつけしますか？": [YES, NO], "レシートはご利用ですか？": [YES, NO],
-  "ポイントカードはお持ちですか？": [["いいえ、持っていません。", "Nej, det har jeg ikke.", "Iie, motte imasen."]],
-  "お支払いは？": [["カードで。", "Med kort.", "Kādo de."], ["現金で。", "Kontant.", "Genkin de."]],
-  "以上でよろしいですか？": [["はい、以上です。", "Ja, det var alt.", "Hai, ijō desu."], ["まだあります。", "Nej, der er mere.", "Mada arimasu."]]
-};
-function heardView(p) {
-  const r = HEARD_REPLY[p[1]];
-  const act = r === "persons" ? `<p class="ask">svar med et tryk:</p><button class="backBtn" type="button" data-hp="1">vi er … personer</button>`
-    : Array.isArray(r) ? `<p class="ask">svar med et tryk:</p><div class="ch ch-2">${r.map((x, i) => `<button type="button" data-hr="${i}" lang="ja"><span>${esc(x[0])}</span><small lang="da">${esc(x[1])}</small></button>`).join("")}</div>` : "";
-  return { text: p[1], lang: "ja", say: p[1], sub: `${esc(p[2])}<br><span class="mean">${esc(p[0])}</span>`, act, kind: "heard", heard: p };
-}
-function replyView(x, back) { return { text: x[0], lang: "ja", say: x[0], sub: `${esc(x[2])}<br>${esc(x[1])}`, act: backBtn("tilbage"), backTo: back }; }
-function answerButtons() {
-  return `<p class="ask" lang="ja">${ASK}</p><div class="ans">${ANSWERS.map(([ja, da, mk, tone], i) => `<button type="button" data-ans="${i}" class="${tone ? "a-" + tone : ""}" lang="ja"><span>${mk ? `<span class="mk" aria-hidden="true">${mk}</span> ` : ""}${ja}</span><small lang="da">${da}</small></button>`).join("")}</div>`;
-}
-function answerView(i, back) {
-  const [ja, da, mk, tone] = ANSWERS[i];
-  return { text: tone ? `${mk} ${da}` : da, lang: "da", tone, sub: `<span class="sj" lang="ja">${ja}</span><br>Svaret fra personalet`, act: backBtn(), backTo: back };
-}
+/* an answer you tap in "forstå", shown in Japanese to the one who asked */
+function replyView(x) { return { text: x[0], lang: "ja", say: x[0], info: info(x[2], x[1]) }; }
+function halalView() { return { text: HALAL_CARD.ja, lang: "ja", say: HALAL_CARD.ja.replace(/[・（）\n]/g, " "), info: esc(HALAL_CARD.da), act: answerFor("has"), kind: "has" }; }
 let persons = 2, hotel = "";
 try { persons = Math.min(10, Math.max(1, +store.get("tokyo-persons") || 2)); hotel = store.get("tokyo-hotel") || ""; } catch (e) {}
 function personsView() {
   return { text: `${persons}名です。`, lang: "ja", say: `${persons}名です。`,
-    sub: `${COUNT_RO[persons]}-mei desu.<br>Vi er ${persons} ${persons === 1 ? "person" : "personer"}.`,
-    act: `<div class="step"><button type="button" data-step="-1" aria-label="Færre">−</button><button type="button" data-step="1" aria-label="Flere">+</button></div>`, kind: "persons" };
+    info: info(`${COUNT_RO[persons]}-mei desu.`, `vi er ${persons} ${persons === 1 ? "person" : "personer"}`),
+    act: `<div class="step"><button type="button" data-step="-1" aria-label="færre">−</button><button type="button" data-step="1" aria-label="flere">+</button></div>`, kind: "persons" };
 }
 let items = 1;
 function itemsView() {
   return { text: `これを${items}つください。`, lang: "ja", say: `これを${items}つください。`,
-    sub: `Kore o ${TSU[items]} kudasai.<br>${items} af den her, tak.`,
+    info: info(`Kore o ${TSU[items]} kudasai.`, `${items} af den her, tak`),
     act: `<div class="step"><button type="button" data-step="-1" aria-label="Færre">−</button><button type="button" data-step="1" aria-label="Flere">+</button></div>`, kind: "items" };
 }
 function hotelView() {
   if (!hotel) return hotelEdit();
   return { text: "このホテルまでお願いします。\n" + hotel, lang: "ja", say: "このホテルまでお願いします。",
-    sub: "Kono hoteru made onegaishimasu.<br>Kør mig til dette hotel, tak.",
+    info: info("Kono hoteru made onegaishimasu.", "kør mig til dette hotel, tak"),
     act: `<button class="backBtn" type="button" data-edit="1">Ret adressen</button>`, kind: "hotel" };
 }
 function hotelEdit() {
@@ -1143,7 +1186,8 @@ function placeView(p, mode) {
   return {
     text: ask ? "この場所を探しています。\n行き方を教えていただけますか？" : "この住所までお願いします。", lang: "ja",
     say: ask ? "この場所を探しています。行き方を教えていただけますか？" : "この住所までお願いします。",
-    sub: block + (ask ? "kono basho o sagashite imasu. ikikata o oshiete itadakemasu ka?<br>vi leder efter dette sted. kan du vise os vejen?" : "kono jūsho made onegaishimasu.<br>kør os til denne adresse, tak."),
+    info: ask ? info("Kono basho o sagashite imasu. Ikikata o oshiete itadakemasu ka?", "vi leder efter dette sted. kan du vise os vejen?") : info("Kono jūsho made onegaishimasu.", "kør os til denne adresse, tak"),
+    sub: block,
     act: `<div class="pm"><button type="button" data-pm="ask" aria-pressed="${ask}">spørg om vej</button><button type="button" data-pm="taxi" aria-pressed="${!ask}">taxa</button></div>`,
     kind: "place", place: p
   };
@@ -1156,32 +1200,29 @@ function showSheet() {
   el.hidden = false; document.body.style.overflow = "hidden"; panel.scrollTop = 0;
   void panel.offsetHeight; panel.style.transition = ""; panel.style.transform = "";
 }
+/* one sheet for everything you tap: a place, a dish, a sight or something you meet everywhere */
+function sheet(html, from) {
+  if (!from || !$("sheet").contains(from)) sheetFrom = from || null;
+  $("shContent").innerHTML = html;
+  showSheet();
+  try { const f = $("shContent").querySelector(".btn.primary, .btn"); (f || $("shClose")).focus({ preventScroll: true }); } catch (e) {}
+}
+const ill = svg => `<div class="ill shIll" aria-hidden="true"><svg viewBox="0 0 64 64">${svg}</svg></div>`;
+function distTo(g) { const [from] = originPoint(); return from ? distLabel(km(from, g)) : ""; }
+function openSheet(id, from) {
+  const p = PL[id]; if (!p) return;
+  sheetPl = p;
+  const meta = [DISH_SHORT[p.cat] || p.cat, p.a, p.g ? distTo(p.g) : ""].filter(Boolean).join(" · ");
+  sheet(`<h3 class="shTitle">${esc(p.n)}${p.sub ? ` <small>· ${esc(p.sub)}</small>` : ""}</h3><p class="shMeta">${esc(meta)}</p>${p.t ? `<p class="shText">${esc(p.t)}</p>` : ""}${p.j ? `<div class="shBlock"><small>adresse på japansk</small><span lang="ja">${esc(p.j)}</span></div>` : ""}
+    <div class="shActs"><a class="btn primary wide" href="${p.u}" target="_blank" rel="noopener">vis på kort</a><button class="btn wide" type="button" data-sh="ask">spørg om vej</button><button class="btn wide" type="button" data-sh="taxi">vis til taxachaufføren</button></div>`, from);
+}
 function openDish(id, from) {
   const x = DATA.try.find(d => d.id === id); if (!x) return;
   const cat = DATA.cats.find(c => c.name === DISH_OF[x.id]);
-  sheetPl = null; if (from && !$("sheet").contains(from)) sheetFrom = from;
-  $("shIll").innerHTML = `<svg viewBox="0 0 64 64">${ICONS[x.id] || ""}</svg>`; $("shIll").hidden = false;
-  $("shName").innerHTML = `${esc(x.n)}<span class="kanji" lang="ja">${esc(x.j)}</span>`;
-  $("shMeta").textContent = DISH_OF[x.id] || "";
-  $("shNote").textContent = x.t; $("shNote").hidden = false;
-  $("shAddr").innerHTML = cat && cat.intro ? `<small>tip</small>${esc(cat.intro)}` : ""; $("shAddr").hidden = !(cat && cat.intro);
-  $("shWhere").innerHTML = x.w.map(w => PL[pidOf(w.u)] ? `<button class="chip" type="button" data-pl="${esc(pidOf(w.u))}">${esc(w.l)}</button>` : `<a class="chip" href="${w.u}" target="_blank" rel="noopener">${esc(w.l)}</a>`).join("");
-  $("shPhotos").href = x.p;
-  $("shPlaceActs").hidden = true; $("shDishActs").hidden = false;
-  showSheet();
-  try { $("shClose").focus({ preventScroll: true }); } catch (e) {}
-}
-function openSheet(id, from) {
-  const p = PL[id]; if (!p) return;
-  sheetPl = p; if (!from || !$("sheet").contains(from)) sheetFrom = from || null;
-  $("shIll").hidden = true; $("shPlaceActs").hidden = false; $("shDishActs").hidden = true; $("shAddr").hidden = false;
-  $("shName").innerHTML = esc(p.n) + (p.sub ? ` <small>· ${esc(p.sub)}</small>` : "");
-  $("shMeta").textContent = [p.cat, p.a].filter(Boolean).join(" · ");
-  $("shNote").textContent = p.t || ""; $("shNote").hidden = !p.t;
-  $("shAddr").innerHTML = p.j ? `<small>adresse på japansk</small><span lang="ja">${esc(p.j)}</span>` : "";
-  $("shMap").href = p.u;
-  showSheet();
-  try { $("shAsk").focus({ preventScroll: true }); } catch (e) {}
+  sheetPl = null;
+  sheet(`${ill(ICONS[x.id] || "")}<h3 class="shTitle">${esc(x.n)}<span class="kanji" lang="ja">${esc(x.j)}</span></h3><p class="shMeta">${esc(DISH_SHORT[DISH_OF[x.id]] || "")}</p><p class="shText">${esc(x.t)}</p>${cat && cat.intro ? `<p class="shTip"><b>tip:</b> ${esc(cat.intro)}</p>` : ""}
+    <div class="shBlock"><small>prøv det hos</small><div class="chips">${x.w.map(w => PL[pidOf(w.u)] ? `<button class="chip" type="button" data-pl="${esc(pidOf(w.u))}">${esc(w.l)}</button>` : `<a class="chip" href="${w.u}" target="_blank" rel="noopener">${esc(w.l)}</a>`).join("")}</div></div>
+    <div class="shActs"><a class="btn wide" href="${x.p}" target="_blank" rel="noopener">se billeder</a></div>`, from);
 }
 function closeSheet() {
   const el = $("sheet"), panel = $("shPanel");
@@ -1194,8 +1235,7 @@ function closeSheet() {
 }
 $("shBack").addEventListener("click", closeSheet);
 $("shClose").addEventListener("click", closeSheet);
-$("shAsk").addEventListener("click", e => { if (sheetPl) openBig(placeView(sheetPl, "ask"), e.currentTarget); });
-$("shTaxi").addEventListener("click", e => { if (sheetPl) openBig(placeView(sheetPl, "taxi"), e.currentTarget); });
+$("shContent").addEventListener("click", e => { const b = e.target.closest("[data-sh]"); if (b && sheetPl) openBig(placeView(sheetPl, b.dataset.sh), b); });
 /* pull the sheet down to close it, when it is scrolled to the top */
 let sdrag = null;
 $("shPanel").addEventListener("touchstart", e => {
@@ -1218,6 +1258,10 @@ document.addEventListener("click", e => {
   if (a) { const p = PL[a.dataset.ask]; if (p) openBig(placeView(p, "ask"), a); return; }
   const d = e.target.closest("[data-dish]");
   if (d) { openDish(d.dataset.dish, d); return; }
+  const si = e.target.closest("[data-sight]");
+  if (si) { openSight(+si.dataset.sight, si); return; }
+  const ev = e.target.closest("[data-evi]");
+  if (ev) { const [a, b2] = ev.dataset.evi.split(".").map(Number); openEvery(a, b2, ev); return; }
   const b = e.target.closest("[data-pl]");
   if (b) { e.preventDefault(); openSheet(b.dataset.pl, b); }
 });
@@ -1263,22 +1307,26 @@ const EVERY = [
     ["kontant", "Kontanter", "現金", "Kort virker de fleste steder, men små restauranter, boder og automater tager tit kun kontanter.", "Hæveautomaterne i 7-Eleven tager danske kort.", []],
     ["drikkepenge", "Ingen drikkepenge", "チップ", "Man giver ikke drikkepenge i Japan; prisen er prisen, og det kan virke mærkeligt at lægge ekstra.", "", []],
     ["taxfree", "Tax free", "免税", "Fra 1. november 2026 betaler du moms i butikken og får de 10 % tilbage i lufthavnen, når du rejser hjem. Det gælder køb over 5.000 ¥ i én butik på en dag.", "Tag pas med, gem kvitteringerne, og hav varerne i håndbagagen til tjekket.", [{ ph: "Kan jeg få tax free?", l: "kan jeg få tax free?" }, { tab: "calc", l: "regn tax free ud" }]],
-    ["boen", "Bøn", "お祈り", "Moskeer: Tokyo Camii i Yoyogi-Uehara og As-Salaam Masjid i Okachimachi. Haneda Lufthavn og nogle stormagasiner har bederum.", "", [{ ph: "Er der et sted, hvor jeg kan bede?", l: "er der et sted at bede?" }, { ph: "Hvor er den nærmeste moské?", l: "nærmeste moské?" }]],
+    ["boen", "Bøn", "お祈り", "Moskeer: Tokyo Camii i Yoyogi-Uehara og As-Salaam Masjid i Okachimachi. Haneda Lufthavn og nogle stormagasiner har bederum.", "", [{ ph: "Er der et sted, hvor jeg kan bede?", l: "er der et sted at bede?" }, { url: "https://www.google.com/maps/search/?api=1&query=Tokyo%20Camii", l: "tokyo camii på kort" }, { url: "https://www.google.com/maps/search/?api=1&query=Assalam%20Masjid%20Okachimachi", l: "as-salaam masjid på kort" }]],
     ["stik", "Stikkontakter", "コンセント", "Type A med 100 volt. Tag en adapter med; opladere til telefon og computer klarer spændingen.", "", []],
     ["bus", "Fra Haneda", "空港", "Lufthavnsbussen kører til Shinjuku og de store hoteller på cirka en time. En taxa er nemmest med bagage.", "", [{ ph: "Kør mig til mit hotel", l: "kør mig til mit hotel" }]]
   ]]
 ];
-function actHTML(a, si, ii, k) { return `<button class="btn" type="button" data-ev="${si}.${ii}.${k}">${esc(a.l)}</button>`; }
 function renderEvery() {
-  $("everyList").innerHTML = EVERY.map(([sec, list], si) => `<section class="evSec"><h2>${esc(sec)}</h2><div class="blocks">${list.map(([ic, n, j, t, tip, acts], ii) =>
-    `<article class="food"><div class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${EV_ICONS[ic] || ""}</svg></div><div><h3>${esc(n)}<span class="kanji" lang="ja">${esc(j)}</span></h3><p>${esc(t)}</p>${tip ? `<p class="tip"><b>tip:</b> ${esc(tip)}</p>` : ""}${acts.length ? `<div class="acts">${acts.map((a, k) => actHTML(a, si, ii, k)).join("")}</div>` : ""}</div></article>`).join("")}</div></section>`).join("");
+  $("everyList").innerHTML = EVERY.map(([sec, list], si) => `<section class="evSec"><h2>${esc(sec)}</h2><div class="evList">${list.map(([ic, n, j, t], ii) =>
+    `<button class="dish" type="button" data-evi="${si}.${ii}"><span class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${EV_ICONS[ic] || ""}</svg></span><span><b>${esc(n)}<span class="kanji" lang="ja">${esc(j)}</span></b><small>${esc(t)}</small></span><span class="go">›</span></button>`).join("")}</div></section>`).join("");
+}
+function openEvery(si, ii, from) {
+  const [ic, n, j, t, tip, acts] = EVERY[si][1][ii];
+  sheetPl = null;
+  sheet(`${ill(EV_ICONS[ic] || "")}<h3 class="shTitle">${esc(n)}<span class="kanji" lang="ja">${esc(j)}</span></h3><p class="shText">${esc(t)}</p>${tip ? `<p class="shTip"><b>tip:</b> ${esc(tip)}</p>` : ""}${acts.length ? `<div class="shActs">${acts.map((a, k) => a.url ? `<a class="btn wide" href="${a.url}" target="_blank" rel="noopener">${esc(a.l)}</a>` : `<button class="btn wide${k ? "" : " primary"}" type="button" data-ev="${si}.${ii}.${k}">${esc(a.l)}</button>`).join("")}</div>` : ""}`, from);
 }
 function phraseByDa(da) { for (const [, , list] of PHRASES) for (const p of list) if (p[0] === da) return p; return null; }
-$("everyList").addEventListener("click", e => {
+$("shContent").addEventListener("click", e => {
   const b = e.target.closest("[data-ev]"); if (!b) return;
   const [si, ii, k] = b.dataset.ev.split(".").map(Number), a = EVERY[si][1][ii][5][k];
-  if (a.halal) { $("halalCard").click(); lastPhrase = b; return; }
-  if (a.tab) { setTab(a.tab); return; }
+  if (a.halal) { openBig(halalView(), b); return; }
+  if (a.tab) { closeSheet(); setTab(a.tab); return; }
   const p = phraseByDa(a.ph); if (!p) return;
   openBig(p[4] === "hotel" ? hotelView() : p[4] === "persons" ? personsView() : phraseView(p), b);
 });
@@ -1290,37 +1338,45 @@ function render() {
     $("view" + id).hidden = tab !== t;
   }
   if (tab === "calc") tick();
+  if (tab === "talk") renderTalkMode();
   if (tab === "see") {
+    renderSee();
     $("seePlaces").setAttribute("aria-pressed", String(seeMode === "places")); $("seeEvery").setAttribute("aria-pressed", String(seeMode === "every"));
     $("seeList").hidden = seeMode !== "places"; $("everyList").hidden = seeMode !== "every";
+    if (seeMode !== "places") $("seeStatus").hidden = true;
   }
   if (tab !== "eat") return;
-  for (const [m, id] of [["near", "Near"], ["dish", "Dish"]]) $("mode" + id).setAttribute("aria-pressed", String(mode === m));
-  $("dishCtl").hidden = mode !== "dish";
-  $("nearCtl").hidden = mode !== "near";
-  $("customBox").hidden = !(mode === "near" && originIdx === ORIGINS.length);
-  document.querySelectorAll(".mustBtn").forEach(b => b.setAttribute("aria-pressed", String(mustOnly)));
-  $("origin").value = String(originIdx);
-  $("areaSel").value = area;
-  $("dishSel").value = dish;
-  if (mode === "dish") renderDish(); else renderNear();
+  document.querySelectorAll("#dishChips [data-d]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.d === dish)));
+  $("mustBtn").setAttribute("aria-pressed", String(mustOnly));
+  $("where").value = where;
+  $("customBox").hidden = where !== "hotel";
+  renderEat();
 }
 function setTab(t) { tab = t; store.set("tokyo-tab", t); render(); syncFh(); window.scrollTo({ top: 0 }); }
-function setMode(m) { mode = m; store.set("tokyo-mode", m); render(); window.scrollTo({ top: 0 }); }
+/* rows of chips that scroll sideways: a fade on each side where more chips are hidden */
+function fadeScroller(el) {
+  const r = el.querySelector(".row");
+  const upd = () => { el.classList.toggle("l", r.scrollLeft > 2); el.classList.toggle("r", r.scrollLeft + r.clientWidth < r.scrollWidth - 2); };
+  r.addEventListener("scroll", upd, { passive: true });
+  if ("ResizeObserver" in window) new ResizeObserver(upd).observe(r);
+  el.upd = upd; upd();
+}
+function chipIntoView(row, b) { if (b) row.scrollLeft = Math.max(0, b.offsetLeft - row.clientWidth / 2 + b.offsetWidth / 2); }
 
-$("dishSel").innerHTML = `<option value="All">Alle retter</option>` + DATA.cats.map(c => `<option value="${esc(c.name)}">${esc(c.name)}</option>`).join("") + `<option value="Luksus">Luksus</option>`;
-$("areaSel").innerHTML = AREAS.map(a => `<option value="${a}">${a === "All" ? "Hele Tokyo" : a}</option>`).join("");
-$("origin").innerHTML = (GPS ? `<option value="-2">Fra min placering (GPS)</option>` : `<option value="-1" disabled>Vælg et udgangspunkt…</option>`) + ORIGINS.map((o, i) => `<option value="${i}">Fra ${o[0]}</option>`).join("") + `<option value="${ORIGINS.length}">Fra mit hotel (indsæt placering)</option>`;
+$("dishChips").innerHTML = [["All", "alle"]].concat(DISH_CATS.map(c => [c, DISH_SHORT[c] || c])).map(([k, l]) =>
+  `<button class="chip" type="button" data-d="${esc(k)}" aria-pressed="false">${esc(l)}</button>`).join("");
+$("where").innerHTML = `<option value="all">hele tokyo</option><optgroup label="nærmest først fra">` + (GPS ? `<option value="gps">min placering</option>` : "")
+  + ORIGINS.map((o, i) => `<option value="st:${i}">${esc(o[0])}</option>`).join("") + `<option value="hotel">mit hotel</option></optgroup>`;
 if (custom) $("coords").value = custom.join(", ");
-
-$("areaSel").addEventListener("change", e => { area = e.target.value; render(); window.scrollTo({ top: 0 }); });
-$("dishSel").addEventListener("change", e => { dish = e.target.value; render(); window.scrollTo({ top: 0 }); });
-document.querySelectorAll(".mustBtn").forEach(b => b.addEventListener("click", () => { mustOnly = !mustOnly; render(); }));
-$("modeDish").addEventListener("click", () => setMode("dish"));
-$("modeNear").addEventListener("click", () => setMode("near"));
+fadeScroller(document.querySelector("#viewEat .scroller"));
+$("dishChips").addEventListener("click", e => {
+  const b = e.target.closest("[data-d]"); if (!b) return;
+  dish = b.dataset.d; store.set("tokyo-dish", dish); render(); window.scrollTo({ top: 0 }); chipIntoView($("dishChips"), b);
+});
 $("seePlaces").addEventListener("click", () => { seeMode = "places"; store.set("tokyo-see", seeMode); render(); window.scrollTo({ top: 0 }); });
 $("seeEvery").addEventListener("click", () => { seeMode = "every"; store.set("tokyo-see", seeMode); render(); window.scrollTo({ top: 0 }); });
-$("origin").addEventListener("change", e => { originIdx = +e.target.value; store.set("hte-origin", String(originIdx)); render(); });
+$("mustBtn").addEventListener("click", () => { mustOnly = !mustOnly; store.set("tokyo-must", mustOnly ? "1" : ""); render(); });
+$("where").addEventListener("change", e => { where = e.target.value; store.set("tokyo-where", where); render(); window.scrollTo({ top: 0 }); if (where === "hotel" && !custom) $("coords").focus(); });
 $("coords").addEventListener("input", e => {
   const v = e.target.value;
   const m = v.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/) || v.match(/@(-?\d+\.\d+),\s*(-?\d+\.\d+)/) || v.match(/(-?\d{1,2}\.\d+)\s*[, ]\s*(-?\d{2,3}\.\d+)/);
@@ -1329,11 +1385,11 @@ $("coords").addEventListener("input", e => {
     const c = [+m[1], +m[2]];
     if (c[0] > 34 && c[0] < 37 && c[1] > 138 && c[1] < 141) {
       custom = c; store.set("hte-custom", JSON.stringify(c));
-      hint.textContent = "Placering sat. Sorteret efter afstand fra dit hotel."; hint.classList.remove("err");
+      hint.textContent = "placering sat. listen er sorteret efter afstand fra dit hotel."; hint.classList.remove("err");
       render(); return;
     }
   }
-  if (v.trim()) { hint.textContent = "Det ligner ikke koordinater i Tokyo. Indsæt de to tal, fx 35.6938, 139.7034."; hint.classList.add("err"); }
+  if (v.trim()) { hint.textContent = "det ligner ikke koordinater i tokyo. indsæt de to tal, fx 35.6938, 139.7034."; hint.classList.add("err"); }
 });
 $("tabEat").addEventListener("click", () => setTab("eat"));
 $("tabSee").addEventListener("click", () => setTab("see"));
@@ -1343,29 +1399,35 @@ $("talk").addEventListener("click", e => {
   const b = e.target.closest(".phrase"); if (!b) return;
   const p = PHRASES[+b.dataset.g][2][+b.dataset.i];
   if (p[4] === "items") items = 1;
-  openBig(p[4] === "heard" ? heardView(p) : p[4] === "persons" ? personsView() : p[4] === "items" ? itemsView() : p[4] === "hotel" ? hotelView() : phraseView(p), b);
+  openBig(p[4] === "persons" ? personsView() : p[4] === "items" ? itemsView() : p[4] === "hotel" ? hotelView() : phraseView(p), b);
 });
-$("halalCard").addEventListener("click", e => openBig({ text: HALAL_CARD.ja, lang: "ja", say: HALAL_CARD.ja.replace(/[・（）]/g, " "), sub: esc(HALAL_CARD.da), act: answerButtons() }, e.currentTarget));
+$("halalCard").addEventListener("click", e => openBig(halalView(), e.currentTarget));
 $("talkSearch").addEventListener("input", e => { talkQuery = e.target.value; renderTalk(); });
 $("talkCats").addEventListener("click", e => {
   const b = e.target.closest("[data-c]"); if (!b) return;
   talkCat = b.dataset.c; store.set("tokyo-cat", talkCat);
   if (talkQuery) { talkQuery = ""; $("talkSearch").value = ""; }
-  renderTalk();
-  const bar = document.querySelector(".catbar"), y = bar.getBoundingClientRect().top + window.scrollY;
-  if (window.scrollY > y - 1) window.scrollTo({ top: y });
+  renderTalk(); chipIntoView($("talkCats"), $("talkCats").querySelector('[aria-pressed="true"]'));
+  const y = $("talk").getBoundingClientRect().top + window.scrollY - (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--fh")) || 0);
+  if (window.scrollY > y) window.scrollTo({ top: y });
+});
+$("talkShow").addEventListener("click", () => { talkMode = "show"; store.set("tokyo-talk", talkMode); renderTalkMode(); window.scrollTo({ top: 0 }); });
+$("talkHear").addEventListener("click", () => { talkMode = "hear"; store.set("tokyo-talk", talkMode); renderTalkMode(); window.scrollTo({ top: 0 }); });
+$("hearList").addEventListener("click", e => {
+  const r = e.target.closest("[data-hr]"), pp = e.target.closest("[data-hp]");
+  if (r) { const [g, i, k] = r.dataset.hr.split(".").map(Number); openBig(replyView(HEAR[g][1][i][3][k]), r); }
+  else if (pp) openBig(personsView(), pp);
 });
 $("bigClose").addEventListener("click", closeBig);
 $("bigSpeak").addEventListener("click", () => { if (current) speakJa(current.say); });
 $("bigAct").addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
-  if (b.dataset.ans) { paint(answerView(+b.dataset.ans, current)); return; }
   if (b.dataset.ch) { const [t, i] = b.dataset.ch.split("."); paint(choiceView(t, +i, current)); return; }
   if (b.dataset.kp) {
     const k = b.dataset.kp;
-    if (k === "OK") { if (+kp > 0) paint(priceView(+kp, current)); return; }
-    kp = k === "⌫" ? kp.slice(0, -1) : (kp + k).replace(/^0+/, "").slice(0, 8);
-    $("kpOut").textContent = `${fmt(+kp || 0, 0)} ¥`; return;
+    if (k === "OK") { if (+kp > 0) paint(numberView(+kp, current)); return; }
+    kp = k === "⌫" ? kp.slice(0, -1) : (kp + k).replace(/^0+/, "").slice(0, kpUnit === "¥" ? 8 : 2);
+    $("kpOut").textContent = `${fmt(+kp || 0, 0)} ${kpUnit}`; return;
   }
   if (b.dataset.pad) {
     const c = $("pad"); if (!c) return;
@@ -1373,8 +1435,6 @@ $("bigAct").addEventListener("click", e => {
     if (c.dataset.ink) paint(drawingView(c.toDataURL("image/png"), current));
     return;
   }
-  if (b.dataset.hr && current && current.heard) { paint(replyView(HEARD_REPLY[current.heard[1]][+b.dataset.hr], current)); return; }
-  if (b.dataset.hp) { paint(personsView()); return; }
   if (b.dataset.pm && current && current.place) { paint(placeView(current.place, b.dataset.pm)); return; }
   if (b.dataset.back && current && current.backTo) { paint(current.backTo); return; }
   if (b.dataset.step && current && current.kind === "items") { items = Math.min(9, Math.max(1, items + +b.dataset.step)); paint(itemsView()); return; }
@@ -1384,11 +1444,13 @@ $("bigAct").addEventListener("click", e => {
   if (b.dataset.save) { const v = ($("hotelInput").value || "").trim(); if (!v) { $("hotelInput").focus(); return; } hotel = v; store.set("tokyo-hotel", hotel); paint(hotelView()); }
 });
 window.addEventListener("resize", () => { if (!$("big").hidden && current && current.kind !== "hotelEdit") fitText(); });
-if ("speechSynthesis" in window) { try { speechSynthesis.onvoiceschanged = () => { if (!$("big").hidden && current) paint(current); }; } catch (e) {} }
+if ("speechSynthesis" in window) { try { speechSynthesis.onvoiceschanged = () => { renderHear(); if (!$("big").hidden && current) paint(current); }; } catch (e) {} }
 document.addEventListener("keydown", e => { if (e.key !== "Escape") return; if (!$("big").hidden) closeBig(); else if (!$("sheet").hidden) closeSheet(); });
 renderEvery();
 renderSee();
 renderTalk();
+renderHear();
+fadeScroller($("catScroll"));
 tick();
 
 /* ---------- Offline ---------- */
@@ -1423,10 +1485,11 @@ window.addEventListener("resize", syncFh); syncFh();
 /* no zoom: Safari ignores user-scalable=no, so pinches are stopped here as well */
 for (const t of ["gesturestart", "gesturechange"]) document.addEventListener(t, e => e.preventDefault(), { passive: false });
 document.addEventListener("touchmove", e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
-/* open on Nærmest when the phone already lets the page use its location (and nothing else was chosen) */
-if (GPS && !modeChosen && !location.hash && navigator.permissions && navigator.permissions.query) {
-  navigator.permissions.query({ name: "geolocation" }).then(p => { if (p.state === "granted" && originIdx === -2 && mode === "dish") { mode = "near"; render(); } }).catch(() => {});
+/* start nearest-first from my location when the phone already allows it and nothing else was chosen */
+if (GPS && !whereChosen && !location.hash && navigator.permissions && navigator.permissions.query) {
+  navigator.permissions.query({ name: "geolocation" }).then(p => { if (p.state === "granted" && where === "all") { where = "gps"; render(); } }).catch(() => {});
 }
+requestAnimationFrame(() => { const r = $("dishChips"); chipIntoView(r, r.querySelector('[aria-pressed="true"]')); const s = document.querySelector("#viewEat .scroller"); if (s.upd) s.upd(); });
 </script>
 
 </body>

@@ -55,6 +55,21 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   300, hairlines instead of boxes (no web fonts any more), and the staff card is white on black. A fourth
   tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
   categories to pick from, and the staff card closes with a button at the bottom or by pulling it down.
+- `aram.nu/tokyo`, gone through tab by tab for logic and use:
+  - spis is one list: dish chips and one "where" choice (all of Tokyo by dish, or nearest first from my
+    location, a station or my hotel, also within a dish). The area filter and the separate "nærmest"
+    view are gone; without a location the list stays and one line says why. Branches show their own area.
+  - oplev and spis share one pattern: short rows, and a tap opens a sheet from the bottom with details and
+    actions. Sights sort by distance when a point is chosen; the prayer item links the mosques on the map.
+  - parlør: the halal card now also covers meat that is not halal and says fish, vegetables and eggs are
+    fine; its answer is "is it in the dish", where yes is red. New cards ask about meat and halal, which
+    dishes I can eat, a platform number, an English menu, trying clothes on, a taxi from the hotel, the
+    police, the nearest konbini and an ATM; repeated cards and "pay separately" are gone. "Forstå" is
+    its own view: what staff say as a list to read and hear, with answers to tap, no longer cards to show.
+    The staff card keeps your Danish to one small grey line, and its answer buttons are plainly buttons
+    in Japanese only, apart from your own quiet "læs højt" and "luk".
+  - The category chips scroll with a fade on both sides. Sizes keep their capitals (L, XL), and the
+    clock keeps the weekday on its line.
 - `aram.nu/tokyo`: every question in the phrasebook can now be answered in a way you understand. Staff
   tap a time ("hvor længe skal vi vente?": 5 min. to over an hour) or a direction ("hvor er toilettet?",
   the station, taxis, Suica, hospital, mosque: left, straight, right, up or down a floor), type the price
