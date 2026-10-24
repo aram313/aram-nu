@@ -114,16 +114,24 @@ turned off and stamps `stage.js` with the newest file's time, so the browser nev
 
 ## The Tokyo page
 
-`src/tokyo/index.html` is a separate page at https://aram.nu/tokyo: Aram's travel list of halal
-Japanese food in Tokyo, in Danish, with a tab of sights that each lists the nearest halal places, and a phrasebook whose cards show
-the Japanese full screen (sized to fit, with answer buttons for staff on yes/no questions, a halal card, a
-persons counter and a hotel card whose address stays in the phone's `localStorage`). It is not linked from the front page, carries `noindex`, and does not follow
-the front page's black lowercase look. The page (data, styles, script) is `index.html`; next to it,
-`sw.js` keeps it working offline (the page network first, Google Fonts from the cache; its cache name
-carries a version, so a new page replaces the old cache), and `manifest.webmanifest` with the three icons
-lets it be added to a phone's home screen. "Nearest
-first" asks for the phone's location (it needs the page on https, which Pages gives); a station or
-pasted coordinates work without it.
+`src/tokyo/index.html` is a separate page at https://aram.nu/tokyo: Aram's travel guide to Tokyo in
+Danish, built like a phone app with three tabs in a bar at the bottom:
+
+- **Spis**: 64 halal Japanese places to eat, shown nearest first (from the phone's location, a station
+  or pasted hotel coordinates), by dish with a dish and an area filter, or as 15 foods to taste.
+- **Se**: 16 sights, each with the nearest halal places and the walk to them.
+- **Parlør**: a halal card, three tools (yen to kroner at the ECB rate, Japanese numbers, Danish to
+  Japanese clothes and shoe sizes) and phrase cards that show the Japanese full screen for staff (sized
+  to fit, answer buttons on yes/no questions, counters for people and items, a hotel card), plus
+  "Godt at vide".
+
+The page remembers the last tab, view and tool in `localStorage`. It is not linked from the front page,
+carries `noindex`, and does not follow the front page's black lowercase look. The page (data, styles,
+script) is `index.html`; next to it, `sw.js` keeps it working offline (the page network first, Google
+Fonts from the cache; its cache name carries a version, so a new page replaces the old cache), and
+`manifest.webmanifest` with the icons (a bowl with chopsticks in front of a red sun) makes it a full-screen app when added
+to a phone's home screen. The exchange rate is fetched from `api.frankfurter.dev` when online; offline
+the built-in rate is used. Location needs the page on https, which Pages gives.
 
 ## Publishing
 

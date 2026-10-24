@@ -4,51 +4,60 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
-<meta name="description" content="Halal japansk mad i Tokyo: hvor I kan spise, nærmeste først, og hvad I skal prøve.">
+<meta name="description" content="Halal japansk mad, seværdigheder og parlør til Tokyo.">
 <meta name="theme-color" content="#f4f6f3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#111412" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="application-name" content="Tokyo">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <meta name="apple-mobile-web-app-title" content="Tokyo">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Tokyo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
-/* Layout: one narrow reading column; two tabs; sticky controls on the eat tab; dish sections with kanji labels; splurge as a tinted band */
+/* App layout, phone first. Each view has its own title; Spis keeps its filters in a sticky bar;
+   the tab bar is fixed at the bottom, in thumb reach. Every tap target is at least 44 px, and one
+   segment, one chip, one list and one card style are used throughout. */
 :root {
   --bg: #f4f6f3;
   --surface: #ffffff;
   --fg: #181c1a;
   --muted: #5b645f;
-  --line: #d9ded9;
+  --line: #dde2dd;
   --accent: #23468a;
   --accent-soft: #e3e9f5;
   --gold: #8a5d0c;
-  --band: #f1ece1;
+  --gold-soft: #f6eedd;
   --ill-fill: #dfe6f3;
   --display: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Noto Sans JP", system-ui, sans-serif;
   --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r: 14px;
+  --nav: 64px;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #111412; --surface: #191d1a; --fg: #e8ece8; --muted: #9aa49e; --line: #2b322e;
-    --accent: #95b4ef; --accent-soft: #1e2a40; --gold: #dcae4f; --band: #1e1b14; --ill-fill: #24324d; color-scheme: dark;
+    --bg: #111412; --surface: #1a1e1b; --fg: #e8ece8; --muted: #9ba59f; --line: #2c332f;
+    --accent: #95b4ef; --accent-soft: #1f2b42; --gold: #dcae4f; --gold-soft: #2a2416; --ill-fill: #24324d; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #111412; --surface: #191d1a; --fg: #e8ece8; --muted: #9aa49e; --line: #2b322e;
-  --accent: #95b4ef; --accent-soft: #1e2a40; --gold: #dcae4f; --band: #1e1b14; --ill-fill: #24324d; color-scheme: dark;
+  --bg: #111412; --surface: #1a1e1b; --fg: #e8ece8; --muted: #9ba59f; --line: #2c332f;
+  --accent: #95b4ef; --accent-soft: #1f2b42; --gold: #dcae4f; --gold-soft: #2a2416; --ill-fill: #24324d; color-scheme: dark;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-tap-highlight-color: transparent; }
 body {
-  background: var(--bg); color: var(--fg);
-  font: 15px/1.5 var(--body);
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 16px/1.5 var(--body);
   -webkit-text-size-adjust: 100%;
-  overflow-x: clip;
-  overflow-wrap: anywhere;
+  overflow-x: clip; overflow-wrap: anywhere;
+  padding-bottom: calc(var(--nav) + env(safe-area-inset-bottom, 0px) + 24px);
 }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
 .wrap {
@@ -56,126 +65,161 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
-header.top { padding-block: 24px 0; }
-h1 { font-family: var(--display); font-weight: 700; font-size: 30px; line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 6px; text-wrap: balance; }
-.lede { color: var(--muted); margin: 0; max-width: 60ch; }
-.lede b { color: var(--fg); font-weight: 600; }
+button, select, input, textarea { font-family: inherit; }
+button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.offline { margin: 4px 0 0; font-size: 13.5px; color: var(--gold); font-weight: 600; }
-.tabs { display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; margin-top: 16px; border-bottom: 1px solid var(--line); }
-.tabs::-webkit-scrollbar { display: none; }
-.tab { flex: none; font: 600 15px var(--body); color: var(--muted); background: none; border: 0; padding: 10px 0; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
-.tab[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--accent); }
+/* view title and status */
+.vhead { padding-top: calc(env(safe-area-inset-top, 0px) + 20px); padding-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+h1 { font: 700 28px/1.15 var(--display); letter-spacing: -0.01em; margin: 0; }
+.offline { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 8; margin: 0; padding: 8px 16px; text-align: center; font-size: 13.5px; font-weight: 600; color: var(--gold); background: var(--gold-soft); }
 
-.filters { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); padding-block: 10px; }
-.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); }
-.seg button { font: 500 14px var(--body); color: var(--fg); background: none; border: 0; padding: 8px 14px; cursor: pointer; }
+/* bottom tab bar */
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  background: var(--surface); border-top: 1px solid var(--line);
+  padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px));
+}
+.tabbar .in { display: flex; max-width: 520px; margin: 0 auto; }
+.tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 52px; padding: 2px 0; font: 600 12.5px var(--body); color: var(--muted); background: none; border: 0; cursor: pointer; }
+.tab .ic { width: 60px; height: 30px; border-radius: 999px; display: grid; place-items: center; transition: background-color .15s; }
+.tab svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.tab[aria-selected="true"] { color: var(--fg); }
+.tab[aria-selected="true"] .ic { background: var(--accent-soft); color: var(--accent); }
+
+/* segmented control, selects, chips, buttons */
+.seg { display: flex; gap: 3px; padding: 3px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.seg button { flex: 1; min-height: 40px; padding: 0 6px; font: 600 14px var(--body); color: var(--muted); background: none; border: 0; border-radius: 9px; cursor: pointer; white-space: nowrap; }
 .seg button[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
-.ctl { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
-.ctl select, .ctl input[type="text"], .ctl input[type="search"] { flex: 1; min-width: 0; font: 500 15px var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; min-width: 0; }
-.chip { font: 500 13px/1 var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 12px; cursor: pointer; }
-.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
-.areaSel { display: none; }
-.toggle { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; color: var(--fg); font-size: 14px; flex: none; white-space: nowrap; }
-.toggle input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
-.from { margin: 0 0 2px; font-size: 15px; }
-.from span { color: var(--muted); font-size: 13px; }
-.pick { margin: 0; padding: 14px; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); }
-.hint { font-size: 12.5px; color: var(--muted); margin: 6px 0 0; }
+.ctl { display: flex; gap: 8px; margin-top: 8px; }
+.field {
+  flex: 1; min-width: 0; min-height: 44px; padding: 0 12px;
+  font: 500 15px var(--body); color: var(--fg); background-color: var(--surface);
+  border: 1px solid var(--line); border-radius: 12px;
+}
+select.field {
+  -webkit-appearance: none; appearance: none; padding-left: 11px; padding-right: 28px; text-overflow: ellipsis;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%238a938d' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 11px center; background-size: 11px 7px;
+}
+.toggleBtn { flex: none; min-width: 44px; min-height: 44px; padding: 0 12px; font-size: 17px !important; font: 600 14px var(--body); color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; cursor: pointer; white-space: nowrap; }
+.toggleBtn[aria-pressed="true"] { color: var(--gold); background: var(--gold-soft); border-color: var(--gold); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; font: 500 14px var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; cursor: pointer; text-decoration: none; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+a.chip { color: var(--accent); }
+.chip[aria-pressed="true"], .chip.hit { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 16px; font: 600 14.5px var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; cursor: pointer; text-decoration: none; }
+.btn.primary { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+.btn.wide { width: 100%; }
+.hint { font-size: 13px; color: var(--muted); margin: 8px 0 0; line-height: 1.45; }
 .hint.err { color: var(--gold); }
-button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.empty { color: var(--muted); padding: 24px 0; margin: 0; }
 
-.index { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 13px; }
-.index a { display: inline-block; color: var(--muted); text-decoration: none; padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
-.index a:hover { color: var(--accent); }
-
-section.cat { padding-block: 22px 4px; scroll-margin-top: 150px; }
-.cat-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 2px; }
-.kanji { font-family: var(--display); font-weight: 700; font-size: 13px; color: var(--accent); letter-spacing: 0.08em; }
-h2 { font-family: var(--display); font-weight: 700; font-size: 21px; margin: 0; }
-.intro { color: var(--muted); font-size: 13.5px; margin: 0 0 6px; }
-
-ul.list { list-style: none; margin: 0; padding: 0; }
-li.item { padding-block: 11px; border-top: 1px solid var(--line); }
-li.item:first-child { border-top: 0; }
-.line1 { display: flex; align-items: baseline; gap: 8px; }
-.name { font-weight: 600; font-size: 16px; color: var(--accent); text-decoration: none; min-width: 0; }
-.name:hover { text-decoration: underline; text-underline-offset: 3px; }
-.name small { font-weight: 500; color: var(--muted); font-size: 13px; }
-.must { color: var(--gold); font-size: 13px; flex: none; }
-.meta { margin-left: auto; flex: none; display: flex; gap: 8px; align-items: baseline; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+/* Spis */
+.filters { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 6px 10px; border-bottom: 1px solid var(--line); }
+.cat { padding-top: 20px; }
+.cat h2 { font: 700 19px var(--display); margin: 0 0 8px; }
+.cat.lux h2 { color: var(--gold); }
+.list { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.cat.lux .list { background: var(--gold-soft); }
+.item + .item { border-top: 1px solid var(--line); }
+.row { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 12px 14px; color: var(--fg); text-decoration: none; }
+.row:active { background: var(--accent-soft); }
+.rowMain { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.name { font-weight: 600; font-size: 16px; line-height: 1.3; }
+.name small { font-weight: 500; font-size: 13.5px; color: var(--muted); }
+.must { color: var(--gold); }
+.meta { display: flex; flex-wrap: wrap; gap: 2px 10px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.meta .dist { color: var(--fg); font-weight: 600; }
+.meta .kind { color: var(--gold); }
 .price { letter-spacing: 0.05em; }
 .price i { font-style: normal; opacity: 0.3; }
-.area, .catTag { text-transform: uppercase; letter-spacing: 0.06em; font-size: 11px; }
-.dist { color: var(--fg); font-weight: 600; }
-.note { margin: 2px 0 0; color: var(--fg); opacity: 0.86; font-size: 14px; }
-.br { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0 0; font-size: 13px; color: var(--muted); }
-.br .lbl { margin-right: 2px; }
-.br a { color: var(--accent); text-decoration: none; white-space: nowrap; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px; line-height: 1.2; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
-.br a.hit { background: var(--accent-soft); border-color: var(--accent); font-weight: 600; }
+.note { font-size: 14.5px; line-height: 1.45; color: var(--fg); opacity: 0.86; }
+.pin { flex: none; width: 22px; height: 22px; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.br { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 0 14px 12px; margin-top: -2px; font-size: 13px; color: var(--muted); }
+.more summary { display: flex; align-items: center; gap: 6px; min-height: 40px; margin-top: -6px; padding: 0 14px 4px; font-size: 13.5px; font-weight: 600; color: var(--accent); cursor: pointer; list-style: none; }
+.more summary::-webkit-details-marker { display: none; }
+.more summary::after { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.more[open] summary::after { transform: translateY(2px) rotate(-135deg); }
+.from { margin: 16px 0 8px; font-size: 15px; }
+.from span { color: var(--muted); font-size: 13.5px; }
+.pick { margin: 16px 0 0; padding: 16px; background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r); color: var(--muted); }
 
-.band { background: var(--band); margin-top: 26px; }
-.band section.cat { padding-block: 22px 14px; }
-.band .kanji { color: var(--gold); }
-.band .name { color: var(--fg); }
-.band .kind { font-size: 12.5px; color: var(--gold); }
-.empty { color: var(--muted); padding: 24px 0; }
-
-/* Foods to try */
-.tryIntro { color: var(--muted); margin: 18px 0 6px; max-width: 60ch; }
-.grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding-block: 10px 8px; }
-.card { display: grid; grid-template-columns: 72px 1fr; gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; min-width: 0; }
-.ill { width: 72px; height: 72px; border-radius: 12px; background: var(--accent-soft); display: grid; place-items: center; }
-.ill svg { width: 52px; height: 52px; fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+/* cards: Smag på and Seværdigheder */
+.grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding-top: 16px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px 16px; min-width: 0; }
+.card h3 { font: 700 18px/1.3 var(--display); margin: 0; }
+.card p { margin: 6px 0 0; font-size: 14.5px; line-height: 1.5; }
+.card .sub { font-size: 12.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.kanji { font-family: var(--display); font-weight: 700; font-size: 13px; color: var(--accent); letter-spacing: 0.06em; margin-left: 6px; }
+.food { display: grid; grid-template-columns: 56px 1fr; gap: 12px; }
+.food > div { min-width: 0; }
+.ill { width: 56px; height: 56px; border-radius: 12px; background: var(--accent-soft); display: grid; place-items: center; }
+.ill svg { width: 42px; height: 42px; fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .ill svg .f { fill: var(--ill-fill); }
-.card h3 { font-family: var(--display); font-size: 17px; margin: 0; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
-.card h3 .kanji { font-size: 12px; }
-.card p { margin: 4px 0 0; font-size: 14px; }
-.card .where { margin-top: 8px; }
-.photos { display: inline-block; margin-top: 8px; font-size: 13px; color: var(--muted); text-decoration: none; }
-.photos:hover { color: var(--accent); }
-.card > div { min-width: 0; }
-
-/* Seværdigheder */
-.seeList { display: grid; grid-template-columns: 1fr; gap: 12px; padding-block: 10px 8px; }
-.see { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; min-width: 0; }
-.see .top { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.see h3 { font-family: var(--display); font-size: 18px; margin: 0; }
-.see h3 a { color: var(--fg); text-decoration: none; }
-.see h3 a:hover { color: var(--accent); }
-.see .area { color: var(--muted); }
-.see p { margin: 4px 0 0; font-size: 14px; }
-.see .tip { color: var(--muted); font-size: 13.5px; }
-.see .tip b { color: var(--gold); font-weight: 600; }
-.near { list-style: none; margin: 10px 0 0; padding: 10px 0 0; border-top: 1px dashed var(--line); }
-.near .h { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 4px; }
-.near li { display: flex; align-items: baseline; gap: 8px; padding-block: 4px; }
-.near a { color: var(--accent); text-decoration: none; font-weight: 600; min-width: 0; }
-.near a small { font-weight: 500; color: var(--muted); }
-.near .d { margin-left: auto; flex: none; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.near .farNote { display: block; font-size: 14px; color: var(--fg); opacity: 0.86; }
-.links { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px; font-size: 13px; }
-.links a { color: var(--muted); text-decoration: none; }
-.links a:hover { color: var(--accent); }
+.lbl { display: block; margin: 12px 0 6px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.tip { color: var(--muted); }
+.tip b { color: var(--gold); font-weight: 600; }
+.near { margin: 12px -16px 0; border-top: 1px solid var(--line); }
+.nrow { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 16px; color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--line); }
+.nrow:active { background: var(--accent-soft); }
+.nrow .nm { flex: 1; min-width: 0; font-weight: 600; color: var(--accent); }
+.nrow .nm small { font-weight: 500; color: var(--muted); }
+.nrow .d { flex: none; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.near .farNote { margin: 0; padding: 12px 16px; font-size: 14px; color: var(--muted); border-bottom: 1px solid var(--line); }
 
 /* Parlør */
-.halalCard { width: 100%; margin-top: 18px; text-align: left; font: inherit; background: var(--accent); color: var(--bg); border: 0; border-radius: 14px; padding: 14px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 3px; }
+.halalCard { width: 100%; margin-top: 8px; text-align: left; font: inherit; background: var(--accent); color: var(--bg); border: 0; border-radius: var(--r); padding: 14px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 3px; }
 .halalCard .hc1 { font-family: var(--display); font-weight: 700; font-size: 18px; }
 .halalCard .hc2 { font-size: 14px; opacity: 0.9; }
-.talkGroup h2 { font-size: 17px; margin: 22px 0 8px; }
-.talkNote { margin: -4px 0 8px; font-size: 14px; font-weight: 600; color: var(--fg); font-variant-numeric: tabular-nums; }
+.tools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+.tool { min-height: 64px; font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 8px 6px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; text-align: center; }
+.tool b { font: 700 16px var(--display); }
+.tool span { font-size: 12px; color: var(--muted); line-height: 1.25; }
+.tool[aria-expanded="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.toolPanel { margin-top: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
+.conv { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cur { display: block; min-width: 0; }
+.cur > span:first-child { display: block; font-size: 12.5px; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
+.inp { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); padding: 0 12px; }
+.inp:focus-within { outline: 2px solid var(--accent); outline-offset: 1px; }
+.inp input { flex: 1; min-width: 0; width: 100%; font: 700 24px var(--display); color: var(--fg); background: none; border: 0; padding: 9px 0; outline: none; font-variant-numeric: tabular-nums; }
+.inp i { font-style: normal; font-weight: 600; color: var(--muted); margin-left: 4px; }
+.toolPanel .chips { margin-top: 10px; }
+.say { margin: 12px 0 0; font-size: 15px; line-height: 1.45; }
+.say b { font-weight: 600; }
+.say .kj { font-family: var(--display); color: var(--muted); white-space: nowrap; }
+.nums { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.nums th { text-align: left; font-size: 12.5px; font-weight: 600; color: var(--muted); padding: 0 8px 6px 0; }
+.nums td { padding: 7px 8px 7px 0; border-top: 1px solid var(--line); }
+.nums td.n { font-weight: 600; text-align: right; padding-right: 14px; white-space: nowrap; }
+.nums td.kj { font: 700 17px var(--display); }
+.sizeQ { margin: 12px 0 0; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.sizeBig { margin: 14px 0 0; font: 700 36px/1.15 var(--display); }
+.sizeBig small { font: 500 15px var(--body); color: var(--muted); margin-left: 8px; }
+.sizeNote { margin: 4px 0 12px; font-size: 14px; color: var(--muted); }
+.search { margin-top: 14px; }
+.search .field { -webkit-appearance: none; appearance: none; padding-left: 40px; background-repeat: no-repeat; background-position: left 13px center; background-size: 18px 18px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7' fill='none' stroke='%238a938d' stroke-width='2'/%3E%3Cpath d='M20 20l-3.5-3.5' stroke='%238a938d' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"); }
+.talkGroup h2 { font: 700 17px var(--display); margin: 22px 0 8px; }
+.talkNote { margin: -4px 0 8px; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .talkGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-.phrase { text-align: left; font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; min-height: 86px; }
+.phrase { text-align: left; font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; min-height: 86px; }
 .phrase:active { background: var(--accent-soft); }
 .phrase.special { border-color: var(--accent); }
 .phrase .da { font-weight: 600; font-size: 15px; line-height: 1.3; }
 .phrase .ja { font-family: var(--display); font-size: 13px; color: var(--muted); line-height: 1.4; overflow-wrap: normal; line-break: strict; }
+.info { margin-top: 28px; }
+.info h2 { font: 700 17px var(--display); margin: 0 0 8px; }
+.info ul { margin: 0; padding: 14px 16px 14px 34px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); font-size: 14.5px; }
+.info li + li { margin-top: 8px; }
+.src { margin: 14px 0 0; font-size: 12.5px; color: var(--muted); }
+
 /* The big card is always black on white, so staff can read it in any theme or light */
 .big { position: fixed; inset: 0; z-index: 50; background: #ffffff; color: #111111; display: flex; flex-direction: column; gap: 10px;
   padding: calc(env(safe-area-inset-top, 0px) + 12px) max(20px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 16px) max(20px, env(safe-area-inset-left, 0px)); }
 .bigTop { display: flex; justify-content: flex-end; gap: 8px; }
-.bigBtn { font: 600 16px var(--body); color: #111111; background: #eef0ee; border: 0; border-radius: 999px; padding: 10px 18px; cursor: pointer; }
+.bigBtn { min-height: 44px; font: 600 16px var(--body); color: #111111; background: #eef0ee; border: 0; border-radius: 999px; padding: 0 18px; cursor: pointer; }
 .bigBody { flex: 1; min-height: 0; display: flex; align-items: center; overflow: hidden; }
 .bigText { width: 100%; margin: 0; font-family: var(--display); font-weight: 700; line-height: 1.3; white-space: pre-line; text-wrap: balance; word-break: normal; overflow-wrap: normal; line-break: strict; }
 .bigText:lang(da) { font-family: var(--body); }
@@ -186,8 +230,8 @@ li.item:first-child { border-top: 0; }
 .bigSub .sj { font-family: var(--display); font-size: 17px; color: #111111; font-weight: 700; }
 .ask { margin: 4px 0 8px; font: 700 16px var(--display); color: #111111; }
 .ans { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 8px; }
-.ans button { font-size: 20px; white-space: nowrap; }
 .ans button, .step button, .formBtns button, .backBtn { font: 700 22px var(--display); color: #111111; background: #ffffff; border: 2px solid #111111; border-radius: 14px; padding: 12px 6px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.ans button { font-size: 20px; white-space: nowrap; }
 .ans button small { font: 500 13px var(--body); color: #4f5852; }
 .step { display: flex; align-items: center; justify-content: center; gap: 18px; }
 .step button { width: 64px; height: 64px; padding: 0; border-radius: 50%; font-size: 30px; justify-content: center; }
@@ -195,100 +239,112 @@ li.item:first-child { border-top: 0; }
 .formBtns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
 .hotelInput { width: 100%; min-height: 120px; font: 500 18px var(--display); color: #111111; background: #f6f7f6; border: 1px solid #c9cfca; border-radius: 12px; padding: 12px; resize: vertical; }
 
-footer { padding-block: 26px 40px; color: var(--muted); font-size: 13.5px; }
-footer h3 { font-family: var(--display); color: var(--fg); font-size: 16px; margin: 18px 0 6px; }
-footer ul { margin: 0; padding-left: 18px; }
-footer li { margin: 3px 0; }
-footer .src { margin-top: 18px; font-size: 12px; }
-
 @media (min-width: 640px) {
-  .grid, .seeList { grid-template-columns: 1fr 1fr; }
+  .grid { grid-template-columns: 1fr 1fr; align-items: start; }
+  h1 { font-size: 32px; }
 }
-@media (max-width: 640px) {
-  .chips { display: none; }
-  .areaSel { display: block; }
-  section.cat { scroll-margin-top: 130px; }
-}
-@media (max-width: 480px) {
-  h1 { font-size: 26px; }
-  header.top { padding-block: 20px 0; }
-  .line1 { flex-wrap: wrap; row-gap: 2px; }
-  .name { font-size: 16.5px; padding-block: 2px; }
-  .meta { margin-left: 0; width: 100%; }
-  .note { font-size: 14.5px; }
-  .card { grid-template-columns: 56px 1fr; gap: 12px; padding: 12px; }
-  .ill { width: 56px; height: 56px; }
-  .ill svg { width: 42px; height: 42px; }
-}
-@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+@media (prefers-reduced-motion: reduce) { .tab .ic { transition: none; } }
 </style>
 
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <h1>Tokyo</h1>
-    <p class="offline" id="offline" hidden>Du er offline. Alt virker, undtagen kortlinks.</p>
-    <div class="tabs" role="tablist">
-      <button class="tab" role="tab" id="tabEat" aria-selected="true" aria-controls="viewEat" type="button">Spisesteder</button>
-      <button class="tab" role="tab" id="tabSee" aria-selected="false" aria-controls="viewSee" type="button">Seværdigheder</button>
-      <button class="tab" role="tab" id="tabTry" aria-selected="false" aria-controls="viewTry" type="button">Mad</button>
-      <button class="tab" role="tab" id="tabTalk" aria-selected="false" aria-controls="viewTalk" type="button">Parlør</button>
-    </div>
-  </header>
-</div>
+<!--body-->
+<p class="offline" id="offline" hidden>Du er offline. Alt virker, undtagen kortlinks.</p>
 
 <div id="viewEat" role="tabpanel" aria-labelledby="tabEat">
+  <div class="wrap vhead"><h1>Spisesteder</h1></div>
   <div class="filters">
     <div class="wrap">
-      <div class="seg" role="group" aria-label="Sortering">
+      <div class="seg" role="group" aria-label="Visning">
+        <button type="button" id="modeNear" aria-pressed="false">Nærmest</button>
         <button type="button" id="modeDish" aria-pressed="true">Efter ret</button>
-        <button type="button" id="modeNear" aria-pressed="false">Nærmeste først</button>
+        <button type="button" id="modeTry" aria-pressed="false">Smag på</button>
       </div>
       <div class="ctl" id="dishCtl">
-        <div class="chips" id="areas" role="group" aria-label="Filtrér efter område"></div>
-        <select class="areaSel" id="areaSel" aria-label="Filtrér efter område"></select>
-        <label class="toggle" for="mustOnly"><input type="checkbox" id="mustOnly"> ★ Kun must</label>
+        <select class="field" id="dishSel" aria-label="Ret"></select>
+        <select class="field" id="areaSel" aria-label="Område"></select>
+        <button class="toggleBtn mustBtn" type="button" aria-pressed="false" aria-label="Kun steder, der er et must">★</button>
       </div>
       <div id="nearCtl" hidden>
         <div class="ctl">
-          <select id="origin" aria-label="Afstand fra"></select>
-          <label class="toggle" for="mustOnly2"><input type="checkbox" id="mustOnly2"> ★ Kun must</label>
+          <select class="field" id="origin" aria-label="Afstand fra"></select>
+          <button class="toggleBtn mustBtn" type="button" aria-pressed="false" aria-label="Kun steder, der er et must">★</button>
         </div>
         <div id="customBox" hidden>
-          <div class="ctl"><input type="text" id="coords" inputmode="decimal" placeholder="Indsæt koordinater, fx 35.6938, 139.7034" aria-label="Koordinater for dit hotel"></div>
+          <div class="ctl"><input class="field" type="text" id="coords" inputmode="decimal" placeholder="Indsæt koordinater, fx 35.6938, 139.7034" aria-label="Koordinater for dit hotel"></div>
           <p class="hint" id="coordsHint">Hold fingeren på dit hotel i Google Maps. Koordinaterne vises øverst; tryk på dem for at kopiere, og indsæt dem her.</p>
         </div>
       </div>
     </div>
   </div>
   <div class="wrap">
-    <main id="main"></main>
-    <p class="empty" id="empty" hidden>Intet passer til filtrene. Prøv Alle områder.</p>
+    <div id="list"></div>
+    <p class="empty" id="empty" hidden>Intet passer. Prøv Alle retter eller Alle områder.</p>
+    <div class="grid" id="tryGrid" hidden></div>
   </div>
-  <div class="band" id="splurgeBand"><div class="wrap" id="splurge"></div></div>
 </div>
 
 <div id="viewSee" role="tabpanel" aria-labelledby="tabSee" hidden>
+  <div class="wrap vhead"><h1>Seværdigheder</h1></div>
   <div class="wrap">
-    <div class="seeList" id="seeList"></div>
-  </div>
-</div>
-
-<div id="viewTry" role="tabpanel" aria-labelledby="tabTry" hidden>
-  <div class="wrap">
-    <div class="grid" id="tryGrid"></div>
+    <div class="grid" id="seeList"></div>
   </div>
 </div>
 
 <div id="viewTalk" role="tabpanel" aria-labelledby="tabTalk" hidden>
+  <div class="wrap vhead"><h1>Parlør</h1></div>
   <div class="wrap">
     <button class="halalCard" id="halalCard" type="button"><span class="hc1">Halal-kortet</span><span class="hc2">Forklarer alt på én gang: intet svinekød, intet fra svin, ingen alkohol.</span></button>
-    <div class="ctl"><input type="search" id="talkSearch" placeholder="Søg, fx toilet, regning, taxa" aria-label="Søg i parløren" autocomplete="off"></div>
+    <div class="tools">
+      <button class="tool" type="button" data-tool="yen" aria-expanded="false" aria-controls="toolYen"><b>¥ ⇄ kr</b><span>Omregn priser</span></button>
+      <button class="tool" type="button" data-tool="num" aria-expanded="false" aria-controls="toolNum"><b>Tal</b><span>Tæl og forstå priser</span></button>
+      <button class="tool" type="button" data-tool="size" aria-expanded="false" aria-controls="toolSize"><b>Størrelser</b><span>Tøj og sko</span></button>
+    </div>
+    <section class="toolPanel" id="toolYen" aria-label="Yen og kroner" hidden>
+      <div class="conv">
+        <label class="cur"><span>Yen</span><span class="inp"><input id="yenIn" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0"><i>¥</i></span></label>
+        <label class="cur"><span>Kroner</span><span class="inp"><input id="krIn" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0"><i>kr</i></span></label>
+      </div>
+      <div class="chips" id="yenQuick"></div>
+      <p class="say" id="yenSay" hidden></p>
+      <p class="hint" id="rateLine"></p>
+    </section>
+    <section class="toolPanel" id="toolNum" aria-label="Tal på japansk" hidden>
+      <table class="nums"><thead><tr><th></th><th>Skrives</th><th>Siges</th><th>Antal ting</th></tr></thead><tbody id="numBody"></tbody></table>
+      <p class="hint">Antal ting bruger du, når du bestiller: <i>kore o futatsu kudasai</i> er "to af den her, tak". Store tal tælles i titusinder (<i>man</i>): 30.000 ¥ er <i>sanman en</i>. Nogle tal skifter lyd: 300 <i>sanbyaku</i>, 600 <i>roppyaku</i>, 800 <i>happyaku</i>, 3.000 <i>sanzen</i>, 8.000 <i>hassen</i>. Skriv et beløb under ¥ ⇄ kr, så ser du, hvordan prisen siges.</p>
+    </section>
+    <section class="toolPanel" id="toolSize" aria-label="Størrelser" hidden>
+      <div class="seg" id="sizeKind"><button type="button" data-k="shoe" aria-pressed="true">Sko</button><button type="button" data-k="men" aria-pressed="false">Herretøj</button><button type="button" data-k="women" aria-pressed="false">Dametøj</button></div>
+      <p class="sizeQ">Din danske størrelse</p>
+      <div class="chips" id="sizeChips" style="margin-top:8px"></div>
+      <div id="sizeOut"></div>
+    </section>
+    <div class="search"><input class="field" type="search" id="talkSearch" placeholder="Søg, fx toilet, regning, taxa" aria-label="Søg i parløren" autocomplete="off" style="width:100%"></div>
     <div id="talk"></div>
     <p class="empty" id="talkEmpty" hidden>Ingen kort passer. Prøv et andet ord.</p>
+    <section class="info">
+      <h2>Godt at vide</h2>
+      <ul>
+        <li>Bed om sushiris uden mirin (<i>mirin nashi</i>), og tag halal-sojasauce med.</li>
+        <li>Undgå 豚 (svinekød), ラード (svinefedt), ゼラチン (gelatine) og 酒 (alkohol) på varer.</li>
+        <li>Moskeer: As-Salaam Masjid i Okachimachi og Tokyo Camii i Yoyogi-Uehara.</li>
+        <li>Haneda til Shinjuku: lufthavnsbussen, ca. 1 time.</li>
+        <li>Tax free: fra 1. november 2026 betaler du moms i butikken og får de 10 % tilbage i lufthavnen, når du rejser hjem. Det gælder køb over 5.000 ¥ i én butik på en dag. Tag pas med, gem kvitteringerne, og hav varerne med i håndbagagen til tjekket.</li>
+        <li>Nødnumre: ambulance 119, politi 110.</li>
+        <li id="offlineTip" hidden>Siden virker også uden internet. Læg den på hjemmeskærmen (Del → Føj til hjemmeskærm), så åbner den som en app.</li>
+      </ul>
+      <p class="src">Google Maps, Time Out, Tokyo Cheapo og Coto Academy, okt. 2026. Tjek åbningstider.</p>
+    </section>
   </div>
 </div>
+
+<nav class="tabbar" aria-label="Sider">
+  <div class="in" role="tablist">
+    <button class="tab" role="tab" id="tabEat" aria-selected="true" aria-controls="viewEat" type="button"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.5h17a8.5 8.5 0 0 1-17 0Z"/><path d="M8.5 20.5h7"/><path d="M13 3.5 10 10M19.5 4 14 10"/></svg></span>Spis</button>
+    <button class="tab" role="tab" id="tabSee" aria-selected="false" aria-controls="viewSee" type="button"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5v3"/><path d="M10 5.5h4l3.5 15h-11z"/><path d="M8.2 13h7.6"/><path d="M4.5 20.5h15"/></svg></span>Se</button>
+    <button class="tab" role="tab" id="tabTalk" aria-selected="false" aria-controls="viewTalk" type="button"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10.5H10l-5 4v-4H4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span>Parlør</button>
+  </div>
+</nav>
 
 <div class="big" id="big" role="dialog" aria-modal="true" aria-label="Kort til personalet" hidden>
   <div class="bigTop">
@@ -300,22 +356,8 @@ footer .src { margin-top: 18px; font-size: 12px; }
   <div class="bigAct" id="bigAct"></div>
 </div>
 
-<div class="wrap">
-  <footer>
-    <h3>Godt at vide</h3>
-    <ul>
-      <li>Bed om sushiris uden mirin (<i>mirin nashi</i>), og tag halal-sojasauce med.</li>
-      <li>Undgå 豚 (svinekød), ラード (svinefedt), ゼラチン (gelatine) og 酒 (alkohol) på varer.</li>
-      <li>Moskeer: As-Salaam Masjid i Okachimachi og Tokyo Camii i Yoyogi-Uehara.</li>
-      <li>Haneda til Shinjuku: lufthavnsbussen, ca. 1 time.</li>
-      <li id="offlineTip" hidden>Siden virker også uden internet. Læg den på hjemmeskærmen: Del → Føj til hjemmeskærm.</li>
-    </ul>
-    <p class="src">Google Maps, Time Out, Tokyo Cheapo og Coto Academy, okt. 2026. Tjek åbningstider.</p>
-  </footer>
-</div>
-
 <script>
-const DATA = {"cats": [{"name": "Sushi", "intro": "Fisk er halal for de fleste muslimer; disse steder sørger også for, at ris og sojasauce er i orden.", "items": [{"n": "Asakusa Sushi Ken", "a": "Asakusa", "x": 2, "t": "Tokyos bedste halal-sushibar, 5 min. fra Senso-ji. Book i forvejen; lukket onsdag. Drikkepengene på regningen er frivillige.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Asakusa%20Sushi%20Ken&query_place_id=ChIJIUaZ8r-OGGARXpS8mbCSof8", "b": [], "g": [35.71394, 139.79265]}, {"n": "Tokyo Sushi Bowl", "a": "Asakusa", "x": 3, "t": "Chirashi-skåle fra ca. ¥3.000 ved Kaminarimon-porten, og du kan selv piske matcha.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20sushi%20bowl&query_place_id=ChIJa08ZHmGPGGARyyvBjn_Tee4", "b": [], "g": [35.71021, 139.79674]}, {"n": "Sushi Zanmai Tsukiji", "a": "Ginza", "x": 2, "t": "Billig samlebåndssushi på Tsukiji-markedet. Halal-menu og halal-sojasauce; bed om ris uden alkohol.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Mawaru%20Sushi%20Zanmai%20Tsukiji%20branch&query_place_id=ChIJb7QFJN-LGGARVuqee0B_Ldk", "b": [], "g": [35.66574, 139.77063]}, {"n": "Fujiyama Tokyo", "a": "Shinjuku", "x": 2, "t": "Spis-alt-du-kan med halal-snekrabbe og sushi. Ikke fuldt halal, så spørg hvilke retter er. Hverdage fra kl. 17.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Sushi%20Restaurant%20FUJIYAMA%20TOKYO%20Shinjuku%20East&query_place_id=ChIJK7JfIwCNGGARU-6nGULjlk8", "b": [], "g": [35.69361, 139.70706]}]}, {"name": "Wagyu-yakiniku & bøf", "intro": "A5-wagyu, som du selv griller ved bordet, er den store halal-oplevelse i Tokyo.", "items": [{"n": "Panga", "a": "Ueno", "x": 3, "t": "Topbedømt A5-wagyu-yakiniku med certificeret halal-kød og -saucer. Mere for pengene end de store navne.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Panga&query_place_id=ChIJ9bFAjKSOGGARqsl1Ru2ZQs0", "b": [{"l": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Yakiniku%20PANGA%20Asakusa%20%7C%20Tokyo%20Halal%20restaurant&query_place_id=ChIJdzczsDuPGGARHhw2tyh5Dt0", "a": "Asakusa", "g": [35.71017, 139.79788]}, {"l": "Ueno", "u": "https://www.google.com/maps/search/?api=1&query=A5%20Wagyu%20Yakiniku%20PANGA%20Ueno%20branch%20%7C%20Tokyo%20halal%20restaurant&query_place_id=ChIJGfV-MgOPGGARZD8WM_Q1GAs", "a": "Ueno", "g": [35.70711, 139.77409]}], "g": [35.70485, 139.78101]}, {"n": "Gyumon Yakiniku", "a": "Shibuya", "x": 3, "t": "Grill A5-wagyu ved bordet; tag premium-sættet og A5-kalbi. Lille sted, der bliver varmt.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Gyumon%20Shibuya&query_place_id=ChIJSzG_eFyLGGARQFPb6kRJLv8", "b": [{"l": "Shibuya 2 (aften)", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Gyumon%20Shibuya%202nd&query_place_id=ChIJ4REDLPGLGGARtbyUvEU_xpY", "a": "Shibuya", "g": [35.65536, 139.70616]}, {"l": "Shinjuku", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Shinjuku&query_place_id=ChIJe2XGkniNGGARXw6OESPdNKs", "a": "Shinjuku", "g": [35.69055, 139.7028]}], "g": [35.6556, 139.70653]}, {"n": "Kawashina", "a": "Asakusa", "x": 2, "t": "Steg selv din halal-wagyu, mens personalet guider dig. Venligt og til at betale.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Kawashina%20Asakusa%20Wagyu&query_place_id=ChIJwcQaegCPGGAR8m-LGgaub4c", "b": [], "g": [35.71119, 139.79262]}, {"n": "Hachisan", "a": "Asakusa", "x": 2, "t": "Lille wagyu-bøfhus med 5,0 i bedømmelse. Wagyu-sushi og tempura ved siden af.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Asakusa%20Halal%20Wagyu%20Steak%20HACHISAN%20%7C%20%E5%85%AB%E4%B8%89&query_place_id=ChIJo6azlLiPGGAR9nvJXSzcdSc", "b": [], "g": [35.717, 139.79803]}, {"n": "Yaminiku Hayashi", "a": "Andre steder", "x": 2, "t": "Kamata, 15 min. fra Haneda. Halal wagyu-yakiniku fra en slagter; perfekt til ankomsten eller sidste aften.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Yaminiku%20Hayashi&query_place_id=ChIJj3hSRWlhGGAR_57FAwjm49M", "b": [], "g": [35.56177, 139.72147]}, {"n": "Halal Wagyu Stall", "a": "Shibuya", "x": 1, "t": "Gadebod med grillede wagyu-spyd og burgere ved Scramble-krydset. Følg duften.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20STALL&query_place_id=ChIJKQbQIk6NGGAR2oBiDUlJONw", "b": [], "g": [35.66051, 139.69849]}]}, {"name": "Sukiyaki & shabu-shabu", "intro": "Wagyu, der simrer ved bordet. Diyafa står under Luksus.", "items": [{"n": "Panga Sukiyaki", "a": "Asakusa", "x": 3, "t": "Halal wagyu-sukiyaki en blok fra Kaminarimon. Kun aftensmad, fra kl. 16.30.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Sukiyaki%20Asakusa%20PANGA%20%7C%20Tokyo%20Halal%20restaurant&query_place_id=ChIJ3c8QKJKPGGARLncbWf3NpVc", "b": [], "g": [35.71017, 139.79788]}, {"n": "Shoutaian", "a": "Ikebukuro", "x": 3, "t": "Spis-alt-du-kan halal wagyu-shabu-shabu i 90 minutter, 8. sal ved Ikebukuro station.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20Wagyu%20ShabuShabu%20SHOUTAIAN&query_place_id=ChIJPVFZg8GNGGAR2Rjf6vxp2mE", "b": [], "g": [35.72912, 139.71157]}]}, {"name": "Ramen & udon", "intro": "Halal wagyu-ramen findes overalt. Hos Gyumon vælger du styrke 0–10; 3–5 er allerede stærkt.", "items": [{"n": "Gyumon", "a": "Shibuya", "x": 2, "t": "Den mest kendte halal-ramenkæde. A5 wagyu-ramen og wagyu-gyukatsu; åbent til kl. 23 eller senere.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Gyumon%20Halal%20Wagyu%20Ramen%20Shibuya&query_place_id=ChIJ_-R_mUGLGGARDfQ8ATZZ4w0", "b": [{"l": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Gyumon%20Halal%20Ramen%20Asakusa&query_place_id=ChIJE9zJogePGGARBvQ-j_olTG0", "a": "Asakusa", "g": [35.7167, 139.79907]}, {"l": "Kaminarimon", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20%26%20Gyukatsu%20GYUMON%20Tokyo%20Asakusa%20Kaminarimon&query_place_id=ChIJAV9IcxaPGGAREiV_GKbVB9Q", "a": "Asakusa", "g": [35.71151, 139.79605]}, {"l": "Ueno", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Ueno&query_place_id=ChIJcV287faPGGARHsMi1lhCVAs", "a": "Ueno", "g": [35.70985, 139.77719]}, {"l": "Shinjuku", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON&query_place_id=ChIJJ5YQI2eNGGARwrkAkREHw4c", "a": "Shinjuku", "g": [35.69439, 139.70128]}, {"l": "Center Gai", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Center%20Gai&query_place_id=ChIJN3vRzPGNGGARqke7ZLKvlyI", "a": "Shibuya", "g": [35.66023, 139.69935]}, {"l": "Scramble", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Scramble&query_place_id=ChIJw_6UJtWNGGAROtTB3bQuWCk", "a": "Shibuya", "g": [35.6602, 139.69939]}, {"l": "Jinnan, udsigt fra 10. sal", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Jinnan&query_place_id=ChIJeSyveTuNGGARuizu2pQH1yc", "a": "Shibuya", "g": [35.66183, 139.69996]}, {"l": "Ginza", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Gyumon&query_place_id=ChIJJcK1XoeLGGARA0UJkKh9k7Q", "a": "Ginza", "g": [35.66949, 139.76509]}, {"l": "Ikebukuro", "u": "https://www.google.com/maps/search/?api=1&query=Gyumon%20Ikebukuro&query_place_id=ChIJ5dXSUJSNGGARwR8GTsnEgI8", "a": "Ikebukuro", "g": [35.73352, 139.70987]}], "g": [35.65973, 139.70416]}, {"n": "Shinjuku-tei", "a": "Shinjuku", "x": 2, "t": "Ramen-sæt med wagyu og kylling, og bederum. Kø om aftenen: skriv dit navn på og kom tilbage.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Tokyo%20Shinjuku&query_place_id=ChIJ8WQHFoqNGGARpc767pcSol8", "b": [{"l": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Asakusa%20Tokyo&query_place_id=ChIJF6THDR-PGGAR98Co847dv-E", "a": "Asakusa", "g": [35.71156, 139.79235]}, {"l": "Ueno-parken", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Ueno%20Park%20Tokyo&query_place_id=ChIJpb3ZMwCNGGARQJdzUva4S8o", "a": "Ueno", "g": [35.7088, 139.77032]}, {"l": "Yotsuya", "u": "https://www.google.com/maps/search/?api=1&query=Shinjuku-tei%20Yotsuya%20Halal%20Wagyu%20Ramen&query_place_id=ChIJU1puu0ONGGARyyUNJrpLJN4", "a": "Shinjuku", "g": [35.68701, 139.72741]}, {"l": "Shibuya", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Tokyo%20Shibuya&query_place_id=ChIJoe-Wg4ONGGAR6KSXVgzoR8o", "a": "Shibuya", "g": [35.66315, 139.70015]}, {"l": "Hibiya / Ginza", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20SHINJUKU-TEI%20TOKYO%20Ginza&query_place_id=ChIJj7GKVMmLGGARBvmLex_NeY0", "a": "Ginza", "g": [35.66916, 139.75856]}], "g": [35.69192, 139.70646]}, {"n": "Dattebayo!", "a": "Asakusa", "x": 2, "t": "Halal og vegansk ramen lavet foran dig. Populært hos familier.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Dattebayo%21%20Halal%20and%20Vegan%20Ramen%20Asakusa&query_place_id=ChIJwV6BpeyPGGARIqvJgCPcszk", "b": [], "g": [35.71476, 139.8017]}, {"n": "Honolu", "a": "Asakusa", "x": 2, "t": "Wagyu-udon ud over ramen, så du får en anden slags nudler. Der er kø før kl. 11.30.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Honolu%27s%20Wagyu%20Udon%20%26%20Ramen%20Halal%20%D8%AD%D9%84%D8%A7%D9%84%20Asakusa&query_place_id=ChIJyYGQwWuPGGARqQVPSpPB6mo", "b": [{"l": "Akihabara (bederum)", "u": "https://www.google.com/maps/search/?api=1&query=Honolu%20Grande%20Halal%20Restaurant%20Akihabara&query_place_id=ChIJn9d23niPGGARl__2ZnjnfEM", "a": "Akihabara", "g": [35.6951, 139.77747]}, {"l": "Shinjuku Gyoenmae", "u": "https://www.google.com/maps/search/?api=1&query=Honolu%20Shinjukugyoenmae%20Halal%20Ramen&query_place_id=ChIJw02KsG6NGGARVmoqp_g5VdI", "a": "Shinjuku", "g": [35.69024, 139.71208]}, {"l": "Ebisu", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Ramen%20Honolu&query_place_id=ChIJLRNVgBWLGGARMxGRyu03kZQ", "a": "Roppongi & Ebisu", "g": [35.64337, 139.71171]}, {"l": "Haneda Lufthavn T3", "u": "https://www.google.com/maps/search/?api=1&query=HALAL/VEGAN%20Honolu%20Premier%20Air%20Haneda&query_place_id=ChIJBx6TrXdhGGAR8wl2oSWE-LE", "a": "Andre steder", "g": [35.54604, 139.76852]}], "g": [35.71737, 139.79501]}, {"n": "Shunpudou", "a": "Asakusa", "x": 2, "t": "Stærk wagyu-ramen og A5-oksekatsu, 4,9 i bedømmelse fra over 3.000 gæster.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20%26%20BEEF%20CUTLET%20SHUNPUDOU%20%E6%98%A5%E9%A2%A8%E5%A0%82&query_place_id=ChIJrTTMInCPGGAR1XfX02rt-fs", "b": [], "g": [35.71442, 139.79354]}, {"n": "Naritaya", "a": "Asakusa", "x": 2, "t": "Veletableret halal-ramensted med friturestegt kylling; en mild ret til børn.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Naritaya&query_place_id=ChIJuffoBJmOGGARqgxESrqviGE", "b": [], "g": [35.71474, 139.79509]}, {"n": "Ushibon", "a": "Asakusa", "x": 1, "t": "Ramen på oksebensbouillon, risskåle og halal-takoyaki. Lille og nyt.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Beef%20bone%20ramen%20Ushibon%20Asakusa/%E7%89%9B%E9%AA%A8%E3%83%A9%E3%83%BC%E3%83%A1%E3%83%B3%20%E3%81%86%E3%81%97%E3%81%BC%E3%83%BC%E3%82%93%20%E6%B5%85%E8%8D%89&query_place_id=ChIJpTsAs3KPGGARd48JqPOyito", "b": [], "g": [35.71729, 139.79443]}, {"n": "Samurai Soul", "a": "Asakusa", "x": 2, "t": "Ramen og wagyu-retter tæt på Senso-ji, åbent til kl. 23.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Samurai%20Soul%20Halal%20Ramen%20and%20Wagyu&query_place_id=ChIJy0GKTg2PGGARX2hGexYxQpA", "b": [], "g": [35.71679, 139.79358]}, {"n": "Kiwami", "a": "Asakusa", "x": 2, "t": "Lille sted med disk, åbner kl. 9. God kyllingeramen.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20KIWAMI&query_place_id=ChIJixFSuSmPGGARQXYikrboIzk", "b": [], "g": [35.71238, 139.79263]}, {"n": "Ayam-ya", "a": "Asakusa", "x": 1, "t": "Stærk kyllingeramen og karaage til fair priser.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Ayam-ya%20Halal%20Ramen%20Tokyo&query_place_id=ChIJdY8ThvuPGGAR1MXsvLwGai8", "b": [], "g": [35.70717, 139.78626]}, {"n": "Sankyu", "a": "Asakusa", "x": 2, "t": "Ramen med både kylling og okse; private rum til grupper.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Sankyu%20Halal%20Ramen%20Japanese%20Food%20Asakusa&query_place_id=ChIJQf_2WACPGGARDixR6AZQHz8", "b": [{"l": "Ueno", "u": "https://www.google.com/maps/search/?api=1&query=Sankyu%20Halal%20Ramen%20Japanese%20Food%20Ueno&query_place_id=ChIJl9d-WgCNGGARWRcsm_VwucU", "a": "Ueno", "g": [35.70572, 139.77123]}], "g": [35.71379, 139.79061]}, {"n": "Halal Ramen Ueno", "a": "Ueno", "x": 2, "t": "Wagyu-ramen til gode priser nær moskeen i Okachimachi. Åbner kl. 10.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Ramen%20Ueno&query_place_id=ChIJq34tCQCPGGARFh0VV_VO-Sk", "b": [], "g": [35.70579, 139.77829]}, {"n": "Ramen Ninja", "a": "Ueno", "x": 2, "t": "Åbent til kl. 5 om morgenen. Ramen-og-ris-menuer, der er store nok at dele.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Ueno%20Halal%20wagyu%20Ramen%20Ninja&query_place_id=ChIJi6i7wN-PGGARGltDZMVIocM", "b": [], "g": [35.70881, 139.77563]}, {"n": "Toribushi", "a": "Ueno", "x": 1, "t": "Billigere ramen på kyllingebouillon i Okachimachi.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Toribushi%20Halal%20Ramen&query_place_id=ChIJ64h4oAWPGGARimzRAGANSys", "b": [{"l": "Ikebukuro", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Ramen%20Toribushi%20Ikebukuro&query_place_id=ChIJ6aW1QACNGGARdCHy4hpxGqU", "a": "Ikebukuro", "g": [35.72932, 139.71531]}], "g": [35.70819, 139.77612]}, {"n": "Umair", "a": "Ueno", "x": 2, "t": "Ved Ueno-parken. Stærk ramen med wagyu-schnitzel.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=UMAIR%20HALAL%20WAGYU%20RAMEN%EF%BC%88%E3%83%8F%E3%83%A9%E3%83%AB%E3%83%AF%E3%82%AE%E3%83%A5%E3%82%A6%20%E3%83%A9%E3%83%BC%E3%83%A1%E3%83%B3%EF%BC%89%EF%BD%9CUENO-PARK%EF%BD%9CTOKYO&query_place_id=ChIJJ1S2Vq2NGGARh4ixIAAzQSE", "b": [], "g": [35.70782, 139.77024]}, {"n": "Konoha", "a": "Akihabara", "x": 2, "t": "Risskåle med A5-wagyu ud over ramen.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20A5WAGYU%20Rice%20Bowl%20%EF%BC%86Ramen%20KONOHA%20%E6%9D%B1%E4%BA%AC%20%E7%A7%8B%E8%91%89%E5%8E%9F&query_place_id=ChIJK188YWGNGGARWYrAD4hbHF8", "b": [], "g": [35.68991, 139.77103]}, {"n": "Karemen King", "a": "Akihabara", "x": 2, "t": "Wagyu-ramen og karaage ved Akihabara station.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20karemen%20king&query_place_id=ChIJy7ZNMwCNGGARQkxeAwodzmk", "b": [], "g": [35.69558, 139.77137]}, {"n": "Naruto", "a": "Shibuya", "x": 2, "t": "Halal-certificeret ramen og wagyu-yakiniku samme sted. Bederum.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20YAKINIKU%20%26%20RAMEN%20NARUTO%20SHIBUYA&query_place_id=ChIJuWCpUACNGGARUCoT32uiCyA", "b": [], "g": [35.66106, 139.69851]}, {"n": "GOTS", "a": "Shibuya", "x": 2, "t": "Harajuku. Enkel wagyu-ramen og en saftig halal-cheeseburger.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Halal%20Ramen%20%E8%BD%9F%E6%B4%A5%20GOTS%20Harajuku&query_place_id=ChIJ46oRABGNGGARVSyvlKPb27c", "b": [], "g": [35.66751, 139.70546]}, {"n": "Halal Wagyu Ramen Okubo", "a": "Shinjuku", "x": 2, "t": "Shin-Okubo. To rummelige etager, bederum og sted til wudu.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20Okubo&query_place_id=ChIJVe-sOgCNGGARZzASzvmvAlk", "b": [], "g": [35.70135, 139.69673]}, {"n": "Gyugen", "a": "Shinjuku", "x": 2, "t": "Lille sted i Kabukicho med hjemmelavede gyoza.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20GYUGEN&query_place_id=ChIJsRXJegCNGGARTF5jVKFIKG0", "b": [], "g": [35.69509, 139.70514]}, {"n": "Menya Kaijin", "a": "Shinjuku", "x": 2, "t": "Ramen på fiskebouillon, uden svinekød. Muslimvenligt, men ikke halal-certificeret, så spørg til saucerne.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Menya%20Kaijin%20Shinjuku%20Ten&query_place_id=ChIJXVRkjtqMGGAR_IYDENOJmJ0", "b": [], "g": [35.68974, 139.7022]}, {"n": "Wagyu Ramen Noodle", "a": "Ginza", "x": 3, "t": "Sted i Ginza, åbent kl. 8–1 til en tidlig eller sen skål. Lidt dyrere.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20%28Halal%29%20Ramen%20Noodle%20Ginza%20Restaurant%20%E5%92%8C%E7%89%9B%20%E6%8B%89%E9%9D%A2%20%E9%8A%80%E5%BA%A7%20%E9%A4%90%E5%8E%85&query_place_id=ChIJNxFqW8CLGGARORiSLSCE4K8", "b": [{"l": "Shinjuku Kabukicho", "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20%28Halal%29%20Ramen%20Noodle%20Shinjuku%20Kabuki%20Restaurant%20%E5%92%8C%E7%89%9B%20%E6%96%B0%E5%AE%BF%20%E6%8B%89%E9%9D%A2%20%E9%A4%90%E5%8E%85&query_place_id=ChIJ63wywVePGGAR4E_AFjwal6w", "a": "Shinjuku", "g": [35.69847, 139.70198]}], "g": [35.67066, 139.76898]}]}, {"name": "Måltider, tempura & karry", "intro": "Japanske hverdagsretter, lavet halal.", "items": [{"n": "Tendon Itsuki", "a": "Ginza", "x": 1, "t": "Tempura over ris med chawanmushi og misosuppe. Tokyos bedste måltid for pengene; stil dig i kø før kl. 11.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Tendon%20Itsuki%20Ginza&query_place_id=ChIJRZGCCOWLGGARTbuL5FrsFcM", "b": [{"l": "Ginza Novo (flere pladser)", "u": "https://www.google.com/maps/search/?api=1&query=Tendon%20Itsuki%20-%20Ginza%20Novo&query_place_id=ChIJe24tZgCLGGARcS--k-ScZFs", "a": "Ginza", "g": [35.67214, 139.76229]}], "g": [35.67401, 139.76434]}, {"n": "Usagi", "a": "Shibuya", "x": 2, "t": "Harajuku. Halal-okonomiyaki, som er sjældent. Kun frokost, til kl. 17.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20wagyu%20okonomiyaki%26ramen%20usagi&query_place_id=ChIJvWgunVmNGGARbOWxtEdX5NY", "b": [], "g": [35.67275, 139.70392]}, {"n": "Gohan Cafe", "a": "Shibuya", "x": 2, "t": "Halal-certificerede japanske måltider lige ved Shibuya-krydset.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Gohan%20Cafe&query_place_id=ChIJebdmGqiMGGAR6q20kh1FwLM", "b": [], "g": [35.6602, 139.70052]}, {"n": "Gonpachi Nishi-Azabu", "a": "Roppongi & Ebisu", "x": 2, "t": "Det store gamle izakaya, der inspirerede Kill Bill. Har en halal-menu; spørg efter den. Der serveres alkohol. Åbent til kl. 3.30.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Gonpachi%20Nishi-Azabu&query_place_id=ChIJEwlemnqLGGARhwMuRpwpkBI", "b": [], "g": [35.66017, 139.72358]}, {"n": "Yoshiya", "a": "Shinjuku", "x": 2, "t": "Måltider i Kyoto-stil under Shinjuku station. Spørg efter halal-menuen.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Yoshiya%20Shinjuku%20branch&query_place_id=ChIJ6Svb3NCMGGARUzYAO-VBBDQ", "b": [], "g": [35.69196, 139.69971]}, {"n": "Tokitarazu", "a": "Roppongi & Ebisu", "x": 2, "t": "Hiroo. Japansk café med halal-mærket menu. Der serveres alkohol.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Tokitarazu%20Ebisu&query_place_id=ChIJU_GMx2yLGGARUhqC9E86_7Q", "b": [], "g": [35.64856, 139.71374]}, {"n": "Sekai Cafe Oshiage", "a": "Andre steder", "x": 1, "t": "Ved Tokyo Skytree. Halal-karry for ca. ¥850 og bederum.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=SEKAI%20CAFE%20OSHIAGE&query_place_id=ChIJT9kgetaOGGARBAX1B5Om8A4", "b": [], "g": [35.70917, 139.81177]}, {"n": "Yoshi's Passion", "a": "Asakusa", "x": 2, "t": "Familiedrevet sted med halal japansk karry og sprød kyllingeschnitzel.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Japanese%20Curry%20Yoshi%27s%20Passion&query_place_id=ChIJhcYiIYePGGARiWBpges41k8", "b": [], "g": [35.71677, 139.79665]}, {"n": "Nikoniko", "a": "Akihabara", "x": 1, "t": "Billig, hjemlig katsu-karry og karaage-skåle. Tag kontanter med.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Nikoniko%20mazemen%20Akihabara&query_place_id=ChIJA_VeYVCPGGAREHZYji0Bk60", "b": [], "g": [35.69624, 139.77374]}, {"n": "Wagyu Halal Japanese Food", "a": "Shinjuku", "x": 3, "t": "Wagyu-risskåle og en burger, der brændes af ved bordet. Bedeplads, åbent til kl. 1.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Halal%20Japanese%20Food%20Shinjuku%20Restaurant&query_place_id=ChIJpW5UkdCNGGAR_6nme_lNyHQ", "b": [], "g": [35.69237, 139.70899]}, {"n": "Shinshu Sojibo", "a": "Andre steder", "x": 2, "t": "Odaiba (DiverCity-centeret). Halal-certificeret soba; blandede anmeldelser.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Shinshu%20Sojibo%20DiverCity%20Tokyo%20Plaza&query_place_id=ChIJeZjTLviJGGARZFbkjoWK8b4", "b": [], "g": [35.62495, 139.77498]}, {"n": "Issho Ueno", "a": "Ueno", "x": 2, "t": "Izakaya med miso-oksegryde og grillet okse, beskrevet som halal-venligt. Der serveres alkohol; spørg hvilke retter er halal.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Issho%20Ueno&query_place_id=ChIJD1issJ6OGGAR4v6kzprNE_E", "b": [], "g": [35.71261, 139.77745]}]}, {"name": "Wagyu-burgere", "intro": "Tokyos halal wagyu-burgere er et måltid værd.", "items": [{"n": "Halal Burger Ueno", "a": "Ueno", "x": 2, "t": "4,9 fra over 2.000 anmeldelser. Burgere med wagyu-bøf; åbner kl. 10.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Burger%20Ueno&query_place_id=ChIJSaNBXACPGGARsHNeeKDvufM", "b": [], "g": [35.70749, 139.77905]}, {"n": "Gyumon A5 Burger", "a": "Shibuya", "x": 2, "t": "Dobbelte cheeseburgere med A5-wagyu.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=A5%20Wagyu%20Burger%20GYUMON%20Tokyo%20Shibuya%20Scramble%20%28Halal%20%26%20Vegan%20Options%29&query_place_id=ChIJYzmEqtWNGGARlAQgZygwHoc", "b": [{"l": "Shinjuku østudgang", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Burger%20GYUMON%20Tokyo%20Shinjuku%20East%20Exit%20%28Halal%20%26%20Vegan%20Options%29&query_place_id=ChIJ1_G6jYuNGGARIUlpn_LVW1A", "a": "Shinjuku", "g": [35.69061, 139.7028]}], "g": [35.66021, 139.69936]}, {"n": "Luxe Burgers", "a": "Andre steder", "x": 2, "t": "Ningyocho. Halal og veganske retter, med en lille gratis dessert.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=LUXE%20BURGERS%20NINGYOCHO&query_place_id=ChIJWWy_RX6JGGAR71PYLlGvW-0", "b": [], "g": [35.68703, 139.77823]}, {"n": "5W-Tokyo", "a": "Akihabara", "x": 3, "t": "Wagyu-trøffelburgere og bøfmenuer. Dyrt, og anmeldelserne er delte.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Japanese%20food%20Wagyu%20Restaurant%20%28Halal%29%20Steak%26Burger-Ramen%205W-Tokyo%20AkihabaraUeno%20Beef%20Dining&query_place_id=ChIJV8EJyvWPGGARHWJnaCZRpqY", "b": [{"l": "Harajuku", "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20%28Halal%29%20Steak%20HamBurger%20%26%20Ramen%20%28Japanese%20food%29%20Harajuku%20Shibuya%20Restaurant%205W-Tokyo%201962&query_place_id=ChIJXbmU8UGNGGARXX5B4fnBvZg", "a": "Shibuya", "g": [35.67034, 139.7058]}], "g": [35.70263, 139.7781]}, {"n": "Grill Hunter", "a": "Andre steder", "x": 2, "t": "Gotanda. Billige wagyu-smashburgere.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Grill%20Hunter%20Gotanda%20Halal&query_place_id=ChIJewOA3eWLGGARjBFSg5FAUks", "b": [], "g": [35.62584, 139.72596]}]}, {"name": "Matcha & snacks", "intro": "", "items": [{"n": "Ohina Café", "a": "Shibuya", "x": 2, "t": "Harajuku. Pisk din egen matcha; prøv også jordbær-matcha.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E9%9B%9B%E3%82%AB%E3%83%95%E3%82%A7%E6%8A%B9%E8%8C%B6%E5%8E%9F%E5%AE%BF%20Harajuku%20Ohina%20caf%C3%A9%20Matcha%20halal&query_place_id=ChIJ_dVcdkqNGGARot2V06uNHaw", "b": [], "g": [35.6707, 139.70572]}, {"n": "Matcha Times", "a": "Asakusa", "x": 1, "t": "Fremragende matcha-latte ved Kaminarimon, beskrevet som halal-venligt.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=MATCHA%20TIMES%20Asakusa&query_place_id=ChIJqTlo7dmPGGARqTuIqtcZ_Nc", "b": [], "g": [35.71042, 139.79255]}, {"n": "HALAL-YA", "a": "Asakusa", "x": 2, "t": "En hel butik med halal japanske snacks og souvenirs, gratis smagsprøver og bedeplads. Åbent kl. 11–17.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=HALAL-YA%20ASAKUSA%20FLAGSHIP%20STORE%20/%20Japanese%20halal%20souvenir%20store&query_place_id=ChIJS-MyTmKPGGAREt7RuNgboRs", "b": [], "g": [35.71151, 139.79288]}]}], "splurge": [{"n": "Diyafa", "a": "Roppongi & Ebisu", "x": "Wagyu-sukiyaki", "t": "Nær Tokyo Tower. Personalet guider dig gennem sukiyakien og lærer dig bagefter at lave matcha. Weekender kun aften.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20SUKIYAKI%20Restaurant%20Diyafa&query_place_id=ChIJf-uQ4yuLGGARr79SKl1J35E", "b": [], "g": [35.65166, 139.75115]}, {"n": "Tempura Asakusa Sakura", "a": "Asakusa", "x": "Tempura-omakase", "t": "Kun 10 pladser, wagyu-tempura, helt glutenfrit. Book i forvejen.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Tempura%20Asakusa%20SAKURA&query_place_id=ChIJWUVY-DuPGGAR0KRSemNJ6rk", "b": [], "g": [35.7102, 139.79672]}, {"n": "Tokyo Omakase Sushi Wagyu", "a": "Shinjuku", "x": "Sushi-omakase", "t": "Halal sushi- og wagyu-menuer; de tilbereder fisken, hvis du ikke spiser den rå.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Omakase%20Sushi%20Wagyu%20%28Halal%29%20Shinjuku%20Restaurant%20%E6%96%B0%E5%AE%BF%E5%AF%BF%E5%8F%B8%E5%92%8C%E7%89%9B%E9%A4%90%E5%8E%85&query_place_id=ChIJa1L36RWNGGARjNNhF0vzgjE", "b": [{"l": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Omakase%20Sushi%20%26%20Wagyu%20%28Halal%29%20Asakusa%20Kimono%20Experience%20Restaurant&query_place_id=ChIJl9aitWmPGGAR7CcObngUCRI", "a": "Asakusa", "g": [35.7165, 139.7985]}], "g": [35.69103, 139.70599]}, {"n": "Ninja Yakiniku", "a": "Asakusa", "x": "Wagyu-yakiniku", "t": "7. sal i Asakusa med udsigt til Skytree.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Ninja%20Yakiniku%20Halal%20Wagyu%20Restaurant%20Asakusa&query_place_id=ChIJlbLC7QWPGGARkOP4XUG8IQo", "b": [], "g": [35.7117, 139.79465]}, {"n": "Ginza The Emperor", "a": "Ginza", "x": "Kobe-okse-yakiniku", "t": "Elegante bordgrill med Kobe-okse. Hverdage kun aften.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=GINZA%20THE%20EMPEROR&query_place_id=ChIJNYPKwQWLGGARmtmkF5Owbs8", "b": [], "g": [35.66923, 139.76146]}, {"n": "Ushizaka", "a": "Roppongi & Ebisu", "x": "Wagyu-yakiniku", "t": "Nishi-Azabu. Noget af Tokyos bedste kød; reserver bord.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Yakiniku%20Ushizaka%20Halal&query_place_id=ChIJazDfTXCLGGAR1__c1AdnB5g", "b": [], "g": [35.65775, 139.72361]}, {"n": "Satsuma Roppongi", "a": "Roppongi & Ebisu", "x": "Wagyu-bøf", "t": "Halal wagyu-bøf, åbent kl. 18–8.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Satsuma%20Roppongi&query_place_id=ChIJ2x_u4bOLGGAREPk4BinYZYc", "b": [], "g": [35.66231, 139.7329]}, {"n": "Tenderloin", "a": "Ginza", "x": "Wagyu-bøf", "t": "Lille bøfhus i Ginza, åbent til kl. 6 på hverdage.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=TENDERLOIN&query_place_id=ChIJ7a7_wcGLGGARE-Ag7Y24LHE", "b": [], "g": [35.66758, 139.76201]}, {"n": "Kobe Beef Steak Omakase", "a": "Shinjuku", "x": "Kobe-okse", "t": "Menuer med Kobe-wagyu-bøf i Shinjuku.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Steak%20Kobe%20Beef%20Halal%20Shinjuku%20Omakase%20Restaurant%20%E6%96%B0%E5%AE%BF%E5%92%8C%E7%89%9B%E9%A4%90%E5%8E%85&query_place_id=ChIJOY6yfRGNGGARvZ9-8lXEGe4", "b": [], "g": [35.69098, 139.70596]}], "try": [{"id": "yakiniku", "n": "A5-wagyu-yakiniku", "j": "焼肉", "t": "Grill selv tynde skiver marmoreret A5-wagyu ved bordet. Et par sekunder på hver side er nok; fedtet smelter, mens det steger.", "w": [{"l": "Panga", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Panga&query_place_id=ChIJ9bFAjKSOGGARqsl1Ru2ZQs0"}, {"l": "Gyumon Yakiniku", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Gyumon%20Shibuya&query_place_id=ChIJSzG_eFyLGGARQFPb6kRJLv8"}, {"l": "Ushizaka (luksus)", "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Yakiniku%20Ushizaka%20Halal&query_place_id=ChIJazDfTXCLGGAR1__c1AdnB5g"}], "p": "https://www.google.com/search?tbm=isch&q=A5+wagyu+yakiniku+grill"}, {"id": "sukiyaki", "n": "Wagyu-sukiyaki", "j": "すき焼き", "t": "Wagyu, der simrer ved bordet i sød sojabouillon med tofu og grøntsager og dyppes i pisket råt æg. Bed om det uden æg, hvis du foretrækker det.", "w": [{"l": "Panga Sukiyaki", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Sukiyaki%20Asakusa%20PANGA%20%7C%20Tokyo%20Halal%20restaurant&query_place_id=ChIJ3c8QKJKPGGARLncbWf3NpVc"}, {"l": "Diyafa", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20SUKIYAKI%20Restaurant%20Diyafa&query_place_id=ChIJf-uQ4yuLGGARr79SKl1J35E"}], "p": "https://www.google.com/search?tbm=isch&q=wagyu+sukiyaki"}, {"id": "sushi", "n": "Sushi ved disken", "j": "寿司", "t": "Kokken former hvert stykke nigiri og rækker det direkte til dig. Spis det i én bid med fisken nedad mod tungen.", "w": [{"l": "Asakusa Sushi Ken", "u": "https://www.google.com/maps/search/?api=1&query=Asakusa%20Sushi%20Ken&query_place_id=ChIJIUaZ8r-OGGARXpS8mbCSof8"}, {"l": "Tokyo Sushi Bowl (chirashi)", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20sushi%20bowl&query_place_id=ChIJa08ZHmGPGGARyyvBjn_Tee4"}, {"l": "Tokyo Omakase (luksus)", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Omakase%20Sushi%20Wagyu%20%28Halal%29%20Shinjuku%20Restaurant%20%E6%96%B0%E5%AE%BF%E5%AF%BF%E5%8F%B8%E5%92%8C%E7%89%9B%E9%A4%90%E5%8E%85&query_place_id=ChIJa1L36RWNGGARjNNhF0vzgjE"}], "p": "https://www.google.com/search?tbm=isch&q=nigiri+sushi+counter+Tokyo"}, {"id": "gyukatsu", "n": "Wagyu-gyukatsu", "j": "牛カツ", "t": "Paneret wagyu, stegt under et minut, så den er rød indeni. Du steger selv hver skive færdig på en lille varm sten.", "w": [{"l": "Gyumon Kaminarimon", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20%26%20Gyukatsu%20GYUMON%20Tokyo%20Asakusa%20Kaminarimon&query_place_id=ChIJAV9IcxaPGGAREiV_GKbVB9Q"}, {"l": "Shunpudou", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20%26%20BEEF%20CUTLET%20SHUNPUDOU%20%E6%98%A5%E9%A2%A8%E5%A0%82&query_place_id=ChIJrTTMInCPGGAR1XfX02rt-fs"}], "p": "https://www.google.com/search?tbm=isch&q=gyukatsu+hot+stone"}, {"id": "ramen", "n": "Halal wagyu-ramen", "j": "ラーメン", "t": "Fyldig okse- eller kyllingebouillon med wagyu-skiver på toppen. At slubre er helt normalt og høfligt.", "w": [{"l": "Shinjuku-tei", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Tokyo%20Shinjuku&query_place_id=ChIJ8WQHFoqNGGARpc767pcSol8"}, {"l": "Gyumon", "u": "https://www.google.com/maps/search/?api=1&query=Gyumon%20Halal%20Wagyu%20Ramen%20Shibuya&query_place_id=ChIJ_-R_mUGLGGARDfQ8ATZZ4w0"}, {"l": "Honolu", "u": "https://www.google.com/maps/search/?api=1&query=Honolu%27s%20Wagyu%20Udon%20%26%20Ramen%20Halal%20%D8%AD%D9%84%D8%A7%D9%84%20Asakusa&query_place_id=ChIJyYGQwWuPGGARqQVPSpPB6mo"}], "p": "https://www.google.com/search?tbm=isch&q=wagyu+ramen+bowl"}, {"id": "udon", "n": "Wagyu-udon", "j": "うどん", "t": "Tykke, seje hvedenudler i en lettere bouillon. En god afveksling fra ramen.", "w": [{"l": "Honolu Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Honolu%27s%20Wagyu%20Udon%20%26%20Ramen%20Halal%20%D8%AD%D9%84%D8%A7%D9%84%20Asakusa&query_place_id=ChIJyYGQwWuPGGARqQVPSpPB6mo"}], "p": "https://www.google.com/search?tbm=isch&q=wagyu+udon"}, {"id": "tempura", "n": "Tempura & tendon", "j": "天ぷら", "t": "Rejer og grøntsager i en fjerlet dej. Tendon lægger det på ris med sød sauce; omakase serverer hvert stykke lige fra olien.", "w": [{"l": "Tendon Itsuki", "u": "https://www.google.com/maps/search/?api=1&query=Tendon%20Itsuki%20Ginza&query_place_id=ChIJRZGCCOWLGGARTbuL5FrsFcM"}, {"l": "Tempura Asakusa Sakura", "u": "https://www.google.com/maps/search/?api=1&query=Tempura%20Asakusa%20SAKURA&query_place_id=ChIJWUVY-DuPGGAR0KRSemNJ6rk"}], "p": "https://www.google.com/search?tbm=isch&q=tendon+tempura+rice+bowl"}, {"id": "shabu", "n": "Shabu-shabu", "j": "しゃぶしゃぶ", "t": "Svip en tynd skive wagyu gennem den simrende bouillon i et par sekunder, og dyp den i sesam- eller ponzusauce.", "w": [{"l": "Shoutaian (spis alt du kan)", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20Wagyu%20ShabuShabu%20SHOUTAIAN&query_place_id=ChIJPVFZg8GNGGAR2Rjf6vxp2mE"}], "p": "https://www.google.com/search?tbm=isch&q=wagyu+shabu+shabu"}, {"id": "okonomiyaki", "n": "Okonomiyaki", "j": "お好み焼き", "t": "En tyk, salt kålpandekage med sød sauce, mayo og dansende bonitoflager på toppen.", "w": [{"l": "Usagi", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20wagyu%20okonomiyaki%26ramen%20usagi&query_place_id=ChIJvWgunVmNGGARbOWxtEdX5NY"}], "p": "https://www.google.com/search?tbm=isch&q=okonomiyaki"}, {"id": "takoyaki", "n": "Takoyaki", "j": "たこ焼き", "t": "Sprøde dejkugler med blæksprutte indeni, Osakas yndlingsgadesnack. Brandvarme i midten, så vent et øjeblik.", "w": [{"l": "Ushibon", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Beef%20bone%20ramen%20Ushibon%20Asakusa/%E7%89%9B%E9%AA%A8%E3%83%A9%E3%83%BC%E3%83%A1%E3%83%B3%20%E3%81%86%E3%81%97%E3%81%BC%E3%83%BC%E3%82%93%20%E6%B5%85%E8%8D%89&query_place_id=ChIJpTsAs3KPGGARd48JqPOyito"}], "p": "https://www.google.com/search?tbm=isch&q=takoyaki"}, {"id": "curry", "n": "Japansk karry & katsu", "j": "カレー", "t": "Tyk, mild, let sødlig karry over ris med en sprød schnitzel. Japansk trøstemad.", "w": [{"l": "Yoshi's Passion", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Japanese%20Curry%20Yoshi%27s%20Passion&query_place_id=ChIJhcYiIYePGGARiWBpges41k8"}, {"l": "Nikoniko", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Nikoniko%20mazemen%20Akihabara&query_place_id=ChIJA_VeYVCPGGAREHZYji0Bk60"}, {"l": "Sekai Cafe", "u": "https://www.google.com/maps/search/?api=1&query=SEKAI%20CAFE%20OSHIAGE&query_place_id=ChIJT9kgetaOGGARBAX1B5Om8A4"}], "p": "https://www.google.com/search?tbm=isch&q=japanese+katsu+curry"}, {"id": "teishoku", "n": "Teishoku-måltid", "j": "定食", "t": "Det japanske hverdagsmåltid: en hovedret med ris, misosuppe og små syltede grøntsager på én bakke.", "w": [{"l": "Gohan Cafe", "u": "https://www.google.com/maps/search/?api=1&query=Gohan%20Cafe&query_place_id=ChIJebdmGqiMGGAR6q20kh1FwLM"}, {"l": "Yoshiya", "u": "https://www.google.com/maps/search/?api=1&query=Yoshiya%20Shinjuku%20branch&query_place_id=ChIJ6Svb3NCMGGARUzYAO-VBBDQ"}], "p": "https://www.google.com/search?tbm=isch&q=teishoku+set+meal"}, {"id": "matcha", "n": "Pisk din egen matcha", "j": "抹茶", "t": "Lær at piske grøn te-pulver til en skummende skål med et bambuspiskeris, som regel med en lille sød sag til.", "w": [{"l": "Ohina Café", "u": "https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E9%9B%9B%E3%82%AB%E3%83%95%E3%82%A7%E6%8A%B9%E8%8C%B6%E5%8E%9F%E5%AE%BF%20Harajuku%20Ohina%20caf%C3%A9%20Matcha%20halal&query_place_id=ChIJ_dVcdkqNGGARot2V06uNHaw"}, {"l": "Diyafa", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20SUKIYAKI%20Restaurant%20Diyafa&query_place_id=ChIJf-uQ4yuLGGARr79SKl1J35E"}, {"l": "Tokyo Sushi Bowl", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20sushi%20bowl&query_place_id=ChIJa08ZHmGPGGARyyvBjn_Tee4"}], "p": "https://www.google.com/search?tbm=isch&q=matcha+whisking+chasen"}, {"id": "izakaya", "n": "Kill Bill-izakayaen", "j": "居酒屋", "t": "Gonpachis store træhal inspirerede kampscenen i Kill Bill. Spørg efter halal-menuen; andre gæster drikker alkohol.", "w": [{"l": "Gonpachi Nishi-Azabu", "u": "https://www.google.com/maps/search/?api=1&query=Gonpachi%20Nishi-Azabu&query_place_id=ChIJEwlemnqLGGARhwMuRpwpkBI"}], "p": "https://www.google.com/search?tbm=isch&q=Gonpachi+Nishi-Azabu+interior"}, {"id": "snacks", "n": "Halal japanske snacks", "j": "お菓子", "t": "Mochi, matcha-småkager og instant-ramen, du faktisk kan spise, med gratis smagsprøver. Også gode som souvenirs.", "w": [{"l": "HALAL-YA Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=HALAL-YA%20ASAKUSA%20FLAGSHIP%20STORE%20/%20Japanese%20halal%20souvenir%20store&query_place_id=ChIJS-MyTmKPGGAREt7RuNgboRs"}], "p": "https://www.google.com/search?tbm=isch&q=Japanese+mochi+snacks"}], "see": [{"n": "Tokyo Metropolitan Government Building", "a": "Shinjuku", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Metropolitan%20Government%20Building%20North%20Observation%20Deck&query_place_id=ChIJnctryNSMGGARLv4MknPFseU", "g": [35.68973, 139.69166], "t": "Gratis udsigt over hele Tokyo fra 45. sal, og på en klar dag kan man se Fuji-bjerget. Om aftenen er der lysshow på facaden.", "tip": "Der er to udsigtsdæk; det nordlige har lukket mandag, det sydlige tirsdag.", "p": "https://www.google.com/search?tbm=isch&q=Tokyo+Metropolitan+Government+Building+observation+deck+night", "x": [], "far": ""}, {"n": "Shinjuku Gyoen", "a": "Shinjuku", "u": "https://www.google.com/maps/search/?api=1&query=Shinjuku%20Gyoen%20National%20Garden&query_place_id=ChIJPyOTG8KMGGARh_IXobWxHmo", "g": [35.68518, 139.71005], "t": "En kæmpe park midt i byen med japansk have, damme og store græsplæner. Et roligt pusterum mellem storbydagene.", "tip": "Entré ca. ¥500. Lukket mandag, åbent til kl. 16.30.", "p": "https://www.google.com/search?tbm=isch&q=Shinjuku+Gyoen+garden", "x": [], "far": ""}, {"n": "Shibuya Crossing & Shibuya Sky", "a": "Shibuya", "u": "https://www.google.com/maps/search/?api=1&query=Shibuya%20Sky&query_place_id=ChIJ4Rr2JWiLGGARcyRSHuZ-9G8", "g": [35.65867, 139.70198], "t": "Verdens mest berømte fodgængerfelt, og lige over det udsigten fra taget af Shibuya Scramble Square.", "tip": "Book Shibuya Sky i god tid, især ved solnedgang, som tit er udsolgt.", "p": "https://www.google.com/search?tbm=isch&q=Shibuya+Sky+rooftop+view", "x": [{"l": "Shibuya Crossing", "u": "https://www.google.com/maps/search/?api=1&query=Shibuya%20Scramble%20Crossing&query_place_id=ChIJK9EM68qLGGARacmu4KJj5SA"}], "far": ""}, {"n": "Nintendo TOKYO", "a": "Shibuya", "u": "https://www.google.com/maps/search/?api=1&query=Nintendo%20Tokyo%20Shibuya%20Japan&query_place_id=ChIJ7Su1FK6NGGARAr7UK5NjmMo", "g": [35.66212, 139.69864], "t": "Nintendos egen butik på 6. sal i Shibuya PARCO, med Mario, Zelda og Animal Crossing-ting, du ikke finder andre steder. Super Nintendo World-forlystelsesparken ligger i Osaka, ikke i Tokyo.", "tip": "Kom tidligt; der kan være kø. Åbent kl. 10–21.", "p": "https://www.google.com/search?tbm=isch&q=Nintendo+Tokyo+store+Shibuya+Parco", "x": [], "far": ""}, {"n": "Meiji Jingu & Takeshita Street", "a": "Harajuku", "u": "https://www.google.com/maps/search/?api=1&query=Meiji%20Jingu&query_place_id=ChIJ5SZMmreMGGARcz8QSTiJyo8", "g": [35.6764, 139.69933], "t": "En stille skov med Tokyos store shinto-helligdom, og lige ved siden af den farverige, larmende Takeshita-gade i Harajuku.", "tip": "Gå gennem skoven først om morgenen, og tag Takeshita-gaden bagefter.", "p": "https://www.google.com/search?tbm=isch&q=Meiji+Jingu+forest+torii", "x": [{"l": "Takeshita Street", "u": "https://www.google.com/maps/search/?api=1&query=Takeshita%20Street&query_place_id=ChIJlVne8bqMGGARtX5O6ojMvsI"}], "far": ""}, {"n": "Senso-ji & Nakamise", "a": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Sens%C5%8D-ji&query_place_id=ChIJ8T1GpMGOGGARDYGSgpooDWw", "g": [35.71477, 139.79666], "t": "Tokyos ældste tempel med den store røde lanterne ved Kaminarimon-porten og en gade fuld af små boder.", "tip": "Kom tidligt om morgenen eller efter mørkets frembrud, hvor der er færre mennesker og templet er oplyst.", "p": "https://www.google.com/search?tbm=isch&q=Senso-ji+Kaminarimon+lantern", "x": [], "far": ""}, {"n": "Tokyo Skytree", "a": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Skytree&query_place_id=ChIJ35ov0dCOGGARKvdDH7NPHX0", "g": [35.71006, 139.8107], "t": "Japans højeste tårn, 634 m, med udsigtsdæk og et stort indkøbscenter nedenunder. Ligger lige over floden fra Asakusa.", "tip": "Køb billet på nettet og kom ved solnedgang, så ser du byen både i dagslys og oplyst.", "p": "https://www.google.com/search?tbm=isch&q=Tokyo+Skytree+view+sunset", "x": [], "far": ""}, {"n": "Akihabara", "a": "Akihabara", "u": "https://www.google.com/maps/search/?api=1&query=Yodobashi%20Akiba%20camera&query_place_id=ChIJGU_M2aeOGGARdnOLcMYXuXs", "g": [35.69892, 139.7748], "t": "Elektronikkens og spillenes bydel: kæmpe elektronikvarehuse, retrospil, anime og arkadehaller på mange etager.", "tip": "Yodobashi Akiba har det hele. Tag pas med: som turist slipper du for moms (ca. 10 %).", "p": "https://www.google.com/search?tbm=isch&q=Akihabara+electric+town+night", "x": [{"l": "Akihabara Electric Town", "u": "https://www.google.com/maps/search/?api=1&query=Akihabara%20Electric%20Town&query_place_id=ChIJzdWdgh2MGGARh4kg2pVZL3c"}], "far": ""}, {"n": "Street Kart", "a": "Akihabara", "u": "https://www.google.com/maps/search/?api=1&query=STREET%20KART%20Akihabara%201st&query_place_id=ChIJLd04UqeOGGARzsZZCZulARc", "g": [35.70246, 139.77349], "t": "Kør gokart i kostume gennem Tokyos gader, forbi Tokyo Tower og over Rainbow Bridge, med en guide forrest.", "tip": "Kræver pas og internationalt kørekort (fås hos FDM), som du skal have med hjemmefra.", "p": "https://www.google.com/search?tbm=isch&q=Street+Kart+Tokyo+go+kart", "x": [], "far": ""}, {"n": "Ameyoko", "a": "Ueno", "u": "https://www.google.com/maps/search/?api=1&query=Ameyoko%20market&query_place_id=ChIJh7eDrwCPGGARCs9fpCkKS2U", "g": [35.71007, 139.7746], "t": "Livlig markedsgade under togbanen ved Ueno med snacks, tøj, sneakers og billige souvenirs. Der er flere halal-butikker.", "tip": "Kombinér med Ueno-parken og et halal-ramenstop i Okachimachi.", "p": "https://www.google.com/search?tbm=isch&q=Ameyoko+market+Ueno", "x": [], "far": ""}, {"n": "Tsukiji Outer Market", "a": "Ginza", "u": "https://www.google.com/maps/search/?api=1&query=Fish%20Market%20Tsukiji%20Outer%20Market&query_place_id=ChIJW2cLzSGLGGARXAKXv6EkbqI", "g": [35.66477, 139.77025], "t": "Smalle gader med fisk, skaldyr, knive og matcha. Fisk og skaldyr er det sikreste valg; boderne er ikke halal-certificerede.", "tip": "Kom kl. 7–8, før de store mængder, og hav kontanter med.", "p": "https://www.google.com/search?tbm=isch&q=Tsukiji+outer+market+stalls", "x": [], "far": ""}, {"n": "Tokyo Tower", "a": "Roppongi & Ebisu", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Tower&query_place_id=ChIJCewJkL2LGGAR3Qmk0vCTGkg", "g": [35.65858, 139.74543], "t": "Det røde og hvide klassiske tårn fra 1958 med udsigt over centrum. Smukkest oplyst om aftenen.", "tip": "Åbent til kl. 23. Diyafa med halal-sukiyaki ligger ca. 15 min. til fods.", "p": "https://www.google.com/search?tbm=isch&q=Tokyo+Tower+night", "x": [], "far": ""}, {"n": "teamLab Borderless", "a": "Roppongi & Ebisu", "u": "https://www.google.com/maps/search/?api=1&query=teamLab%20Borderless%3A%20MORI%20Building%20DIGITAL%20ART%20MUSEUM&query_place_id=ChIJQ5Sa1PqJGGARUSaNKKOrMVg", "g": [35.66207, 139.74327], "t": "Digital kunst, du går rundt inde i: rum der hele tiden forandrer sig. Ligger i Azabudai Hills.", "tip": "Book billet med tidspunkt i forvejen og regn med 2–3 timer.", "p": "https://www.google.com/search?tbm=isch&q=teamLab+Borderless+Azabudai", "x": [], "far": ""}, {"n": "teamLab Planets", "a": "Andre steder", "u": "https://www.google.com/maps/search/?api=1&query=teamLab%20Planets%20TOKYO%20DMM&query_place_id=ChIJSeco5wiJGGARItbTS8lQ5G0", "g": [35.64912, 139.78977], "t": "Du går barfodet gennem vand og lys i en af Tokyos mest populære oplevelser. Ligger i Toyosu.", "tip": "Udsolgt længe i forvejen, så book tidligt. Tag shorts eller bukser, der kan rulles op.", "p": "https://www.google.com/search?tbm=isch&q=teamLab+Planets+water+room", "x": [], "far": "Ingen af stederne ligger i gåafstand. Spis i Tsukiji eller Ginza før eller efter; det er en kort taxatur."}, {"n": "Pokémon Center Mega Tokyo", "a": "Ikebukuro", "u": "https://www.google.com/maps/search/?api=1&query=Pok%C3%A9mon%20Center%20Mega%20Tokyo%20%26%20Pikachu%20Sweets&query_place_id=ChIJJWdNBG-NGGARVcT12Z5mXFw", "g": [35.72891, 139.71932], "t": "Det største Pokémon Center med en hel etage af bamser, kort og ting, der kun sælges i Japan. I Sunshine City.", "tip": "Mindre trængsel end Shibuya-butikken. Åbent kl. 10–20.", "p": "https://www.google.com/search?tbm=isch&q=Pokemon+Center+Mega+Tokyo", "x": [], "far": ""}, {"n": "Ghibli Museum", "a": "Andre steder", "u": "https://www.google.com/maps/search/?api=1&query=Ghibli%20Museum&query_place_id=ChIJLYwD5TTuGGARBZKEP5BV4U0", "g": [35.69624, 139.57043], "t": "Studio Ghiblis eget museum i Mitaka, som at træde ind i en af filmene, med en kortfilm, man kun kan se her.", "tip": "Billetter sælges kun på forhånd og bliver udsolgt; køb dem en måned før. Lukket tirsdag.", "p": "https://www.google.com/search?tbm=isch&q=Ghibli+Museum+Mitaka", "x": [], "far": "Mitaka ligger langt ude, uden halal-steder fra listen. Spis i Shinjuku før eller efter; der er ca. 20 min. med JR Chuo-linjen."}]};
+const DATA = {"cats": [{"name": "Sushi", "intro": "Fisk er halal for de fleste muslimer; disse steder sørger også for, at ris og sojasauce er i orden.", "items": [{"n": "Asakusa Sushi Ken", "a": "Asakusa", "x": 2, "t": "Tokyos bedste halal-sushibar, 5 min. fra Senso-ji. Book i forvejen; lukket onsdag. Drikkepengene på regningen er frivillige.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Asakusa%20Sushi%20Ken&query_place_id=ChIJIUaZ8r-OGGARXpS8mbCSof8", "b": [], "g": [35.71394, 139.79265]}, {"n": "Tokyo Sushi Bowl", "a": "Asakusa", "x": 3, "t": "Chirashi-skåle fra ca. ¥3.000 ved Kaminarimon-porten, og du kan selv piske matcha.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20sushi%20bowl&query_place_id=ChIJa08ZHmGPGGARyyvBjn_Tee4", "b": [], "g": [35.71021, 139.79674]}, {"n": "Sushi Zanmai Tsukiji", "a": "Ginza", "x": 2, "t": "Billig samlebåndssushi på Tsukiji-markedet. Halal-menu og halal-sojasauce; bed om ris uden alkohol.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Mawaru%20Sushi%20Zanmai%20Tsukiji%20branch&query_place_id=ChIJb7QFJN-LGGARVuqee0B_Ldk", "b": [], "g": [35.66574, 139.77063]}, {"n": "Fujiyama Tokyo", "a": "Shinjuku", "x": 2, "t": "Spis-alt-du-kan med halal-snekrabbe og sushi. Ikke fuldt halal, så spørg hvilke retter er. Hverdage fra kl. 17.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Sushi%20Restaurant%20FUJIYAMA%20TOKYO%20Shinjuku%20East&query_place_id=ChIJK7JfIwCNGGARU-6nGULjlk8", "b": [], "g": [35.69361, 139.70706]}]}, {"name": "Wagyu-yakiniku & bøf", "intro": "A5-wagyu, som du selv griller ved bordet, er den store halal-oplevelse i Tokyo.", "items": [{"n": "Panga", "a": "Ueno", "x": 3, "t": "Topbedømt A5-wagyu-yakiniku med certificeret halal-kød og -saucer. Mere for pengene end de store navne.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Panga&query_place_id=ChIJ9bFAjKSOGGARqsl1Ru2ZQs0", "b": [{"l": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Yakiniku%20PANGA%20Asakusa%20%7C%20Tokyo%20Halal%20restaurant&query_place_id=ChIJdzczsDuPGGARHhw2tyh5Dt0", "a": "Asakusa", "g": [35.71017, 139.79788]}, {"l": "Ueno", "u": "https://www.google.com/maps/search/?api=1&query=A5%20Wagyu%20Yakiniku%20PANGA%20Ueno%20branch%20%7C%20Tokyo%20halal%20restaurant&query_place_id=ChIJGfV-MgOPGGARZD8WM_Q1GAs", "a": "Ueno", "g": [35.70711, 139.77409]}], "g": [35.70485, 139.78101]}, {"n": "Gyumon Yakiniku", "a": "Shibuya", "x": 3, "t": "Grill A5-wagyu ved bordet; tag premium-sættet og A5-kalbi. Lille sted, der bliver varmt.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Gyumon%20Shibuya&query_place_id=ChIJSzG_eFyLGGARQFPb6kRJLv8", "b": [{"l": "Shibuya 2 (aften)", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Gyumon%20Shibuya%202nd&query_place_id=ChIJ4REDLPGLGGARtbyUvEU_xpY", "a": "Shibuya", "g": [35.65536, 139.70616]}, {"l": "Shinjuku", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Shinjuku&query_place_id=ChIJe2XGkniNGGARXw6OESPdNKs", "a": "Shinjuku", "g": [35.69055, 139.7028]}], "g": [35.6556, 139.70653]}, {"n": "Kawashina", "a": "Asakusa", "x": 2, "t": "Steg selv din halal-wagyu, mens personalet guider dig. Venligt og til at betale.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Kawashina%20Asakusa%20Wagyu&query_place_id=ChIJwcQaegCPGGAR8m-LGgaub4c", "b": [], "g": [35.71119, 139.79262]}, {"n": "Hachisan", "a": "Asakusa", "x": 2, "t": "Lille wagyu-bøfhus med 5,0 i bedømmelse. Wagyu-sushi og tempura ved siden af.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Asakusa%20Halal%20Wagyu%20Steak%20HACHISAN%20%7C%20%E5%85%AB%E4%B8%89&query_place_id=ChIJo6azlLiPGGAR9nvJXSzcdSc", "b": [], "g": [35.717, 139.79803]}, {"n": "Yaminiku Hayashi", "a": "Andre steder", "x": 2, "t": "Kamata, 15 min. fra Haneda. Halal wagyu-yakiniku fra en slagter; perfekt til ankomsten eller sidste aften.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Yaminiku%20Hayashi&query_place_id=ChIJj3hSRWlhGGAR_57FAwjm49M", "b": [], "g": [35.56177, 139.72147]}, {"n": "Halal Wagyu Stall", "a": "Shibuya", "x": 1, "t": "Gadebod med grillede wagyu-spyd og burgere ved Scramble-krydset. Følg duften.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20STALL&query_place_id=ChIJKQbQIk6NGGAR2oBiDUlJONw", "b": [], "g": [35.66051, 139.69849]}]}, {"name": "Sukiyaki & shabu-shabu", "intro": "Wagyu, der simrer ved bordet. Diyafa står under Luksus.", "items": [{"n": "Panga Sukiyaki", "a": "Asakusa", "x": 3, "t": "Halal wagyu-sukiyaki en blok fra Kaminarimon. Kun aftensmad, fra kl. 16.30.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Sukiyaki%20Asakusa%20PANGA%20%7C%20Tokyo%20Halal%20restaurant&query_place_id=ChIJ3c8QKJKPGGARLncbWf3NpVc", "b": [], "g": [35.71017, 139.79788]}, {"n": "Shoutaian", "a": "Ikebukuro", "x": 3, "t": "Spis-alt-du-kan halal wagyu-shabu-shabu i 90 minutter, 8. sal ved Ikebukuro station.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20Wagyu%20ShabuShabu%20SHOUTAIAN&query_place_id=ChIJPVFZg8GNGGAR2Rjf6vxp2mE", "b": [], "g": [35.72912, 139.71157]}]}, {"name": "Ramen & udon", "intro": "Halal wagyu-ramen findes overalt. Hos Gyumon vælger du styrke 0–10; 3–5 er allerede stærkt.", "items": [{"n": "Gyumon", "a": "Shibuya", "x": 2, "t": "Den mest kendte halal-ramenkæde. A5 wagyu-ramen og wagyu-gyukatsu; åbent til kl. 23 eller senere.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Gyumon%20Halal%20Wagyu%20Ramen%20Shibuya&query_place_id=ChIJ_-R_mUGLGGARDfQ8ATZZ4w0", "b": [{"l": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Gyumon%20Halal%20Ramen%20Asakusa&query_place_id=ChIJE9zJogePGGARBvQ-j_olTG0", "a": "Asakusa", "g": [35.7167, 139.79907]}, {"l": "Kaminarimon", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20%26%20Gyukatsu%20GYUMON%20Tokyo%20Asakusa%20Kaminarimon&query_place_id=ChIJAV9IcxaPGGAREiV_GKbVB9Q", "a": "Asakusa", "g": [35.71151, 139.79605]}, {"l": "Ueno", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Ueno&query_place_id=ChIJcV287faPGGARHsMi1lhCVAs", "a": "Ueno", "g": [35.70985, 139.77719]}, {"l": "Shinjuku", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON&query_place_id=ChIJJ5YQI2eNGGARwrkAkREHw4c", "a": "Shinjuku", "g": [35.69439, 139.70128]}, {"l": "Center Gai", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Center%20Gai&query_place_id=ChIJN3vRzPGNGGARqke7ZLKvlyI", "a": "Shibuya", "g": [35.66023, 139.69935]}, {"l": "Scramble", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Scramble&query_place_id=ChIJw_6UJtWNGGAROtTB3bQuWCk", "a": "Shibuya", "g": [35.6602, 139.69939]}, {"l": "Jinnan, udsigt fra 10. sal", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Jinnan&query_place_id=ChIJeSyveTuNGGARuizu2pQH1yc", "a": "Shibuya", "g": [35.66183, 139.69996]}, {"l": "Ginza", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Gyumon&query_place_id=ChIJJcK1XoeLGGARA0UJkKh9k7Q", "a": "Ginza", "g": [35.66949, 139.76509]}, {"l": "Ikebukuro", "u": "https://www.google.com/maps/search/?api=1&query=Gyumon%20Ikebukuro&query_place_id=ChIJ5dXSUJSNGGARwR8GTsnEgI8", "a": "Ikebukuro", "g": [35.73352, 139.70987]}], "g": [35.65973, 139.70416]}, {"n": "Shinjuku-tei", "a": "Shinjuku", "x": 2, "t": "Ramen-sæt med wagyu og kylling, og bederum. Kø om aftenen: skriv dit navn på og kom tilbage.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Tokyo%20Shinjuku&query_place_id=ChIJ8WQHFoqNGGARpc767pcSol8", "b": [{"l": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Asakusa%20Tokyo&query_place_id=ChIJF6THDR-PGGAR98Co847dv-E", "a": "Asakusa", "g": [35.71156, 139.79235]}, {"l": "Ueno-parken", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Ueno%20Park%20Tokyo&query_place_id=ChIJpb3ZMwCNGGARQJdzUva4S8o", "a": "Ueno", "g": [35.7088, 139.77032]}, {"l": "Yotsuya", "u": "https://www.google.com/maps/search/?api=1&query=Shinjuku-tei%20Yotsuya%20Halal%20Wagyu%20Ramen&query_place_id=ChIJU1puu0ONGGARyyUNJrpLJN4", "a": "Shinjuku", "g": [35.68701, 139.72741]}, {"l": "Shibuya", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Tokyo%20Shibuya&query_place_id=ChIJoe-Wg4ONGGAR6KSXVgzoR8o", "a": "Shibuya", "g": [35.66315, 139.70015]}, {"l": "Hibiya / Ginza", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20SHINJUKU-TEI%20TOKYO%20Ginza&query_place_id=ChIJj7GKVMmLGGARBvmLex_NeY0", "a": "Ginza", "g": [35.66916, 139.75856]}], "g": [35.69192, 139.70646]}, {"n": "Dattebayo!", "a": "Asakusa", "x": 2, "t": "Halal og vegansk ramen lavet foran dig. Populært hos familier.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Dattebayo%21%20Halal%20and%20Vegan%20Ramen%20Asakusa&query_place_id=ChIJwV6BpeyPGGARIqvJgCPcszk", "b": [], "g": [35.71476, 139.8017]}, {"n": "Honolu", "a": "Asakusa", "x": 2, "t": "Wagyu-udon ud over ramen, så du får en anden slags nudler. Der er kø før kl. 11.30.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Honolu%27s%20Wagyu%20Udon%20%26%20Ramen%20Halal%20%D8%AD%D9%84%D8%A7%D9%84%20Asakusa&query_place_id=ChIJyYGQwWuPGGARqQVPSpPB6mo", "b": [{"l": "Akihabara (bederum)", "u": "https://www.google.com/maps/search/?api=1&query=Honolu%20Grande%20Halal%20Restaurant%20Akihabara&query_place_id=ChIJn9d23niPGGARl__2ZnjnfEM", "a": "Akihabara", "g": [35.6951, 139.77747]}, {"l": "Shinjuku Gyoenmae", "u": "https://www.google.com/maps/search/?api=1&query=Honolu%20Shinjukugyoenmae%20Halal%20Ramen&query_place_id=ChIJw02KsG6NGGARVmoqp_g5VdI", "a": "Shinjuku", "g": [35.69024, 139.71208]}, {"l": "Ebisu", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Ramen%20Honolu&query_place_id=ChIJLRNVgBWLGGARMxGRyu03kZQ", "a": "Roppongi & Ebisu", "g": [35.64337, 139.71171]}, {"l": "Haneda Lufthavn T3", "u": "https://www.google.com/maps/search/?api=1&query=HALAL/VEGAN%20Honolu%20Premier%20Air%20Haneda&query_place_id=ChIJBx6TrXdhGGAR8wl2oSWE-LE", "a": "Andre steder", "g": [35.54604, 139.76852]}], "g": [35.71737, 139.79501]}, {"n": "Shunpudou", "a": "Asakusa", "x": 2, "t": "Stærk wagyu-ramen og A5-oksekatsu, 4,9 i bedømmelse fra over 3.000 gæster.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20%26%20BEEF%20CUTLET%20SHUNPUDOU%20%E6%98%A5%E9%A2%A8%E5%A0%82&query_place_id=ChIJrTTMInCPGGAR1XfX02rt-fs", "b": [], "g": [35.71442, 139.79354]}, {"n": "Naritaya", "a": "Asakusa", "x": 2, "t": "Veletableret halal-ramensted med friturestegt kylling; en mild ret til børn.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Naritaya&query_place_id=ChIJuffoBJmOGGARqgxESrqviGE", "b": [], "g": [35.71474, 139.79509]}, {"n": "Ushibon", "a": "Asakusa", "x": 1, "t": "Ramen på oksebensbouillon, risskåle og halal-takoyaki. Lille og nyt.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Beef%20bone%20ramen%20Ushibon%20Asakusa/%E7%89%9B%E9%AA%A8%E3%83%A9%E3%83%BC%E3%83%A1%E3%83%B3%20%E3%81%86%E3%81%97%E3%81%BC%E3%83%BC%E3%82%93%20%E6%B5%85%E8%8D%89&query_place_id=ChIJpTsAs3KPGGARd48JqPOyito", "b": [], "g": [35.71729, 139.79443]}, {"n": "Samurai Soul", "a": "Asakusa", "x": 2, "t": "Ramen og wagyu-retter tæt på Senso-ji, åbent til kl. 23.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Samurai%20Soul%20Halal%20Ramen%20and%20Wagyu&query_place_id=ChIJy0GKTg2PGGARX2hGexYxQpA", "b": [], "g": [35.71679, 139.79358]}, {"n": "Kiwami", "a": "Asakusa", "x": 2, "t": "Lille sted med disk, åbner kl. 9. God kyllingeramen.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20KIWAMI&query_place_id=ChIJixFSuSmPGGARQXYikrboIzk", "b": [], "g": [35.71238, 139.79263]}, {"n": "Ayam-ya", "a": "Asakusa", "x": 1, "t": "Stærk kyllingeramen og karaage til fair priser.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Ayam-ya%20Halal%20Ramen%20Tokyo&query_place_id=ChIJdY8ThvuPGGAR1MXsvLwGai8", "b": [], "g": [35.70717, 139.78626]}, {"n": "Sankyu", "a": "Asakusa", "x": 2, "t": "Ramen med både kylling og okse; private rum til grupper.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Sankyu%20Halal%20Ramen%20Japanese%20Food%20Asakusa&query_place_id=ChIJQf_2WACPGGARDixR6AZQHz8", "b": [{"l": "Ueno", "u": "https://www.google.com/maps/search/?api=1&query=Sankyu%20Halal%20Ramen%20Japanese%20Food%20Ueno&query_place_id=ChIJl9d-WgCNGGARWRcsm_VwucU", "a": "Ueno", "g": [35.70572, 139.77123]}], "g": [35.71379, 139.79061]}, {"n": "Halal Ramen Ueno", "a": "Ueno", "x": 2, "t": "Wagyu-ramen til gode priser nær moskeen i Okachimachi. Åbner kl. 10.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Ramen%20Ueno&query_place_id=ChIJq34tCQCPGGARFh0VV_VO-Sk", "b": [], "g": [35.70579, 139.77829]}, {"n": "Ramen Ninja", "a": "Ueno", "x": 2, "t": "Åbent til kl. 5 om morgenen. Ramen-og-ris-menuer, der er store nok at dele.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Ueno%20Halal%20wagyu%20Ramen%20Ninja&query_place_id=ChIJi6i7wN-PGGARGltDZMVIocM", "b": [], "g": [35.70881, 139.77563]}, {"n": "Toribushi", "a": "Ueno", "x": 1, "t": "Billigere ramen på kyllingebouillon i Okachimachi.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Toribushi%20Halal%20Ramen&query_place_id=ChIJ64h4oAWPGGARimzRAGANSys", "b": [{"l": "Ikebukuro", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Ramen%20Toribushi%20Ikebukuro&query_place_id=ChIJ6aW1QACNGGARdCHy4hpxGqU", "a": "Ikebukuro", "g": [35.72932, 139.71531]}], "g": [35.70819, 139.77612]}, {"n": "Umair", "a": "Ueno", "x": 2, "t": "Ved Ueno-parken. Stærk ramen med wagyu-schnitzel.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=UMAIR%20HALAL%20WAGYU%20RAMEN%EF%BC%88%E3%83%8F%E3%83%A9%E3%83%AB%E3%83%AF%E3%82%AE%E3%83%A5%E3%82%A6%20%E3%83%A9%E3%83%BC%E3%83%A1%E3%83%B3%EF%BC%89%EF%BD%9CUENO-PARK%EF%BD%9CTOKYO&query_place_id=ChIJJ1S2Vq2NGGARh4ixIAAzQSE", "b": [], "g": [35.70782, 139.77024]}, {"n": "Konoha", "a": "Akihabara", "x": 2, "t": "Risskåle med A5-wagyu ud over ramen.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20A5WAGYU%20Rice%20Bowl%20%EF%BC%86Ramen%20KONOHA%20%E6%9D%B1%E4%BA%AC%20%E7%A7%8B%E8%91%89%E5%8E%9F&query_place_id=ChIJK188YWGNGGARWYrAD4hbHF8", "b": [], "g": [35.68991, 139.77103]}, {"n": "Karemen King", "a": "Akihabara", "x": 2, "t": "Wagyu-ramen og karaage ved Akihabara station.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20karemen%20king&query_place_id=ChIJy7ZNMwCNGGARQkxeAwodzmk", "b": [], "g": [35.69558, 139.77137]}, {"n": "Naruto", "a": "Shibuya", "x": 2, "t": "Halal-certificeret ramen og wagyu-yakiniku samme sted. Bederum.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20YAKINIKU%20%26%20RAMEN%20NARUTO%20SHIBUYA&query_place_id=ChIJuWCpUACNGGARUCoT32uiCyA", "b": [], "g": [35.66106, 139.69851]}, {"n": "GOTS", "a": "Shibuya", "x": 2, "t": "Harajuku. Enkel wagyu-ramen og en saftig halal-cheeseburger.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Halal%20Ramen%20%E8%BD%9F%E6%B4%A5%20GOTS%20Harajuku&query_place_id=ChIJ46oRABGNGGARVSyvlKPb27c", "b": [], "g": [35.66751, 139.70546]}, {"n": "Halal Wagyu Ramen Okubo", "a": "Shinjuku", "x": 2, "t": "Shin-Okubo. To rummelige etager, bederum og sted til wudu.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20Okubo&query_place_id=ChIJVe-sOgCNGGARZzASzvmvAlk", "b": [], "g": [35.70135, 139.69673]}, {"n": "Gyugen", "a": "Shinjuku", "x": 2, "t": "Lille sted i Kabukicho med hjemmelavede gyoza.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20GYUGEN&query_place_id=ChIJsRXJegCNGGARTF5jVKFIKG0", "b": [], "g": [35.69509, 139.70514]}, {"n": "Menya Kaijin", "a": "Shinjuku", "x": 2, "t": "Ramen på fiskebouillon, uden svinekød. Muslimvenligt, men ikke halal-certificeret, så spørg til saucerne.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Menya%20Kaijin%20Shinjuku%20Ten&query_place_id=ChIJXVRkjtqMGGAR_IYDENOJmJ0", "b": [], "g": [35.68974, 139.7022]}, {"n": "Wagyu Ramen Noodle", "a": "Ginza", "x": 3, "t": "Sted i Ginza, åbent kl. 8–1 til en tidlig eller sen skål. Lidt dyrere.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20%28Halal%29%20Ramen%20Noodle%20Ginza%20Restaurant%20%E5%92%8C%E7%89%9B%20%E6%8B%89%E9%9D%A2%20%E9%8A%80%E5%BA%A7%20%E9%A4%90%E5%8E%85&query_place_id=ChIJNxFqW8CLGGARORiSLSCE4K8", "b": [{"l": "Shinjuku Kabukicho", "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20%28Halal%29%20Ramen%20Noodle%20Shinjuku%20Kabuki%20Restaurant%20%E5%92%8C%E7%89%9B%20%E6%96%B0%E5%AE%BF%20%E6%8B%89%E9%9D%A2%20%E9%A4%90%E5%8E%85&query_place_id=ChIJ63wywVePGGAR4E_AFjwal6w", "a": "Shinjuku", "g": [35.69847, 139.70198]}], "g": [35.67066, 139.76898]}]}, {"name": "Måltider, tempura & karry", "intro": "Japanske hverdagsretter, lavet halal.", "items": [{"n": "Tendon Itsuki", "a": "Ginza", "x": 1, "t": "Tempura over ris med chawanmushi og misosuppe. Tokyos bedste måltid for pengene; stil dig i kø før kl. 11.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Tendon%20Itsuki%20Ginza&query_place_id=ChIJRZGCCOWLGGARTbuL5FrsFcM", "b": [{"l": "Ginza Novo (flere pladser)", "u": "https://www.google.com/maps/search/?api=1&query=Tendon%20Itsuki%20-%20Ginza%20Novo&query_place_id=ChIJe24tZgCLGGARcS--k-ScZFs", "a": "Ginza", "g": [35.67214, 139.76229]}], "g": [35.67401, 139.76434]}, {"n": "Usagi", "a": "Shibuya", "x": 2, "t": "Harajuku. Halal-okonomiyaki, som er sjældent. Kun frokost, til kl. 17.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20wagyu%20okonomiyaki%26ramen%20usagi&query_place_id=ChIJvWgunVmNGGARbOWxtEdX5NY", "b": [], "g": [35.67275, 139.70392]}, {"n": "Gohan Cafe", "a": "Shibuya", "x": 2, "t": "Halal-certificerede japanske måltider lige ved Shibuya-krydset.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Gohan%20Cafe&query_place_id=ChIJebdmGqiMGGAR6q20kh1FwLM", "b": [], "g": [35.6602, 139.70052]}, {"n": "Gonpachi Nishi-Azabu", "a": "Roppongi & Ebisu", "x": 2, "t": "Det store gamle izakaya, der inspirerede Kill Bill. Har en halal-menu; spørg efter den. Der serveres alkohol. Åbent til kl. 3.30.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Gonpachi%20Nishi-Azabu&query_place_id=ChIJEwlemnqLGGARhwMuRpwpkBI", "b": [], "g": [35.66017, 139.72358]}, {"n": "Yoshiya", "a": "Shinjuku", "x": 2, "t": "Måltider i Kyoto-stil under Shinjuku station. Spørg efter halal-menuen.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Yoshiya%20Shinjuku%20branch&query_place_id=ChIJ6Svb3NCMGGARUzYAO-VBBDQ", "b": [], "g": [35.69196, 139.69971]}, {"n": "Tokitarazu", "a": "Roppongi & Ebisu", "x": 2, "t": "Hiroo. Japansk café med halal-mærket menu. Der serveres alkohol.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Tokitarazu%20Ebisu&query_place_id=ChIJU_GMx2yLGGARUhqC9E86_7Q", "b": [], "g": [35.64856, 139.71374]}, {"n": "Sekai Cafe Oshiage", "a": "Andre steder", "x": 1, "t": "Ved Tokyo Skytree. Halal-karry for ca. ¥850 og bederum.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=SEKAI%20CAFE%20OSHIAGE&query_place_id=ChIJT9kgetaOGGARBAX1B5Om8A4", "b": [], "g": [35.70917, 139.81177]}, {"n": "Yoshi's Passion", "a": "Asakusa", "x": 2, "t": "Familiedrevet sted med halal japansk karry og sprød kyllingeschnitzel.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Japanese%20Curry%20Yoshi%27s%20Passion&query_place_id=ChIJhcYiIYePGGARiWBpges41k8", "b": [], "g": [35.71677, 139.79665]}, {"n": "Nikoniko", "a": "Akihabara", "x": 1, "t": "Billig, hjemlig katsu-karry og karaage-skåle. Tag kontanter med.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Nikoniko%20mazemen%20Akihabara&query_place_id=ChIJA_VeYVCPGGAREHZYji0Bk60", "b": [], "g": [35.69624, 139.77374]}, {"n": "Wagyu Halal Japanese Food", "a": "Shinjuku", "x": 3, "t": "Wagyu-risskåle og en burger, der brændes af ved bordet. Bedeplads, åbent til kl. 1.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Halal%20Japanese%20Food%20Shinjuku%20Restaurant&query_place_id=ChIJpW5UkdCNGGAR_6nme_lNyHQ", "b": [], "g": [35.69237, 139.70899]}, {"n": "Shinshu Sojibo", "a": "Andre steder", "x": 2, "t": "Odaiba (DiverCity-centeret). Halal-certificeret soba; blandede anmeldelser.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Shinshu%20Sojibo%20DiverCity%20Tokyo%20Plaza&query_place_id=ChIJeZjTLviJGGARZFbkjoWK8b4", "b": [], "g": [35.62495, 139.77498]}, {"n": "Issho Ueno", "a": "Ueno", "x": 2, "t": "Izakaya med miso-oksegryde og grillet okse, beskrevet som halal-venligt. Der serveres alkohol; spørg hvilke retter er halal.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Issho%20Ueno&query_place_id=ChIJD1issJ6OGGAR4v6kzprNE_E", "b": [], "g": [35.71261, 139.77745]}]}, {"name": "Wagyu-burgere", "intro": "Tokyos halal wagyu-burgere er et måltid værd.", "items": [{"n": "Halal Burger Ueno", "a": "Ueno", "x": 2, "t": "4,9 fra over 2.000 anmeldelser. Burgere med wagyu-bøf; åbner kl. 10.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Burger%20Ueno&query_place_id=ChIJSaNBXACPGGARsHNeeKDvufM", "b": [], "g": [35.70749, 139.77905]}, {"n": "Gyumon A5 Burger", "a": "Shibuya", "x": 2, "t": "Dobbelte cheeseburgere med A5-wagyu.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=A5%20Wagyu%20Burger%20GYUMON%20Tokyo%20Shibuya%20Scramble%20%28Halal%20%26%20Vegan%20Options%29&query_place_id=ChIJYzmEqtWNGGARlAQgZygwHoc", "b": [{"l": "Shinjuku østudgang", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Burger%20GYUMON%20Tokyo%20Shinjuku%20East%20Exit%20%28Halal%20%26%20Vegan%20Options%29&query_place_id=ChIJ1_G6jYuNGGARIUlpn_LVW1A", "a": "Shinjuku", "g": [35.69061, 139.7028]}], "g": [35.66021, 139.69936]}, {"n": "Luxe Burgers", "a": "Andre steder", "x": 2, "t": "Ningyocho. Halal og veganske retter, med en lille gratis dessert.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=LUXE%20BURGERS%20NINGYOCHO&query_place_id=ChIJWWy_RX6JGGAR71PYLlGvW-0", "b": [], "g": [35.68703, 139.77823]}, {"n": "5W-Tokyo", "a": "Akihabara", "x": 3, "t": "Wagyu-trøffelburgere og bøfmenuer. Dyrt, og anmeldelserne er delte.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Japanese%20food%20Wagyu%20Restaurant%20%28Halal%29%20Steak%26Burger-Ramen%205W-Tokyo%20AkihabaraUeno%20Beef%20Dining&query_place_id=ChIJV8EJyvWPGGARHWJnaCZRpqY", "b": [{"l": "Harajuku", "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20%28Halal%29%20Steak%20HamBurger%20%26%20Ramen%20%28Japanese%20food%29%20Harajuku%20Shibuya%20Restaurant%205W-Tokyo%201962&query_place_id=ChIJXbmU8UGNGGARXX5B4fnBvZg", "a": "Shibuya", "g": [35.67034, 139.7058]}], "g": [35.70263, 139.7781]}, {"n": "Grill Hunter", "a": "Andre steder", "x": 2, "t": "Gotanda. Billige wagyu-smashburgere.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Grill%20Hunter%20Gotanda%20Halal&query_place_id=ChIJewOA3eWLGGARjBFSg5FAUks", "b": [], "g": [35.62584, 139.72596]}]}, {"name": "Matcha & snacks", "intro": "", "items": [{"n": "Ohina Café", "a": "Shibuya", "x": 2, "t": "Harajuku. Pisk din egen matcha; prøv også jordbær-matcha.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E9%9B%9B%E3%82%AB%E3%83%95%E3%82%A7%E6%8A%B9%E8%8C%B6%E5%8E%9F%E5%AE%BF%20Harajuku%20Ohina%20caf%C3%A9%20Matcha%20halal&query_place_id=ChIJ_dVcdkqNGGARot2V06uNHaw", "b": [], "g": [35.6707, 139.70572]}, {"n": "Matcha Times", "a": "Asakusa", "x": 1, "t": "Fremragende matcha-latte ved Kaminarimon, beskrevet som halal-venligt.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=MATCHA%20TIMES%20Asakusa&query_place_id=ChIJqTlo7dmPGGARqTuIqtcZ_Nc", "b": [], "g": [35.71042, 139.79255]}, {"n": "HALAL-YA", "a": "Asakusa", "x": 2, "t": "En hel butik med halal japanske snacks og souvenirs, gratis smagsprøver og bedeplads. Åbent kl. 11–17.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=HALAL-YA%20ASAKUSA%20FLAGSHIP%20STORE%20/%20Japanese%20halal%20souvenir%20store&query_place_id=ChIJS-MyTmKPGGAREt7RuNgboRs", "b": [], "g": [35.71151, 139.79288]}]}], "splurge": [{"n": "Diyafa", "a": "Roppongi & Ebisu", "x": "Wagyu-sukiyaki", "t": "Nær Tokyo Tower. Personalet guider dig gennem sukiyakien og lærer dig bagefter at lave matcha. Weekender kun aften.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20SUKIYAKI%20Restaurant%20Diyafa&query_place_id=ChIJf-uQ4yuLGGARr79SKl1J35E", "b": [], "g": [35.65166, 139.75115]}, {"n": "Tempura Asakusa Sakura", "a": "Asakusa", "x": "Tempura-omakase", "t": "Kun 10 pladser, wagyu-tempura, helt glutenfrit. Book i forvejen.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Tempura%20Asakusa%20SAKURA&query_place_id=ChIJWUVY-DuPGGAR0KRSemNJ6rk", "b": [], "g": [35.7102, 139.79672]}, {"n": "Tokyo Omakase Sushi Wagyu", "a": "Shinjuku", "x": "Sushi-omakase", "t": "Halal sushi- og wagyu-menuer; de tilbereder fisken, hvis du ikke spiser den rå.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Omakase%20Sushi%20Wagyu%20%28Halal%29%20Shinjuku%20Restaurant%20%E6%96%B0%E5%AE%BF%E5%AF%BF%E5%8F%B8%E5%92%8C%E7%89%9B%E9%A4%90%E5%8E%85&query_place_id=ChIJa1L36RWNGGARjNNhF0vzgjE", "b": [{"l": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Omakase%20Sushi%20%26%20Wagyu%20%28Halal%29%20Asakusa%20Kimono%20Experience%20Restaurant&query_place_id=ChIJl9aitWmPGGAR7CcObngUCRI", "a": "Asakusa", "g": [35.7165, 139.7985]}], "g": [35.69103, 139.70599]}, {"n": "Ninja Yakiniku", "a": "Asakusa", "x": "Wagyu-yakiniku", "t": "7. sal i Asakusa med udsigt til Skytree.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Ninja%20Yakiniku%20Halal%20Wagyu%20Restaurant%20Asakusa&query_place_id=ChIJlbLC7QWPGGARkOP4XUG8IQo", "b": [], "g": [35.7117, 139.79465]}, {"n": "Ginza The Emperor", "a": "Ginza", "x": "Kobe-okse-yakiniku", "t": "Elegante bordgrill med Kobe-okse. Hverdage kun aften.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=GINZA%20THE%20EMPEROR&query_place_id=ChIJNYPKwQWLGGARmtmkF5Owbs8", "b": [], "g": [35.66923, 139.76146]}, {"n": "Ushizaka", "a": "Roppongi & Ebisu", "x": "Wagyu-yakiniku", "t": "Nishi-Azabu. Noget af Tokyos bedste kød; reserver bord.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Yakiniku%20Ushizaka%20Halal&query_place_id=ChIJazDfTXCLGGAR1__c1AdnB5g", "b": [], "g": [35.65775, 139.72361]}, {"n": "Satsuma Roppongi", "a": "Roppongi & Ebisu", "x": "Wagyu-bøf", "t": "Halal wagyu-bøf, åbent kl. 18–8.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Satsuma%20Roppongi&query_place_id=ChIJ2x_u4bOLGGAREPk4BinYZYc", "b": [], "g": [35.66231, 139.7329]}, {"n": "Tenderloin", "a": "Ginza", "x": "Wagyu-bøf", "t": "Lille bøfhus i Ginza, åbent til kl. 6 på hverdage.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=TENDERLOIN&query_place_id=ChIJ7a7_wcGLGGARE-Ag7Y24LHE", "b": [], "g": [35.66758, 139.76201]}, {"n": "Kobe Beef Steak Omakase", "a": "Shinjuku", "x": "Kobe-okse", "t": "Menuer med Kobe-wagyu-bøf i Shinjuku.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Steak%20Kobe%20Beef%20Halal%20Shinjuku%20Omakase%20Restaurant%20%E6%96%B0%E5%AE%BF%E5%92%8C%E7%89%9B%E9%A4%90%E5%8E%85&query_place_id=ChIJOY6yfRGNGGARvZ9-8lXEGe4", "b": [], "g": [35.69098, 139.70596]}], "try": [{"id": "yakiniku", "n": "A5-wagyu-yakiniku", "j": "焼肉", "t": "Grill selv tynde skiver marmoreret A5-wagyu ved bordet. Et par sekunder på hver side er nok; fedtet smelter, mens det steger.", "w": [{"l": "Panga", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Panga&query_place_id=ChIJ9bFAjKSOGGARqsl1Ru2ZQs0"}, {"l": "Gyumon Yakiniku", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Gyumon%20Shibuya&query_place_id=ChIJSzG_eFyLGGARQFPb6kRJLv8"}, {"l": "Ushizaka (luksus)", "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Yakiniku%20Ushizaka%20Halal&query_place_id=ChIJazDfTXCLGGAR1__c1AdnB5g"}], "p": "https://www.google.com/search?tbm=isch&q=A5+wagyu+yakiniku+grill"}, {"id": "sukiyaki", "n": "Wagyu-sukiyaki", "j": "すき焼き", "t": "Wagyu, der simrer ved bordet i sød sojabouillon med tofu og grøntsager og dyppes i pisket råt æg. Bed om det uden æg, hvis du foretrækker det.", "w": [{"l": "Panga Sukiyaki", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Sukiyaki%20Asakusa%20PANGA%20%7C%20Tokyo%20Halal%20restaurant&query_place_id=ChIJ3c8QKJKPGGARLncbWf3NpVc"}, {"l": "Diyafa", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20SUKIYAKI%20Restaurant%20Diyafa&query_place_id=ChIJf-uQ4yuLGGARr79SKl1J35E"}], "p": "https://www.google.com/search?tbm=isch&q=wagyu+sukiyaki"}, {"id": "sushi", "n": "Sushi ved disken", "j": "寿司", "t": "Kokken former hvert stykke nigiri og rækker det direkte til dig. Spis det i én bid med fisken nedad mod tungen.", "w": [{"l": "Asakusa Sushi Ken", "u": "https://www.google.com/maps/search/?api=1&query=Asakusa%20Sushi%20Ken&query_place_id=ChIJIUaZ8r-OGGARXpS8mbCSof8"}, {"l": "Tokyo Sushi Bowl (chirashi)", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20sushi%20bowl&query_place_id=ChIJa08ZHmGPGGARyyvBjn_Tee4"}, {"l": "Tokyo Omakase (luksus)", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Omakase%20Sushi%20Wagyu%20%28Halal%29%20Shinjuku%20Restaurant%20%E6%96%B0%E5%AE%BF%E5%AF%BF%E5%8F%B8%E5%92%8C%E7%89%9B%E9%A4%90%E5%8E%85&query_place_id=ChIJa1L36RWNGGARjNNhF0vzgjE"}], "p": "https://www.google.com/search?tbm=isch&q=nigiri+sushi+counter+Tokyo"}, {"id": "gyukatsu", "n": "Wagyu-gyukatsu", "j": "牛カツ", "t": "Paneret wagyu, stegt under et minut, så den er rød indeni. Du steger selv hver skive færdig på en lille varm sten.", "w": [{"l": "Gyumon Kaminarimon", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20%26%20Gyukatsu%20GYUMON%20Tokyo%20Asakusa%20Kaminarimon&query_place_id=ChIJAV9IcxaPGGAREiV_GKbVB9Q"}, {"l": "Shunpudou", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20%26%20BEEF%20CUTLET%20SHUNPUDOU%20%E6%98%A5%E9%A2%A8%E5%A0%82&query_place_id=ChIJrTTMInCPGGAR1XfX02rt-fs"}], "p": "https://www.google.com/search?tbm=isch&q=gyukatsu+hot+stone"}, {"id": "ramen", "n": "Halal wagyu-ramen", "j": "ラーメン", "t": "Fyldig okse- eller kyllingebouillon med wagyu-skiver på toppen. At slubre er helt normalt og høfligt.", "w": [{"l": "Shinjuku-tei", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Tokyo%20Shinjuku&query_place_id=ChIJ8WQHFoqNGGARpc767pcSol8"}, {"l": "Gyumon", "u": "https://www.google.com/maps/search/?api=1&query=Gyumon%20Halal%20Wagyu%20Ramen%20Shibuya&query_place_id=ChIJ_-R_mUGLGGARDfQ8ATZZ4w0"}, {"l": "Honolu", "u": "https://www.google.com/maps/search/?api=1&query=Honolu%27s%20Wagyu%20Udon%20%26%20Ramen%20Halal%20%D8%AD%D9%84%D8%A7%D9%84%20Asakusa&query_place_id=ChIJyYGQwWuPGGARqQVPSpPB6mo"}], "p": "https://www.google.com/search?tbm=isch&q=wagyu+ramen+bowl"}, {"id": "udon", "n": "Wagyu-udon", "j": "うどん", "t": "Tykke, seje hvedenudler i en lettere bouillon. En god afveksling fra ramen.", "w": [{"l": "Honolu Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Honolu%27s%20Wagyu%20Udon%20%26%20Ramen%20Halal%20%D8%AD%D9%84%D8%A7%D9%84%20Asakusa&query_place_id=ChIJyYGQwWuPGGARqQVPSpPB6mo"}], "p": "https://www.google.com/search?tbm=isch&q=wagyu+udon"}, {"id": "tempura", "n": "Tempura & tendon", "j": "天ぷら", "t": "Rejer og grøntsager i en fjerlet dej. Tendon lægger det på ris med sød sauce; omakase serverer hvert stykke lige fra olien.", "w": [{"l": "Tendon Itsuki", "u": "https://www.google.com/maps/search/?api=1&query=Tendon%20Itsuki%20Ginza&query_place_id=ChIJRZGCCOWLGGARTbuL5FrsFcM"}, {"l": "Tempura Asakusa Sakura", "u": "https://www.google.com/maps/search/?api=1&query=Tempura%20Asakusa%20SAKURA&query_place_id=ChIJWUVY-DuPGGAR0KRSemNJ6rk"}], "p": "https://www.google.com/search?tbm=isch&q=tendon+tempura+rice+bowl"}, {"id": "shabu", "n": "Shabu-shabu", "j": "しゃぶしゃぶ", "t": "Svip en tynd skive wagyu gennem den simrende bouillon i et par sekunder, og dyp den i sesam- eller ponzusauce.", "w": [{"l": "Shoutaian (spis alt du kan)", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20Wagyu%20ShabuShabu%20SHOUTAIAN&query_place_id=ChIJPVFZg8GNGGAR2Rjf6vxp2mE"}], "p": "https://www.google.com/search?tbm=isch&q=wagyu+shabu+shabu"}, {"id": "okonomiyaki", "n": "Okonomiyaki", "j": "お好み焼き", "t": "En tyk, salt kålpandekage med sød sauce, mayo og dansende bonitoflager på toppen.", "w": [{"l": "Usagi", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20wagyu%20okonomiyaki%26ramen%20usagi&query_place_id=ChIJvWgunVmNGGARbOWxtEdX5NY"}], "p": "https://www.google.com/search?tbm=isch&q=okonomiyaki"}, {"id": "takoyaki", "n": "Takoyaki", "j": "たこ焼き", "t": "Sprøde dejkugler med blæksprutte indeni, Osakas yndlingsgadesnack. Brandvarme i midten, så vent et øjeblik.", "w": [{"l": "Ushibon", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Beef%20bone%20ramen%20Ushibon%20Asakusa/%E7%89%9B%E9%AA%A8%E3%83%A9%E3%83%BC%E3%83%A1%E3%83%B3%20%E3%81%86%E3%81%97%E3%81%BC%E3%83%BC%E3%82%93%20%E6%B5%85%E8%8D%89&query_place_id=ChIJpTsAs3KPGGARd48JqPOyito"}], "p": "https://www.google.com/search?tbm=isch&q=takoyaki"}, {"id": "curry", "n": "Japansk karry & katsu", "j": "カレー", "t": "Tyk, mild, let sødlig karry over ris med en sprød schnitzel. Japansk trøstemad.", "w": [{"l": "Yoshi's Passion", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Japanese%20Curry%20Yoshi%27s%20Passion&query_place_id=ChIJhcYiIYePGGARiWBpges41k8"}, {"l": "Nikoniko", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Nikoniko%20mazemen%20Akihabara&query_place_id=ChIJA_VeYVCPGGAREHZYji0Bk60"}, {"l": "Sekai Cafe", "u": "https://www.google.com/maps/search/?api=1&query=SEKAI%20CAFE%20OSHIAGE&query_place_id=ChIJT9kgetaOGGARBAX1B5Om8A4"}], "p": "https://www.google.com/search?tbm=isch&q=japanese+katsu+curry"}, {"id": "teishoku", "n": "Teishoku-måltid", "j": "定食", "t": "Det japanske hverdagsmåltid: en hovedret med ris, misosuppe og små syltede grøntsager på én bakke.", "w": [{"l": "Gohan Cafe", "u": "https://www.google.com/maps/search/?api=1&query=Gohan%20Cafe&query_place_id=ChIJebdmGqiMGGAR6q20kh1FwLM"}, {"l": "Yoshiya", "u": "https://www.google.com/maps/search/?api=1&query=Yoshiya%20Shinjuku%20branch&query_place_id=ChIJ6Svb3NCMGGARUzYAO-VBBDQ"}], "p": "https://www.google.com/search?tbm=isch&q=teishoku+set+meal"}, {"id": "matcha", "n": "Pisk din egen matcha", "j": "抹茶", "t": "Lær at piske grøn te-pulver til en skummende skål med et bambuspiskeris, som regel med en lille sød sag til.", "w": [{"l": "Ohina Café", "u": "https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E9%9B%9B%E3%82%AB%E3%83%95%E3%82%A7%E6%8A%B9%E8%8C%B6%E5%8E%9F%E5%AE%BF%20Harajuku%20Ohina%20caf%C3%A9%20Matcha%20halal&query_place_id=ChIJ_dVcdkqNGGARot2V06uNHaw"}, {"l": "Diyafa", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20SUKIYAKI%20Restaurant%20Diyafa&query_place_id=ChIJf-uQ4yuLGGARr79SKl1J35E"}, {"l": "Tokyo Sushi Bowl", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20sushi%20bowl&query_place_id=ChIJa08ZHmGPGGARyyvBjn_Tee4"}], "p": "https://www.google.com/search?tbm=isch&q=matcha+whisking+chasen"}, {"id": "izakaya", "n": "Kill Bill-izakayaen", "j": "居酒屋", "t": "Gonpachis store træhal inspirerede kampscenen i Kill Bill. Spørg efter halal-menuen; andre gæster drikker alkohol.", "w": [{"l": "Gonpachi Nishi-Azabu", "u": "https://www.google.com/maps/search/?api=1&query=Gonpachi%20Nishi-Azabu&query_place_id=ChIJEwlemnqLGGARhwMuRpwpkBI"}], "p": "https://www.google.com/search?tbm=isch&q=Gonpachi+Nishi-Azabu+interior"}, {"id": "snacks", "n": "Halal japanske snacks", "j": "お菓子", "t": "Mochi, matcha-småkager og instant-ramen, du faktisk kan spise, med gratis smagsprøver. Også gode som souvenirs.", "w": [{"l": "HALAL-YA Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=HALAL-YA%20ASAKUSA%20FLAGSHIP%20STORE%20/%20Japanese%20halal%20souvenir%20store&query_place_id=ChIJS-MyTmKPGGAREt7RuNgboRs"}], "p": "https://www.google.com/search?tbm=isch&q=Japanese+mochi+snacks"}], "see": [{"n": "Tokyo Metropolitan Government Building", "a": "Shinjuku", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Metropolitan%20Government%20Building%20North%20Observation%20Deck&query_place_id=ChIJnctryNSMGGARLv4MknPFseU", "g": [35.68973, 139.69166], "t": "Gratis udsigt over hele Tokyo fra 45. sal, og på en klar dag kan man se Fuji-bjerget. Om aftenen er der lysshow på facaden.", "tip": "Der er to udsigtsdæk; det nordlige har lukket mandag, det sydlige tirsdag.", "p": "https://www.google.com/search?tbm=isch&q=Tokyo+Metropolitan+Government+Building+observation+deck+night", "x": [], "far": ""}, {"n": "Shinjuku Gyoen", "a": "Shinjuku", "u": "https://www.google.com/maps/search/?api=1&query=Shinjuku%20Gyoen%20National%20Garden&query_place_id=ChIJPyOTG8KMGGARh_IXobWxHmo", "g": [35.68518, 139.71005], "t": "En kæmpe park midt i byen med japansk have, damme og store græsplæner. Et roligt pusterum mellem storbydagene.", "tip": "Entré ca. ¥500. Lukket mandag, åbent til kl. 16.30.", "p": "https://www.google.com/search?tbm=isch&q=Shinjuku+Gyoen+garden", "x": [], "far": ""}, {"n": "Shibuya Crossing & Shibuya Sky", "a": "Shibuya", "u": "https://www.google.com/maps/search/?api=1&query=Shibuya%20Sky&query_place_id=ChIJ4Rr2JWiLGGARcyRSHuZ-9G8", "g": [35.65867, 139.70198], "t": "Verdens mest berømte fodgængerfelt, og lige over det udsigten fra taget af Shibuya Scramble Square.", "tip": "Book Shibuya Sky i god tid, især ved solnedgang, som tit er udsolgt.", "p": "https://www.google.com/search?tbm=isch&q=Shibuya+Sky+rooftop+view", "x": [{"l": "Shibuya Crossing", "u": "https://www.google.com/maps/search/?api=1&query=Shibuya%20Scramble%20Crossing&query_place_id=ChIJK9EM68qLGGARacmu4KJj5SA"}], "far": ""}, {"n": "Nintendo TOKYO", "a": "Shibuya", "u": "https://www.google.com/maps/search/?api=1&query=Nintendo%20Tokyo%20Shibuya%20Japan&query_place_id=ChIJ7Su1FK6NGGARAr7UK5NjmMo", "g": [35.66212, 139.69864], "t": "Nintendos egen butik på 6. sal i Shibuya PARCO, med Mario, Zelda og Animal Crossing-ting, du ikke finder andre steder. Super Nintendo World-forlystelsesparken ligger i Osaka, ikke i Tokyo.", "tip": "Kom tidligt; der kan være kø. Åbent kl. 10–21.", "p": "https://www.google.com/search?tbm=isch&q=Nintendo+Tokyo+store+Shibuya+Parco", "x": [], "far": ""}, {"n": "Meiji Jingu & Takeshita Street", "a": "Harajuku", "u": "https://www.google.com/maps/search/?api=1&query=Meiji%20Jingu&query_place_id=ChIJ5SZMmreMGGARcz8QSTiJyo8", "g": [35.6764, 139.69933], "t": "En stille skov med Tokyos store shinto-helligdom, og lige ved siden af den farverige, larmende Takeshita-gade i Harajuku.", "tip": "Gå gennem skoven først om morgenen, og tag Takeshita-gaden bagefter.", "p": "https://www.google.com/search?tbm=isch&q=Meiji+Jingu+forest+torii", "x": [{"l": "Takeshita Street", "u": "https://www.google.com/maps/search/?api=1&query=Takeshita%20Street&query_place_id=ChIJlVne8bqMGGARtX5O6ojMvsI"}], "far": ""}, {"n": "Senso-ji & Nakamise", "a": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Sens%C5%8D-ji&query_place_id=ChIJ8T1GpMGOGGARDYGSgpooDWw", "g": [35.71477, 139.79666], "t": "Tokyos ældste tempel med den store røde lanterne ved Kaminarimon-porten og en gade fuld af små boder.", "tip": "Kom tidligt om morgenen eller efter mørkets frembrud, hvor der er færre mennesker og templet er oplyst.", "p": "https://www.google.com/search?tbm=isch&q=Senso-ji+Kaminarimon+lantern", "x": [], "far": ""}, {"n": "Tokyo Skytree", "a": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Skytree&query_place_id=ChIJ35ov0dCOGGARKvdDH7NPHX0", "g": [35.71006, 139.8107], "t": "Japans højeste tårn, 634 m, med udsigtsdæk og et stort indkøbscenter nedenunder. Ligger lige over floden fra Asakusa.", "tip": "Køb billet på nettet og kom ved solnedgang, så ser du byen både i dagslys og oplyst.", "p": "https://www.google.com/search?tbm=isch&q=Tokyo+Skytree+view+sunset", "x": [], "far": ""}, {"n": "Akihabara", "a": "Akihabara", "u": "https://www.google.com/maps/search/?api=1&query=Yodobashi%20Akiba%20camera&query_place_id=ChIJGU_M2aeOGGARdnOLcMYXuXs", "g": [35.69892, 139.7748], "t": "Elektronikkens og spillenes bydel: kæmpe elektronikvarehuse, retrospil, anime og arkadehaller på mange etager.", "tip": "Yodobashi Akiba har det hele. Tag pas med: køber du for over 5.000 ¥ i én butik, får du momsen tilbage i lufthavnen ved hjemrejsen.", "p": "https://www.google.com/search?tbm=isch&q=Akihabara+electric+town+night", "x": [{"l": "Akihabara Electric Town", "u": "https://www.google.com/maps/search/?api=1&query=Akihabara%20Electric%20Town&query_place_id=ChIJzdWdgh2MGGARh4kg2pVZL3c"}], "far": ""}, {"n": "Street Kart", "a": "Akihabara", "u": "https://www.google.com/maps/search/?api=1&query=STREET%20KART%20Akihabara%201st&query_place_id=ChIJLd04UqeOGGARzsZZCZulARc", "g": [35.70246, 139.77349], "t": "Kør gokart i kostume gennem Tokyos gader, forbi Tokyo Tower og over Rainbow Bridge, med en guide forrest.", "tip": "Kræver pas og internationalt kørekort (fås hos FDM), som du skal have med hjemmefra.", "p": "https://www.google.com/search?tbm=isch&q=Street+Kart+Tokyo+go+kart", "x": [], "far": ""}, {"n": "Ameyoko", "a": "Ueno", "u": "https://www.google.com/maps/search/?api=1&query=Ameyoko%20market&query_place_id=ChIJh7eDrwCPGGARCs9fpCkKS2U", "g": [35.71007, 139.7746], "t": "Livlig markedsgade under togbanen ved Ueno med snacks, tøj, sneakers og billige souvenirs. Der er flere halal-butikker.", "tip": "Kombinér med Ueno-parken og et halal-ramenstop i Okachimachi.", "p": "https://www.google.com/search?tbm=isch&q=Ameyoko+market+Ueno", "x": [], "far": ""}, {"n": "Tsukiji Outer Market", "a": "Ginza", "u": "https://www.google.com/maps/search/?api=1&query=Fish%20Market%20Tsukiji%20Outer%20Market&query_place_id=ChIJW2cLzSGLGGARXAKXv6EkbqI", "g": [35.66477, 139.77025], "t": "Smalle gader med fisk, skaldyr, knive og matcha. Fisk og skaldyr er det sikreste valg; boderne er ikke halal-certificerede.", "tip": "Kom kl. 7–8, før de store mængder, og hav kontanter med.", "p": "https://www.google.com/search?tbm=isch&q=Tsukiji+outer+market+stalls", "x": [], "far": ""}, {"n": "Tokyo Tower", "a": "Roppongi & Ebisu", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Tower&query_place_id=ChIJCewJkL2LGGAR3Qmk0vCTGkg", "g": [35.65858, 139.74543], "t": "Det røde og hvide klassiske tårn fra 1958 med udsigt over centrum. Smukkest oplyst om aftenen.", "tip": "Åbent til kl. 23. Diyafa med halal-sukiyaki ligger ca. 15 min. til fods.", "p": "https://www.google.com/search?tbm=isch&q=Tokyo+Tower+night", "x": [], "far": ""}, {"n": "teamLab Borderless", "a": "Roppongi & Ebisu", "u": "https://www.google.com/maps/search/?api=1&query=teamLab%20Borderless%3A%20MORI%20Building%20DIGITAL%20ART%20MUSEUM&query_place_id=ChIJQ5Sa1PqJGGARUSaNKKOrMVg", "g": [35.66207, 139.74327], "t": "Digital kunst, du går rundt inde i: rum der hele tiden forandrer sig. Ligger i Azabudai Hills.", "tip": "Book billet med tidspunkt i forvejen og regn med 2–3 timer.", "p": "https://www.google.com/search?tbm=isch&q=teamLab+Borderless+Azabudai", "x": [], "far": ""}, {"n": "teamLab Planets", "a": "Andre steder", "u": "https://www.google.com/maps/search/?api=1&query=teamLab%20Planets%20TOKYO%20DMM&query_place_id=ChIJSeco5wiJGGARItbTS8lQ5G0", "g": [35.64912, 139.78977], "t": "Du går barfodet gennem vand og lys i en af Tokyos mest populære oplevelser. Ligger i Toyosu.", "tip": "Udsolgt længe i forvejen, så book tidligt. Tag shorts eller bukser, der kan rulles op.", "p": "https://www.google.com/search?tbm=isch&q=teamLab+Planets+water+room", "x": [], "far": "Ingen af stederne ligger i gåafstand. Spis i Tsukiji eller Ginza før eller efter; det er en kort taxatur."}, {"n": "Pokémon Center Mega Tokyo", "a": "Ikebukuro", "u": "https://www.google.com/maps/search/?api=1&query=Pok%C3%A9mon%20Center%20Mega%20Tokyo%20%26%20Pikachu%20Sweets&query_place_id=ChIJJWdNBG-NGGARVcT12Z5mXFw", "g": [35.72891, 139.71932], "t": "Det største Pokémon Center med en hel etage af bamser, kort og ting, der kun sælges i Japan. I Sunshine City.", "tip": "Mindre trængsel end Shibuya-butikken. Åbent kl. 10–20.", "p": "https://www.google.com/search?tbm=isch&q=Pokemon+Center+Mega+Tokyo", "x": [], "far": ""}, {"n": "Ghibli Museum", "a": "Andre steder", "u": "https://www.google.com/maps/search/?api=1&query=Ghibli%20Museum&query_place_id=ChIJLYwD5TTuGGARBZKEP5BV4U0", "g": [35.69624, 139.57043], "t": "Studio Ghiblis eget museum i Mitaka, som at træde ind i en af filmene, med en kortfilm, man kun kan se her.", "tip": "Billetter sælges kun på forhånd og bliver udsolgt; køb dem en måned før. Lukket tirsdag.", "p": "https://www.google.com/search?tbm=isch&q=Ghibli+Museum+Mitaka", "x": [], "far": "Mitaka ligger langt ude, uden halal-steder fra listen. Spis i Shinjuku før eller efter; der er ca. 20 min. med JR Chuo-linjen."}]};
 const GPS = true && "geolocation" in navigator;
 const ICONS = {
  yakiniku:'<circle cx="32" cy="35" r="21"/><path d="M14 29h36M11 35h42M14 41h36"/><path class="f" d="M20 24l14-4 3 7-14 4z"/><path class="f" d="M33 37l13-3 2 7-13 3z"/><path d="M28 6c-2 3 2 5 0 8M36 6c-2 3 2 5 0 8"/>',
@@ -354,15 +396,19 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 };
 
-let tab = "eat", mode = "dish", area = "All", mustOnly = false, originIdx = GPS ? -2 : -1, custom = null;
+const TABS = ["eat", "see", "talk"], MODES = ["near", "dish", "try"];
+let tab = store.get("tokyo-tab"), mode = store.get("tokyo-mode"), dish = "All", area = "All", mustOnly = false, originIdx = GPS ? -2 : -1, custom = null;
+const modeChosen = MODES.includes(mode);
+if (!TABS.includes(tab)) tab = "eat";
+if (!modeChosen) mode = "dish";
 let gps = null, gpsState = "idle", gpsWatch = null;
 try {
   const h = location.hash.slice(1);
-  if (h === "try") tab = "try";
+  if (h === "try") { tab = "eat"; mode = "try"; }
   else if (h === "sevaerdigheder") tab = "see";
   else if (h === "parlor") tab = "talk";
-  else if (h === "nearest") mode = "near";
-  else { const m = AREAS.find(a => slug(a) === h); if (m) area = m; }
+  else if (h === "nearest") { tab = "eat"; mode = "near"; }
+  else { const m = AREAS.find(a => slug(a) === h); if (m) { tab = "eat"; mode = "dish"; area = m; } }
 } catch (e) {}
 try {
   const c = JSON.parse(store.get("hte-custom") || "null");
@@ -386,36 +432,38 @@ function distLabel(d) {
 }
 
 /* ---------- By dish ---------- */
+const PIN = '<svg class="pin" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.4 12 21 12 21Z"/><circle cx="12" cy="10.5" r="2.3"/></svg>';
+const star = m => m ? ' <span class="must" title="Et must" aria-label="et must">★</span>' : "";
+function rowHTML(u, name, sub, m, meta, note, extra) {
+  return `<li class="item"><a class="row" href="${u}" target="_blank" rel="noopener"><span class="rowMain"><span class="name">${esc(name)}${sub ? ` <small>· ${esc(sub)}</small>` : ""}${star(m)}</span><span class="meta">${meta}</span><span class="note">${esc(note)}</span></span>${PIN}</a>${extra || ""}</li>`;
+}
 function itemHTML(it, splurge) {
   const branchHit = area !== "All" && it.a !== area && it.b.some(b => b.a === area);
   const meta = splurge
-    ? `<span class="kind">${esc(it.x)}</span><span class="area">${esc(it.a)}</span>`
-    : `<span class="price" aria-label="prisniveau ${it.x} af 3">${priceHTML(it.x)}</span><span class="area">${esc(it.a)}</span>`;
-  let br = "";
-  if (it.b.length) {
-    const links = it.b.map(b => `<a href="${b.u}" target="_blank" rel="noopener" class="${area !== "All" && b.a === area ? "hit" : ""}">${esc(b.l)}</a>`).join("");
-    br = `<p class="br"><span class="lbl">${branchHit ? "Afdeling her:" : "Også i:"}</span>${links}</p>`;
-  }
-  return `<li class="item"><div class="line1"><a class="name" href="${it.u}" target="_blank" rel="noopener">${esc(it.n)}</a>${it.m ? '<span class="must" title="Et must">★</span>' : ""}<span class="meta">${meta}</span></div><p class="note">${esc(it.t)}</p>${br}</li>`;
+    ? `<span class="kind">${esc(it.x)}</span><span>${esc(it.a)}</span>`
+    : `<span class="price" aria-label="prisniveau ${it.x} af 3">${priceHTML(it.x)}</span><span>${esc(it.a)}</span>`;
+  const pills = list => list.map(b => `<a class="chip" href="${b.u}" target="_blank" rel="noopener">${esc(b.l)}</a>`).join("");
+  /* branches: the ones in the chosen area are shown; the rest fold away behind one line */
+  const here = branchHit ? it.b.filter(b => b.a === area) : [];
+  const rest = it.b.filter(b => !here.includes(b));
+  let br = here.length ? `<div class="br"><span>Afdeling her:</span>${pills(here)}</div>` : "";
+  if (rest.length) br += `<details class="more"><summary>${rest.length === 1 ? "1 afdeling mere" : rest.length + " afdelinger mere"}</summary><div class="br">${pills(rest)}</div></details>`;
+  return rowHTML(it.u, it.n, "", it.m, meta, it.t, br);
 }
 const visible = it => (!mustOnly || it.m) && (area === "All" || it.a === area || it.b.some(b => b.a === area));
-function sectionHTML(name, intro, items, splurge) {
+function sectionHTML(name, items, splurge) {
   const shown = items.filter(visible);
   if (!shown.length) return ["", 0];
-  return [`<section class="cat" id="${slug(name)}"><div class="cat-head"><h2>${esc(name)}</h2></div><ul class="list">${shown.map(i => itemHTML(i, splurge)).join("")}</ul></section>`, shown.length];
+  return [`<section class="cat${splurge ? " lux" : ""}"><h2>${esc(name)}</h2><ul class="list">${shown.map(i => itemHTML(i, splurge)).join("")}</ul></section>`, shown.length];
 }
 function renderDish() {
-  let html = "", total = 0, idx = [];
+  let html = "", total = 0;
   for (const c of DATA.cats) {
-    const [h, n] = sectionHTML(c.name, c.intro, c.items, false);
-    if (n) { html += h; total += n; idx.push(c.name); }
+    if (dish !== "All" && dish !== c.name) continue;
+    const [h, n] = sectionHTML(c.name, c.items, false); html += h; total += n;
   }
-  $("main").innerHTML = html;
-  const [sh, sn] = sectionHTML("Luksus", "Eksklusive halal-måltider til en særlig aften. Book i forvejen.", DATA.splurge, true);
-  $("splurge").innerHTML = sh;
-  $("splurgeBand").hidden = !sn;
-  if (sn) idx.push("Luksus");
-  total += sn;
+  if (dish === "All" || dish === "Luksus") { const [h, n] = sectionHTML("Luksus", DATA.splurge, true); html += h; total += n; }
+  $("list").innerHTML = html;
   $("empty").hidden = !!total;
 }
 
@@ -444,8 +492,12 @@ function originPoint() {
   const o = ORIGINS[originIdx]; return [o[1], o[2]];
 }
 function renderNear() {
-  $("splurgeBand").hidden = true;
   const from = originPoint();
+  const away = originIdx === -2 && from ? km(from, [35.68, 139.76]) : 0;
+  if (away > 80) {
+    $("list").innerHTML = `<p class="pick">Du er ca. ${Math.round(away).toLocaleString("da-DK")} km fra Tokyo, så afstandene giver først mening, når I er der. Vælg en station ovenfor for at se, hvad der ligger tæt på den.</p>`;
+    $("empty").hidden = true; return;
+  }
   if (!from) {
     const msg = originIdx === -2
       ? (gpsState === "denied" ? "Adgang til placering er blokeret for siden. Tillad placering for siden i browserens indstillinger og genindlæs, eller vælg en station ovenfor."
@@ -453,7 +505,7 @@ function renderNear() {
         : "Finder din placering… Tillad adgang, når telefonen spørger.")
       : originIdx === ORIGINS.length ? "Indsæt dit hotels koordinater ovenfor for at sortere efter afstand fra det."
       : "Vælg et udgangspunkt ovenfor. Siden kan ikke se, hvor du er, så vælg stationen tættest på dit hotel, eller indsæt hotellets koordinater.";
-    $("main").innerHTML = `<section class="cat"><p class="pick">${msg}</p></section>`;
+    $("list").innerHTML = `<p class="pick">${msg}</p>`;
     $("empty").hidden = true; return;
   }
   const rows = [];
@@ -467,9 +519,8 @@ function renderNear() {
   rows.forEach(r => r.d = km(from, r.g));
   rows.sort((a, b) => a.d - b.d);
   const top = rows.slice(0, 40);
-  $("main").innerHTML = `<section class="cat"><p class="from">Afstand fra <b>${esc(originName())}</b>${originIdx === -2 ? "" : " <span>(ikke din placering)</span>"}</p><ul class="list">${top.map(r =>
-    `<li class="item"><div class="line1"><a class="name" href="${r.u}" target="_blank" rel="noopener">${esc(r.n)}${r.sub ? ` <small>· ${esc(r.sub)}</small>` : ""}</a>${r.it.m ? '<span class="must" title="Et must">★</span>' : ""}<span class="meta"><span class="dist">${distLabel(r.d)}</span><span class="catTag">${esc(r.cat)}</span></span></div><p class="note">${esc(r.it.t)}</p></li>`
-  ).join("")}</ul></section>`;
+  $("list").innerHTML = `<p class="from">Afstand fra <b>${esc(originName())}</b>${originIdx === -2 ? "" : " <span>(ikke din placering)</span>"}</p><ul class="list">${top.map(r =>
+    rowHTML(r.u, r.n, r.sub, r.it.m, `<span class="dist">${distLabel(r.d)}</span><span>${esc(r.cat)}</span>`, r.it.t)).join("")}</ul>`;
   $("empty").hidden = !!top.length;
 }
 
@@ -492,8 +543,8 @@ function renderSee() {
     const near = spots.map(r => ({ ...r, d: km(s.g, r.g) })).sort((a, b) => a.d - b.d);
     const pick = [], seen = new Set();
     for (const r of near) { if (r.d > 2) break; if (seen.has(r.n)) continue; seen.add(r.n); pick.push(r); if (pick.length === 3) break; }
-    const extra = s.x.map(x => `<a href="${x.u}" target="_blank" rel="noopener">${esc(x.l)} ↗</a>`).join("");
-    return `<article class="see"><div class="top"><h3><a href="${s.u}" target="_blank" rel="noopener">${esc(s.n)}</a></h3><span class="area">${esc(s.a)}</span></div><p>${esc(s.t)}</p><p class="tip"><b>Tip:</b> ${esc(s.tip)}</p><ul class="near"><li class="h">Spis i nærheden</li>${!pick.length ? `<li class="farNote">${esc(s.far || "Ingen halal-steder fra listen i gåafstand.")}</li>` : ""}${pick.map(r => `<li><a href="${r.u}" target="_blank" rel="noopener">${esc(r.n)}${r.sub ? ` <small>· ${esc(r.sub)}</small>` : ""}</a>${r.m ? '<span class="must" title="Et must">★</span>' : ""}<span class="d">${walkLabel(r.d)}</span></li>`).join("")}</ul><div class="links">${extra}<a href="${s.p}" target="_blank" rel="noopener">Se billeder ↗</a></div></article>`;
+    const extra = s.x.map(x => `<a class="btn" href="${x.u}" target="_blank" rel="noopener">${esc(x.l)}</a>`).join("");
+    return `<article class="card"><p class="sub" style="margin:0">${esc(s.a)}</p><h3>${esc(s.n)}</h3><p>${esc(s.t)}</p><p class="tip"><b>Tip:</b> ${esc(s.tip)}</p><span class="lbl">Spis i nærheden</span><div class="near">${!pick.length ? `<p class="farNote">${esc(s.far || "Ingen halal-steder fra listen i gåafstand.")}</p>` : ""}${pick.map(r => `<a class="nrow" href="${r.u}" target="_blank" rel="noopener"><span class="nm">${esc(r.n)}${r.sub ? ` <small>· ${esc(r.sub)}</small>` : ""}${star(r.m)}</span><span class="d">${walkLabel(r.d)}</span></a>`).join("")}</div><div class="acts"><a class="btn primary" href="${s.u}" target="_blank" rel="noopener">${PIN.replace('class="pin"', 'class="pin" style="stroke:currentColor;width:18px;height:18px"')}Vis på kort</a>${extra}<a class="btn" href="${s.p}" target="_blank" rel="noopener">Billeder</a></div></article>`;
   }).join("");
 }
 
@@ -524,6 +575,7 @@ const PHRASES = [
     ["Vi har reserveret bord.", "予約しています。", "Yoyaku shite imasu."],
     ["Hvad anbefaler I?", "おすすめは何ですか？", "Osusume wa nan desu ka?"],
     ["Den her, tak.", "これをお願いします。", "Kore o onegaishimasu."],
+    ["… af den her, tak (antal)", "これを◯つください。", "Kore o … kudasai.", 0, "items"],
     ["Ikke stærk, tak.", "辛くしないでください。", "Karaku shinaide kudasai."],
     ["Vand, tak.", "お水をください。", "Omizu o kudasai."],
     ["Kan vi tage det med?", "持ち帰りできますか？", "Mochikaeri dekimasu ka?", 1],
@@ -534,7 +586,7 @@ const PHRASES = [
   ]],
   ["Indkøb", "", [
     ["Hvad koster det?", "これはいくらですか？", "Kore wa ikura desu ka?"],
-    ["Kan jeg købe det momsfrit?", "免税できますか？", "Menzei dekimasu ka?", 1],
+    ["Kan jeg få tax free?", "免税できますか？", "Menzei dekimasu ka?", 1],
     ["Har I den i en anden størrelse?", "他のサイズはありますか？", "Hoka no saizu wa arimasu ka?", 1],
     ["Jeg kigger bare.", "見ているだけです。", "Mite iru dake desu."],
     ["En pose, tak.", "袋をください。", "Fukuro o kudasai."]
@@ -576,6 +628,131 @@ const HALAL_CARD = {
 const ASK = "下のボタンを押してお答えください。";
 const ANSWERS = [["はい", "Ja"], ["いいえ", "Nej"], ["わかりません", "Ved ikke"]];
 const COUNT_RO = ["", "ichi", "ni", "san", "yon", "go", "roku", "nana", "hachi", "kyū", "jū"];
+const TSU = ["", "hitotsu", "futatsu", "mittsu", "yottsu", "itsutsu", "muttsu", "nanatsu", "yattsu", "kokonotsu"];
+
+/* ---------- Tal, yen og størrelser ---------- */
+const D_RO = ["", "ichi", "ni", "san", "yon", "go", "roku", "nana", "hachi", "kyū"];
+const D_KJ = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+const HYAKU = { 1: "hyaku", 3: "sanbyaku", 6: "roppyaku", 8: "happyaku" };
+const SEN = { 1: "sen", 3: "sanzen", 8: "hassen" };
+/* 1 to 9999 as words; inMan: the group before 万, where 1000 is "issen" */
+function under10k(n, inMan) {
+  const t = Math.floor(n / 1000), h = Math.floor(n / 100) % 10, d = Math.floor(n / 10) % 10, u = n % 10, ro = [];
+  let kj = "";
+  if (t) { ro.push(t === 1 && inMan ? "issen" : SEN[t] || D_RO[t] + "sen"); kj += (t > 1 || inMan ? D_KJ[t] : "") + "千"; }
+  if (h) { ro.push(HYAKU[h] || D_RO[h] + "hyaku"); kj += (h > 1 ? D_KJ[h] : "") + "百"; }
+  if (d || u) { ro.push((d ? (d > 1 ? D_RO[d] : "") + "jū" : "") + D_RO[u]); kj += (d ? (d > 1 ? D_KJ[d] : "") + "十" : "") + D_KJ[u]; }
+  return { ro: ro.join(" "), kj };
+}
+/* a yen amount as it is said and as it is written in kanji: 3500 → sanzen gohyaku en, 三千五百円 */
+function yenWords(n) {
+  const man = Math.floor(n / 10000), rest = n % 10000, ro = [];
+  let kj = "";
+  if (man) { const w = under10k(man, true); ro.push(w.ro + "man"); kj += w.kj + "万"; }
+  if (rest) { const w = under10k(rest, false); ro.push(w.ro); kj += w.kj; }
+  let say = ro.join(" ");
+  if (n % 10 === 4) say = say.replace(/yon$/, "yo");      /* 4 yen is "yo en" */
+  return { ro: say + " en", kj: kj + "円" };
+}
+const fmt = (v, d) => v.toLocaleString("da-DK", { maximumFractionDigits: d });
+let RATE = { r: 0.0424, d: "2026-10-23" };      /* kroner per yen, ECB */
+try { const s = JSON.parse(store.get("tokyo-rate") || "null"); if (s && s.r > 0.01 && s.r < 0.2 && s.d > RATE.d) RATE = s; } catch (e) {}
+function rateLine() {
+  const [y, m, d] = RATE.d.split("-");
+  $("rateLine").textContent = `Kurs: 1 kr = ${fmt(1 / RATE.r, 1)} ¥ (ECB, ${+d}.${+m}.${y}). Dit kort kan lægge et lille gebyr oveni.`;
+}
+function yenSay(n) {
+  const el = $("yenSay");
+  if (!(n >= 1 && n < 1e8)) { el.hidden = true; return; }
+  const w = yenWords(n);
+  el.innerHTML = `Siges: <b>${w.ro}</b> <span class="kj" lang="ja">${w.kj}</span>`;
+  el.hidden = false;
+}
+const yenOf = v => { const n = parseInt(String(v).replace(/\D/g, ""), 10); return isNaN(n) ? NaN : n; };
+function krOf(v) {
+  let t = String(v).replace(/\s|kr/gi, "");
+  if (t.includes(",")) t = t.replace(/\./g, "").replace(",", ".");
+  else if (/\.\d{3}$/.test(t)) t = t.replace(/\./g, "");
+  return parseFloat(t);
+}
+function fromYen(n, setField) {
+  if (setField) $("yenIn").value = isNaN(n) ? "" : fmt(n, 0);
+  $("krIn").value = isNaN(n) ? "" : fmt(n * RATE.r, n * RATE.r < 100 ? 1 : 0);
+  yenSay(n);
+}
+$("yenQuick").innerHTML = [500, 1000, 3000, 5000, 10000].map(n => `<button class="chip" type="button" data-y="${n}">${fmt(n, 0)} ¥</button>`).join("");
+$("yenQuick").addEventListener("click", e => { const b = e.target.closest("[data-y]"); if (b) fromYen(+b.dataset.y, true); });
+$("yenIn").addEventListener("input", e => fromYen(yenOf(e.target.value), false));
+$("yenIn").addEventListener("blur", e => { const n = yenOf(e.target.value); if (!isNaN(n)) e.target.value = fmt(n, 0); });
+$("krIn").addEventListener("input", e => {
+  const k = krOf(e.target.value);
+  const n = isNaN(k) ? NaN : Math.round(k / RATE.r);
+  $("yenIn").value = isNaN(n) ? "" : fmt(n, 0);
+  yenSay(n);
+});
+rateLine();
+
+$("numBody").innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 1000, 10000].map(n => {
+  const ro = n < 10 ? D_RO[n] + (n === 4 ? " / shi" : n === 7 ? " / shichi" : n === 9 ? " / ku" : "") : n === 10 ? "jū" : n === 100 ? "hyaku" : n === 1000 ? "sen" : "ichiman";
+  const kj = n < 10 ? D_KJ[n] : n === 10 ? "十" : n === 100 ? "百" : n === 1000 ? "千" : "一万";
+  return `<tr><td class="n">${fmt(n, 0)}</td><td class="kj" lang="ja">${kj}</td><td>${ro}</td><td>${n < 10 ? TSU[n] : n === 10 ? "tō" : ""}</td></tr>`;
+}).join("");
+
+/* Danish size → Japanese. Shoes: Japan gives the foot's length in cm; brands differ by about half a size. */
+const SIZES = {
+  shoe: [[36, 22.5], [37, 23.5], [38, 24], [39, 25], [40, 25.5], [41, 26], [42, 26.5], [43, 27.5], [44, 28], [45, 28.5], [46, 29.5], [47, 30]],
+  men: [["XS", "S"], ["S", "M"], ["M", "L"], ["L", "XL", "LL"], ["XL", "XXL", "3L"], ["XXL", "3XL", "4L"]],
+  women: [[34, 5, "XS"], [36, 7, "S"], [38, 9, "M"], [40, 11, "L"], [42, 13, "XL"], [44, 15, "XXL"]]
+};
+const LETTER_RO = { S: "esu", M: "emu", L: "eru", XL: "ekkusu-eru", XXL: "daburu-ekkusu-eru", "3XL": "surī-ekkusu-eru" };
+const GO_RO = { 5: "go", 7: "nana", 9: "kyū", 11: "jūichi", 13: "jūsan", 15: "jūgo" };
+const cmRo = c => under10k(Math.floor(c), false).ro.replace(/ /g, "") + (c % 1 ? "-ten-go" : "");
+let sizeKind = "shoe", sizePick = {};
+try { sizeKind = store.get("tokyo-size-kind") || "shoe"; sizePick = JSON.parse(store.get("tokyo-size") || "{}") || {}; } catch (e) {}
+if (!SIZES[sizeKind]) sizeKind = "shoe";
+function sizeCard() {
+  const row = SIZES[sizeKind].find(r => String(r[0]) === String(sizePick[sizeKind]));
+  if (!row) return null;
+  if (sizeKind === "shoe") { const c = String(row[1]); return [`Har I den i ${c.replace(".", ",")} cm?`, `${c}センチはありますか？`, `${cmRo(row[1])} senchi wa arimasu ka?`, 1]; }
+  if (sizeKind === "men") return [`Har I den i ${row[1]}?`, `${row[1]}サイズはありますか？`, `${LETTER_RO[row[1]]} saizu wa arimasu ka?`, 1];
+  return [`Har I den i størrelse ${row[1]}?`, `${row[1]}号はありますか？`, `${GO_RO[row[1]]}-gō wa arimasu ka?`, 1];
+}
+function renderSize() {
+  document.querySelectorAll("#sizeKind button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.k === sizeKind)));
+  const list = SIZES[sizeKind], pick = String(sizePick[sizeKind] ?? "");
+  $("sizeChips").innerHTML = list.map(r => `<button class="chip" type="button" data-s="${r[0]}" aria-pressed="${String(r[0]) === pick}">${sizeKind === "men" ? r[0] : "EU " + r[0]}</button>`).join("");
+  const row = list.find(r => String(r[0]) === pick);
+  if (!row) { $("sizeOut").innerHTML = `<p class="sizeNote" style="margin-top:12px">Vælg din størrelse.</p>`; return; }
+  let big, note;
+  if (sizeKind === "shoe") {
+    big = `${fmt(row[1], 1)} cm`;
+    note = `Japanske skostørrelser er fodens længde i cm, og mærkerne varierer, så prøv ${fmt(row[1] - 0.5, 1)} til ${fmt(row[1] + 0.5, 1)}. Mål gerne din fod hjemmefra.`;
+  } else if (sizeKind === "men") {
+    big = `${row[1]}${row[2] ? `<small>også skrevet ${row[2]}</small>` : ""}`;
+    note = "Japansk tøj er mindre og smallere, så tag én størrelse større end hjemme.";
+  } else {
+    big = `${row[1]}号<small>(${row[2]})</small>`;
+    note = `Dametøj har numre (号, gō) i Japan. Bogstavet i parentes er cirka, og pasformen er smallere end hjemme.`;
+  }
+  $("sizeOut").innerHTML = `<p class="sizeBig">${big}</p><p class="sizeNote">${note}</p><button class="btn primary wide" type="button" id="sizeShow">Spørg personalet</button>`;
+}
+$("sizeKind").addEventListener("click", e => { const b = e.target.closest("[data-k]"); if (!b) return; sizeKind = b.dataset.k; store.set("tokyo-size-kind", sizeKind); renderSize(); });
+$("sizeChips").addEventListener("click", e => { const b = e.target.closest("[data-s]"); if (!b) return; sizePick[sizeKind] = b.dataset.s; store.set("tokyo-size", JSON.stringify(sizePick)); renderSize(); });
+$("sizeOut").addEventListener("click", e => { if (e.target.id === "sizeShow") { const p = sizeCard(); if (p) openBig(phraseView(p), e.target); } });
+renderSize();
+
+let tool = "";
+try { tool = store.get("tokyo-tool") || ""; } catch (e) {}
+function renderTools() {
+  document.querySelectorAll(".tool").forEach(b => b.setAttribute("aria-expanded", String(b.dataset.tool === tool)));
+  $("toolYen").hidden = tool !== "yen"; $("toolNum").hidden = tool !== "num"; $("toolSize").hidden = tool !== "size";
+}
+document.querySelector(".tools").addEventListener("click", e => {
+  const b = e.target.closest(".tool"); if (!b) return;
+  tool = tool === b.dataset.tool ? "" : b.dataset.tool; store.set("tokyo-tool", tool); renderTools();
+});
+renderTools();
+
 const fold = s => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
 let talkQuery = "";
@@ -673,6 +850,12 @@ function personsView() {
     sub: `${COUNT_RO[persons]}-mei desu.<br>Vi er ${persons} ${persons === 1 ? "person" : "personer"}.`,
     act: `<div class="step"><button type="button" data-step="-1" aria-label="Færre">−</button><button type="button" data-step="1" aria-label="Flere">+</button></div>`, kind: "persons" };
 }
+let items = 1;
+function itemsView() {
+  return { text: `これを${items}つください。`, lang: "ja", say: `これを${items}つください。`,
+    sub: `Kore o ${TSU[items]} kudasai.<br>${items} af den her, tak.`,
+    act: `<div class="step"><button type="button" data-step="-1" aria-label="Færre">−</button><button type="button" data-step="1" aria-label="Flere">+</button></div>`, kind: "items" };
+}
 function hotelView() {
   if (!hotel) return hotelEdit();
   return { text: "このホテルまでお願いします。\n" + hotel, lang: "ja", say: "このホテルまでお願いします。",
@@ -701,43 +884,43 @@ function closeBig() {
 
 /* ---------- Foods to try ---------- */
 function renderTry() {
-  $("tryGrid").innerHTML = DATA.try.map(x => `<article class="card"><div class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${ICONS[x.id] || ""}</svg></div><div><h3>${esc(x.n)} <span class="kanji">${esc(x.j)}</span></h3><p>${esc(x.t)}</p><p class="br where"><span class="lbl">Prøv det hos:</span>${x.w.map(w => `<a href="${w.u}" target="_blank" rel="noopener">${esc(w.l)}</a>`).join("")}</p><a class="photos" href="${x.p}" target="_blank" rel="noopener">Se billeder ↗</a></div></article>`).join("");
+  $("tryGrid").innerHTML = DATA.try.map(x => `<article class="card food"><div class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${ICONS[x.id] || ""}</svg></div><div><h3>${esc(x.n)}<span class="kanji" lang="ja">${esc(x.j)}</span></h3><p>${esc(x.t)}</p><span class="lbl">Prøv det hos</span><div class="chips">${x.w.map(w => `<a class="chip" href="${w.u}" target="_blank" rel="noopener">${esc(w.l)}</a>`).join("")}</div><div class="acts"><a class="btn" href="${x.p}" target="_blank" rel="noopener">Se billeder</a></div></div></article>`).join("");
 }
 
 /* ---------- Controls ---------- */
 function render() {
-  $("tabEat").setAttribute("aria-selected", String(tab === "eat"));
-  $("tabSee").setAttribute("aria-selected", String(tab === "see"));
-  $("tabTry").setAttribute("aria-selected", String(tab === "try"));
-  $("tabTalk").setAttribute("aria-selected", String(tab === "talk"));
-  $("viewTalk").hidden = tab !== "talk";
-  $("viewEat").hidden = tab !== "eat";
-  $("viewSee").hidden = tab !== "see";
-  $("viewTry").hidden = tab !== "try";
+  for (const [t, id] of [["eat", "Eat"], ["see", "See"], ["talk", "Talk"]]) {
+    $("tab" + id).setAttribute("aria-selected", String(tab === t));
+    $("view" + id).hidden = tab !== t;
+  }
   if (tab !== "eat") return;
-  $("modeDish").setAttribute("aria-pressed", String(mode === "dish"));
-  $("modeNear").setAttribute("aria-pressed", String(mode === "near"));
+  for (const [m, id] of [["near", "Near"], ["dish", "Dish"], ["try", "Try"]]) $("mode" + id).setAttribute("aria-pressed", String(mode === m));
   $("dishCtl").hidden = mode !== "dish";
   $("nearCtl").hidden = mode !== "near";
   $("customBox").hidden = !(mode === "near" && originIdx === ORIGINS.length);
-  $("mustOnly").checked = $("mustOnly2").checked = mustOnly;
+  $("tryGrid").hidden = mode !== "try";
+  $("list").hidden = mode === "try";
+  document.querySelectorAll(".mustBtn").forEach(b => b.setAttribute("aria-pressed", String(mustOnly)));
   $("origin").value = String(originIdx);
   $("areaSel").value = area;
-  document.querySelectorAll("#areas .chip").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.a === area)));
+  $("dishSel").value = dish;
+  if (mode === "try") { $("empty").hidden = true; return; }
   if (mode === "dish") renderDish(); else renderNear();
 }
+function setTab(t) { tab = t; store.set("tokyo-tab", t); render(); window.scrollTo({ top: 0 }); }
+function setMode(m) { mode = m; store.set("tokyo-mode", m); render(); window.scrollTo({ top: 0 }); }
 
-$("areas").innerHTML = AREAS.map(a => `<button class="chip" type="button" data-a="${a}" aria-pressed="false">${a === "All" ? "Alle områder" : a}</button>`).join("");
+$("dishSel").innerHTML = `<option value="All">Alle retter</option>` + DATA.cats.map(c => `<option value="${esc(c.name)}">${esc(c.name)}</option>`).join("") + `<option value="Luksus">Luksus</option>`;
 $("areaSel").innerHTML = AREAS.map(a => `<option value="${a}">${a === "All" ? "Alle områder" : a}</option>`).join("");
 $("origin").innerHTML = (GPS ? `<option value="-2">Fra min placering (GPS)</option>` : `<option value="-1" disabled>Vælg et udgangspunkt…</option>`) + ORIGINS.map((o, i) => `<option value="${i}">Fra ${o[0]}</option>`).join("") + `<option value="${ORIGINS.length}">Fra mit hotel (indsæt placering)</option>`;
 if (custom) $("coords").value = custom.join(", ");
 
-$("areas").addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return; area = b.dataset.a; render(); });
 $("areaSel").addEventListener("change", e => { area = e.target.value; render(); window.scrollTo({ top: 0 }); });
-$("mustOnly").addEventListener("change", e => { mustOnly = e.target.checked; render(); });
-$("mustOnly2").addEventListener("change", e => { mustOnly = e.target.checked; render(); });
-$("modeDish").addEventListener("click", () => { mode = "dish"; render(); });
-$("modeNear").addEventListener("click", () => { mode = "near"; render(); });
+$("dishSel").addEventListener("change", e => { dish = e.target.value; render(); window.scrollTo({ top: 0 }); });
+document.querySelectorAll(".mustBtn").forEach(b => b.addEventListener("click", () => { mustOnly = !mustOnly; render(); }));
+$("modeDish").addEventListener("click", () => setMode("dish"));
+$("modeNear").addEventListener("click", () => setMode("near"));
+$("modeTry").addEventListener("click", () => setMode("try"));
 $("origin").addEventListener("change", e => { originIdx = +e.target.value; store.set("hte-origin", String(originIdx)); render(); });
 $("coords").addEventListener("input", e => {
   const v = e.target.value;
@@ -753,14 +936,14 @@ $("coords").addEventListener("input", e => {
   }
   if (v.trim()) { hint.textContent = "Det ligner ikke koordinater i Tokyo. Indsæt de to tal, fx 35.6938, 139.7034."; hint.classList.add("err"); }
 });
-$("tabEat").addEventListener("click", () => { tab = "eat"; render(); });
-$("tabTry").addEventListener("click", () => { tab = "try"; render(); window.scrollTo({ top: 0 }); });
-$("tabSee").addEventListener("click", () => { tab = "see"; render(); window.scrollTo({ top: 0 }); });
-$("tabTalk").addEventListener("click", () => { tab = "talk"; render(); window.scrollTo({ top: 0 }); });
+$("tabEat").addEventListener("click", () => setTab("eat"));
+$("tabSee").addEventListener("click", () => setTab("see"));
+$("tabTalk").addEventListener("click", () => setTab("talk"));
 $("talk").addEventListener("click", e => {
   const b = e.target.closest(".phrase"); if (!b) return;
   const p = PHRASES[+b.dataset.g][2][+b.dataset.i];
-  openBig(p[4] === "persons" ? personsView() : p[4] === "hotel" ? hotelView() : phraseView(p), b);
+  if (p[4] === "items") items = 1;
+  openBig(p[4] === "persons" ? personsView() : p[4] === "items" ? itemsView() : p[4] === "hotel" ? hotelView() : phraseView(p), b);
 });
 $("halalCard").addEventListener("click", e => openBig({ text: HALAL_CARD.ja, lang: "ja", say: HALAL_CARD.ja.replace(/[・（）]/g, " "), sub: esc(HALAL_CARD.da), act: answerButtons() }, e.currentTarget));
 $("talkSearch").addEventListener("input", e => { talkQuery = e.target.value; renderTalk(); });
@@ -777,6 +960,7 @@ $("bigAct").addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
   if (b.dataset.ans) { paint(answerView(+b.dataset.ans, current)); return; }
   if (b.dataset.back && current && current.backTo) { paint(current.backTo); return; }
+  if (b.dataset.step && current && current.kind === "items") { items = Math.min(9, Math.max(1, items + +b.dataset.step)); paint(itemsView()); return; }
   if (b.dataset.step) { persons = Math.min(10, Math.max(1, persons + +b.dataset.step)); store.set("tokyo-persons", String(persons)); paint(personsView()); return; }
   if (b.dataset.edit) { paint(hotelEdit()); setTimeout(() => { const i = $("hotelInput"); if (i) i.focus(); }, 50); return; }
   if (b.dataset.cancel) { if (hotel) paint(hotelView()); else closeBig(); return; }
@@ -795,11 +979,29 @@ function showOnline() { $("offline").hidden = navigator.onLine !== false; }
 window.addEventListener("online", showOnline);
 window.addEventListener("offline", showOnline);
 showOnline();
+/* today's rate from the ECB when online; the built-in rate is used offline */
+if (SITE && navigator.onLine !== false && typeof fetch === "function") {
+  const ctl = typeof AbortController === "function" ? new AbortController() : null;
+  if (ctl) setTimeout(() => ctl.abort(), 6000);
+  fetch("https://api.frankfurter.dev/v2/rates?base=JPY&quotes=DKK", ctl ? { signal: ctl.signal } : {})
+    .then(r => r.ok ? r.json() : null)
+    .then(j => {
+      const x = Array.isArray(j) ? j[0] : null;
+      if (!x || !(x.rate > 0.01 && x.rate < 0.2) || !/^\d{4}-\d{2}-\d{2}$/.test(x.date) || x.date < RATE.d) return;
+      const today = new Date().toISOString().slice(0, 10);
+      RATE = { r: x.rate, d: x.date > today ? today : x.date }; store.set("tokyo-rate", JSON.stringify(RATE)); rateLine();
+      const n = yenOf($("yenIn").value); if (!isNaN(n)) fromYen(n, false);
+    }).catch(() => {});
+}
 if (SITE && "serviceWorker" in navigator) {
   $("offlineTip").hidden = false;
   window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
 }
 render();
+/* open on Nærmest when the phone already lets the page use its location (and nothing else was chosen) */
+if (GPS && !modeChosen && !location.hash && navigator.permissions && navigator.permissions.query) {
+  navigator.permissions.query({ name: "geolocation" }).then(p => { if (p.state === "granted" && originIdx === -2 && mode === "dish") { mode = "near"; render(); } }).catch(() => {});
+}
 </script>
 
 </body>

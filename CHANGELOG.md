@@ -51,6 +51,18 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   "Kør mig til mit hotel" keeps the hotel's address on the phone; a search box finds cards by word.
   The Japanese is sized to fill the screen and breaks only between phrases, "Læs højt" reads it aloud
   where the phone has a Japanese voice, and the screen stays on while a card is shown. 55 cards.
+- `aram.nu/tokyo` is rebuilt as a phone app: three tabs in a bar at the bottom (Spis, Se, Parlør), each
+  view with its own title, tap targets of at least 44 px, whole rows that open the map, one style for
+  lists, cards, chips and buttons, and the last tab, view and tool remembered. The foods to try moved
+  into Spis as "Smag på"; Spis filters by dish and area instead of one long list, folds a chain's other
+  branches away, and opens on "Nærmest" when the phone already shares its location (from far away it
+  says so instead of listing distances). "Godt at vide" sits once, at the end of Parlør, now with the tax
+  free rules from 1 November 2026 and the emergency numbers.
+- `aram.nu/tokyo`: the phrasebook has three tools: yen to kroner both ways at the ECB rate (fetched when
+  online) with how the price is said in Japanese, a table of Japanese numbers and counting words, and
+  Danish to Japanese sizes for shoes, men's and women's clothes with a card to ask staff. New card:
+  "… af den her, tak" with a counter.
+- `aram.nu/tokyo` opens full screen from the home screen with its own icon, a bowl with chopsticks in front of a red sun.
 - buehal: the story opens low beside the hall, the twelve arches in a row as the scan builds up
   setup by setup (the scanners now stand where they stood: their positions had not been turned into
   the hall's frame with the points). The measures end as a plan cut at 1 m: the chain of measures
