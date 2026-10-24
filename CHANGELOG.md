@@ -55,6 +55,9 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   300, hairlines instead of boxes (no web fonts any more), and the staff card is white on black. A fourth
   tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
   categories to pick from, and the staff card closes with a button at the bottom or by pulling it down.
+- `aram.nu/tokyo` has a plan tab: places to eat and sights you mark "planlæg" in their sheet, nearest
+  first from the point chosen under spis, with ✓ to mark them been; below, where you have been. In the
+  sheet "ikke interesseret" is now a quiet line under the two buttons, and planned places say so in the lists.
 - `aram.nu/tokyo`, faster and simpler for staff:
   - Opening a card no longer stutters: the text is sized with one measurement instead of up to 32, the
     card animates without relaying out the page, and start-up does about a fifth of the work it did

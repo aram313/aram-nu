@@ -117,7 +117,7 @@ turned off and stamps `stage.js` with the newest file's time, so the browser nev
 
 `src/tokyo/index.html` is a separate page at https://aram.nu/tokyo: Aram's travel guide to Tokyo in
 Danish, in the front page's look (black, white text, lowercase, the device's own sans at weight 300,
-hairlines, grey for anything secondary), built like a phone app with four tabs in a bar at the bottom.
+hairlines, grey for anything secondary), built like a phone app with five tabs in a bar at the bottom.
 Everything you tap opens the same sheet from the bottom, with the details and what you can do.
 
 - **spis**: 85 halal places to eat, nearly all Japanese food (one section, "andre køkkener", has seven
@@ -126,13 +126,15 @@ Everything you tap opens the same sheet from the bottom, with the details and wh
   heading first listing the dishes to taste; "min placering", a station or "mit hotel" sorts them by
   distance, also within a dish. If the location is not ready, one line says why and the list stays. A
   place's sheet has its Japanese address, the map, and cards that ask the way or tell a taxi driver where
-  to go, in Japanese with the name and address. At its foot, "været her" turns the place green in every
-  list and "ikke interesseret" moves it to the archive; the gear (spis and oplev) opens settings with the
-  archive, where it can be brought back, and the list of places you have been. Sights work the same way.
+  to go, in Japanese with the name and address. At its foot, "planlæg" puts the place in the plan tab,
+  "været her" turns it green in every list, and a quiet "ikke interesseret" moves it to the archive; the
+  gear (spis and oplev) opens settings with the archive, where it can be brought back. Sights work the same way.
 - **oplev**: "steder", 16 sights (sorted by distance when a point is chosen under spis), each with the
   nearest halal places and "spørg om vej" with its Japanese name; and "overalt", 18 things met
   everywhere in Tokyo to try or to notice, with buttons into the halal card, phrase cards, omregn or the
   mosques on the map.
+- **plan**: what you have planned, places to eat and sights together, nearest first when a point is chosen
+  under spis (a chain shows its nearest branch), with a ✓ on each to mark it been; below, where you have been.
 - **parlør**: "vis frem" holds the halal card and 59 cards in seven categories to show staff; "forstå"
   lists 24 things staff say, with romaji, meaning, "hør" and the answers to tap. A card shows the
   Japanese full screen, black on white, with your Danish as one small grey line at the top. Staff never

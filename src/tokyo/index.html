@@ -258,7 +258,19 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 /* been here and the archive */
 .row.been .name { color: var(--ok); }
 .row.been .name::before { content: "✓ "; }
-.marks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.marks { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.markBtns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.marks .btn.on { color: var(--bg); background: var(--fg); border-color: var(--fg); font-weight: 500; }
+.quietBtn { display: block; margin: 8px auto 0; min-height: 40px; padding: 0 12px; background: none; border: 0; color: var(--dim); font-size: 13.5px; cursor: pointer; }
+.plTag { color: var(--fg); font-weight: 500; }
+.planSec h2 { display: flex; align-items: baseline; gap: 8px; margin: 22px 0 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); font-size: 20px; font-weight: 500; }
+.planSec:first-child h2 { margin-top: 0; }
+.planSec h2 .count { margin-left: auto; color: var(--dim); font-size: 13.5px; font-weight: 300; }
+.planSec .note { display: none; }
+.planItem { display: flex; align-items: center; gap: 10px; }
+.planItem .row { flex: 1; min-width: 0; }
+.quick { flex: none; width: 44px; height: 44px; border: 1px solid var(--edge); border-radius: 50%; background: none; color: var(--dim); font-size: 18px; cursor: pointer; }
+.quick:active { color: #000; background: var(--ok); border-color: var(--ok); }
 .marks .btn { padding: 0 8px; }
 .marks .btn.been { color: #000; background: var(--ok); border-color: var(--ok); font-weight: 500; }
 .gear { padding: 0; width: 44px; display: inline-flex; align-items: center; justify-content: center; }
@@ -356,6 +368,13 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
   </div>
 </div>
 
+<div id="viewPlan" role="tabpanel" aria-labelledby="tabPlan" hidden>
+  <div class="wrap top">
+    <p class="status" id="planStatus" hidden></p>
+    <div id="planList"></div>
+  </div>
+</div>
+
 <div id="viewTalk" role="tabpanel" aria-labelledby="tabTalk" hidden>
   <div class="filters"><div class="wrap">
     <div class="seg" role="group" aria-label="visning">
@@ -415,6 +434,7 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
   <div class="in" role="tablist">
     <button class="tab" role="tab" id="tabEat" aria-selected="true" aria-controls="viewEat" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.5h17a8.5 8.5 0 0 1-17 0Z"/><path d="M8.5 20.5h7"/><path d="M13 3.5 10 10M19.5 4 14 10"/></svg>spis</button>
     <button class="tab" role="tab" id="tabSee" aria-selected="false" aria-controls="viewSee" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5v3"/><path d="M10 5.5h4l3.5 15h-11z"/><path d="M8.2 13h7.6"/><path d="M4.5 20.5h15"/></svg>oplev</button>
+    <button class="tab" role="tab" id="tabPlan" aria-selected="false" aria-controls="viewPlan" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5h11v17L12 16.5l-5.5 4z"/></svg>plan</button>
     <button class="tab" role="tab" id="tabTalk" aria-selected="false" aria-controls="viewTalk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10.5H10l-5 4v-4H4z"/><path d="M8 9.5h8M8 12.5h5"/></svg>parlør</button>
     <button class="tab" role="tab" id="tabCalc" aria-selected="false" aria-controls="viewCalc" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h15l-3.5-3.5"/><path d="M20 15.5H5l3.5 3.5"/></svg>omregn</button>
   </div>
@@ -481,7 +501,7 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 };
 
-const TABS = ["eat", "see", "talk", "calc"];
+const TABS = ["eat", "see", "plan", "talk", "calc"];
 let seeMode = store.get("tokyo-see") === "every" ? "every" : "places";
 let tab = store.get("tokyo-tab");
 if (!TABS.includes(tab)) tab = "eat";
@@ -504,6 +524,7 @@ try {
   else if (h === "sevaerdigheder") tab = "see";
   else if (h === "parlor") tab = "talk";
   else if (h === "omregn") tab = "calc";
+  else if (h === "plan") tab = "plan";
   else if (h === "nearest") { tab = "eat"; where = GPS ? "gps" : "st:0"; }
 } catch (e) {}
 try { const c = JSON.parse(store.get("hte-custom") || "null"); if (Array.isArray(c) && c.length === 2) custom = c; } catch (e) {}
@@ -540,8 +561,9 @@ function distLabel(d) {
 /* ---------- By dish ---------- */
 const PIN = '<svg class="pin" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.4 12 21 12 21Z"/><circle cx="12" cy="10.5" r="2.3"/></svg>';
 const star = m => m ? ' <span class="must" title="et must" aria-label="et must">★</span>' : "";
+const planTag = k => markOf(k) === "p" ? `<span class="plTag">planlagt</span>` : "";
 function rowHTML(u, name, sub, m, meta, note, extra, k) {
-  return `<li class="item"><button class="row${markOf(k) === "v" ? " been" : ""}" type="button" data-pl="${esc(pidOf(u))}"><span class="name">${esc(name)}${sub ? ` <small>· ${esc(sub)}</small>` : ""}${star(m)}</span><span class="meta">${meta}</span><span class="note">${esc(note)}</span></button>${extra || ""}</li>`;
+  return `<li class="item"><button class="row${markOf(k) === "v" ? " been" : ""}" type="button" data-pl="${esc(pidOf(u))}"><span class="name">${esc(name)}${sub ? ` <small>· ${esc(sub)}</small>` : ""}${star(m)}</span><span class="meta">${planTag(k)}${meta}</span><span class="note">${esc(note)}</span></button>${extra || ""}</li>`;
 }
 function itemHTML(it, splurge) {
   const meta = splurge
@@ -660,7 +682,7 @@ function renderSee() {
   if (from) list.sort((a, b) => a.d - b.d);
   $("seeStatus").innerHTML = from ? `nærmest først fra <b>${esc(whereName())}</b> (vælges under spis)` : "";
   $("seeStatus").hidden = !from;
-  $("seeList").innerHTML = list.map(({ s, i, d }) => `<li class="item"><button class="row${markOf(seeKey(s)) === "v" ? " been" : ""}" type="button" data-sight="${i}"><span class="name">${esc(s.n)}</span><span class="meta">${from ? `<span class="dist">${distLabel(d)}</span>` : ""}<span>${esc(s.a)}</span></span><span class="note">${esc(s.t)}</span></button></li>`).join("") + archNote();
+  $("seeList").innerHTML = list.map(({ s, i, d }) => `<li class="item"><button class="row${markOf(seeKey(s)) === "v" ? " been" : ""}" type="button" data-sight="${i}"><span class="name">${esc(s.n)}</span><span class="meta">${planTag(seeKey(s))}${from ? `<span class="dist">${distLabel(d)}</span>` : ""}<span>${esc(s.a)}</span></span><span class="note">${esc(s.t)}</span></button></li>`).join("") + archNote();
 }
 function openSight(i, from) {
   const s = DATA.see[i]; if (!s) return;
@@ -1226,10 +1248,10 @@ function openDish(id, from) {
     <div class="shBlock"><small>prøv det hos</small><div class="chips">${x.w.map(w => PL[pidOf(w.u)] ? `<button class="chip" type="button" data-pl="${esc(pidOf(w.u))}">${esc(w.l)}</button>` : `<a class="chip" href="${w.u}" target="_blank" rel="noopener">${esc(w.l)}</a>`).join("")}</div></div>
     <div class="shActs"><a class="btn wide" href="${x.p}" target="_blank" rel="noopener">se billeder</a></div>`, from);
 }
-/* been here / not interested, at the foot of a place's or a sight's sheet */
+/* plan it, been here, and a quiet "not interested", at the foot of a place's or a sight's sheet */
 function markHTML(k) {
   const m = markOf(k);
-  return `<div class="marks" id="marks" data-k="${esc(k)}"><button class="btn${m === "v" ? " been" : ""}" type="button" data-mark="v" aria-pressed="${m === "v"}">${m === "v" ? "✓ været her" : "været her"}</button><button class="btn" type="button" data-mark="x" aria-pressed="${m === "x"}">${m === "x" ? "hent tilbage" : "ikke interesseret"}</button></div>`;
+  return `<div class="marks" id="marks" data-k="${esc(k)}"><div class="markBtns"><button class="btn${m === "p" ? " on" : ""}" type="button" data-mark="p" aria-pressed="${m === "p"}">${m === "p" ? "planlagt" : "planlæg"}</button><button class="btn${m === "v" ? " been" : ""}" type="button" data-mark="v" aria-pressed="${m === "v"}">${m === "v" ? "✓ været her" : "været her"}</button></div><button class="quietBtn" type="button" data-mark="x">${m === "x" ? "hent tilbage fra arkivet" : "ikke interesseret"}</button></div>`;
 }
 function markName(k) {
   if (k.startsWith("see:")) { const s = DATA.see.find(x => seeKey(x) === k); return s ? s.n : ""; }
@@ -1249,26 +1271,61 @@ $("toastUndo").addEventListener("click", () => { const u = toastUndo; $("toast")
 $("shContent").addEventListener("click", e => {
   const b = e.target.closest("[data-mark]"); if (!b) return;
   const k = $("marks").dataset.k, m = b.dataset.mark, was = markOf(k);
-  if (m === "v") { setMark(k, was === "v" ? "" : "v"); $("marks").outerHTML = markHTML(k); render(); return; }
+  if (m === "v" || m === "p") { setMark(k, was === m ? "" : m); $("marks").outerHTML = markHTML(k); render(); return; }
   if (was === "x") { setMark(k, ""); $("marks").outerHTML = markHTML(k); render(); if (settingsOpen) openSettings(); return; }
   setMark(k, "x"); closeSheet(); render();
   toast(`${markName(k)} er lagt i arkivet`, () => { setMark(k, was); render(); });
 });
-/* settings: the archive, and what you have been to */
+/* settings: the archive */
 let settingsOpen = false;
 function openSettings(from) {
   const rows = m => Object.keys(marks).filter(k => marks[k] === m).map(k => ({ k, n: markName(k), si: k.startsWith("see:") ? DATA.see.findIndex(x => seeKey(x) === k) : -1 }))
     .filter(r => r.n).sort((a, b) => a.n.localeCompare(b.n, "da"));
   const line = (r, lbl) => `<div class="setRow"><button class="nrow" type="button" ${r.si >= 0 ? `data-sight="${r.si}"` : `data-pl="${esc(r.k)}"`}><span class="nm">${esc(r.n)}</span></button><button class="chip" type="button" data-unmark="${esc(r.k)}">${lbl}</button></div>`;
-  const x = rows("x"), v = rows("v");
+  const x = rows("x");
   sheet(`<h3 class="shTitle">indstillinger</h3>
     <div class="shBlock"><small>arkiv · ikke interesseret (${x.length})</small>${x.length ? x.map(r => line(r, "hent tilbage")).join("") : `<p class="dim">tomt. tryk "ikke interesseret" på et spisested eller en seværdighed, så forsvinder det fra listerne og ligger her.</p>`}</div>
-    <div class="shBlock"><small>været her (${v.length})</small>${v.length ? v.map(r => line(r, "fortryd")).join("") : `<p class="dim">tryk "været her" på et sted, så bliver det grønt i listerne.</p>`}</div>`, from);
+    <p class="shTip">det, I har planlagt og været, ligger under plan.</p>`, from);
   settingsOpen = true;
 }
 document.addEventListener("click", e => {
   const s = e.target.closest("[data-settings]"); if (s) { openSettings(s); return; }
   const u = e.target.closest("[data-unmark]"); if (u) { setMark(u.dataset.unmark, ""); render(); openSettings(); }
+});
+/* plan: what you have planned, and where you have been. Sorted by distance when a point is chosen under spis;
+   a chain shows its branch nearest that point. ✓ marks a planned place as been. */
+function planRows(m, from) {
+  const rows = [];
+  for (const k of Object.keys(marks)) {
+    if (marks[k] !== m) continue;
+    if (k.startsWith("see:")) {
+      const i = DATA.see.findIndex(x => seeKey(x) === k); if (i < 0) continue;
+      const s = DATA.see[i];
+      rows.push({ k, n: s.n, sub: "", at: `data-sight="${i}"`, kind: "seværdighed", a: s.a, d: from ? km(from, s.g) : null, see: 1 });
+    } else {
+      let all = Object.keys(PL).filter(id => PL[id].k === k); if (!all.length) continue;
+      if (from) all = all.sort((a, b) => km(from, PL[a].g) - km(from, PL[b].g));
+      const p = PL[all[0]];
+      rows.push({ k, n: p.n, sub: p.sub, at: `data-pl="${esc(all[0])}"`, kind: DISH_SHORT[p.cat] || p.cat, a: p.a, d: from ? km(from, p.g) : null, see: 0 });
+    }
+  }
+  return rows.sort(from ? (a, b) => a.d - b.d : (a, b) => (b.see - a.see) || a.n.localeCompare(b.n, "da"));
+}
+function planRow(r, quick) {
+  return `<li class="item planItem"><button class="row${quick ? "" : " been"}" type="button" ${r.at}><span class="name">${esc(r.n)}${r.sub ? ` <small>· ${esc(r.sub)}</small>` : ""}</span><span class="meta">${r.d !== null ? `<span class="dist">${distLabel(r.d)}</span>` : ""}<span>${esc(r.kind)}</span><span>${esc(r.a)}</span></span></button>${quick ? `<button class="quick" type="button" data-quick="${esc(r.k)}" aria-label="været her">✓</button>` : ""}</li>`;
+}
+function renderPlan() {
+  const [from] = originPoint();
+  const p = planRows("p", from), v = planRows("v", from);
+  $("planStatus").innerHTML = from && (p.length || v.length) ? `nærmest først fra <b>${esc(whereName())}</b> (vælges under spis)` : "";
+  $("planStatus").hidden = !$("planStatus").innerHTML;
+  $("planList").innerHTML = `<section class="planSec"><h2>planlagt<span class="count">${p.length || ""}</span></h2>${p.length ? `<ul class="list">${p.map(r => planRow(r, true)).join("")}</ul>` : `<p class="empty">intet endnu. åbn et spisested eller en seværdighed under spis eller oplev, og tryk "planlæg".</p>`}</section>
+    <section class="planSec"><h2>været her<span class="count">${v.length || ""}</span></h2>${v.length ? `<ul class="list">${v.map(r => planRow(r, false)).join("")}</ul>` : `<p class="empty">tryk ✓, når I har været et sted, så flytter det herned.</p>`}</section>${archNote()}`;
+}
+document.addEventListener("click", e => {
+  const q = e.target.closest("[data-quick]"); if (!q) return;
+  const k = q.dataset.quick; setMark(k, "v"); render();
+  toast(`${markName(k)}: været her`, () => { setMark(k, "p"); render(); });
 });
 function closeSheet() {
   const el = $("sheet"), panel = $("shPanel");
@@ -1379,11 +1436,12 @@ $("shContent").addEventListener("click", e => {
 
 /* ---------- Controls ---------- */
 function render() {
-  for (const [t, id] of [["eat", "Eat"], ["see", "See"], ["talk", "Talk"], ["calc", "Calc"]]) {
+  for (const [t, id] of [["eat", "Eat"], ["see", "See"], ["plan", "Plan"], ["talk", "Talk"], ["calc", "Calc"]]) {
     $("tab" + id).setAttribute("aria-selected", String(tab === t));
     $("view" + id).hidden = tab !== t;
   }
   if (tab === "calc") tick();
+  if (tab === "plan") renderPlan();
   if (tab === "talk") renderTalkMode();
   if (tab === "see") {
     renderSee();
@@ -1441,6 +1499,7 @@ $("tabEat").addEventListener("click", () => setTab("eat"));
 $("tabSee").addEventListener("click", () => setTab("see"));
 $("tabTalk").addEventListener("click", () => setTab("talk"));
 $("tabCalc").addEventListener("click", () => setTab("calc"));
+$("tabPlan").addEventListener("click", () => setTab("plan"));
 $("talk").addEventListener("click", e => {
   const b = e.target.closest(".phrase"); if (!b) return;
   const p = PHRASES[+b.dataset.g][2][+b.dataset.i];
