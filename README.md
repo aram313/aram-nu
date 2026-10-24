@@ -115,7 +115,7 @@ turned off and stamps `stage.js` with the newest file's time, so the browser nev
 ## The Tokyo page
 
 `src/tokyo/index.html` is a separate page at https://aram.nu/tokyo: Aram's travel list of halal
-Japanese food in Tokyo. It is not linked from the front page, carries `noindex`, and does not follow
+Japanese food in Tokyo, in Danish. It is not linked from the front page, carries `noindex`, and does not follow
 the front page's black lowercase look. Everything (data, styles, script) is in that one file. "Nearest
 first" asks for the phone's location (it needs the page on https, which Pages gives); a station or
 pasted coordinates work without it.

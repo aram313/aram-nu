@@ -31,6 +31,7 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 
 ### Changed
 
+- `aram.nu/tokyo` is in Danish now, and the kimono dinner is gone from its foods to try (15 left).
 - buehal: the story opens low beside the hall, the twelve arches in a row as the scan builds up
   setup by setup (the scanners now stand where they stood: their positions had not been turned into
   the hall's frame with the points). The measures end as a plan cut at 1 m: the chain of measures
