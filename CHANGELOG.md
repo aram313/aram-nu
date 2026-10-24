@@ -55,6 +55,14 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   300, hairlines instead of boxes (no web fonts any more), and the staff card is white on black. A fourth
   tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
   categories to pick from, and the staff card closes with a button at the bottom or by pulling it down.
+- `aram.nu/tokyo`: every question in the phrasebook can now be answered in a way you understand. Staff
+  tap a time ("hvor længe skal vi vente?": 5 min. to over an hour) or a direction ("hvor er toilettet?",
+  the station, taxis, Suica, hospital, mosque: left, straight, right, up or down a floor), type the price
+  on a keypad ("hvad koster det?", shown in yen and kroner with how it is said), write with a finger on a
+  pad (which train, the wi-fi code, "kan du skrive det ned?"), or are asked to point at the menu ("hvad
+  anbefaler I?"). A new category after halal, "det hører du", holds 16 things staff say (how many are you, eat in
+  or take away, heat it up, a bag, chopsticks, point card, how will you pay, the receipt, was that all,
+  last order …) with romaji and meaning, and the answers to tap.
 - `aram.nu/tokyo` holds together as one guide: "smag på" is gone as its own view, and its 15 dishes now
   sit under their dish heading in "efter ret" ("smag", then "steder"); a tap on a dish opens the same sheet
   as a place, with the dish, a tip and where to try it, and a tap on one of those places turns the sheet

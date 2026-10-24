@@ -127,10 +127,12 @@ hairlines, grey for anything secondary), built like a phone app with four tabs i
 - **oplev**: "steder", 16 sights, each with the nearest halal places, the walk to them and "spørg om vej"
   with its Japanese name and address; and "overalt", 18 things met everywhere in Tokyo to try or to notice,
   with their Japanese word and buttons into the halal card, phrase cards or omregn.
-- **parlør**: a halal card, a search, the phrase cards in seven categories. A card
-  shows the Japanese full screen for staff, black on white (sized to fit, ○ and ✕ answer buttons in
-  green and red on yes/no questions, counters
-  for people and items, a hotel card); it closes with the button at the bottom or by pulling it down.
+- **parlør**: a halal card, a search, and 72 phrase cards in eight categories, one of them "det hører du"
+  (what staff say, with romaji, meaning and the answers to tap). A card shows the Japanese full screen for
+  staff, black on white, sized to fit, with a way to answer that you understand: ○ and ✕ buttons in green
+  and red on yes/no questions, buttons with a time or a direction, a keypad for a price (shown in yen and
+  kroner), a pad to write on with a finger, or a request to point at the menu. There are counters for
+  people and items and a hotel card; the card closes with the button at the bottom or by pulling it down.
 - **omregn**: yen and kroner both ways at the ECB rate with how the price is said (read aloud where the
   phone has a Japanese voice) and the tax-free refund, Danish to Japanese sizes for
   shoes and clothes with a card to ask staff, any number said in Japanese with a table of numbers and
