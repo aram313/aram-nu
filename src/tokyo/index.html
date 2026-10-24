@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="description" content="Halal Japanese food in Tokyo: where to eat, nearest first, and what to try.">
+<meta name="theme-color" content="#f4f6f3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111412" media="(prefers-color-scheme: dark)">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Halal Tokyo Eats</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one narrow reading column; two tabs; sticky controls on the eat tab; dish sections with kanji labels; splurge as a tinted band */
+:root {
+  --bg: #f4f6f3;
+  --surface: #ffffff;
+  --fg: #181c1a;
+  --muted: #5b645f;
+  --line: #d9ded9;
+  --accent: #23468a;
+  --accent-soft: #e3e9f5;
+  --gold: #8a5d0c;
+  --band: #f1ece1;
+  --ill-fill: #dfe6f3;
+  --display: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Noto Sans JP", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111412; --surface: #191d1a; --fg: #e8ece8; --muted: #9aa49e; --line: #2b322e;
+    --accent: #95b4ef; --accent-soft: #1e2a40; --gold: #dcae4f; --band: #1e1b14; --ill-fill: #24324d; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111412; --surface: #191d1a; --fg: #e8ece8; --muted: #9aa49e; --line: #2b322e;
+  --accent: #95b4ef; --accent-soft: #1e2a40; --gold: #dcae4f; --band: #1e1b14; --ill-fill: #24324d; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font: 15px/1.5 var(--body);
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
+  overflow-wrap: anywhere;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap {
+  max-width: 760px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+header.top { padding-block: 24px 0; }
+h1 { font-family: var(--display); font-weight: 700; font-size: 30px; line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 6px; text-wrap: balance; }
+.lede { color: var(--muted); margin: 0; max-width: 60ch; }
+.lede b { color: var(--fg); font-weight: 600; }
+
+.tabs { display: flex; gap: 22px; margin-top: 16px; border-bottom: 1px solid var(--line); }
+.tab { font: 600 15px var(--body); color: var(--muted); background: none; border: 0; padding: 10px 0; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--accent); }
+
+.filters { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); padding-block: 10px; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); }
+.seg button { font: 500 14px var(--body); color: var(--fg); background: none; border: 0; padding: 8px 14px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
+.ctl { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.ctl select, .ctl input[type="text"] { flex: 1; min-width: 0; font: 500 15px var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; min-width: 0; }
+.chip { font: 500 13px/1 var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 12px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.areaSel { display: none; }
+.toggle { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; color: var(--fg); font-size: 14px; flex: none; white-space: nowrap; }
+.toggle input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
+.from { margin: 0 0 2px; font-size: 15px; }
+.from span { color: var(--muted); font-size: 13px; }
+.pick { margin: 0; padding: 14px; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); }
+.hint { font-size: 12.5px; color: var(--muted); margin: 6px 0 0; }
+.hint.err { color: var(--gold); }
+button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.index { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 13px; }
+.index a { display: inline-block; color: var(--muted); text-decoration: none; padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+.index a:hover { color: var(--accent); }
+
+section.cat { padding-block: 22px 4px; scroll-margin-top: 150px; }
+.cat-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 2px; }
+.kanji { font-family: var(--display); font-weight: 700; font-size: 13px; color: var(--accent); letter-spacing: 0.08em; }
+h2 { font-family: var(--display); font-weight: 700; font-size: 21px; margin: 0; }
+.intro { color: var(--muted); font-size: 13.5px; margin: 0 0 6px; }
+
+ul.list { list-style: none; margin: 0; padding: 0; }
+li.item { padding-block: 11px; border-top: 1px solid var(--line); }
+li.item:first-child { border-top: 0; }
+.line1 { display: flex; align-items: baseline; gap: 8px; }
+.name { font-weight: 600; font-size: 16px; color: var(--accent); text-decoration: none; min-width: 0; }
+.name:hover { text-decoration: underline; text-underline-offset: 3px; }
+.name small { font-weight: 500; color: var(--muted); font-size: 13px; }
+.must { color: var(--gold); font-size: 13px; flex: none; }
+.meta { margin-left: auto; flex: none; display: flex; gap: 8px; align-items: baseline; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.price { letter-spacing: 0.05em; }
+.price i { font-style: normal; opacity: 0.3; }
+.area, .catTag { text-transform: uppercase; letter-spacing: 0.06em; font-size: 11px; }
+.dist { color: var(--fg); font-weight: 600; }
+.note { margin: 2px 0 0; color: var(--fg); opacity: 0.86; font-size: 14px; }
+.br { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+.br .lbl { margin-right: 2px; }
+.br a { color: var(--accent); text-decoration: none; white-space: nowrap; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px; line-height: 1.2; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.br a.hit { background: var(--accent-soft); border-color: var(--accent); font-weight: 600; }
+
+.band { background: var(--band); margin-top: 26px; }
+.band section.cat { padding-block: 22px 14px; }
+.band .kanji { color: var(--gold); }
+.band .name { color: var(--fg); }
+.band .kind { font-size: 12.5px; color: var(--gold); }
+.empty { color: var(--muted); padding: 24px 0; }
+
+/* Foods to try */
+.tryIntro { color: var(--muted); margin: 18px 0 6px; max-width: 60ch; }
+.grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding-block: 10px 8px; }
+.card { display: grid; grid-template-columns: 72px 1fr; gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; min-width: 0; }
+.ill { width: 72px; height: 72px; border-radius: 12px; background: var(--accent-soft); display: grid; place-items: center; }
+.ill svg { width: 52px; height: 52px; fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ill svg .f { fill: var(--ill-fill); }
+.card h3 { font-family: var(--display); font-size: 17px; margin: 0; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.card h3 .kanji { font-size: 12px; }
+.card p { margin: 4px 0 0; font-size: 14px; }
+.card .where { margin-top: 8px; }
+.photos { display: inline-block; margin-top: 8px; font-size: 13px; color: var(--muted); text-decoration: none; }
+.photos:hover { color: var(--accent); }
+.card > div { min-width: 0; }
+
+footer { padding-block: 26px 40px; color: var(--muted); font-size: 13.5px; }
+footer h3 { font-family: var(--display); color: var(--fg); font-size: 16px; margin: 18px 0 6px; }
+footer ul { margin: 0; padding-left: 18px; }
+footer li { margin: 3px 0; }
+footer .src { margin-top: 18px; font-size: 12px; }
+
+@media (min-width: 640px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .chips { display: none; }
+  .areaSel { display: block; }
+  section.cat { scroll-margin-top: 130px; }
+}
+@media (max-width: 480px) {
+  h1 { font-size: 26px; }
+  header.top { padding-block: 20px 0; }
+  .line1 { flex-wrap: wrap; row-gap: 2px; }
+  .name { font-size: 16.5px; padding-block: 2px; }
+  .meta { margin-left: 0; width: 100%; }
+  .note { font-size: 14.5px; }
+  .card { grid-template-columns: 56px 1fr; gap: 12px; padding: 12px; }
+  .ill { width: 56px; height: 56px; }
+  .ill svg { width: 42px; height: 42px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Halal Tokyo Eats</h1>
+    <p class="lede"><b>64 halal Japanese spots</b> across Tokyo (93 locations). Tap a name to open it in Google Maps. <span style="color:var(--gold)">★</span> marks the must-tries.</p>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tabEat" aria-selected="true" aria-controls="viewEat" type="button">Where to eat</button>
+      <button class="tab" role="tab" id="tabTry" aria-selected="false" aria-controls="viewTry" type="button">Foods to try</button>
+    </div>
+  </header>
+</div>
+
+<div id="viewEat" role="tabpanel" aria-labelledby="tabEat">
+  <div class="filters">
+    <div class="wrap">
+      <div class="seg" role="group" aria-label="Sort">
+        <button type="button" id="modeDish" aria-pressed="true">By dish</button>
+        <button type="button" id="modeNear" aria-pressed="false">Nearest first</button>
+      </div>
+      <div class="ctl" id="dishCtl">
+        <div class="chips" id="areas" role="group" aria-label="Filter by area"></div>
+        <select class="areaSel" id="areaSel" aria-label="Filter by area"></select>
+        <label class="toggle" for="mustOnly"><input type="checkbox" id="mustOnly"> ★ Must-tries</label>
+      </div>
+      <div id="nearCtl" hidden>
+        <div class="ctl">
+          <select id="origin" aria-label="Distance from"></select>
+          <label class="toggle" for="mustOnly2"><input type="checkbox" id="mustOnly2"> ★ Must-tries</label>
+        </div>
+        <div id="customBox" hidden>
+          <div class="ctl"><input type="text" id="coords" inputmode="decimal" placeholder="Paste coordinates, e.g. 35.6938, 139.7034" aria-label="Your location coordinates"></div>
+          <p class="hint" id="coordsHint">In Google Maps, press and hold on your hotel. The coordinates appear at the top; tap them to copy, then paste here.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <ul class="index" id="index"></ul>
+    <main id="main"></main>
+    <p class="empty" id="empty" hidden>Nothing matches these filters. Try All areas.</p>
+  </div>
+  <div class="band" id="splurgeBand"><div class="wrap" id="splurge"></div></div>
+</div>
+
+<div id="viewTry" role="tabpanel" aria-labelledby="tabTry" hidden>
+  <div class="wrap">
+    <p class="tryIntro">Sixteen Japanese foods and experiences you can have halal in Tokyo. Each one links to where to try it, and to real photos.</p>
+    <div class="grid" id="tryGrid"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <footer>
+    <h3>Eating halal in Japan</h3>
+    <ul>
+      <li>Sushi rice and normal soy sauce often contain mirin or sake. Ask for rice without mirin (<i>mirin nashi</i>) and carry halal soy sauce.</li>
+      <li>On labels, avoid 豚 / ポーク (pork), ラード (lard), ゼラチン (gelatin), 酒 / アルコール (alcohol).</li>
+      <li>Prayer: many places here have a prayer room. Mosques: As-Salaam Masjid in Okachimachi and Tokyo Camii in Yoyogi-Uehara.</li>
+      <li>Tipping isn't customary in Japan. A few tourist places suggest one; you can say no.</li>
+    </ul>
+    <h3>Staying in Shinjuku</h3>
+    <ul>
+      <li>From Haneda: airport limousine bus straight to Shinjuku (about 1 hour), or Keikyu line to Shinagawa, then JR Yamanote line (about 50 min).</li>
+      <li>Shibuya is 5 min by train; Asakusa about 35 min. Plan one Asakusa day for Sushi Ken, Panga sukiyaki and Tempura Sakura.</li>
+      <li>Flying out of Haneda? Honolu has a halal ramen shop in Terminal 3, 4th floor.</li>
+    </ul>
+    <p class="src">Details from Google Maps listings and halal guides by Time Out Tokyo, Tokyo Cheapo and Coto Academy, checked 24 Oct 2026. Distances are straight-line. Hours change, so check before you go.</p>
+  </footer>
+</div>
+
+<script>
+const DATA = {"cats": [{"name": "Sushi", "intro": "Fish is halal for most Muslims; these places also handle the rice and soy sauce.", "items": [{"n": "Asakusa Sushi Ken", "a": "Asakusa", "x": 2, "t": "The best halal sushi counter in Tokyo, 5 min from Senso-ji. Book ahead; closed Wednesdays. The tip on the bill is optional.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Asakusa%20Sushi%20Ken&query_place_id=ChIJIUaZ8r-OGGARXpS8mbCSof8", "b": [], "g": [35.71394, 139.79265]}, {"n": "Tokyo Sushi Bowl", "a": "Asakusa", "x": 3, "t": "Chirashi bowls from about ¥3,000 by Kaminarimon gate, plus a make-your-own matcha session.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20sushi%20bowl&query_place_id=ChIJa08ZHmGPGGARyyvBjn_Tee4", "b": [], "g": [35.71021, 139.79674]}, {"n": "Sushi Zanmai Tsukiji", "a": "Ginza", "x": 2, "t": "Budget conveyor-belt sushi at Tsukiji market. Halal menu and halal soy sauce; ask for rice without alcohol.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Mawaru%20Sushi%20Zanmai%20Tsukiji%20branch&query_place_id=ChIJb7QFJN-LGGARVuqee0B_Ldk", "b": [], "g": [35.66574, 139.77063]}, {"n": "Fujiyama Tokyo", "a": "Shinjuku", "x": 2, "t": "All-you-can-eat halal snow crab and sushi. Not fully halal, so ask which items are. Weekdays from 5pm.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Sushi%20Restaurant%20FUJIYAMA%20TOKYO%20Shinjuku%20East&query_place_id=ChIJK7JfIwCNGGARU-6nGULjlk8", "b": [], "g": [35.69361, 139.70706]}]}, {"name": "Wagyu yakiniku & steak", "intro": "Grill-it-yourself A5 wagyu is the halal Tokyo experience.", "items": [{"n": "Panga", "a": "Ueno", "x": 3, "t": "Top-rated A5 wagyu yakiniku with certified halal cuts and sauces. Better value than the bigger names.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Panga&query_place_id=ChIJ9bFAjKSOGGARqsl1Ru2ZQs0", "b": [{"l": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Yakiniku%20PANGA%20Asakusa%20%7C%20Tokyo%20Halal%20restaurant&query_place_id=ChIJdzczsDuPGGARHhw2tyh5Dt0", "a": "Asakusa", "g": [35.71017, 139.79788]}, {"l": "Ueno", "u": "https://www.google.com/maps/search/?api=1&query=A5%20Wagyu%20Yakiniku%20PANGA%20Ueno%20branch%20%7C%20Tokyo%20halal%20restaurant&query_place_id=ChIJGfV-MgOPGGARZD8WM_Q1GAs", "a": "Ueno", "g": [35.70711, 139.77409]}], "g": [35.70485, 139.78101]}, {"n": "Gyumon Yakiniku", "a": "Shibuya", "x": 3, "t": "Grill A5 wagyu at your table; get the premium set and the A5 kalbi. Small and gets warm.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Gyumon%20Shibuya&query_place_id=ChIJSzG_eFyLGGARQFPb6kRJLv8", "b": [{"l": "Shibuya 2nd (dinner)", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Gyumon%20Shibuya%202nd&query_place_id=ChIJ4REDLPGLGGARtbyUvEU_xpY", "a": "Shibuya", "g": [35.65536, 139.70616]}, {"l": "Shinjuku", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Shinjuku&query_place_id=ChIJe2XGkniNGGARXw6OESPdNKs", "a": "Shinjuku", "g": [35.69055, 139.7028]}], "g": [35.6556, 139.70653]}, {"n": "Kawashina", "a": "Asakusa", "x": 2, "t": "Cook your own halal wagyu while the staff walk you through it. Friendly and affordable.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Kawashina%20Asakusa%20Wagyu&query_place_id=ChIJwcQaegCPGGAR8m-LGgaub4c", "b": [], "g": [35.71119, 139.79262]}, {"n": "Hachisan", "a": "Asakusa", "x": 2, "t": "Tiny wagyu steak house rated 5.0. Wagyu sushi and tempura on the side.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Asakusa%20Halal%20Wagyu%20Steak%20HACHISAN%20%7C%20%E5%85%AB%E4%B8%89&query_place_id=ChIJo6azlLiPGGAR9nvJXSzcdSc", "b": [], "g": [35.717, 139.79803]}, {"n": "Yaminiku Hayashi", "a": "Elsewhere", "x": 2, "t": "Kamata, 15 min from Haneda. Halal wagyu yakiniku from a butcher; perfect for your arrival or last night.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Yaminiku%20Hayashi&query_place_id=ChIJj3hSRWlhGGAR_57FAwjm49M", "b": [], "g": [35.56177, 139.72147]}, {"n": "Halal Wagyu Stall", "a": "Shibuya", "x": 1, "t": "Street stall grilling wagyu skewers and burgers near the Scramble. Follow the smell.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20STALL&query_place_id=ChIJKQbQIk6NGGAR2oBiDUlJONw", "b": [], "g": [35.66051, 139.69849]}]}, {"name": "Sukiyaki & shabu-shabu", "intro": "Wagyu simmered at the table. Diyafa is under Splurge.", "items": [{"n": "Panga Sukiyaki", "a": "Asakusa", "x": 3, "t": "Halal wagyu sukiyaki a block from Kaminarimon. Dinner only, from 4:30pm.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Sukiyaki%20Asakusa%20PANGA%20%7C%20Tokyo%20Halal%20restaurant&query_place_id=ChIJ3c8QKJKPGGARLncbWf3NpVc", "b": [], "g": [35.71017, 139.79788]}, {"n": "Shoutaian", "a": "Ikebukuro", "x": 3, "t": "All-you-can-eat halal wagyu shabu-shabu for 90 minutes, 8th floor by Ikebukuro station.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20Wagyu%20ShabuShabu%20SHOUTAIAN&query_place_id=ChIJPVFZg8GNGGAR2Rjf6vxp2mE", "b": [], "g": [35.72912, 139.71157]}]}, {"name": "Ramen & udon", "intro": "Halal wagyu ramen is everywhere. Gyumon lets you pick spice 0–10; 3–5 is already hot.", "items": [{"n": "Gyumon", "a": "Shibuya", "x": 2, "t": "The best-known halal ramen chain. A5 wagyu ramen and wagyu gyukatsu; open till 11pm or later.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Gyumon%20Halal%20Wagyu%20Ramen%20Shibuya&query_place_id=ChIJ_-R_mUGLGGARDfQ8ATZZ4w0", "b": [{"l": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Gyumon%20Halal%20Ramen%20Asakusa&query_place_id=ChIJE9zJogePGGARBvQ-j_olTG0", "a": "Asakusa", "g": [35.7167, 139.79907]}, {"l": "Kaminarimon", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20%26%20Gyukatsu%20GYUMON%20Tokyo%20Asakusa%20Kaminarimon&query_place_id=ChIJAV9IcxaPGGAREiV_GKbVB9Q", "a": "Asakusa", "g": [35.71151, 139.79605]}, {"l": "Ueno", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Ueno&query_place_id=ChIJcV287faPGGARHsMi1lhCVAs", "a": "Ueno", "g": [35.70985, 139.77719]}, {"l": "Shinjuku", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON&query_place_id=ChIJJ5YQI2eNGGARwrkAkREHw4c", "a": "Shinjuku", "g": [35.69439, 139.70128]}, {"l": "Center Gai", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Center%20Gai&query_place_id=ChIJN3vRzPGNGGARqke7ZLKvlyI", "a": "Shibuya", "g": [35.66023, 139.69935]}, {"l": "Scramble", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Scramble&query_place_id=ChIJw_6UJtWNGGAROtTB3bQuWCk", "a": "Shibuya", "g": [35.6602, 139.69939]}, {"l": "Jinnan, 10F view", "u": "https://www.google.com/maps/search/?api=1&query=GYUMON%20Jinnan&query_place_id=ChIJeSyveTuNGGARuizu2pQH1yc", "a": "Shibuya", "g": [35.66183, 139.69996]}, {"l": "Ginza", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Gyumon&query_place_id=ChIJJcK1XoeLGGARA0UJkKh9k7Q", "a": "Ginza", "g": [35.66949, 139.76509]}, {"l": "Ikebukuro", "u": "https://www.google.com/maps/search/?api=1&query=Gyumon%20Ikebukuro&query_place_id=ChIJ5dXSUJSNGGARwR8GTsnEgI8", "a": "Ikebukuro", "g": [35.73352, 139.70987]}], "g": [35.65973, 139.70416]}, {"n": "Shinjuku-tei", "a": "Shinjuku", "x": 2, "t": "Wagyu and chicken ramen sets with prayer rooms. Dinner queues: add your name and come back.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Tokyo%20Shinjuku&query_place_id=ChIJ8WQHFoqNGGARpc767pcSol8", "b": [{"l": "Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Asakusa%20Tokyo&query_place_id=ChIJF6THDR-PGGAR98Co847dv-E", "a": "Asakusa", "g": [35.71156, 139.79235]}, {"l": "Ueno Park", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Ueno%20Park%20Tokyo&query_place_id=ChIJpb3ZMwCNGGARQJdzUva4S8o", "a": "Ueno", "g": [35.7088, 139.77032]}, {"l": "Yotsuya", "u": "https://www.google.com/maps/search/?api=1&query=Shinjuku-tei%20Yotsuya%20Halal%20Wagyu%20Ramen&query_place_id=ChIJU1puu0ONGGARyyUNJrpLJN4", "a": "Shinjuku", "g": [35.68701, 139.72741]}, {"l": "Shibuya", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Tokyo%20Shibuya&query_place_id=ChIJoe-Wg4ONGGAR6KSXVgzoR8o", "a": "Shibuya", "g": [35.66315, 139.70015]}, {"l": "Hibiya / Ginza", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20SHINJUKU-TEI%20TOKYO%20Ginza&query_place_id=ChIJj7GKVMmLGGARBvmLex_NeY0", "a": "Ginza", "g": [35.66916, 139.75856]}], "g": [35.69192, 139.70646]}, {"n": "Dattebayo!", "a": "Asakusa", "x": 2, "t": "Halal and vegan ramen cooked in front of you. A favourite with families.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Dattebayo%21%20Halal%20and%20Vegan%20Ramen%20Asakusa&query_place_id=ChIJwV6BpeyPGGARIqvJgCPcszk", "b": [], "g": [35.71476, 139.8017]}, {"n": "Honolu", "a": "Asakusa", "x": 2, "t": "Wagyu udon as well as ramen, so you get a second noodle style. Queue forms before 11:30.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Honolu%27s%20Wagyu%20Udon%20%26%20Ramen%20Halal%20%D8%AD%D9%84%D8%A7%D9%84%20Asakusa&query_place_id=ChIJyYGQwWuPGGARqQVPSpPB6mo", "b": [{"l": "Akihabara (prayer room)", "u": "https://www.google.com/maps/search/?api=1&query=Honolu%20Grande%20Halal%20Restaurant%20Akihabara&query_place_id=ChIJn9d23niPGGARl__2ZnjnfEM", "a": "Akihabara", "g": [35.6951, 139.77747]}, {"l": "Shinjuku Gyoenmae", "u": "https://www.google.com/maps/search/?api=1&query=Honolu%20Shinjukugyoenmae%20Halal%20Ramen&query_place_id=ChIJw02KsG6NGGARVmoqp_g5VdI", "a": "Shinjuku", "g": [35.69024, 139.71208]}, {"l": "Ebisu", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Ramen%20Honolu&query_place_id=ChIJLRNVgBWLGGARMxGRyu03kZQ", "a": "Roppongi & Ebisu", "g": [35.64337, 139.71171]}, {"l": "Haneda Airport T3", "u": "https://www.google.com/maps/search/?api=1&query=HALAL/VEGAN%20Honolu%20Premier%20Air%20Haneda&query_place_id=ChIJBx6TrXdhGGAR8wl2oSWE-LE", "a": "Elsewhere", "g": [35.54604, 139.76852]}], "g": [35.71737, 139.79501]}, {"n": "Shunpudou", "a": "Asakusa", "x": 2, "t": "Spicy wagyu ramen and A5 beef katsu, rated 4.9 by 3,000+ diners.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20%26%20BEEF%20CUTLET%20SHUNPUDOU%20%E6%98%A5%E9%A2%A8%E5%A0%82&query_place_id=ChIJrTTMInCPGGAR1XfX02rt-fs", "b": [], "g": [35.71442, 139.79354]}, {"n": "Naritaya", "a": "Asakusa", "x": 2, "t": "Long-running halal ramen shop with fried chicken; a non-spicy option for kids.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Naritaya&query_place_id=ChIJuffoBJmOGGARqgxESrqviGE", "b": [], "g": [35.71474, 139.79509]}, {"n": "Ushibon", "a": "Asakusa", "x": 1, "t": "Beef-bone ramen, rice bowls and halal takoyaki. Small and new.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Beef%20bone%20ramen%20Ushibon%20Asakusa/%E7%89%9B%E9%AA%A8%E3%83%A9%E3%83%BC%E3%83%A1%E3%83%B3%20%E3%81%86%E3%81%97%E3%81%BC%E3%83%BC%E3%82%93%20%E6%B5%85%E8%8D%89&query_place_id=ChIJpTsAs3KPGGARd48JqPOyito", "b": [], "g": [35.71729, 139.79443]}, {"n": "Samurai Soul", "a": "Asakusa", "x": 2, "t": "Ramen and wagyu plates close to Senso-ji, open till 11pm.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Samurai%20Soul%20Halal%20Ramen%20and%20Wagyu&query_place_id=ChIJy0GKTg2PGGARX2hGexYxQpA", "b": [], "g": [35.71679, 139.79358]}, {"n": "Kiwami", "a": "Asakusa", "x": 2, "t": "Small counter shop that opens at 9am. Good chicken ramen.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20KIWAMI&query_place_id=ChIJixFSuSmPGGARQXYikrboIzk", "b": [], "g": [35.71238, 139.79263]}, {"n": "Ayam-ya", "a": "Asakusa", "x": 1, "t": "Spicy chicken ramen and karaage at fair prices.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Ayam-ya%20Halal%20Ramen%20Tokyo&query_place_id=ChIJdY8ThvuPGGAR1MXsvLwGai8", "b": [], "g": [35.70717, 139.78626]}, {"n": "Sankyu", "a": "Asakusa", "x": 2, "t": "Chicken-and-beef mix ramen; private rooms for groups.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Sankyu%20Halal%20Ramen%20Japanese%20Food%20Asakusa&query_place_id=ChIJQf_2WACPGGARDixR6AZQHz8", "b": [{"l": "Ueno", "u": "https://www.google.com/maps/search/?api=1&query=Sankyu%20Halal%20Ramen%20Japanese%20Food%20Ueno&query_place_id=ChIJl9d-WgCNGGARWRcsm_VwucU", "a": "Ueno", "g": [35.70572, 139.77123]}], "g": [35.71379, 139.79061]}, {"n": "Halal Ramen Ueno", "a": "Ueno", "x": 2, "t": "Great-value wagyu ramen near the Okachimachi mosque. Opens 10am.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Ramen%20Ueno&query_place_id=ChIJq34tCQCPGGARFh0VV_VO-Sk", "b": [], "g": [35.70579, 139.77829]}, {"n": "Ramen Ninja", "a": "Ueno", "x": 2, "t": "Open until 5am. Ramen-and-rice combos big enough to share.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Ueno%20Halal%20wagyu%20Ramen%20Ninja&query_place_id=ChIJi6i7wN-PGGARGltDZMVIocM", "b": [], "g": [35.70881, 139.77563]}, {"n": "Toribushi", "a": "Ueno", "x": 1, "t": "Cheaper chicken-broth ramen in Okachimachi.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Toribushi%20Halal%20Ramen&query_place_id=ChIJ64h4oAWPGGARimzRAGANSys", "b": [{"l": "Ikebukuro", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Ramen%20Toribushi%20Ikebukuro&query_place_id=ChIJ6aW1QACNGGARdCHy4hpxGqU", "a": "Ikebukuro", "g": [35.72932, 139.71531]}], "g": [35.70819, 139.77612]}, {"n": "Umair", "a": "Ueno", "x": 2, "t": "By Ueno Park. Spicy wagyu cutlet ramen.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=UMAIR%20HALAL%20WAGYU%20RAMEN%EF%BC%88%E3%83%8F%E3%83%A9%E3%83%AB%E3%83%AF%E3%82%AE%E3%83%A5%E3%82%A6%20%E3%83%A9%E3%83%BC%E3%83%A1%E3%83%B3%EF%BC%89%EF%BD%9CUENO-PARK%EF%BD%9CTOKYO&query_place_id=ChIJJ1S2Vq2NGGARh4ixIAAzQSE", "b": [], "g": [35.70782, 139.77024]}, {"n": "Konoha", "a": "Akihabara", "x": 2, "t": "A5 wagyu rice bowls as well as ramen.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20A5WAGYU%20Rice%20Bowl%20%EF%BC%86Ramen%20KONOHA%20%E6%9D%B1%E4%BA%AC%20%E7%A7%8B%E8%91%89%E5%8E%9F&query_place_id=ChIJK188YWGNGGARWYrAD4hbHF8", "b": [], "g": [35.68991, 139.77103]}, {"n": "Karemen King", "a": "Akihabara", "x": 2, "t": "Wagyu ramen and karaage by Akihabara station.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20karemen%20king&query_place_id=ChIJy7ZNMwCNGGARQkxeAwodzmk", "b": [], "g": [35.69558, 139.77137]}, {"n": "Naruto", "a": "Shibuya", "x": 2, "t": "Halal-certified ramen and wagyu yakiniku sets in one place. Prayer room.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20YAKINIKU%20%26%20RAMEN%20NARUTO%20SHIBUYA&query_place_id=ChIJuWCpUACNGGARUCoT32uiCyA", "b": [], "g": [35.66106, 139.69851]}, {"n": "GOTS", "a": "Shibuya", "x": 2, "t": "Harajuku. Simple wagyu ramen and a juicy halal cheeseburger.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Halal%20Ramen%20%E8%BD%9F%E6%B4%A5%20GOTS%20Harajuku&query_place_id=ChIJ46oRABGNGGARVSyvlKPb27c", "b": [], "g": [35.66751, 139.70546]}, {"n": "Halal Wagyu Ramen Okubo", "a": "Shinjuku", "x": 2, "t": "Shin-Okubo. Two roomy floors, prayer room and wudu area.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20Okubo&query_place_id=ChIJVe-sOgCNGGARZzASzvmvAlk", "b": [], "g": [35.70135, 139.69673]}, {"n": "Gyugen", "a": "Shinjuku", "x": 2, "t": "Small Kabukicho shop with homemade gyoza.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20GYUGEN&query_place_id=ChIJsRXJegCNGGARTF5jVKFIKG0", "b": [], "g": [35.69509, 139.70514]}, {"n": "Menya Kaijin", "a": "Shinjuku", "x": 2, "t": "Fish-broth ramen, no pork. Muslim-friendly but not halal-certified, so ask about the sauces.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Menya%20Kaijin%20Shinjuku%20Ten&query_place_id=ChIJXVRkjtqMGGAR_IYDENOJmJ0", "b": [], "g": [35.68974, 139.7022]}, {"n": "Wagyu Ramen Noodle", "a": "Ginza", "x": 3, "t": "Ginza shop open 8am–1am for an early or late bowl. Pricier.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20%28Halal%29%20Ramen%20Noodle%20Ginza%20Restaurant%20%E5%92%8C%E7%89%9B%20%E6%8B%89%E9%9D%A2%20%E9%8A%80%E5%BA%A7%20%E9%A4%90%E5%8E%85&query_place_id=ChIJNxFqW8CLGGARORiSLSCE4K8", "b": [{"l": "Shinjuku Kabukicho", "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20%28Halal%29%20Ramen%20Noodle%20Shinjuku%20Kabuki%20Restaurant%20%E5%92%8C%E7%89%9B%20%E6%96%B0%E5%AE%BF%20%E6%8B%89%E9%9D%A2%20%E9%A4%90%E5%8E%85&query_place_id=ChIJ63wywVePGGAR4E_AFjwal6w", "a": "Shinjuku", "g": [35.69847, 139.70198]}], "g": [35.67066, 139.76898]}]}, {"name": "Set meals, tempura & curry", "intro": "The everyday Japanese dishes, made halal.", "items": [{"n": "Tendon Itsuki", "a": "Ginza", "x": 1, "t": "Tempura rice bowl with chawanmushi and miso soup. The best-value meal in Tokyo; queue before 11am.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Tendon%20Itsuki%20Ginza&query_place_id=ChIJRZGCCOWLGGARTbuL5FrsFcM", "b": [{"l": "Ginza Novo (more seats)", "u": "https://www.google.com/maps/search/?api=1&query=Tendon%20Itsuki%20-%20Ginza%20Novo&query_place_id=ChIJe24tZgCLGGARcS--k-ScZFs", "a": "Ginza", "g": [35.67214, 139.76229]}], "g": [35.67401, 139.76434]}, {"n": "Usagi", "a": "Shibuya", "x": 2, "t": "Harajuku. Halal okonomiyaki, which is rare. Lunch only, until 5pm.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20wagyu%20okonomiyaki%26ramen%20usagi&query_place_id=ChIJvWgunVmNGGARbOWxtEdX5NY", "b": [], "g": [35.67275, 139.70392]}, {"n": "Gohan Cafe", "a": "Shibuya", "x": 2, "t": "Halal-certified Japanese set meals right next to the Shibuya Crossing.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Gohan%20Cafe&query_place_id=ChIJebdmGqiMGGAR6q20kh1FwLM", "b": [], "g": [35.6602, 139.70052]}, {"n": "Gonpachi Nishi-Azabu", "a": "Roppongi & Ebisu", "x": 2, "t": "The grand old izakaya that inspired Kill Bill. Has a halal menu; ask for it. Drinks are served. Open till 3:30am.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Gonpachi%20Nishi-Azabu&query_place_id=ChIJEwlemnqLGGARhwMuRpwpkBI", "b": [], "g": [35.66017, 139.72358]}, {"n": "Yoshiya", "a": "Shinjuku", "x": 2, "t": "Kyoto-style set meals under Shinjuku station. Ask for the halal menu.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Yoshiya%20Shinjuku%20branch&query_place_id=ChIJ6Svb3NCMGGARUzYAO-VBBDQ", "b": [], "g": [35.69196, 139.69971]}, {"n": "Tokitarazu", "a": "Roppongi & Ebisu", "x": 2, "t": "Hiroo. Japanese café with a halal-marked menu. Drinks are served.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Tokitarazu%20Ebisu&query_place_id=ChIJU_GMx2yLGGARUhqC9E86_7Q", "b": [], "g": [35.64856, 139.71374]}, {"n": "Sekai Cafe Oshiage", "a": "Elsewhere", "x": 1, "t": "By Tokyo Skytree. Halal curry around ¥850 and a prayer room.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=SEKAI%20CAFE%20OSHIAGE&query_place_id=ChIJT9kgetaOGGARBAX1B5Om8A4", "b": [], "g": [35.70917, 139.81177]}, {"n": "Yoshi's Passion", "a": "Asakusa", "x": 2, "t": "Family-run halal Japanese curry with a crispy chicken cutlet.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Japanese%20Curry%20Yoshi%27s%20Passion&query_place_id=ChIJhcYiIYePGGARiWBpges41k8", "b": [], "g": [35.71677, 139.79665]}, {"n": "Nikoniko", "a": "Akihabara", "x": 1, "t": "Cheap, homely katsu curry and karaage bowls. Bring some cash.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Nikoniko%20mazemen%20Akihabara&query_place_id=ChIJA_VeYVCPGGAREHZYji0Bk60", "b": [], "g": [35.69624, 139.77374]}, {"n": "Wagyu Halal Japanese Food", "a": "Shinjuku", "x": 3, "t": "Wagyu rice bowls and a burger seared at your table. Prayer area, open till 1am.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Halal%20Japanese%20Food%20Shinjuku%20Restaurant&query_place_id=ChIJpW5UkdCNGGAR_6nme_lNyHQ", "b": [], "g": [35.69237, 139.70899]}, {"n": "Shinshu Sojibo", "a": "Elsewhere", "x": 2, "t": "Odaiba (DiverCity mall). Halal-certified soba sets; reviews are mixed.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Shinshu%20Sojibo%20DiverCity%20Tokyo%20Plaza&query_place_id=ChIJeZjTLviJGGARZFbkjoWK8b4", "b": [], "g": [35.62495, 139.77498]}, {"n": "Issho Ueno", "a": "Ueno", "x": 2, "t": "Izakaya with miso beef hotpot and grilled beef, described as halal-friendly. Drinks are served; ask which dishes are halal.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Issho%20Ueno&query_place_id=ChIJD1issJ6OGGAR4v6kzprNE_E", "b": [], "g": [35.71261, 139.77745]}]}, {"name": "Wagyu burgers", "intro": "Tokyo's halal wagyu burgers are worth one meal.", "items": [{"n": "Halal Burger Ueno", "a": "Ueno", "x": 2, "t": "4.9 from 2,000+ reviews. Wagyu patty burgers; opens 10am.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Burger%20Ueno&query_place_id=ChIJSaNBXACPGGARsHNeeKDvufM", "b": [], "g": [35.70749, 139.77905]}, {"n": "Gyumon A5 Burger", "a": "Shibuya", "x": 2, "t": "A5 wagyu double cheeseburgers.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=A5%20Wagyu%20Burger%20GYUMON%20Tokyo%20Shibuya%20Scramble%20%28Halal%20%26%20Vegan%20Options%29&query_place_id=ChIJYzmEqtWNGGARlAQgZygwHoc", "b": [{"l": "Shinjuku East Exit", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Burger%20GYUMON%20Tokyo%20Shinjuku%20East%20Exit%20%28Halal%20%26%20Vegan%20Options%29&query_place_id=ChIJ1_G6jYuNGGARIUlpn_LVW1A", "a": "Shinjuku", "g": [35.69061, 139.7028]}], "g": [35.66021, 139.69936]}, {"n": "Luxe Burgers", "a": "Elsewhere", "x": 2, "t": "Ningyocho. Halal and vegan options, with a small free dessert.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=LUXE%20BURGERS%20NINGYOCHO&query_place_id=ChIJWWy_RX6JGGAR71PYLlGvW-0", "b": [], "g": [35.68703, 139.77823]}, {"n": "5W-Tokyo", "a": "Akihabara", "x": 3, "t": "Wagyu truffle burgers and steak combos. Pricey and reviews are split.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Japanese%20food%20Wagyu%20Restaurant%20%28Halal%29%20Steak%26Burger-Ramen%205W-Tokyo%20AkihabaraUeno%20Beef%20Dining&query_place_id=ChIJV8EJyvWPGGARHWJnaCZRpqY", "b": [{"l": "Harajuku", "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20%28Halal%29%20Steak%20HamBurger%20%26%20Ramen%20%28Japanese%20food%29%20Harajuku%20Shibuya%20Restaurant%205W-Tokyo%201962&query_place_id=ChIJXbmU8UGNGGARXX5B4fnBvZg", "a": "Shibuya", "g": [35.67034, 139.7058]}], "g": [35.70263, 139.7781]}, {"n": "Grill Hunter", "a": "Elsewhere", "x": 2, "t": "Gotanda. Affordable wagyu smash burgers.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Grill%20Hunter%20Gotanda%20Halal&query_place_id=ChIJewOA3eWLGGARjBFSg5FAUks", "b": [], "g": [35.62584, 139.72596]}]}, {"name": "Matcha & snacks", "intro": "", "items": [{"n": "Ohina Café", "a": "Shibuya", "x": 2, "t": "Harajuku. Whisk your own matcha while wearing a kimono.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E9%9B%9B%E3%82%AB%E3%83%95%E3%82%A7%E6%8A%B9%E8%8C%B6%E5%8E%9F%E5%AE%BF%20Harajuku%20Ohina%20caf%C3%A9%20Matcha%20halal&query_place_id=ChIJ_dVcdkqNGGARot2V06uNHaw", "b": [], "g": [35.6707, 139.70572]}, {"n": "Matcha Times", "a": "Asakusa", "x": 1, "t": "Excellent matcha lattes by Kaminarimon, described as halal-friendly.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=MATCHA%20TIMES%20Asakusa&query_place_id=ChIJqTlo7dmPGGARqTuIqtcZ_Nc", "b": [], "g": [35.71042, 139.79255]}, {"n": "HALAL-YA", "a": "Asakusa", "x": 2, "t": "A whole shop of halal Japanese snacks and souvenirs, with free tasting and a prayer area. Open 11am–5pm.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=HALAL-YA%20ASAKUSA%20FLAGSHIP%20STORE%20/%20Japanese%20halal%20souvenir%20store&query_place_id=ChIJS-MyTmKPGGAREt7RuNgboRs", "b": [], "g": [35.71151, 139.79288]}]}], "splurge": [{"n": "Diyafa", "a": "Roppongi & Ebisu", "x": "Wagyu sukiyaki", "t": "Near Tokyo Tower. Staff guide you through the sukiyaki, then teach you to make matcha. Weekends dinner only.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Halal%20SUKIYAKI%20Restaurant%20Diyafa&query_place_id=ChIJf-uQ4yuLGGARr79SKl1J35E", "b": [], "g": [35.65166, 139.75115]}, {"n": "Tempura Asakusa Sakura", "a": "Asakusa", "x": "Tempura omakase", "t": "Only 10 seats, wagyu tempura, fully gluten-free. Book ahead.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Tempura%20Asakusa%20SAKURA&query_place_id=ChIJWUVY-DuPGGAR0KRSemNJ6rk", "b": [], "g": [35.7102, 139.79672]}, {"n": "Tokyo Omakase Sushi Wagyu", "a": "Shinjuku", "x": "Sushi omakase", "t": "Halal sushi and wagyu courses; they cook the fish if you don't eat raw.", "m": true, "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Omakase%20Sushi%20Wagyu%20%28Halal%29%20Shinjuku%20Restaurant%20%E6%96%B0%E5%AE%BF%E5%AF%BF%E5%8F%B8%E5%92%8C%E7%89%9B%E9%A4%90%E5%8E%85&query_place_id=ChIJa1L36RWNGGARjNNhF0vzgjE", "b": [{"l": "Asakusa, kimono experience", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Omakase%20Sushi%20%26%20Wagyu%20%28Halal%29%20Asakusa%20Kimono%20Experience%20Restaurant&query_place_id=ChIJl9aitWmPGGAR7CcObngUCRI", "a": "Asakusa", "g": [35.7165, 139.7985]}], "g": [35.69103, 139.70599]}, {"n": "Ninja Yakiniku", "a": "Asakusa", "x": "Wagyu yakiniku", "t": "7th floor in Asakusa with a view of the Skytree.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Ninja%20Yakiniku%20Halal%20Wagyu%20Restaurant%20Asakusa&query_place_id=ChIJlbLC7QWPGGARkOP4XUG8IQo", "b": [], "g": [35.7117, 139.79465]}, {"n": "Ginza The Emperor", "a": "Ginza", "x": "Kobe beef yakiniku", "t": "Elegant table grills with Kobe beef. Weekdays dinner only.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=GINZA%20THE%20EMPEROR&query_place_id=ChIJNYPKwQWLGGARmtmkF5Owbs8", "b": [], "g": [35.66923, 139.76146]}, {"n": "Ushizaka", "a": "Roppongi & Ebisu", "x": "Wagyu yakiniku", "t": "Nishi-Azabu. Some of the best meat in Tokyo; reserve.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Yakiniku%20Ushizaka%20Halal&query_place_id=ChIJazDfTXCLGGAR1__c1AdnB5g", "b": [], "g": [35.65775, 139.72361]}, {"n": "Satsuma Roppongi", "a": "Roppongi & Ebisu", "x": "Wagyu steak", "t": "Halal wagyu steak, open 6pm–8am.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Satsuma%20Roppongi&query_place_id=ChIJ2x_u4bOLGGAREPk4BinYZYc", "b": [], "g": [35.66231, 139.7329]}, {"n": "Tenderloin", "a": "Ginza", "x": "Wagyu steak", "t": "Small Ginza steakhouse open until 6am on weekdays.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=TENDERLOIN&query_place_id=ChIJ7a7_wcGLGGARE-Ag7Y24LHE", "b": [], "g": [35.66758, 139.76201]}, {"n": "Kobe Beef Steak Omakase", "a": "Shinjuku", "x": "Kobe beef", "t": "Kobe wagyu steak courses in Shinjuku.", "m": false, "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Steak%20Kobe%20Beef%20Halal%20Shinjuku%20Omakase%20Restaurant%20%E6%96%B0%E5%AE%BF%E5%92%8C%E7%89%9B%E9%A4%90%E5%8E%85&query_place_id=ChIJOY6yfRGNGGARvZ9-8lXEGe4", "b": [], "g": [35.69098, 139.70596]}], "try": [{"id": "yakiniku", "n": "A5 wagyu yakiniku", "j": "焼肉", "t": "Grill paper-thin slices of marbled A5 wagyu yourself at the table. A few seconds a side is enough; the fat melts as it cooks.", "w": [{"l": "Panga", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Panga&query_place_id=ChIJ9bFAjKSOGGARqsl1Ru2ZQs0"}, {"l": "Gyumon Yakiniku", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Yakiniku%20Gyumon%20Shibuya&query_place_id=ChIJSzG_eFyLGGARQFPb6kRJLv8"}, {"l": "Ushizaka (splurge)", "u": "https://www.google.com/maps/search/?api=1&query=Wagyu%20Yakiniku%20Ushizaka%20Halal&query_place_id=ChIJazDfTXCLGGAR1__c1AdnB5g"}], "p": "https://www.google.com/search?tbm=isch&q=A5+wagyu+yakiniku+grill"}, {"id": "sukiyaki", "n": "Wagyu sukiyaki", "j": "すき焼き", "t": "Wagyu simmered at the table in sweet soy broth with tofu and vegetables, then dipped in beaten raw egg. Ask for it without egg if you prefer.", "w": [{"l": "Panga Sukiyaki", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Sukiyaki%20Asakusa%20PANGA%20%7C%20Tokyo%20Halal%20restaurant&query_place_id=ChIJ3c8QKJKPGGARLncbWf3NpVc"}, {"l": "Diyafa", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20SUKIYAKI%20Restaurant%20Diyafa&query_place_id=ChIJf-uQ4yuLGGARr79SKl1J35E"}], "p": "https://www.google.com/search?tbm=isch&q=wagyu+sukiyaki"}, {"id": "sushi", "n": "Sushi at the counter", "j": "寿司", "t": "The chef presses each piece of nigiri and hands it straight to you. Eat it in one bite, fish side down on your tongue.", "w": [{"l": "Asakusa Sushi Ken", "u": "https://www.google.com/maps/search/?api=1&query=Asakusa%20Sushi%20Ken&query_place_id=ChIJIUaZ8r-OGGARXpS8mbCSof8"}, {"l": "Tokyo Sushi Bowl (chirashi)", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20sushi%20bowl&query_place_id=ChIJa08ZHmGPGGARyyvBjn_Tee4"}, {"l": "Tokyo Omakase (splurge)", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Omakase%20Sushi%20Wagyu%20%28Halal%29%20Shinjuku%20Restaurant%20%E6%96%B0%E5%AE%BF%E5%AF%BF%E5%8F%B8%E5%92%8C%E7%89%9B%E9%A4%90%E5%8E%85&query_place_id=ChIJa1L36RWNGGARjNNhF0vzgjE"}], "p": "https://www.google.com/search?tbm=isch&q=nigiri+sushi+counter+Tokyo"}, {"id": "gyukatsu", "n": "Wagyu gyukatsu", "j": "牛カツ", "t": "Breaded wagyu fried for under a minute so it stays rare inside. You finish each slice on a small hot stone at your seat.", "w": [{"l": "Gyumon Kaminarimon", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Wagyu%20Ramen%20%26%20Gyukatsu%20GYUMON%20Tokyo%20Asakusa%20Kaminarimon&query_place_id=ChIJAV9IcxaPGGAREiV_GKbVB9Q"}, {"l": "Shunpudou", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20%26%20BEEF%20CUTLET%20SHUNPUDOU%20%E6%98%A5%E9%A2%A8%E5%A0%82&query_place_id=ChIJrTTMInCPGGAR1XfX02rt-fs"}], "p": "https://www.google.com/search?tbm=isch&q=gyukatsu+hot+stone"}, {"id": "ramen", "n": "Halal wagyu ramen", "j": "ラーメン", "t": "Rich beef or chicken broth with wagyu slices on top. Slurping is normal and polite here.", "w": [{"l": "Shinjuku-tei", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20WAGYU%20RAMEN%20SHINJUKU-TEI%20Tokyo%20Shinjuku&query_place_id=ChIJ8WQHFoqNGGARpc767pcSol8"}, {"l": "Gyumon", "u": "https://www.google.com/maps/search/?api=1&query=Gyumon%20Halal%20Wagyu%20Ramen%20Shibuya&query_place_id=ChIJ_-R_mUGLGGARDfQ8ATZZ4w0"}, {"l": "Honolu", "u": "https://www.google.com/maps/search/?api=1&query=Honolu%27s%20Wagyu%20Udon%20%26%20Ramen%20Halal%20%D8%AD%D9%84%D8%A7%D9%84%20Asakusa&query_place_id=ChIJyYGQwWuPGGARqQVPSpPB6mo"}], "p": "https://www.google.com/search?tbm=isch&q=wagyu+ramen+bowl"}, {"id": "udon", "n": "Wagyu udon", "j": "うどん", "t": "Thick, chewy wheat noodles in a lighter broth. A good change from ramen.", "w": [{"l": "Honolu Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Honolu%27s%20Wagyu%20Udon%20%26%20Ramen%20Halal%20%D8%AD%D9%84%D8%A7%D9%84%20Asakusa&query_place_id=ChIJyYGQwWuPGGARqQVPSpPB6mo"}], "p": "https://www.google.com/search?tbm=isch&q=wagyu+udon"}, {"id": "tempura", "n": "Tempura & tendon", "j": "天ぷら", "t": "Shrimp and vegetables in a feather-light batter. Tendon piles it over rice with sweet sauce; omakase serves each piece fresh from the oil.", "w": [{"l": "Tendon Itsuki", "u": "https://www.google.com/maps/search/?api=1&query=Tendon%20Itsuki%20Ginza&query_place_id=ChIJRZGCCOWLGGARTbuL5FrsFcM"}, {"l": "Tempura Asakusa Sakura", "u": "https://www.google.com/maps/search/?api=1&query=Tempura%20Asakusa%20SAKURA&query_place_id=ChIJWUVY-DuPGGAR0KRSemNJ6rk"}], "p": "https://www.google.com/search?tbm=isch&q=tendon+tempura+rice+bowl"}, {"id": "shabu", "n": "Shabu-shabu", "j": "しゃぶしゃぶ", "t": "Swish a thin slice of wagyu through simmering broth for a few seconds, then dip it in sesame or ponzu sauce.", "w": [{"l": "Shoutaian (all you can eat)", "u": "https://www.google.com/maps/search/?api=1&query=HALAL%20Wagyu%20ShabuShabu%20SHOUTAIAN&query_place_id=ChIJPVFZg8GNGGAR2Rjf6vxp2mE"}], "p": "https://www.google.com/search?tbm=isch&q=wagyu+shabu+shabu"}, {"id": "okonomiyaki", "n": "Okonomiyaki", "j": "お好み焼き", "t": "A thick savoury cabbage pancake topped with sweet sauce, mayo and dancing bonito flakes.", "w": [{"l": "Usagi", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20wagyu%20okonomiyaki%26ramen%20usagi&query_place_id=ChIJvWgunVmNGGARbOWxtEdX5NY"}], "p": "https://www.google.com/search?tbm=isch&q=okonomiyaki"}, {"id": "takoyaki", "n": "Takoyaki", "j": "たこ焼き", "t": "Crispy balls of batter with octopus inside, Osaka's favourite street snack. Molten hot in the middle, so wait a moment.", "w": [{"l": "Ushibon", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Beef%20bone%20ramen%20Ushibon%20Asakusa/%E7%89%9B%E9%AA%A8%E3%83%A9%E3%83%BC%E3%83%A1%E3%83%B3%20%E3%81%86%E3%81%97%E3%81%BC%E3%83%BC%E3%82%93%20%E6%B5%85%E8%8D%89&query_place_id=ChIJpTsAs3KPGGARd48JqPOyito"}], "p": "https://www.google.com/search?tbm=isch&q=takoyaki"}, {"id": "curry", "n": "Japanese curry & katsu", "j": "カレー", "t": "Thick, mild, slightly sweet curry over rice with a crispy cutlet. Japan's comfort food.", "w": [{"l": "Yoshi's Passion", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Japanese%20Curry%20Yoshi%27s%20Passion&query_place_id=ChIJhcYiIYePGGARiWBpges41k8"}, {"l": "Nikoniko", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20Nikoniko%20mazemen%20Akihabara&query_place_id=ChIJA_VeYVCPGGAREHZYji0Bk60"}, {"l": "Sekai Cafe", "u": "https://www.google.com/maps/search/?api=1&query=SEKAI%20CAFE%20OSHIAGE&query_place_id=ChIJT9kgetaOGGARBAX1B5Om8A4"}], "p": "https://www.google.com/search?tbm=isch&q=japanese+katsu+curry"}, {"id": "teishoku", "n": "Teishoku set meal", "j": "定食", "t": "The everyday Japanese meal: a main dish with rice, miso soup and small pickles on one tray.", "w": [{"l": "Gohan Cafe", "u": "https://www.google.com/maps/search/?api=1&query=Gohan%20Cafe&query_place_id=ChIJebdmGqiMGGAR6q20kh1FwLM"}, {"l": "Yoshiya", "u": "https://www.google.com/maps/search/?api=1&query=Yoshiya%20Shinjuku%20branch&query_place_id=ChIJ6Svb3NCMGGARUzYAO-VBBDQ"}], "p": "https://www.google.com/search?tbm=isch&q=teishoku+set+meal"}, {"id": "matcha", "n": "Whisk your own matcha", "j": "抹茶", "t": "Learn to whisk powdered green tea into a frothy bowl with a bamboo whisk, usually with a small sweet.", "w": [{"l": "Ohina Café", "u": "https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E9%9B%9B%E3%82%AB%E3%83%95%E3%82%A7%E6%8A%B9%E8%8C%B6%E5%8E%9F%E5%AE%BF%20Harajuku%20Ohina%20caf%C3%A9%20Matcha%20halal&query_place_id=ChIJ_dVcdkqNGGARot2V06uNHaw"}, {"l": "Diyafa", "u": "https://www.google.com/maps/search/?api=1&query=Halal%20SUKIYAKI%20Restaurant%20Diyafa&query_place_id=ChIJf-uQ4yuLGGARr79SKl1J35E"}, {"l": "Tokyo Sushi Bowl", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20sushi%20bowl&query_place_id=ChIJa08ZHmGPGGARyyvBjn_Tee4"}], "p": "https://www.google.com/search?tbm=isch&q=matcha+whisking+chasen"}, {"id": "kimono", "n": "Dinner in a kimono", "j": "着物", "t": "A couple of places let you wear a kimono while you eat, which makes for great photos.", "w": [{"l": "Tokyo Omakase Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=Tokyo%20Omakase%20Sushi%20%26%20Wagyu%20%28Halal%29%20Asakusa%20Kimono%20Experience%20Restaurant&query_place_id=ChIJl9aitWmPGGAR7CcObngUCRI"}, {"l": "Ohina Café", "u": "https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E9%9B%9B%E3%82%AB%E3%83%95%E3%82%A7%E6%8A%B9%E8%8C%B6%E5%8E%9F%E5%AE%BF%20Harajuku%20Ohina%20caf%C3%A9%20Matcha%20halal&query_place_id=ChIJ_dVcdkqNGGARot2V06uNHaw"}], "p": "https://www.google.com/search?tbm=isch&q=kimono+dinner+Tokyo"}, {"id": "izakaya", "n": "The Kill Bill izakaya", "j": "居酒屋", "t": "Gonpachi's huge wooden hall inspired the fight scene in Kill Bill. Ask for the halal menu; other guests will be drinking.", "w": [{"l": "Gonpachi Nishi-Azabu", "u": "https://www.google.com/maps/search/?api=1&query=Gonpachi%20Nishi-Azabu&query_place_id=ChIJEwlemnqLGGARhwMuRpwpkBI"}], "p": "https://www.google.com/search?tbm=isch&q=Gonpachi+Nishi-Azabu+interior"}, {"id": "snacks", "n": "Halal Japanese snacks", "j": "お菓子", "t": "Mochi, matcha cookies and instant ramen you can actually eat, with free tasting. Good for souvenirs too.", "w": [{"l": "HALAL-YA Asakusa", "u": "https://www.google.com/maps/search/?api=1&query=HALAL-YA%20ASAKUSA%20FLAGSHIP%20STORE%20/%20Japanese%20halal%20souvenir%20store&query_place_id=ChIJS-MyTmKPGGAREt7RuNgboRs"}], "p": "https://www.google.com/search?tbm=isch&q=Japanese+mochi+snacks"}]};
+const GPS = true && "geolocation" in navigator;
+const ICONS = {
+ yakiniku:'<circle cx="32" cy="35" r="21"/><path d="M14 29h36M11 35h42M14 41h36"/><path class="f" d="M20 24l14-4 3 7-14 4z"/><path class="f" d="M33 37l13-3 2 7-13 3z"/><path d="M28 6c-2 3 2 5 0 8M36 6c-2 3 2 5 0 8"/>',
+ sukiyaki:'<path d="M6 30h46v5c0 9-7 14-16 14H22c-9 0-16-5-16-14z"/><path d="M52 32h8"/><path class="f" d="M14 30c3-5 9-6 14-3 3-4 10-4 13 0"/><ellipse class="f" cx="48" cy="16" rx="6" ry="7"/><path d="M20 12c-2 3 2 5 0 8M28 10c-2 3 2 5 0 8"/>',
+ sushi:'<rect x="10" y="34" width="44" height="14" rx="7"/><path class="f" d="M8 35c3-11 42-14 48-3-6 3-42 6-48 3z"/><path d="M26 31v17M38 30v18"/>',
+ gyukatsu:'<rect x="8" y="40" width="48" height="11" rx="3"/><path class="f" d="M14 40l5-16h8l-5 16zM28 40l5-16h8l-5 16zM42 40l5-16h7l-4 16z"/><path d="M16 14c-2 3 2 5 0 8M44 12c-2 3 2 5 0 8"/>',
+ ramen:'<path d="M8 30h48c0 13-10.7 22-24 22S8 43 8 30z"/><path d="M24 52h16"/><path d="M14 30c3-4 6-4 9 0s6 4 9 0 6-4 9 0 5 4 9 0"/><circle class="f" cx="40" cy="24" r="5"/><path d="M18 26L34 6M24 27L40 7"/>',
+ udon:'<path d="M8 30h48c0 13-10.7 22-24 22S8 43 8 30z"/><path d="M24 52h16"/><path d="M15 30c0-6 8-6 8 0M23 30c0-6 8-6 8 0M31 30c0-6 8-6 8 0M39 30c0-6 8-6 8 0"/><path class="f" d="M38 18h12l-3 8h-9z"/>',
+ tempura:'<path d="M8 32h48c0 12-10.7 20-24 20S8 44 8 32z"/><path d="M24 52h16"/><path class="f" d="M18 32c-2-10 2-18 8-22 2 4 0 14-2 22zM30 32c0-9 6-16 12-18 0 5-4 13-6 18zM40 32c2-6 8-9 12-9-1 4-5 7-7 9z"/>',
+ shabu:'<path d="M10 30h44v12c0 6-5 10-11 10H21c-6 0-11-4-11-10z"/><path d="M6 30h52"/><path class="f" d="M30 22c4-6 12-7 16-3-3 5-11 6-16 3z"/><path d="M40 4L30 26M46 6L34 27"/><path d="M18 16c-2 3 2 5 0 8"/>',
+ okonomiyaki:'<ellipse cx="32" cy="38" rx="24" ry="12"/><path class="f" d="M10 35c0-6 10-11 22-11s22 5 22 11c-4 4-12 7-22 7s-18-3-22-7z"/><path d="M16 32l5 3 5-4 5 4 5-4 5 4 5-3"/><path d="M50 18l8-10M46 22l6-4"/>',
+ takoyaki:'<rect x="6" y="36" width="52" height="12" rx="4"/><circle class="f" cx="18" cy="31" r="7"/><circle class="f" cx="32" cy="31" r="7"/><circle class="f" cx="46" cy="31" r="7"/><path d="M36 22L48 6"/>',
+ curry:'<ellipse cx="32" cy="40" rx="26" ry="12"/><path d="M10 38c2-10 12-14 20-12"/><path class="f" d="M30 26c10-3 22 2 24 12-6 4-16 5-24 2z"/><path d="M34 32h14M36 36h12"/>',
+ teishoku:'<rect x="4" y="16" width="56" height="38" rx="4"/><circle class="f" cx="20" cy="42" r="8"/><circle cx="44" cy="42" r="8"/><rect class="f" x="14" y="22" width="16" height="8" rx="2"/><circle cx="44" cy="26" r="4"/>',
+ matcha:'<path d="M6 30h38c0 11-8.5 18-19 18S6 41 6 30z"/><path class="f" d="M9 30c4-3 12-4 16-4s12 1 16 4"/><path d="M52 10v18M48 28h8l-1 8h-6z"/><path d="M50 28v8M54 28v8"/>',
+ kimono:'<path d="M20 8l12 8 12-8 14 10-6 8-6-3v33H18V23l-6 3-6-8z"/><path d="M32 16l-6 12M32 16l6 12"/><rect class="f" x="18" y="32" width="28" height="7"/>',
+ izakaya:'<path d="M32 4v6"/><rect x="22" y="10" width="20" height="4" rx="1"/><path class="f" d="M18 18c0-3 6-4 14-4s14 1 14 4v24c0 3-6 4-14 4s-14-1-14-4z"/><path d="M18 24h28M18 30h28M18 36h28"/><rect x="22" y="46" width="20" height="4" rx="1"/><path d="M32 50v8"/>',
+ snacks:'<rect x="8" y="22" width="48" height="30" rx="4"/><path d="M8 30h48"/><circle class="f" cx="20" cy="41" r="6"/><circle class="f" cx="32" cy="41" r="6"/><circle class="f" cx="44" cy="41" r="6"/><path d="M26 22l6-10 6 10"/>'
+};
+
+const KANJI = {"Sushi":"寿司","Wagyu yakiniku & steak":"焼肉","Sukiyaki & shabu-shabu":"すき焼き","Ramen & udon":"ラーメン","Set meals, tempura & curry":"定食・天ぷら","Wagyu burgers":"バーガー","Matcha & snacks":"抹茶","Splurge":"贅沢"};
+const AREAS = ["All","Shinjuku","Asakusa","Ueno","Akihabara","Shibuya","Ginza","Ikebukuro","Roppongi & Ebisu","Elsewhere"];
+const ORIGINS = [
+  ["Shinjuku Station", 35.6896, 139.7006], ["Shin-Okubo Station", 35.7012, 139.7003], ["Asakusa Station", 35.7110, 139.7967],
+  ["Ueno Station", 35.7138, 139.7773], ["Akihabara Station", 35.6984, 139.7731], ["Shibuya Station", 35.6580, 139.7016],
+  ["Harajuku Station", 35.6702, 139.7027], ["Ginza Station", 35.6717, 139.7650], ["Tokyo Station", 35.6812, 139.7671],
+  ["Ikebukuro Station", 35.7295, 139.7109], ["Roppongi Station", 35.6628, 139.7314], ["Ebisu Station", 35.6467, 139.7101],
+  ["Shinagawa Station", 35.6284, 139.7387], ["Haneda Airport T3", 35.5442, 139.7688]
+];
+const slug = s => s.toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $ = id => document.getElementById(id);
+
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+};
+
+let tab = "eat", mode = "dish", area = "All", mustOnly = false, originIdx = GPS ? -2 : -1, custom = null;
+let gps = null, gpsState = "idle", gpsWatch = null;
+try {
+  const h = location.hash.slice(1);
+  if (h === "try") tab = "try";
+  else if (h === "nearest") mode = "near";
+  else { const m = AREAS.find(a => slug(a) === h); if (m) area = m; }
+} catch (e) {}
+try {
+  const c = JSON.parse(store.get("hte-custom") || "null");
+  if (Array.isArray(c) && c.length === 2) custom = c;
+  const o = store.get("hte-origin");
+  if (o !== null && o !== "" && !isNaN(+o) && +o >= (GPS ? -2 : 0) && +o <= ORIGINS.length && +o !== -1) originIdx = +o;
+} catch (e) {}
+
+const priceHTML = p => "¥".repeat(p) + "<i>" + "¥".repeat(3 - p) + "</i>";
+
+function km(a, b) {
+  const R = 6371, rad = x => x * Math.PI / 180;
+  const dLat = rad(b[0] - a[0]), dLng = rad(b[1] - a[1]);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a[0])) * Math.cos(rad(b[0])) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+function distLabel(d) {
+  const walk = Math.round(d * 1.25 * 1000 / 80);
+  return d < 1 ? `${Math.round(d * 1000 / 10) * 10} m · ${walk} min walk` : d < 2.5 ? `${d.toFixed(1)} km · ${walk} min walk` : `${d.toFixed(1)} km`;
+}
+
+/* ---------- By dish ---------- */
+function itemHTML(it, splurge) {
+  const branchHit = area !== "All" && it.a !== area && it.b.some(b => b.a === area);
+  const meta = splurge
+    ? `<span class="kind">${esc(it.x)}</span><span class="area">${esc(it.a)}</span>`
+    : `<span class="price" aria-label="price level ${it.x} of 3">${priceHTML(it.x)}</span><span class="area">${esc(it.a)}</span>`;
+  let br = "";
+  if (it.b.length) {
+    const links = it.b.map(b => `<a href="${b.u}" target="_blank" rel="noopener" class="${area !== "All" && b.a === area ? "hit" : ""}">${esc(b.l)}</a>`).join("");
+    br = `<p class="br"><span class="lbl">${branchHit ? "Branch here:" : "Also in:"}</span>${links}</p>`;
+  }
+  return `<li class="item"><div class="line1"><a class="name" href="${it.u}" target="_blank" rel="noopener">${esc(it.n)}</a>${it.m ? '<span class="must" title="Must-try">★</span>' : ""}<span class="meta">${meta}</span></div><p class="note">${esc(it.t)}</p>${br}</li>`;
+}
+const visible = it => (!mustOnly || it.m) && (area === "All" || it.a === area || it.b.some(b => b.a === area));
+function sectionHTML(name, intro, items, splurge) {
+  const shown = items.filter(visible);
+  if (!shown.length) return ["", 0];
+  return [`<section class="cat" id="${slug(name)}"><div class="cat-head"><h2>${esc(name)}</h2><span class="kanji">${KANJI[name] || ""}</span></div>${intro ? `<p class="intro">${esc(intro)}</p>` : ""}<ul class="list">${shown.map(i => itemHTML(i, splurge)).join("")}</ul></section>`, shown.length];
+}
+function renderDish() {
+  let html = "", total = 0, idx = [];
+  for (const c of DATA.cats) {
+    const [h, n] = sectionHTML(c.name, c.intro, c.items, false);
+    if (n) { html += h; total += n; idx.push(c.name); }
+  }
+  $("main").innerHTML = html;
+  const [sh, sn] = sectionHTML("Splurge", "High-end halal meals for a special night. Book ahead.", DATA.splurge, true);
+  $("splurge").innerHTML = sh;
+  $("splurgeBand").hidden = !sn;
+  if (sn) idx.push("Splurge");
+  total += sn;
+  $("empty").hidden = !!total;
+  $("index").hidden = false;
+  $("index").innerHTML = idx.map(n => `<li><a href="#${slug(n)}">${esc(n)}</a></li>`).join("");
+}
+
+/* ---------- Nearest first ---------- */
+function originName() {
+  return originIdx === -2 ? "your location" : originIdx === ORIGINS.length ? "your hotel" : ORIGINS[originIdx][0];
+}
+function startGps() {
+  if (!GPS || gpsWatch !== null) return;
+  gpsState = "asking";
+  gpsWatch = navigator.geolocation.watchPosition(pos => {
+    const p = [pos.coords.latitude, pos.coords.longitude];
+    const moved = !gps || km(gps, p) > 0.05;
+    gps = p; gpsState = "ok";
+    if (moved && mode === "near" && originIdx === -2) render();
+  }, err => {
+    gpsState = err.code === 1 ? "denied" : "failed";
+    navigator.geolocation.clearWatch(gpsWatch); gpsWatch = null;
+    if (mode === "near" && originIdx === -2) render();
+  }, { enableHighAccuracy: false, maximumAge: 30000, timeout: 20000 });
+}
+function originPoint() {
+  if (originIdx === -2) { if (!gps && gpsState !== "denied" && gpsState !== "failed") startGps(); return gps; }
+  if (originIdx < 0) return null;
+  if (originIdx === ORIGINS.length) return custom;
+  const o = ORIGINS[originIdx]; return [o[1], o[2]];
+}
+function renderNear() {
+  $("index").hidden = true;
+  $("splurgeBand").hidden = true;
+  const from = originPoint();
+  if (!from) {
+    const msg = originIdx === -2
+      ? (gpsState === "denied" ? "Location access is blocked for this page. Allow location for this site in your browser settings and reload, or pick a station above."
+        : gpsState === "failed" ? "Couldn't get your location. Check that location is on, or pick a station above."
+        : "Finding your location… Allow location access when your phone asks.")
+      : originIdx === ORIGINS.length ? "Paste your hotel's coordinates above to rank places by distance from it."
+      : "Choose a starting point above. The page can't see your real location, so pick the station nearest your hotel, or paste your hotel's coordinates.";
+    $("main").innerHTML = `<section class="cat"><p class="pick">${msg}</p></section>`;
+    $("empty").hidden = true; return;
+  }
+  const rows = [];
+  const add = (it, cat, splurge) => {
+    if (mustOnly && !it.m) return;
+    rows.push({ n: it.n, sub: "", u: it.u, g: it.g, it, cat, splurge });
+    for (const b of it.b) rows.push({ n: it.n, sub: b.l, u: b.u, g: b.g, it, cat, splurge });
+  };
+  for (const c of DATA.cats) for (const it of c.items) add(it, c.name, false);
+  for (const it of DATA.splurge) add(it, "Splurge", true);
+  rows.forEach(r => r.d = km(from, r.g));
+  rows.sort((a, b) => a.d - b.d);
+  const top = rows.slice(0, 40);
+  $("main").innerHTML = `<section class="cat"><p class="from">Distances from <b>${esc(originName())}</b>${originIdx === -2 ? " <span>(live, updates as you walk)</span>" : " <span>(not your current location)</span>"}</p><p class="intro">Closest ${top.length} of ${rows.length} locations, straight-line.</p><ul class="list">${top.map(r =>
+    `<li class="item"><div class="line1"><a class="name" href="${r.u}" target="_blank" rel="noopener">${esc(r.n)}${r.sub ? ` <small>· ${esc(r.sub)}</small>` : ""}</a>${r.it.m ? '<span class="must" title="Must-try">★</span>' : ""}<span class="meta"><span class="dist">${distLabel(r.d)}</span><span class="catTag">${esc(r.cat)}</span></span></div><p class="note">${esc(r.it.t)}</p></li>`
+  ).join("")}</ul></section>`;
+  $("empty").hidden = !!top.length;
+}
+
+/* ---------- Foods to try ---------- */
+function renderTry() {
+  $("tryGrid").innerHTML = DATA.try.map(x => `<article class="card"><div class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${ICONS[x.id] || ""}</svg></div><div><h3>${esc(x.n)} <span class="kanji">${esc(x.j)}</span></h3><p>${esc(x.t)}</p><p class="br where"><span class="lbl">Try it at:</span>${x.w.map(w => `<a href="${w.u}" target="_blank" rel="noopener">${esc(w.l)}</a>`).join("")}</p><a class="photos" href="${x.p}" target="_blank" rel="noopener">See photos ↗</a></div></article>`).join("");
+}
+
+/* ---------- Controls ---------- */
+function render() {
+  $("tabEat").setAttribute("aria-selected", String(tab === "eat"));
+  $("tabTry").setAttribute("aria-selected", String(tab === "try"));
+  $("viewEat").hidden = tab !== "eat";
+  $("viewTry").hidden = tab !== "try";
+  if (tab === "try") return;
+  $("modeDish").setAttribute("aria-pressed", String(mode === "dish"));
+  $("modeNear").setAttribute("aria-pressed", String(mode === "near"));
+  $("dishCtl").hidden = mode !== "dish";
+  $("nearCtl").hidden = mode !== "near";
+  $("customBox").hidden = !(mode === "near" && originIdx === ORIGINS.length);
+  $("mustOnly").checked = $("mustOnly2").checked = mustOnly;
+  $("origin").value = String(originIdx);
+  $("areaSel").value = area;
+  document.querySelectorAll("#areas .chip").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.a === area)));
+  if (mode === "dish") renderDish(); else renderNear();
+}
+
+$("areas").innerHTML = AREAS.map(a => `<button class="chip" type="button" data-a="${a}" aria-pressed="false">${a === "All" ? "All areas" : a}</button>`).join("");
+$("areaSel").innerHTML = AREAS.map(a => `<option value="${a}">${a === "All" ? "All areas" : a}</option>`).join("");
+$("origin").innerHTML = (GPS ? `<option value="-2">From my location (GPS)</option>` : `<option value="-1" disabled>Choose a starting point…</option>`) + ORIGINS.map((o, i) => `<option value="${i}">From ${o[0]}</option>`).join("") + `<option value="${ORIGINS.length}">From my hotel (paste location)</option>`;
+if (custom) $("coords").value = custom.join(", ");
+
+$("areas").addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return; area = b.dataset.a; render(); });
+$("areaSel").addEventListener("change", e => { area = e.target.value; render(); window.scrollTo({ top: 0 }); });
+$("mustOnly").addEventListener("change", e => { mustOnly = e.target.checked; render(); });
+$("mustOnly2").addEventListener("change", e => { mustOnly = e.target.checked; render(); });
+$("modeDish").addEventListener("click", () => { mode = "dish"; render(); });
+$("modeNear").addEventListener("click", () => { mode = "near"; render(); });
+$("origin").addEventListener("change", e => { originIdx = +e.target.value; store.set("hte-origin", String(originIdx)); render(); });
+$("coords").addEventListener("input", e => {
+  const v = e.target.value;
+  const m = v.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/) || v.match(/@(-?\d+\.\d+),\s*(-?\d+\.\d+)/) || v.match(/(-?\d{1,2}\.\d+)\s*[, ]\s*(-?\d{2,3}\.\d+)/);
+  const hint = $("coordsHint");
+  if (m) {
+    const c = [+m[1], +m[2]];
+    if (c[0] > 34 && c[0] < 37 && c[1] > 138 && c[1] < 141) {
+      custom = c; store.set("hte-custom", JSON.stringify(c));
+      hint.textContent = "Location set. Sorted by distance from your hotel."; hint.classList.remove("err");
+      render(); return;
+    }
+  }
+  if (v.trim()) { hint.textContent = "Those don't look like Tokyo coordinates. Paste the two numbers, e.g. 35.6938, 139.7034."; hint.classList.add("err"); }
+});
+$("tabEat").addEventListener("click", () => { tab = "eat"; render(); });
+$("tabTry").addEventListener("click", () => { tab = "try"; render(); window.scrollTo({ top: 0 }); });
+$("index").addEventListener("click", e => {
+  const a = e.target.closest("a"); if (!a) return;
+  e.preventDefault();
+  const t = document.getElementById(a.getAttribute("href").slice(1));
+  if (t) t.scrollIntoView();
+});
+renderTry();
+render();
+</script>
+
+</body>
+</html>

@@ -16,6 +16,9 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   elektronik" with four 3D-printed kufi tiles that open large on tap.
 - GitHub Pages workflow for publishing `src/` (replaces the template's npm CI).
 - Published at https://aram.nu (GitHub Pages, DNS at Simply.com).
+- `aram.nu/tokyo`: a separate travel page (not linked from the front page, `noindex`) listing 64
+  halal Japanese places to eat in Tokyo, by dish or nearest first from the phone's GPS (a station or
+  pasted hotel coordinates also work), with links to Google Maps and a tab of foods to try.
 - "projekter": each of Aram's projects as one line with a small live miniature, and a tap
   plays its story on the whole screen in the style that fits it: rørbro and buehal (scan
   pulled onto the model), datacenter (a crossing built element by element, light in the

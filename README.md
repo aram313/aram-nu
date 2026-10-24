@@ -112,6 +112,14 @@ turned off and stamps `stage.js` with the newest file's time, so the browser nev
   Aram's Lightroom exports (`Downloads\lightroom-download-2024-07-02T12_03_21Z` and
   `…T12_53_12Z`). Change which tiles show in `SHOWN` there and in `TILES` in the page.
 
+## The Tokyo page
+
+`src/tokyo/index.html` is a separate page at https://aram.nu/tokyo: Aram's travel list of halal
+Japanese food in Tokyo. It is not linked from the front page, carries `noindex`, and does not follow
+the front page's black lowercase look. Everything (data, styles, script) is in that one file. "Nearest
+first" asks for the phone's location (it needs the page on https, which Pages gives); a station or
+pasted coordinates work without it.
+
 ## Publishing
 
 `.github/workflows/pages.yml` publishes `src/` to GitHub Pages on every push to `main`. It stamps
