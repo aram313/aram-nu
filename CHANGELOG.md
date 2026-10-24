@@ -39,6 +39,12 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   Mad, Parlør.
 - `aram.nu/tokyo` is called just "Tokyo" and is tidied up: no intro line, section notes, jump links
   or kanji on the eating list, one short line for distances, and the tips cut to four lines.
+- `aram.nu/tokyo` works offline: a service worker (`src/tokyo/sw.js`) keeps the page and its fonts on
+  the phone after the first visit, and it can be added to the home screen as an app (manifest and
+  icons in `src/tokyo/`). A line under the title says when the phone is offline.
+- `aram.nu/tokyo`: the phrasebook has 53 cards in seven groups (halal, restaurant, shopping, transport,
+  hotel, emergency with 119 and 110, practical), each Japanese line checked for meaning, politeness and
+  romaji.
 - buehal: the story opens low beside the hall, the twelve arches in a row as the scan builds up
   setup by setup (the scanners now stand where they stood: their positions had not been turned into
   the hall's frame with the points). The measures end as a plan cut at 1 m: the chain of measures
