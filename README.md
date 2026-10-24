@@ -4,7 +4,8 @@ Aram's own page at aram.nu: a quiet, black, lowercase list of his projects.
 
 ## What this is
 
-One page. **khabar.nu** links to the news app and shows, under its name, the one line the
+One page that fits a phone's screen without scrolling, with no name shown at the top, and no zoom.
+**khabar.nu** links to the news app and shows, under its name, the one line the
 Khabar editor writes about the day's news (refreshed every five minutes).
 
 Under **projekter** each of Aram's projects is one line: a small live miniature of the model,
@@ -130,7 +131,7 @@ carries `noindex`, and does not follow the front page's black lowercase look. Th
 script) is `index.html`; next to it, `sw.js` keeps it working offline (the page network first, Google
 Fonts from the cache; its cache name carries a version, so a new page replaces the old cache), and
 `manifest.webmanifest` with the icons (a bowl with chopsticks in front of a red sun) makes it a full-screen app when added
-to a phone's home screen. The exchange rate is fetched from `api.frankfurter.dev` when online; offline
+to a phone's home screen. Like the front page, it does not zoom. The exchange rate is fetched from `api.frankfurter.dev` when online; offline
 the built-in rate is used. Location needs the page on https, which Pages gives.
 
 ## Publishing

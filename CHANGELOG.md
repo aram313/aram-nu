@@ -51,6 +51,12 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   "Kør mig til mit hotel" keeps the hotel's address on the phone; a search box finds cards by word.
   The Japanese is sized to fill the screen and breaks only between phrases, "Læs højt" reads it aloud
   where the phone has a Japanese voice, and the screen stays on while a card is shown. 55 cards.
+- The front page sits at the top and fits a phone's screen without scrolling; the name "aram" is no
+  longer shown (it stays for screen readers and search), and the rules around the sections start and end
+  with the content.
+- Both pages no longer zoom: no pinch or double-tap zoom (`maximum-scale=1`, `user-scalable=no`,
+  `touch-action: manipulation`, and pinch gestures stopped for Safari). The Tokyo page's fields use 16 px
+  text so a phone does not zoom in on them either, and its area filter reads "Hele Tokyo".
 - `aram.nu/tokyo` is rebuilt as a phone app: three tabs in a bar at the bottom (Spis, Se, Parlør), each
   view with its own title, tap targets of at least 44 px, whole rows that open the map, one style for
   lists, cards, chips and buttons, and the last tab, view and tool remembered. The foods to try moved

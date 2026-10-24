@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#000000">
 <meta name="description" content="aram – khabar.nu, laserscanning, as-built og scan til bim, 3d print">
@@ -25,7 +25,7 @@
     --dim: #8c8c8c;
     --line: #1f1f1f;
   }
-  html { background: var(--bg); }
+  html { background: var(--bg); touch-action: manipulation; }   /* no double-tap zoom */
   body {
     margin: 0;
     min-height: 100svh;
@@ -41,18 +41,20 @@
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
   }
+  /* everything sits high on the page and fits a phone's screen without scrolling */
   main {
     max-width: 560px;
     margin: 0 auto;
-    padding: max(18vh, 72px) 24px 96px;
+    padding: calc(env(safe-area-inset-top, 0px) + max(3vh, 12px)) 24px calc(env(safe-area-inset-bottom, 0px) + 20px);
   }
   h1, h2, h3, p, ol { margin: 0; font-weight: inherit; font-size: inherit; }
   a { color: inherit; text-decoration: none; }
 
-  h1 { margin-bottom: 72px; }
+  /* the name stays for screen readers and search, not on the page */
+  h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-  section { padding: 24px 0; border-top: 1px solid var(--line); }
-  section:last-child { border-bottom: 1px solid var(--line); }
+  section { padding: 20px 0; border-top: 1px solid var(--line); }
+  section:first-of-type { border-top: 0; }
   .sub { color: var(--dim); margin-top: 4px; }
   h2 a::after { content: " ↗"; color: var(--dim); }
   @media (hover: hover) { h2 a:hover, .sub a:hover, .rows button:hover { opacity: 0.7; } }
@@ -76,7 +78,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 6px;
-    margin-top: 20px;
+    margin-top: 16px;
   }
   .tiles button {
     padding: 0; border: 0; background: #111; cursor: zoom-in;
@@ -202,6 +204,10 @@
     grid.append(b);
   }
   view.addEventListener('click', () => view.close());
+
+  // No zoom: Safari ignores user-scalable=no, so pinches are stopped here as well.
+  for (const t of ['gesturestart', 'gesturechange']) document.addEventListener(t, (e) => e.preventDefault(), { passive: false });
+  document.addEventListener('touchmove', (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
 </script>
 
 <script src="stage.js"></script>
