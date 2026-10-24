@@ -53,9 +53,9 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   where the phone has a Japanese voice, and the screen stays on while a card is shown. 55 cards.
 - `aram.nu/tokyo` has the front page's look: black, white text, lowercase, the device's own sans at weight
   300, hairlines instead of boxes (no web fonts any more), and the staff card is white on black. A fourth
-  tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, splitting the
-  bill, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
+  tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
   categories to pick from, and the staff card closes with a button at the bottom or by pulling it down.
+- `aram.nu/tokyo`: the app icon is the text "/tokyo" in white on black, and "del regningen" is gone again.
 - The front page sits at the top and fits a phone's screen without scrolling; the name "aram" is no
   longer shown (it stays for screen readers and search), and the rules around the sections start and end
   with the content.

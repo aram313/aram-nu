@@ -126,15 +126,14 @@ hairlines, grey for anything secondary), built like a phone app with four tabs i
   shows the Japanese full screen for staff (sized to fit, answer buttons on yes/no questions, counters
   for people and items, a hotel card); it closes with the button at the bottom or by pulling it down.
 - **omregn**: yen and kroner both ways at the ECB rate with how the price is said (read aloud where the
-  phone has a Japanese voice) and the tax-free refund, splitting the bill, Danish to Japanese sizes for
+  phone has a Japanese voice) and the tax-free refund, Danish to Japanese sizes for
   shoes and clothes with a card to ask staff, any number said in Japanese with a table of numbers and
   counting words, and the time in Tokyo and Denmark.
 
 The page remembers the last tab, view, category and tool choices in `localStorage`. It is not linked
 from the front page and carries `noindex`. The page (data, styles, script) is `index.html`; next to it,
 `sw.js` keeps it working offline (the page network first; its cache name carries a version, so a new
-page replaces the old cache), and `manifest.webmanifest` with the icons (a white bowl with chopsticks in
-front of a red sun, on black) makes it a full-screen app when added to a phone's home screen. Like the
+page replaces the old cache), and `manifest.webmanifest` with the icons ("/tokyo" in white on black) makes it a full-screen app when added to a phone's home screen. Like the
 front page, it does not zoom. The exchange rate is fetched from `api.frankfurter.dev` when online;
 offline the built-in rate is used. Location needs the page on https, which Pages gives.
 
