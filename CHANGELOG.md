@@ -55,6 +55,15 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   300, hairlines instead of boxes (no web fonts any more), and the staff card is white on black. A fourth
   tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
   categories to pick from, and the staff card closes with a button at the bottom or by pulling it down.
+- `aram.nu/tokyo` holds together as one guide: "smag på" is gone as its own view, and its 15 dishes now
+  sit under their dish heading in "efter ret" ("smag", then "steder"); a tap on a dish opens the same sheet
+  as a place, with the dish, a tip and where to try it, and a tap on one of those places turns the sheet
+  into that place. The "se" tab is now "oplev" with "steder" (the 16 sights) and "overalt": 18 things you
+  meet everywhere, to try (vending machines, konbini, gachapon, arcades and purikura, Don Quijote,
+  depachika, 100-yen shops) and to notice (toilets, trains, bins, eating on the go, shoes, cash, tipping,
+  tax free, prayer, plugs, Haneda), each drawn in the dishes' style with its Japanese word, and with
+  buttons into the halal card, the matching phrase card or the omregn tab. "Godt at vide" has moved there
+  from the phrasebook, which now only holds what you say.
 - `aram.nu/tokyo` is easier to read and use: switches are real segmented controls with the chosen part
   filled white, filters and buttons have clear borders and fills (main actions white), the chosen tab has
   a marker, dish headings are larger, stick under the filter bar while scrolling and say how many places

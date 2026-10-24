@@ -128,7 +128,7 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .food > div { min-width: 0; }
 .ill svg { width: 44px; height: 44px; fill: none; stroke: var(--fg); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .ill svg .f { fill: none; }
-.kanji { color: var(--dim); margin-left: 8px; font-weight: 300; font-size: 0.8em; }
+.kanji { color: var(--dim); margin-left: 8px; font-weight: 300; font-size: 0.8em; white-space: nowrap; }
 .lbl { display: block; margin: 16px 0 8px; color: var(--fg); font-weight: 500; }
 .nrow { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 0; text-align: left; background: none; border: 0; border-top: 1px solid var(--line); cursor: pointer; }
 .nrow:active { background: var(--press); }
@@ -159,11 +159,6 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .phrase.special { border-color: var(--edge); }
 .phrase .da { font-weight: 400; }
 .phrase .ja { color: var(--dim); font-size: 13px; line-height: 1.45; line-break: strict; overflow-wrap: normal; }
-.info { margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--line); }
-.info h2 { margin-bottom: 8px; font-size: 19px; font-weight: 500; }
-.info ul { padding-left: 18px; color: var(--dim); }
-.info li + li { margin-top: 6px; }
-.src { margin-top: 14px; color: var(--dim); font-size: 12.5px; }
 
 /* omregn */
 .tool { padding: 24px 0; }
@@ -210,6 +205,20 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .shAddr { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
 .shAddr small { display: block; color: var(--dim); font-size: 13px; font-family: var(--sans); text-transform: lowercase; }
 .shActs { display: grid; gap: 8px; margin-top: 18px; }
+#shDishActs .shActs { margin-top: 14px; }
+.shIll { margin-top: 8px; }
+/* the dishes to taste at the top of each dish section */
+.dishes { display: grid; gap: 8px; margin: 12px 0 6px; }
+.dish { display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 12px; width: 100%; padding: 8px 12px; text-align: left; background: var(--soft); border: 1px solid var(--line); border-radius: 10px; cursor: pointer; }
+.dish:active { background: var(--press); }
+.dish .ill svg { width: 36px; height: 36px; }
+.dishes { gap: 6px; }
+.dish b { display: block; font-weight: 500; }
+.dish small { display: block; color: var(--dim); font-size: 13.5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.dish .go { color: var(--dim); }
+.sub2 { display: block; margin: 16px 0 0; color: var(--dim); font-size: 13px; letter-spacing: 0.04em; }
+.evSec h2 { position: sticky; top: var(--fh); z-index: 3; margin: 0 -24px; padding: 14px 24px 8px; background: var(--bg); border-bottom: 1px solid var(--line); font-size: 20px; font-weight: 500; }
+.src { margin: 28px 0 0; color: var(--dim); font-size: 12.5px; }
 .place { display: block; margin-bottom: 10px; color: var(--fg); text-transform: none; }
 .place b { display: block; font-size: 22px; font-weight: 500; line-height: 1.3; }
 .place i { display: block; font-style: normal; color: var(--dim); font-size: 14px; }
@@ -264,7 +273,6 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
       <div class="seg" role="group" aria-label="visning">
         <button type="button" id="modeNear" aria-pressed="false">nærmest</button>
         <button type="button" id="modeDish" aria-pressed="true">efter ret</button>
-        <button type="button" id="modeTry" aria-pressed="false">smag på</button>
       </div>
       <div class="ctl" id="dishCtl">
         <select class="field" id="dishSel" aria-label="ret"></select>
@@ -286,13 +294,21 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
   <div class="wrap">
     <div id="list"></div>
     <p class="empty" id="empty" hidden>intet passer. prøv alle retter eller hele tokyo.</p>
-    <div class="blocks" id="tryGrid" hidden></div>
+    <p class="src">google maps, time out, tokyo cheapo og coto academy, okt. 2026. tjek åbningstider.</p>
   </div>
 </div>
 
 <div id="viewSee" role="tabpanel" aria-labelledby="tabSee" hidden>
-  <div class="wrap top">
+  <div class="filters"><div class="wrap">
+    <div class="seg" role="group" aria-label="visning">
+      <button type="button" id="seePlaces" aria-pressed="true">steder</button>
+      <button type="button" id="seeEvery" aria-pressed="false">overalt</button>
+    </div>
+  </div></div>
+  <div class="wrap">
     <div class="blocks" id="seeList"></div>
+    <div id="everyList" hidden></div>
+    <p class="hint" id="offlineTip" hidden>siden virker også uden internet. læg den på hjemmeskærmen (del → føj til hjemmeskærm), så åbner den som en app.</p>
   </div>
 </div>
 
@@ -305,20 +321,6 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
   <div class="wrap">
     <div id="talk"></div>
     <p class="empty" id="talkEmpty" hidden>ingen kort passer. prøv et andet ord.</p>
-    <section class="info" id="info">
-      <h2>godt at vide</h2>
-      <ul>
-        <li>bed om sushiris uden mirin (mirin nashi), og tag halal-sojasauce med.</li>
-        <li>undgå <span lang="ja">豚</span> (svinekød), <span lang="ja">ラード</span> (svinefedt), <span lang="ja">ゼラチン</span> (gelatine) og <span lang="ja">酒</span> (alkohol) på varer.</li>
-        <li>moskeer: as-salaam masjid i okachimachi og tokyo camii i yoyogi-uehara.</li>
-        <li>haneda til shinjuku: lufthavnsbussen, ca. 1 time.</li>
-        <li>tax free: fra 1. november 2026 betaler du moms i butikken og får de 10 % tilbage i lufthavnen, når du rejser hjem. det gælder køb over 5.000 ¥ i én butik på en dag. tag pas med, gem kvitteringerne, og hav varerne med i håndbagagen til tjekket.</li>
-        <li>stikkontakter: type a, 100 volt. tag en adapter med; telefon- og computeropladere virker.</li>
-        <li>nødnumre: ambulance 119, politi 110.</li>
-        <li id="offlineTip" hidden>siden virker også uden internet. læg den på hjemmeskærmen (del → føj til hjemmeskærm), så åbner den som en app.</li>
-      </ul>
-      <p class="src">google maps, time out, tokyo cheapo og coto academy, okt. 2026. tjek åbningstider.</p>
-    </section>
   </div>
 </div>
 
@@ -360,7 +362,7 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 <nav class="tabbar" aria-label="sider">
   <div class="in" role="tablist">
     <button class="tab" role="tab" id="tabEat" aria-selected="true" aria-controls="viewEat" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.5h17a8.5 8.5 0 0 1-17 0Z"/><path d="M8.5 20.5h7"/><path d="M13 3.5 10 10M19.5 4 14 10"/></svg>spis</button>
-    <button class="tab" role="tab" id="tabSee" aria-selected="false" aria-controls="viewSee" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5v3"/><path d="M10 5.5h4l3.5 15h-11z"/><path d="M8.2 13h7.6"/><path d="M4.5 20.5h15"/></svg>se</button>
+    <button class="tab" role="tab" id="tabSee" aria-selected="false" aria-controls="viewSee" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5v3"/><path d="M10 5.5h4l3.5 15h-11z"/><path d="M8.2 13h7.6"/><path d="M4.5 20.5h15"/></svg>oplev</button>
     <button class="tab" role="tab" id="tabTalk" aria-selected="false" aria-controls="viewTalk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10.5H10l-5 4v-4H4z"/><path d="M8 9.5h8M8 12.5h5"/></svg>parlør</button>
     <button class="tab" role="tab" id="tabCalc" aria-selected="false" aria-controls="viewCalc" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h15l-3.5-3.5"/><path d="M20 15.5H5l3.5 3.5"/></svg>omregn</button>
   </div>
@@ -370,16 +372,22 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
   <div class="shBack" id="shBack"></div>
   <div class="shPanel" id="shPanel">
     <div class="grab" aria-hidden="true"></div>
+    <div class="ill shIll" id="shIll" aria-hidden="true" hidden></div>
     <h3 id="shName"></h3>
     <p class="shMeta" id="shMeta"></p>
     <p class="shNote" id="shNote"></p>
     <p class="shAddr" id="shAddr"></p>
-    <div class="shActs">
+    <div class="shActs" id="shPlaceActs">
       <a class="btn primary wide" id="shMap" href="#" target="_blank" rel="noopener">vis på kort</a>
       <button class="btn wide" id="shAsk" type="button">spørg om vej</button>
       <button class="btn wide" id="shTaxi" type="button">vis til taxachaufføren</button>
-      <button class="btn wide" id="shClose" type="button">luk</button>
     </div>
+    <div id="shDishActs" hidden>
+      <span class="lbl">prøv det hos</span>
+      <div class="chips" id="shWhere"></div>
+      <div class="shActs"><a class="btn wide" id="shPhotos" href="#" target="_blank" rel="noopener">se billeder</a></div>
+    </div>
+    <div class="shActs"><button class="btn wide" id="shClose" type="button">luk</button></div>
   </div>
 </div>
 
@@ -431,15 +439,17 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 };
 
-const TABS = ["eat", "see", "talk", "calc"], MODES = ["near", "dish", "try"];
-let tab = store.get("tokyo-tab"), mode = store.get("tokyo-mode"), dish = "All", area = "All", mustOnly = false, originIdx = GPS ? -2 : -1, custom = null;
+const TABS = ["eat", "see", "talk", "calc"], MODES = ["near", "dish"];
+let seeMode = store.get("tokyo-see") === "every" ? "every" : "places";
+let tab = store.get("tokyo-tab"), mode = store.get("tokyo-mode") === "try" ? "dish" : store.get("tokyo-mode"), dish = "All", area = "All", mustOnly = false, originIdx = GPS ? -2 : -1, custom = null;
 const modeChosen = MODES.includes(mode);
 if (!TABS.includes(tab)) tab = "eat";
 if (!modeChosen) mode = "dish";
 let gps = null, gpsState = "idle", gpsWatch = null;
 try {
   const h = location.hash.slice(1);
-  if (h === "try") { tab = "eat"; mode = "try"; }
+  if (h === "try") { tab = "eat"; mode = "dish"; }
+  else if (h === "overalt") { tab = "see"; seeMode = "every"; }
   else if (h === "sevaerdigheder") tab = "see";
   else if (h === "parlor") tab = "talk";
   else if (h === "omregn") tab = "calc";
@@ -495,10 +505,21 @@ function itemHTML(it, splurge) {
   return rowHTML(it.u, it.n, "", it.m, meta, it.t, br);
 }
 const visible = it => (!mustOnly || it.m) && (area === "All" || it.a === area || it.b.some(b => b.a === area));
+/* the foods to taste, filed under their dish section */
+const DISH_OF = { yakiniku: "Wagyu-yakiniku & bøf", gyukatsu: "Wagyu-yakiniku & bøf", sukiyaki: "Sukiyaki & shabu-shabu", shabu: "Sukiyaki & shabu-shabu",
+  sushi: "Sushi", ramen: "Ramen & udon", udon: "Ramen & udon", tempura: "Måltider, tempura & karry", curry: "Måltider, tempura & karry",
+  teishoku: "Måltider, tempura & karry", okonomiyaki: "Måltider, tempura & karry", takoyaki: "Måltider, tempura & karry", izakaya: "Måltider, tempura & karry",
+  matcha: "Matcha & snacks", snacks: "Matcha & snacks" };
+const firstSentence = t => { const m = String(t).match(/^.*?[.!?](\s|$)/); return m ? m[0].trim() : t; };
+function dishesHTML(name) {
+  const list = DATA.try.filter(x => DISH_OF[x.id] === name);
+  if (!list.length) return "";
+  return `<span class="sub2">smag</span><div class="dishes">${list.map(x => `<button class="dish" type="button" data-dish="${esc(x.id)}"><span class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${ICONS[x.id] || ""}</svg></span><span><b>${esc(x.n)}<span class="kanji" lang="ja">${esc(x.j)}</span></b><small>${esc(firstSentence(x.t))}</small></span><span class="go">›</span></button>`).join("")}</div><span class="sub2">steder</span>`;
+}
 function sectionHTML(name, items, splurge) {
   const shown = items.filter(visible);
   if (!shown.length) return ["", 0];
-  return [`<section class="cat${splurge ? " lux" : ""}"><h2>${esc(name)}${KANJI[name] ? `<span class="kanji" lang="ja">${KANJI[name]}</span>` : ""}<span class="count">${shown.length} ${shown.length === 1 ? "sted" : "steder"}</span></h2><ul class="list">${shown.map(i => itemHTML(i, splurge)).join("")}</ul></section>`, shown.length];
+  return [`<section class="cat${splurge ? " lux" : ""}"><h2>${esc(name)}${KANJI[name] ? `<span class="kanji" lang="ja">${KANJI[name]}</span>` : ""}<span class="count">${shown.length} ${shown.length === 1 ? "sted" : "steder"}</span></h2>${splurge ? "" : dishesHTML(name)}<ul class="list">${shown.map(i => itemHTML(i, splurge)).join("")}</ul></section>`, shown.length];
 }
 function renderDish() {
   let html = "", total = 0;
@@ -857,7 +878,6 @@ function renderTalk() {
       `<button class="phrase${p[4] ? " special" : ""}" type="button" data-g="${gi}" data-i="${i}"><span class="da">${esc(p[0])}</span><span class="ja" lang="ja">${esc(p[1])}</span></button>`).join("")}</div></section>`;
   }).join("");
   $("talkEmpty").hidden = shown > 0;
-  $("info").hidden = !!q || talkCat !== "all";
   renderCats();
 }
 
@@ -1032,19 +1052,39 @@ function placeView(p, mode) {
     kind: "place", place: p
   };
 }
+function showSheet() {
+  const el = $("sheet"), panel = $("shPanel");
+  clearTimeout(sheetClosing);
+  if (!el.hidden) { panel.scrollTop = 0; return; }
+  if (!reduceMotion) { panel.style.transition = "none"; panel.style.transform = "translateY(100%)"; }
+  el.hidden = false; document.body.style.overflow = "hidden"; panel.scrollTop = 0;
+  void panel.offsetHeight; panel.style.transition = ""; panel.style.transform = "";
+}
+function openDish(id, from) {
+  const x = DATA.try.find(d => d.id === id); if (!x) return;
+  const cat = DATA.cats.find(c => c.name === DISH_OF[x.id]);
+  sheetPl = null; if (from && !$("sheet").contains(from)) sheetFrom = from;
+  $("shIll").innerHTML = `<svg viewBox="0 0 64 64">${ICONS[x.id] || ""}</svg>`; $("shIll").hidden = false;
+  $("shName").innerHTML = `${esc(x.n)}<span class="kanji" lang="ja">${esc(x.j)}</span>`;
+  $("shMeta").textContent = DISH_OF[x.id] || "";
+  $("shNote").textContent = x.t; $("shNote").hidden = false;
+  $("shAddr").innerHTML = cat && cat.intro ? `<small>tip</small>${esc(cat.intro)}` : ""; $("shAddr").hidden = !(cat && cat.intro);
+  $("shWhere").innerHTML = x.w.map(w => PL[pidOf(w.u)] ? `<button class="chip" type="button" data-pl="${esc(pidOf(w.u))}">${esc(w.l)}</button>` : `<a class="chip" href="${w.u}" target="_blank" rel="noopener">${esc(w.l)}</a>`).join("");
+  $("shPhotos").href = x.p;
+  $("shPlaceActs").hidden = true; $("shDishActs").hidden = false;
+  showSheet();
+  try { $("shClose").focus({ preventScroll: true }); } catch (e) {}
+}
 function openSheet(id, from) {
   const p = PL[id]; if (!p) return;
-  sheetPl = p; sheetFrom = from || null;
+  sheetPl = p; if (!from || !$("sheet").contains(from)) sheetFrom = from || null;
+  $("shIll").hidden = true; $("shPlaceActs").hidden = false; $("shDishActs").hidden = true; $("shAddr").hidden = false;
   $("shName").innerHTML = esc(p.n) + (p.sub ? ` <small>· ${esc(p.sub)}</small>` : "");
   $("shMeta").textContent = [p.cat, p.a].filter(Boolean).join(" · ");
   $("shNote").textContent = p.t || ""; $("shNote").hidden = !p.t;
   $("shAddr").innerHTML = p.j ? `<small>adresse på japansk</small><span lang="ja">${esc(p.j)}</span>` : "";
   $("shMap").href = p.u;
-  const el = $("sheet"), panel = $("shPanel");
-  clearTimeout(sheetClosing);
-  if (!reduceMotion) { panel.style.transition = "none"; panel.style.transform = "translateY(100%)"; }
-  el.hidden = false; document.body.style.overflow = "hidden"; panel.scrollTop = 0;
-  void panel.offsetHeight; panel.style.transition = ""; panel.style.transform = "";
+  showSheet();
   try { $("shAsk").focus({ preventScroll: true }); } catch (e) {}
 }
 function closeSheet() {
@@ -1080,14 +1120,72 @@ $("shPanel").addEventListener("touchend", () => {
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-ask]");
   if (a) { const p = PL[a.dataset.ask]; if (p) openBig(placeView(p, "ask"), a); return; }
+  const d = e.target.closest("[data-dish]");
+  if (d) { openDish(d.dataset.dish, d); return; }
   const b = e.target.closest("[data-pl]");
   if (b) { e.preventDefault(); openSheet(b.dataset.pl, b); }
 });
 
-/* ---------- Foods to try ---------- */
-function renderTry() {
-  $("tryGrid").innerHTML = DATA.try.map(x => `<article class="food"><div class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${ICONS[x.id] || ""}</svg></div><div><h3>${esc(x.n)}<span class="kanji" lang="ja">${esc(x.j)}</span></h3><p>${esc(x.t)}</p><span class="lbl">prøv det hos</span><div class="chips">${x.w.map(w => PL[pidOf(w.u)] ? `<button class="chip" type="button" data-pl="${esc(pidOf(w.u))}">${esc(w.l)}</button>` : `<a class="chip" href="${w.u}" target="_blank" rel="noopener">${esc(w.l)}</a>`).join("")}</div><div class="acts"><a class="btn" href="${x.p}" target="_blank" rel="noopener">se billeder</a></div></div></article>`).join("");
+/* ---------- oplev → overalt: what you meet everywhere in Tokyo, to try and to notice ---------- */
+const EV_ICONS = {
+  automat: '<rect x="16" y="6" width="32" height="52" rx="3"/><rect x="21" y="11" width="22" height="22" rx="1" class="f"/><path d="M26 15v6M32 15v6M38 15v6M26 25v4M32 25v4M38 25v4"/><rect x="21" y="44" width="22" height="8" rx="1"/><path d="M39 37h4"/>',
+  konbini: '<path d="M10 28h44v28H10z"/><path d="M6 28l5-12h42l5 12z" class="f"/><path d="M17 16l-2 12M27 16l-1 12M37 16l1 12M47 16l2 12"/><rect x="27" y="40" width="10" height="16"/><rect x="14" y="36" width="9" height="9"/><rect x="41" y="36" width="9" height="9"/>',
+  gacha: '<circle cx="32" cy="22" r="16" class="f"/><circle cx="26" cy="19" r="4"/><circle cx="37" cy="25" r="4"/><path d="M18 38h28v18H18z"/><circle cx="32" cy="46" r="4"/><path d="M32 44v4"/>',
+  arkade: '<rect x="10" y="34" width="44" height="20" rx="4" class="f"/><path d="M24 34V18"/><circle cx="24" cy="14" r="6"/><circle cx="39" cy="43" r="3"/><circle cx="47" cy="46" r="3"/>',
+  donki: '<path d="M14 22h36l-3 34H17z" class="f"/><path d="M24 22v-6a8 8 0 0 1 16 0v6"/><path d="M32 30l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/>',
+  depachika: '<rect x="8" y="18" width="48" height="34" rx="3" class="f"/><path d="M8 33h48M30 18v34"/><circle cx="19" cy="25.5" r="3"/><path d="M37 24h12M37 28h8"/><path d="M14 40h10M14 45h12"/><circle cx="43" cy="43" r="5"/>',
+  yen100: '<circle cx="32" cy="32" r="22" class="f"/><circle cx="32" cy="32" r="17"/><path d="M26 22l6 9 6-9M32 31v12M27 34h10M27 39h10"/>',
+  toilet: '<rect x="16" y="8" width="16" height="18" rx="2"/><path d="M12 30h40a20 14 0 0 1-40 0z" class="f"/><path d="M24 43l-2 13h20l-2-12"/>',
+  tog: '<rect x="14" y="8" width="36" height="40" rx="8" class="f"/><path d="M14 31h36"/><rect x="20" y="14" width="24" height="12" rx="2"/><circle cx="23" cy="39" r="3"/><circle cx="41" cy="39" r="3"/><path d="M21 48l-6 8M43 48l6 8"/>',
+  skrald: '<path d="M14 18h36M26 18v-5h12v5"/><path d="M18 18l3 38h22l3-38" class="f"/><path d="M27 26v22M37 26v22"/>',
+  gaa: '<path d="M32 6v52"/><circle cx="32" cy="16" r="7" class="f"/><circle cx="32" cy="30" r="7" class="f"/><circle cx="32" cy="44" r="7" class="f"/><path d="M10 54L54 10"/>',
+  sko: '<path d="M6 42c7 0 11-6 13-13l9 2c0 6 4 10 12 12l13 2c3 1 5 4 5 7H6z" class="f"/><path d="M6 52h52"/>',
+  kontant: '<rect x="8" y="14" width="40" height="26" rx="3" class="f"/><path d="M8 22h40"/><rect x="18" y="28" width="38" height="22" rx="2"/><circle cx="37" cy="39" r="5"/>',
+  drikkepenge: '<circle cx="32" cy="32" r="18" class="f"/><path d="M26 23l6 9 6-9M32 32v10M27 35h10"/><path d="M10 54L54 10"/>',
+  taxfree: '<path d="M16 6h32v52l-5-4-5 4-6-4-6 4-5-4-5 4z" class="f"/><path d="M24 40l16-16"/><circle cx="25" cy="26" r="3"/><circle cx="39" cy="38" r="3"/>',
+  boen: '<rect x="16" y="10" width="32" height="44" rx="2" class="f"/><path d="M24 26a8 8 0 0 1 16 0v14H24z"/><path d="M18 4v6M25 4v6M32 4v6M39 4v6M46 4v6M18 54v6M25 54v6M32 54v6M39 54v6M46 54v6"/>',
+  stik: '<rect x="18" y="20" width="28" height="24" rx="6" class="f"/><path d="M26 20V8M38 20V8"/><path d="M32 44v14"/>',
+  bus: '<rect x="12" y="8" width="40" height="42" rx="6" class="f"/><path d="M12 32h40"/><rect x="17" y="14" width="30" height="13" rx="2"/><circle cx="21" cy="41" r="3"/><circle cx="43" cy="41" r="3"/><path d="M18 50v6M46 50v6"/>'
+};
+/* [section, [[icon, name, Japanese, text, tip, actions]]]; an action is {halal}, {ph: Danish phrase on a card} or {tab} */
+const EVERY = [
+  ["prøv", [
+    ["automat", "Automater", "自動販売機", "Der står en drikkeautomat på næsten hvert gadehjørne, også med varm te og kaffe på dåse. Rød mærkat betyder varm, blå betyder kold.", "Betal med mønter eller Suica; de fleste drikke koster 100–200 ¥.", []],
+    ["konbini", "Konbini", "コンビニ", "7-Eleven, FamilyMart og Lawson har åbent døgnet rundt med snacks, drikke, hæveautomat og toilet. Mange færdigretter og onigiri indeholder svin, gelatine eller mirin.", "Kig efter 豚 (svin), ラード (svinefedt), ゼラチン (gelatine) og 酒 (alkohol) på etiketten.", [{ halal: 1, l: "vis halal-kortet" }]],
+    ["gacha", "Gachapon", "ガチャガチャ", "Kapselautomater med små figurer og nøgleringe: drej håndtaget og se, hvad du får. Akihabara og Ikebukuro har hele haller af dem.", "300–500 ¥ i mønter; der står som regel en vekselautomat ved siden af.", []],
+    ["arkade", "Arkadehaller og purikura", "ゲームセンター・プリクラ", "Etager med kloautomater, rytmespil og fotobokse (purikura), der pynter billederne med glimmer og store øjne.", "Purikura-etager lukker tit grupper med kun mænd ude.", []],
+    ["donki", "Don Quijote", "ドン・キホーテ", "Et proppet lavprisvarehus med alt fra snacks og kosmetik til souvenirs, ofte åbent til langt ud på natten.", "Tax free fra 5.000 ¥; tag pas med.", [{ ph: "Kan jeg få tax free?", l: "kan jeg få tax free?" }]],
+    ["depachika", "Madhallen under stormagasinet", "デパ地下", "Kælderen under de store stormagasiner, fx Isetan i Shinjuku og Mitsukoshi i Ginza, er fuld af bentoæsker, kager og frugt, pakket smukt ind.", "Det meste er ikke halal. Frugt og te er sikre; spørg ved kagerne.", [{ halal: 1, l: "vis halal-kortet" }]],
+    ["yen100", "100-yen-butikker", "100円ショップ", "Daiso og Seria sælger nyttige småting og souvenirs, de fleste til 110 ¥ med moms.", "", []]
+  ]],
+  ["læg mærke til", [
+    ["toilet", "Toiletter", "トイレ", "Offentlige toiletter er gratis og rene, og de fleste har varmt sæde og vaskeknapper.", "止 er stop, おしり er vask, 流す er skyl.", [{ ph: "Hvor er toilettet?", l: "hvor er toilettet?" }]],
+    ["tog", "Tog og rulletrapper", "電車", "I toget taler man ikke i telefon. På rulletrappen står man til venstre i Tokyo, så andre kan gå forbi til højre.", "På iPhone kan du lægge Suica i Wallet og betale med telefonen.", [{ ph: "Hvor kan jeg fylde mit Suica-kort op?", l: "hvor fylder jeg suica op?" }]],
+    ["skrald", "Næsten ingen skraldespande", "ゴミ箱", "Der står næsten ingen skraldespande på gaden. Tag affaldet med, eller smid det ved en konbini.", "", []],
+    ["gaa", "Spis ikke, mens du går", "食べ歩き", "Man spiser ved boden eller automaten, hvor man købte det. I Asakusa beder skilte om det.", "", []],
+    ["sko", "Sko af", "靴を脱ぐ", "Ser du et trin op til et hævet gulv, en skohylde eller tøfler, så tag skoene af. Det gælder også nogle restauranter og prøverum.", "", []],
+    ["kontant", "Kontanter", "現金", "Kort virker de fleste steder, men små restauranter, boder og automater tager tit kun kontanter.", "Hæveautomaterne i 7-Eleven tager danske kort.", []],
+    ["drikkepenge", "Ingen drikkepenge", "チップ", "Man giver ikke drikkepenge i Japan; prisen er prisen, og det kan virke mærkeligt at lægge ekstra.", "", []],
+    ["taxfree", "Tax free", "免税", "Fra 1. november 2026 betaler du moms i butikken og får de 10 % tilbage i lufthavnen, når du rejser hjem. Det gælder køb over 5.000 ¥ i én butik på en dag.", "Tag pas med, gem kvitteringerne, og hav varerne i håndbagagen til tjekket.", [{ ph: "Kan jeg få tax free?", l: "kan jeg få tax free?" }, { tab: "calc", l: "regn tax free ud" }]],
+    ["boen", "Bøn", "お祈り", "Moskeer: Tokyo Camii i Yoyogi-Uehara og As-Salaam Masjid i Okachimachi. Haneda Lufthavn og nogle stormagasiner har bederum.", "", [{ ph: "Er der et sted, hvor jeg kan bede?", l: "er der et sted at bede?" }, { ph: "Hvor er den nærmeste moské?", l: "nærmeste moské?" }]],
+    ["stik", "Stikkontakter", "コンセント", "Type A med 100 volt. Tag en adapter med; opladere til telefon og computer klarer spændingen.", "", []],
+    ["bus", "Fra Haneda", "空港", "Lufthavnsbussen kører til Shinjuku og de store hoteller på cirka en time. En taxa er nemmest med bagage.", "", [{ ph: "Kør mig til mit hotel", l: "kør mig til mit hotel" }]]
+  ]]
+];
+function actHTML(a, si, ii, k) { return `<button class="btn" type="button" data-ev="${si}.${ii}.${k}">${esc(a.l)}</button>`; }
+function renderEvery() {
+  $("everyList").innerHTML = EVERY.map(([sec, list], si) => `<section class="evSec"><h2>${esc(sec)}</h2><div class="blocks">${list.map(([ic, n, j, t, tip, acts], ii) =>
+    `<article class="food"><div class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${EV_ICONS[ic] || ""}</svg></div><div><h3>${esc(n)}<span class="kanji" lang="ja">${esc(j)}</span></h3><p>${esc(t)}</p>${tip ? `<p class="tip"><b>tip:</b> ${esc(tip)}</p>` : ""}${acts.length ? `<div class="acts">${acts.map((a, k) => actHTML(a, si, ii, k)).join("")}</div>` : ""}</div></article>`).join("")}</div></section>`).join("");
 }
+function phraseByDa(da) { for (const [, , list] of PHRASES) for (const p of list) if (p[0] === da) return p; return null; }
+$("everyList").addEventListener("click", e => {
+  const b = e.target.closest("[data-ev]"); if (!b) return;
+  const [si, ii, k] = b.dataset.ev.split(".").map(Number), a = EVERY[si][1][ii][5][k];
+  if (a.halal) { $("halalCard").click(); lastPhrase = b; return; }
+  if (a.tab) { setTab(a.tab); return; }
+  const p = phraseByDa(a.ph); if (!p) return;
+  openBig(p[4] === "hotel" ? hotelView() : p[4] === "persons" ? personsView() : phraseView(p), b);
+});
 
 /* ---------- Controls ---------- */
 function render() {
@@ -1096,21 +1194,22 @@ function render() {
     $("view" + id).hidden = tab !== t;
   }
   if (tab === "calc") tick();
+  if (tab === "see") {
+    $("seePlaces").setAttribute("aria-pressed", String(seeMode === "places")); $("seeEvery").setAttribute("aria-pressed", String(seeMode === "every"));
+    $("seeList").hidden = seeMode !== "places"; $("everyList").hidden = seeMode !== "every";
+  }
   if (tab !== "eat") return;
-  for (const [m, id] of [["near", "Near"], ["dish", "Dish"], ["try", "Try"]]) $("mode" + id).setAttribute("aria-pressed", String(mode === m));
+  for (const [m, id] of [["near", "Near"], ["dish", "Dish"]]) $("mode" + id).setAttribute("aria-pressed", String(mode === m));
   $("dishCtl").hidden = mode !== "dish";
   $("nearCtl").hidden = mode !== "near";
   $("customBox").hidden = !(mode === "near" && originIdx === ORIGINS.length);
-  $("tryGrid").hidden = mode !== "try";
-  $("list").hidden = mode === "try";
   document.querySelectorAll(".mustBtn").forEach(b => b.setAttribute("aria-pressed", String(mustOnly)));
   $("origin").value = String(originIdx);
   $("areaSel").value = area;
   $("dishSel").value = dish;
-  if (mode === "try") { $("empty").hidden = true; return; }
   if (mode === "dish") renderDish(); else renderNear();
 }
-function setTab(t) { tab = t; store.set("tokyo-tab", t); render(); window.scrollTo({ top: 0 }); }
+function setTab(t) { tab = t; store.set("tokyo-tab", t); render(); syncFh(); window.scrollTo({ top: 0 }); }
 function setMode(m) { mode = m; store.set("tokyo-mode", m); render(); window.scrollTo({ top: 0 }); }
 
 $("dishSel").innerHTML = `<option value="All">Alle retter</option>` + DATA.cats.map(c => `<option value="${esc(c.name)}">${esc(c.name)}</option>`).join("") + `<option value="Luksus">Luksus</option>`;
@@ -1123,7 +1222,8 @@ $("dishSel").addEventListener("change", e => { dish = e.target.value; render(); 
 document.querySelectorAll(".mustBtn").forEach(b => b.addEventListener("click", () => { mustOnly = !mustOnly; render(); }));
 $("modeDish").addEventListener("click", () => setMode("dish"));
 $("modeNear").addEventListener("click", () => setMode("near"));
-$("modeTry").addEventListener("click", () => setMode("try"));
+$("seePlaces").addEventListener("click", () => { seeMode = "places"; store.set("tokyo-see", seeMode); render(); window.scrollTo({ top: 0 }); });
+$("seeEvery").addEventListener("click", () => { seeMode = "every"; store.set("tokyo-see", seeMode); render(); window.scrollTo({ top: 0 }); });
 $("origin").addEventListener("change", e => { originIdx = +e.target.value; store.set("hte-origin", String(originIdx)); render(); });
 $("coords").addEventListener("input", e => {
   const v = e.target.value;
@@ -1175,7 +1275,7 @@ $("bigAct").addEventListener("click", e => {
 window.addEventListener("resize", () => { if (!$("big").hidden && current && current.kind !== "hotelEdit") fitText(); });
 if ("speechSynthesis" in window) { try { speechSynthesis.onvoiceschanged = () => { if (!$("big").hidden && current) paint(current); }; } catch (e) {} }
 document.addEventListener("keydown", e => { if (e.key !== "Escape") return; if (!$("big").hidden) closeBig(); else if (!$("sheet").hidden) closeSheet(); });
-renderTry();
+renderEvery();
 renderSee();
 renderTalk();
 tick();
@@ -1206,8 +1306,8 @@ if (SITE && "serviceWorker" in navigator) {
 }
 render();
 /* the dish headings stick right under the filter bar */
-function syncFh() { const f = document.querySelector(".filters"); if (f && f.offsetHeight) document.documentElement.style.setProperty("--fh", f.offsetHeight + "px"); }
-if ("ResizeObserver" in window) new ResizeObserver(syncFh).observe(document.querySelector(".filters"));
+function syncFh() { const f = [...document.querySelectorAll(".filters")].find(x => x.offsetHeight); if (f) document.documentElement.style.setProperty("--fh", f.offsetHeight + "px"); }
+if ("ResizeObserver" in window) { const ro = new ResizeObserver(syncFh); document.querySelectorAll(".filters").forEach(f => ro.observe(f)); }
 window.addEventListener("resize", syncFh); syncFh();
 /* no zoom: Safari ignores user-scalable=no, so pinches are stopped here as well */
 for (const t of ["gesturestart", "gesturechange"]) document.addEventListener(t, e => e.preventDefault(), { passive: false });
