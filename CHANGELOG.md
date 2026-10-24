@@ -55,6 +55,21 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   300, hairlines instead of boxes (no web fonts any more), and the staff card is white on black. A fourth
   tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
   categories to pick from, and the staff card closes with a button at the bottom or by pulling it down.
+- `aram.nu/tokyo`, faster and simpler for staff:
+  - Opening a card no longer stutters: the text is sized with one measurement instead of up to 32, the
+    card animates without relaying out the page, and start-up does about a fifth of the work it did
+    (cached number and date formats, no forced layouts, lists far down laid out only when near). The
+    app opens from the phone's cache at once instead of waiting up to 4 s for the network. No scrollbars.
+  - Staff no longer touch the phone: the answer buttons, keypad and writing pad are gone. Each card asks
+    in one short Japanese line for ○ or ×, pointing, fingers, the calculator or paper, with a quiet line
+    for you on what you may hear. The halal card is two short lists, not ok and ok, with nothing to answer.
+  - Places and sights can be marked "været her" (green in the lists) or "ikke interesseret" (moved to an
+    archive in settings, behind the gear, where they can be brought back; "fortryd" right after).
+  - 21 more places from a second round of research: Kagayaki (gyukatsu), Kobe-tei (Kichijoji), Banya
+    Happu (Shinagawa), Wagyu Sukiyaki Goku, Umi no Chikara (fish ramen), Fukuyoshi, Kimukatsu Hanare,
+    Komepura, Yoshi Chiki (takoyaki), Masudaen, Poteri Bakery, Ryotei Kinsui (kaiseki), two at Narita
+    airport, and a new section of seven other halal kitchens (Sultan, Malaychan, Marhaba, Hangry Joe's,
+    Annam, Byblos, Carvaan).
 - `aram.nu/tokyo`, gone through tab by tab for logic and use:
   - spis is one list: dish chips and one "where" choice (all of Tokyo by dish, or nearest first from my
     location, a station or my hotel, also within a dish). The area filter and the separate "nærmest"

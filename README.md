@@ -120,31 +120,36 @@ Danish, in the front page's look (black, white text, lowercase, the device's own
 hairlines, grey for anything secondary), built like a phone app with four tabs in a bar at the bottom.
 Everything you tap opens the same sheet from the bottom, with the details and what you can do.
 
-- **spis**: 64 halal Japanese places to eat. Dish chips (a row that scrolls sideways, with a fade on each
+- **spis**: 85 halal places to eat, nearly all Japanese food (one section, "andre køkkener", has seven
+  good Malaysian, Pakistani, Indian, Lebanese and Arab places for a break). Dish chips (a row that scrolls sideways, with a fade on each
   side where there is more) and one "where" choice: "hele tokyo" groups the places by dish, each dish
   heading first listing the dishes to taste; "min placering", a station or "mit hotel" sorts them by
   distance, also within a dish. If the location is not ready, one line says why and the list stays. A
   place's sheet has its Japanese address, the map, and cards that ask the way or tell a taxi driver where
-  to go, in Japanese with the name and address.
+  to go, in Japanese with the name and address. At its foot, "været her" turns the place green in every
+  list and "ikke interesseret" moves it to the archive; the gear (spis and oplev) opens settings with the
+  archive, where it can be brought back, and the list of places you have been. Sights work the same way.
 - **oplev**: "steder", 16 sights (sorted by distance when a point is chosen under spis), each with the
   nearest halal places and "spørg om vej" with its Japanese name; and "overalt", 18 things met
   everywhere in Tokyo to try or to notice, with buttons into the halal card, phrase cards, omregn or the
   mosques on the map.
 - **parlør**: "vis frem" holds the halal card and 59 cards in seven categories to show staff; "forstå"
   lists 24 things staff say, with romaji, meaning, "hør" and the answers to tap. A card shows the
-  Japanese full screen, black on white, with your Danish as one small grey line at the top and a way to
-  answer in Japanese only: yes/no (○ and ✕), "is it in the dish" (where yes is the bad answer), meat and
-  halal, a time, a direction, a keypad for a price or a platform, a pad to write on, or pointing at the
-  menu. The answer comes back large in Danish, green when it is good news and red when not.
+  Japanese full screen, black on white, with your Danish as one small grey line at the top. Staff never
+  touch the phone: one short Japanese line asks them to answer with ○ or ×, point, hold up fingers, show
+  the price on their calculator or write on paper, and a quiet grey line under it says what you may hear
+  (hai, iie, migi, juppun …). The halal card is two short lists: not ok (pork, meat that is not halal,
+  alcohol, gelatine) and ok (fish, shellfish, eggs, halal meat).
 - **omregn**: yen and kroner both ways at the ECB rate with how the price is said (read aloud where the
   phone has a Japanese voice) and the tax-free refund, Danish to Japanese sizes for shoes and clothes
   with a card to ask staff, any number said in Japanese with a table of numbers and counting words, and
   the time in Tokyo and Denmark.
 
-The page remembers the last tab, views, dish, place and category in `localStorage`. It is not linked
+The page remembers the last tab, views, dish, place, category and your marks in `localStorage`. It is not linked
 from the front page and carries `noindex`. The page (data, styles, script) is `index.html`; next to it,
-`sw.js` keeps it working offline (the page network first; its cache name carries a version, so a new
-page replaces the old cache), and `manifest.webmanifest` with the icons ("/tokyo" in white on black)
+`sw.js` keeps it working offline and quick to open (the page comes from the phone's cache at once and a
+fresh copy is fetched in the background for next time; its cache name carries a version, so a new page
+replaces the old cache), and `manifest.webmanifest` with the icons ("/tokyo" in white on black)
 makes it a full-screen app when added to a phone's home screen. Like the front page, it does not zoom.
 The exchange rate is fetched from `api.frankfurter.dev` when online; offline the built-in rate is used.
 Location needs the page on https, which Pages gives.

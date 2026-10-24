@@ -1,7 +1,7 @@
-// Keeps aram.nu/tokyo working without internet.
-// The page itself: network first (so updates arrive when online), cached copy when offline.
-// Google Fonts: cache first, so the fonts still show offline after the first visit.
-const CACHE = "tokyo-d7ab243850";
+// Keeps aram.nu/tokyo working without internet, and fast.
+// The page and its files: from the phone's cache at once, while a fresh copy is fetched in the background
+// for next time (a new version also arrives as a new service worker, whose install fetches it).
+const CACHE = "tokyo-c1ca5951a0";
 const CORE = ["./", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", event => {
@@ -16,10 +16,6 @@ self.addEventListener("activate", event => {
   );
 });
 
-function timeout(ms) {
-  return new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), ms));
-}
-
 self.addEventListener("fetch", event => {
   const req = event.request;
   if (req.method !== "GET") return;
@@ -27,17 +23,13 @@ self.addEventListener("fetch", event => {
 
   if (url.origin === self.location.origin) {
     if (!url.pathname.startsWith(new URL("./", self.location).pathname)) return;
+    const key = req.mode === "navigate" ? "./" : req;
     event.respondWith((async () => {
       const cache = await caches.open(CACHE);
-      try {
-        // a slow connection should not leave the page blank: fall back to the cache after 4 s
-        const res = await Promise.race([fetch(req), timeout(4000)]);
-        if (res && res.ok) cache.put(req.mode === "navigate" ? "./" : req, res.clone());
-        return res;
-      } catch (e) {
-        const hit = await cache.match(req.mode === "navigate" ? "./" : req, { ignoreSearch: true });
-        return hit || (await cache.match("./")) || Response.error();
-      }
+      const hit = await cache.match(key, { ignoreSearch: true });
+      const fresh = fetch(req).then(res => { if (res && res.ok) cache.put(key, res.clone()); return res; });
+      if (hit) { event.waitUntil(fresh.catch(() => {})); return hit; }
+      try { return await fresh; } catch (e) { return (await cache.match("./")) || Response.error(); }
     })());
     return;
   }
