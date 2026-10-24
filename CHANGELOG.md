@@ -55,6 +55,10 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   300, hairlines instead of boxes (no web fonts any more), and the staff card is white on black. A fourth
   tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
   categories to pick from, and the staff card closes with a button at the bottom or by pulling it down.
+- `aram.nu/tokyo` has a "desserter" section: eight viral Tokyo sweets to read about, each with its halal
+  risk (gelatine, liqueur) and a button that asks staff about gelatine and alcohol, and seven shops for them
+  (Poteri, Flipper's, Marion Crêpes, Naniwaya, Kimuraya, Benzaiten, Himitsudo), the uncertified ones said so.
+  Tokiwado's halal-certified rice sweets join matcha & snacks; a new card asks about gelatine and alcohol.
 - `aram.nu/tokyo`: under spis each dish is one frame with its heading and its places, so the places plainly
   belong to it; the dishes to read about are small chips at the foot instead of large boxes above the places.
 - `aram.nu/tokyo` has a plan tab: places to eat and sights you mark "planlæg" in their sheet, nearest

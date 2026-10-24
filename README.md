@@ -120,8 +120,11 @@ Danish, in the front page's look (black, white text, lowercase, the device's own
 hairlines, grey for anything secondary), built like a phone app with five tabs in a bar at the bottom.
 Everything you tap opens the same sheet from the bottom, with the details and what you can do.
 
-- **spis**: 85 halal places to eat, nearly all Japanese food (one section, "andre køkkener", has seven
-  good Malaysian, Pakistani, Indian, Lebanese and Arab places for a break). Dish chips (a row that scrolls sideways, with a fade on each
+- **spis**: 92 places to eat, nearly all Japanese food made halal. "desserter" has Tokyo's viral sweets
+  (soufflé pancakes, Harajuku crepes, taiyaki, fruit daifuku, kakigori, Dubai chocolate, purin) with what to
+  watch for (gelatine, liqueur) and where to get them, marked when a shop is not certified; a dessert's sheet
+  shows staff the question about gelatine and alcohol in one tap. "andre køkkener" has seven good Malaysian,
+  Pakistani, Indian, Lebanese and Arab places for a break. Dish chips (a row that scrolls sideways, with a fade on each
   side where there is more) and one "where" choice: "hele tokyo" groups the places by dish, each dish
   in its own frame with its places and, at the foot, the dishes to read about; "min placering", a station or "mit hotel" sorts them by
   distance, also within a dish. If the location is not ready, one line says why and the list stays. A
