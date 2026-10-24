@@ -37,6 +37,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - `aram.nu/tokyo` has a phrasebook tab (Parlør): 22 cards in a grid; a tap shows the Japanese
   full screen, black on white, to hold up to staff. The tabs are shorter: Spisesteder, Seværdigheder,
   Mad, Parlør.
+- `aram.nu/tokyo` is called just "Tokyo" and is tidied up: no intro line, section notes, jump links
+  or kanji on the eating list, one short line for distances, and the tips cut to four lines.
 - buehal: the story opens low beside the hall, the twelve arches in a row as the scan builds up
   setup by setup (the scanners now stand where they stood: their positions had not been turned into
   the hall's frame with the points). The measures end as a plan cut at 1 m: the chain of measures

@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#f4f6f3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#111412" media="(prefers-color-scheme: dark)">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Halal Tokyo Eats</title>
+<title>Tokyo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
@@ -202,8 +202,7 @@ footer .src { margin-top: 18px; font-size: 12px; }
 <body>
 <div class="wrap">
   <header class="top">
-    <h1>Halal Tokyo Eats</h1>
-    <p class="lede"><b>64 halal japanske spisesteder</b> i Tokyo (93 adresser). Tryk på et navn for at åbne det i Google Maps. <span style="color:var(--gold)">★</span> betyder, at det er et must.</p>
+    <h1>Tokyo</h1>
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" id="tabEat" aria-selected="true" aria-controls="viewEat" type="button">Spisesteder</button>
       <button class="tab" role="tab" id="tabSee" aria-selected="false" aria-controls="viewSee" type="button">Seværdigheder</button>
@@ -238,7 +237,6 @@ footer .src { margin-top: 18px; font-size: 12px; }
     </div>
   </div>
   <div class="wrap">
-    <ul class="index" id="index"></ul>
     <main id="main"></main>
     <p class="empty" id="empty" hidden>Intet passer til filtrene. Prøv Alle områder.</p>
   </div>
@@ -247,21 +245,19 @@ footer .src { margin-top: 18px; font-size: 12px; }
 
 <div id="viewSee" role="tabpanel" aria-labelledby="tabSee" hidden>
   <div class="wrap">
-    <p class="tryIntro">Seksten ting, der er værd at se i Tokyo. Under hver står de nærmeste halal-spisesteder fra listen, med gåafstand.</p>
     <div class="seeList" id="seeList"></div>
   </div>
 </div>
 
 <div id="viewTry" role="tabpanel" aria-labelledby="tabTry" hidden>
   <div class="wrap">
-    <p class="tryIntro">Femten japanske retter og oplevelser, du kan få halal i Tokyo. Hver af dem linker til, hvor du kan prøve den, og til rigtige billeder.</p>
     <div class="grid" id="tryGrid"></div>
   </div>
 </div>
 
 <div id="viewTalk" role="tabpanel" aria-labelledby="tabTalk" hidden>
   <div class="wrap">
-    <p class="tryIntro">Tryk på et kort, så vises det stort på japansk. Vend telefonen mod personalet.</p>
+    <p class="tryIntro">Tryk på et kort for at vise det stort.</p>
     <div id="talk"></div>
   </div>
 </div>
@@ -277,20 +273,14 @@ footer .src { margin-top: 18px; font-size: 12px; }
 
 <div class="wrap">
   <footer>
-    <h3>Halal i Japan</h3>
+    <h3>Godt at vide</h3>
     <ul>
-      <li>Sushiris og almindelig sojasauce indeholder ofte mirin eller sake. Bed om ris uden mirin (<i>mirin nashi</i>), og tag halal-sojasauce med.</li>
-      <li>Undgå på varedeklarationer: 豚 / ポーク (svinekød), ラード (svinefedt), ゼラチン (gelatine), 酒 / アルコール (alkohol).</li>
-      <li>Bøn: mange af stederne har bederum. Moskeer: As-Salaam Masjid i Okachimachi og Tokyo Camii i Yoyogi-Uehara.</li>
-      <li>Man giver ikke drikkepenge i Japan. Enkelte turiststeder foreslår det; du kan sige nej.</li>
+      <li>Bed om sushiris uden mirin (<i>mirin nashi</i>), og tag halal-sojasauce med.</li>
+      <li>Undgå 豚 (svinekød), ラード (svinefedt), ゼラチン (gelatine) og 酒 (alkohol) på varer.</li>
+      <li>Moskeer: As-Salaam Masjid i Okachimachi og Tokyo Camii i Yoyogi-Uehara.</li>
+      <li>Haneda til Shinjuku: lufthavnsbussen, ca. 1 time.</li>
     </ul>
-    <h3>Bo i Shinjuku</h3>
-    <ul>
-      <li>Fra Haneda: lufthavnsbussen (Airport Limousine) direkte til Shinjuku (ca. 1 time), eller Keikyu-linjen til Shinagawa og derefter JR Yamanote-linjen (ca. 50 min.).</li>
-      <li>Shibuya ligger 5 min. væk med tog, Asakusa ca. 35 min. Planlæg en dag i Asakusa med Sushi Ken, Panga-sukiyaki og Tempura Sakura.</li>
-      <li>Flyver I hjem fra Haneda? Honolu har et halal-ramensted i Terminal 3 på 4. sal.</li>
-    </ul>
-    <p class="src">Oplysninger fra Google Maps og halal-guides fra Time Out Tokyo, Tokyo Cheapo og Coto Academy, tjekket 24. okt. 2026. Afstande er i fugleflugt. Åbningstider ændrer sig, så tjek før I går.</p>
+    <p class="src">Google Maps, Time Out, Tokyo Cheapo og Coto Academy, okt. 2026. Tjek åbningstider.</p>
   </footer>
 </div>
 
@@ -382,7 +372,7 @@ const visible = it => (!mustOnly || it.m) && (area === "All" || it.a === area ||
 function sectionHTML(name, intro, items, splurge) {
   const shown = items.filter(visible);
   if (!shown.length) return ["", 0];
-  return [`<section class="cat" id="${slug(name)}"><div class="cat-head"><h2>${esc(name)}</h2><span class="kanji">${KANJI[name] || ""}</span></div>${intro ? `<p class="intro">${esc(intro)}</p>` : ""}<ul class="list">${shown.map(i => itemHTML(i, splurge)).join("")}</ul></section>`, shown.length];
+  return [`<section class="cat" id="${slug(name)}"><div class="cat-head"><h2>${esc(name)}</h2></div><ul class="list">${shown.map(i => itemHTML(i, splurge)).join("")}</ul></section>`, shown.length];
 }
 function renderDish() {
   let html = "", total = 0, idx = [];
@@ -397,8 +387,6 @@ function renderDish() {
   if (sn) idx.push("Luksus");
   total += sn;
   $("empty").hidden = !!total;
-  $("index").hidden = false;
-  $("index").innerHTML = idx.map(n => `<li><a href="#${slug(n)}">${esc(n)}</a></li>`).join("");
 }
 
 /* ---------- Nearest first ---------- */
@@ -426,7 +414,6 @@ function originPoint() {
   const o = ORIGINS[originIdx]; return [o[1], o[2]];
 }
 function renderNear() {
-  $("index").hidden = true;
   $("splurgeBand").hidden = true;
   const from = originPoint();
   if (!from) {
@@ -450,7 +437,7 @@ function renderNear() {
   rows.forEach(r => r.d = km(from, r.g));
   rows.sort((a, b) => a.d - b.d);
   const top = rows.slice(0, 40);
-  $("main").innerHTML = `<section class="cat"><p class="from">Afstand fra <b>${esc(originName())}</b>${originIdx === -2 ? " <span>(live, opdateres mens du går)</span>" : " <span>(ikke din nuværende placering)</span>"}</p><p class="intro">De ${top.length} nærmeste af ${rows.length} steder, i fugleflugt.</p><ul class="list">${top.map(r =>
+  $("main").innerHTML = `<section class="cat"><p class="from">Afstand fra <b>${esc(originName())}</b>${originIdx === -2 ? "" : " <span>(ikke din placering)</span>"}</p><ul class="list">${top.map(r =>
     `<li class="item"><div class="line1"><a class="name" href="${r.u}" target="_blank" rel="noopener">${esc(r.n)}${r.sub ? ` <small>· ${esc(r.sub)}</small>` : ""}</a>${r.it.m ? '<span class="must" title="Et must">★</span>' : ""}<span class="meta"><span class="dist">${distLabel(r.d)}</span><span class="catTag">${esc(r.cat)}</span></span></div><p class="note">${esc(r.it.t)}</p></li>`
   ).join("")}</ul></section>`;
   $("empty").hidden = !!top.length;
@@ -476,7 +463,7 @@ function renderSee() {
     const pick = [], seen = new Set();
     for (const r of near) { if (r.d > 2) break; if (seen.has(r.n)) continue; seen.add(r.n); pick.push(r); if (pick.length === 3) break; }
     const extra = s.x.map(x => `<a href="${x.u}" target="_blank" rel="noopener">${esc(x.l)} ↗</a>`).join("");
-    return `<article class="see"><div class="top"><h3><a href="${s.u}" target="_blank" rel="noopener">${esc(s.n)}</a></h3><span class="area">${esc(s.a)}</span></div><p>${esc(s.t)}</p><p class="tip"><b>Tip:</b> ${esc(s.tip)}</p><ul class="near"><li class="h">Spis i nærheden</li>${!pick.length ? `<li class="farNote">${esc(s.far || "Ingen halal-steder fra listen i gåafstand.")}</li>` : ""}${pick.map(r => `<li><a href="${r.u}" target="_blank" rel="noopener">${esc(r.n)}${r.sub ? ` <small>· ${esc(r.sub)}</small>` : ""}</a>${r.m ? '<span class="must" title="Et must">★</span>' : ""}<span class="d">${walkLabel(r.d)}</span></li>`).join("")}</ul><div class="links"><a href="${s.u}" target="_blank" rel="noopener">Åbn i Maps ↗</a>${extra}<a href="${s.p}" target="_blank" rel="noopener">Se billeder ↗</a></div></article>`;
+    return `<article class="see"><div class="top"><h3><a href="${s.u}" target="_blank" rel="noopener">${esc(s.n)}</a></h3><span class="area">${esc(s.a)}</span></div><p>${esc(s.t)}</p><p class="tip"><b>Tip:</b> ${esc(s.tip)}</p><ul class="near"><li class="h">Spis i nærheden</li>${!pick.length ? `<li class="farNote">${esc(s.far || "Ingen halal-steder fra listen i gåafstand.")}</li>` : ""}${pick.map(r => `<li><a href="${r.u}" target="_blank" rel="noopener">${esc(r.n)}${r.sub ? ` <small>· ${esc(r.sub)}</small>` : ""}</a>${r.m ? '<span class="must" title="Et must">★</span>' : ""}<span class="d">${walkLabel(r.d)}</span></li>`).join("")}</ul><div class="links">${extra}<a href="${s.p}" target="_blank" rel="noopener">Se billeder ↗</a></div></article>`;
   }).join("");
 }
 
@@ -588,12 +575,6 @@ $("tabTalk").addEventListener("click", () => { tab = "talk"; render(); window.sc
 $("talk").addEventListener("click", e => { const b = e.target.closest(".phrase"); if (!b) return; openBig(PHRASES[+b.dataset.g][1][+b.dataset.i], b); });
 $("big").addEventListener("click", closeBig);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("big").hidden) closeBig(); });
-$("index").addEventListener("click", e => {
-  const a = e.target.closest("a"); if (!a) return;
-  e.preventDefault();
-  const t = document.getElementById(a.getAttribute("href").slice(1));
-  if (t) t.scrollIntoView();
-});
 renderTry();
 renderSee();
 renderTalk();
