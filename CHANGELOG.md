@@ -55,6 +55,16 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   300, hairlines instead of boxes (no web fonts any more), and the staff card is white on black. A fourth
   tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
   categories to pick from, and the staff card closes with a button at the bottom or by pulling it down.
+- `aram.nu/tokyo`, parlør:
+  - Staff cards fit on every phone again. On iPhone a long Japanese line ran off the right edge: it was
+    measured with line breaks allowed but shown without them. Whole-line and wrapped text are now measured
+    as they are shown, and a last check on the drawn text shrinks it until it sits inside the card. Checked
+    in WebKit and Blink at phone sizes and on a folding phone (folded, unfolded, turned); text grows on a wide
+    screen when breaking between phrases gives clearly bigger letters.
+  - New "læs": 85 words to recognise on labels, signs and stations, marked avoid, check or fine; a tap shows
+    the word large. Two columns on a wide or unfolded screen.
+  - New "skikke": the customs and practical notes from oplev → overalt moved here; overalt keeps the 7 things
+    to try. Prayer now names the Shin-Okubo mosque.
 - `aram.nu/tokyo`: more by the green line (JR Yamanote), for a stay in Shinjuku. Oplev has 16 more places,
   each checked for the trip's dates: Sunshine 60's view, Sunshine Aquarium, animate and BicCamera in Ikebukuro;
   the Scramble Crossing, Hikarie's free view and Miyashita Park in Shibuya; Harakado; KITTE Garden; the Ghibli clock;

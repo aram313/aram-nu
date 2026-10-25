@@ -136,8 +136,8 @@ Everything you tap opens the same sheet from the bottom, with the details and wh
   byliv), chosen by chips like the dishes under spis, each kind in its own frame; no temples or shrines. The
   same "where" choice as spis (shared) sorts them nearest first. Each has the nearest halal places and "spørg
   om vej" with its Japanese name and address; places far out say how far and how to get there. The last
-  chip, "overalt", has 18 things met everywhere in Tokyo to try or to notice, with buttons into the halal
-  card, phrase cards, omregn or the mosques on the map.
+  chip, "overalt", has 7 things met everywhere in Tokyo to try (vending machines, konbini, gachapon …), with
+  buttons into the halal card, phrase cards or omregn.
 - **plan**: what you have planned, places to eat and sights together, nearest first when a point is chosen
   under spis (a chain shows its nearest branch), with a ✓ on each to mark it been; below, where you have been.
 - **parlør**: "vis frem" holds the halal card and 59 cards in seven categories to show staff; "forstå"
@@ -146,7 +146,12 @@ Everything you tap opens the same sheet from the bottom, with the details and wh
   touch the phone: one short Japanese line asks them to answer with ○ or ×, point, hold up fingers, show
   the price on their calculator or write on paper, and a quiet grey line under it says what you may hear
   (hai, iie, migi, juppun …). The halal card is two short lists: not ok (pork, meat that is not halal,
-  alcohol, gelatine) and ok (fish, shellfish, eggs, halal meat).
+  alcohol, gelatine) and ok (fish, shellfish, eggs, halal meat). The text is sized to the screen and checked
+  as it is drawn, so it fits on iPhone (WebKit) and Android (Blink), on a folding phone folded or unfolded,
+  and refits when the screen turns or unfolds. "læs" is a cheat sheet of 85 words to recognise on labels,
+  signs and stations (what to avoid, check or need not worry about on a label, the green line's directions,
+  station names, shop and toilet signs); a tap shows the word large to compare. "skikke" has 11 customs and
+  practical notes (no tipping, shoes off, cash, tax free, prayer with the Shin-Okubo mosque …).
 - **omregn**: yen and kroner both ways at the ECB rate with how the price is said (read aloud where the
   phone has a Japanese voice) and the tax-free refund, Danish to Japanese sizes for shoes and clothes
   with a card to ask staff, any number said in Japanese with a table of numbers and counting words, and
