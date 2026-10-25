@@ -120,11 +120,11 @@ Danish, in the front page's look (black, white text, lowercase, the device's own
 hairlines, grey for anything secondary), built like a phone app with five tabs in a bar at the bottom.
 Everything you tap opens the same sheet from the bottom, with the details and what you can do.
 
-- **spis**: 92 places to eat, nearly all Japanese food made halal. "desserter" has Tokyo's viral sweets
+- **spis**: 97 places to eat, nearly all Japanese food made halal. "desserter" has Tokyo's viral sweets
   (soufflé pancakes, Harajuku crepes, taiyaki, fruit daifuku, kakigori, Dubai chocolate, purin) with what to
   watch for (gelatine, liqueur) and where to get them, marked when a shop is not certified; a dessert's sheet
-  shows staff the question about gelatine and alcohol in one tap. "andre køkkener" has seven good Malaysian,
-  Pakistani, Indian, Lebanese and Arab places for a break. Dish chips (a row that scrolls sideways, with a fade on each
+  shows staff the question about gelatine and alcohol in one tap. "andre køkkener" has eleven good Malaysian,
+  Pakistani, Indian, Lebanese, Arab, Chinese, Uzbek and Uyghur places for a break. Dish chips (a row that scrolls sideways, with a fade on each
   side where there is more) and one "where" choice: "hele tokyo" groups the places by dish, each dish
   in its own frame with its places and, at the foot, the dishes to read about; "min placering", a station or "mit hotel" sorts them by
   distance, also within a dish. If the location is not ready, one line says why and the list stays. A
@@ -132,7 +132,7 @@ Everything you tap opens the same sheet from the bottom, with the details and wh
   to go, in Japanese with the name and address. At its foot, "planlæg" puts the place in the plan tab,
   "været her" turns it green in every list, and a quiet "ikke interesseret" moves it to the archive; the
   gear (spis and oplev) opens settings with the archive, where it can be brought back. Sights work the same way.
-- **oplev**: 47 things to see and shops in six kinds (udsigt, oplevelser, spil & hobby, elektronik, butikker,
+- **oplev**: 63 things to see and shops in six kinds (udsigt, oplevelser, spil & hobby, elektronik, butikker,
   byliv), chosen by chips like the dishes under spis, each kind in its own frame; no temples or shrines. The
   same "where" choice as spis (shared) sorts them nearest first. Each has the nearest halal places and "spørg
   om vej" with its Japanese name and address; places far out say how far and how to get there. The last

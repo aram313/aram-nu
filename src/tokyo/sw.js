@@ -1,7 +1,7 @@
 // Keeps aram.nu/tokyo working without internet, and fast.
 // The page and its files: from the phone's cache at once, while a fresh copy is fetched in the background
 // for next time (a new version also arrives as a new service worker, whose install fetches it).
-const CACHE = "tokyo-7957fcb4dd";
+const CACHE = "tokyo-9f0d7d8f46";
 const CORE = ["./", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", event => {

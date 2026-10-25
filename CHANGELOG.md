@@ -55,6 +55,13 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   300, hairlines instead of boxes (no web fonts any more), and the staff card is white on black. A fourth
   tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
   categories to pick from, and the staff card closes with a button at the bottom or by pulling it down.
+- `aram.nu/tokyo`: more by the green line (JR Yamanote), for a stay in Shinjuku. Oplev has 16 more places,
+  each checked for the trip's dates: Sunshine 60's view, Sunshine Aquarium, animate and BicCamera in Ikebukuro;
+  the Scramble Crossing, Hikarie's free view and Miyashita Park in Shibuya; Harakado; KITTE Garden; the Ghibli clock;
+  Maxell Aqua Park; the science museum in Ueno; 2k540; Tokyo Dome City; BicCamera Shinjuku; and the Shin-Okubo mosque
+  with Islam Yokocho. Tips say when to stay away (Halloween in Shibuya on 31 Oct, the cosplay festival in Ikebukuro
+  30 Oct to 1 Nov, closed days). Spis has five more places (Nonbee in Ikebukuro; Xiao Wei Yang Salam in Shin-Okubo;
+  Sensei Menkan and Samarkand Terrace in Takadanobaba; Dolan in Ikebukuro) and Shinjuku-tei's Ikebukuro branch.
 - `aram.nu/tokyo`: oplev is rebuilt from a new round of research into 47 things to see and shops, in six
   kinds to pick from (udsigt, oplevelser, spil & hobby, elektronik, butikker, byliv), each kind in its own
   frame, with "overalt" as the last choice. More electronics and hobby shops (Yodobashi Akiba, Akizuki
