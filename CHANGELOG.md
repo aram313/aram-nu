@@ -55,6 +55,9 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   300, hairlines instead of boxes (no web fonts any more), and the staff card is white on black. A fourth
   tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
   categories to pick from, and the staff card closes with a button at the bottom or by pulling it down.
+- `aram.nu/tokyo`, parlør: "forstå" (what staff say, with answers to tap) is gone, as unrealistic. "skikke" is a
+  short cheat sheet instead: polite words (hello, good day, thank you, take care, goodbye …) that open large on a
+  tap, what is expected and what to avoid, and the practical notes.
 - `aram.nu/tokyo`, parlør:
   - Staff cards fit on every phone again. On iPhone a long Japanese line ran off the right edge: it was
     measured with line breaks allowed but shown without them. Whole-line and wrapped text are now measured

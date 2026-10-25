@@ -140,8 +140,7 @@ Everything you tap opens the same sheet from the bottom, with the details and wh
   buttons into the halal card, phrase cards or omregn.
 - **plan**: what you have planned, places to eat and sights together, nearest first when a point is chosen
   under spis (a chain shows its nearest branch), with a ✓ on each to mark it been; below, where you have been.
-- **parlør**: "vis frem" holds the halal card and 59 cards in seven categories to show staff; "forstå"
-  lists 24 things staff say, with romaji, meaning, "hør" and the answers to tap. A card shows the
+- **parlør**: "vis frem" holds the halal card and 59 cards in seven categories to show staff. A card shows the
   Japanese full screen, black on white, with your Danish as one small grey line at the top. Staff never
   touch the phone: one short Japanese line asks them to answer with ○ or ×, point, hold up fingers, show
   the price on their calculator or write on paper, and a quiet grey line under it says what you may hear
@@ -150,8 +149,10 @@ Everything you tap opens the same sheet from the bottom, with the details and wh
   as it is drawn, so it fits on iPhone (WebKit) and Android (Blink), on a folding phone folded or unfolded,
   and refits when the screen turns or unfolds. "læs" is a cheat sheet of 85 words to recognise on labels,
   signs and stations (what to avoid, check or need not worry about on a label, the green line's directions,
-  station names, shop and toilet signs); a tap shows the word large to compare. "skikke" has 11 customs and
-  practical notes (no tipping, shoes off, cash, tax free, prayer with the Shin-Okubo mosque …).
+  station names, shop and toilet signs); a tap shows the word large to compare. "skikke" is a short cheat
+  sheet: 15 polite words (hello, good day, thank you, take care, goodbye …), each shown large on a tap; 15 lines
+  on what is expected (○) and what to avoid (×); and 7 practical notes (toilets, trains, cash, tax free, prayer
+  with the Shin-Okubo mosque, plugs, from Haneda).
 - **omregn**: yen and kroner both ways at the ECB rate with how the price is said (read aloud where the
   phone has a Japanese voice) and the tax-free refund, Danish to Japanese sizes for shoes and clothes
   with a card to ask staff, any number said in Japanese with a table of numbers and counting words, and

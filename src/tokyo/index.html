@@ -168,13 +168,6 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 #talkCats button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 .hearIntro { margin: 14px 0 0; }
 .hearGroup h2 { position: sticky; top: var(--fh); z-index: 3; margin: 0 -24px; padding: 14px 24px 8px; background: var(--bg); border-bottom: 1px solid var(--line); font-size: 19px; font-weight: 500; }
-.hear { padding: 14px 0; content-visibility: auto; contain-intrinsic-size: auto 150px; }
-.hear + .hear { border-top: 1px solid var(--line); }
-.hear .hj { font-size: 19px; line-height: 1.4; }
-.hear .hr { color: var(--dim); font-size: 13.5px; }
-.hear .hd { margin-top: 2px; }
-.hear .chips { margin-top: 10px; }
-.hear .chips .lbl2 { align-self: center; color: var(--dim); font-size: 13px; margin-right: 2px; }
 .rd { display: block; width: 100%; padding: 12px 0; background: none; border: 0; border-top: 1px solid var(--line); color: var(--fg); text-align: left; cursor: pointer; font: inherit; }
 .rdList .rd:first-child { border-top: 0; }
 @media (min-width: 600px) { .rdList { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; } .rdList .rd:nth-child(2) { border-top: 0; } }
@@ -187,6 +180,12 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
 .rd .mk.q { color: #f2c14e; }
 .rd .mk.o { color: var(--ok); }
 .readNote { margin: 10px 0 2px; color: var(--dim); }
+.ways { margin: 4px 0 0; padding: 0; list-style: none; }
+.ways li { display: grid; grid-template-columns: 18px 1fr; gap: 8px; padding: 10px 0; border-top: 1px solid var(--line); }
+.ways li:first-child { border-top: 0; }
+.ways .mk { font-weight: 600; }
+.ways .mk.x { color: #ff7a70; }
+.ways .mk.o { color: var(--ok); }
 .talkGroup h2 { margin: 24px 0 10px; font-size: 19px; font-weight: 500; }
 .talkNote { margin: -6px 0 10px; color: var(--dim); font-variant-numeric: tabular-nums; }
 .talkGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
@@ -393,7 +392,6 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
   <div class="filters"><div class="wrap">
     <div class="seg" role="group" aria-label="visning">
       <button type="button" id="talkShow" aria-pressed="true">vis frem</button>
-      <button type="button" id="talkHear" aria-pressed="false">forstå</button>
       <button type="button" id="talkRead" aria-pressed="false">læs</button>
       <button type="button" id="talkWays" aria-pressed="false">skikke</button>
     </div>
@@ -404,10 +402,6 @@ a.btn::after { content: " ↗"; color: var(--dim); white-space: pre; }
     <div class="ctl"><input class="field" type="search" id="talkSearch" placeholder="søg, fx toilet, regning, taxa" aria-label="søg i parløren" autocomplete="off"></div>
     <div id="talk"></div>
     <p class="empty" id="talkEmpty" hidden>ingen kort passer. prøv et andet ord.</p>
-  </div>
-  <div class="wrap" id="hearView" hidden>
-    <p class="hint hearIntro">det siger personalet til jer. tryk på et svar for at vise det på japansk.</p>
-    <div id="hearList"></div>
   </div>
   <div class="wrap" id="readView" hidden>
     <p class="hint hearIntro">ord, I møder på etiketter, skilte og stationer. tryk på et ord for at se det stort og sammenligne.</p>
@@ -823,42 +817,6 @@ const HALAL_CARD = {
   say: "私はイスラム教徒です。食べられないものは、豚肉、ハラールではないお肉、アルコール、ゼラチンです。魚、エビやカニや貝、卵、ハラールのお肉は大丈夫です。よろしくお願いします。",
   da: "jeg er muslim. ikke ok: svinekød, kød der ikke er halal, alkohol, gelatine. ok: fisk, skaldyr, æg, halal-kød."
 };
-/* what staff say to you: [Japanese, romaji, Danish, answers to tap ([Japanese, Danish, romaji]) or "persons"] */
-const YES = ["はい、お願いします。", "ja tak", "Hai, onegaishimasu."], NO = ["いいえ、大丈夫です。", "nej tak", "Iie, daijōbu desu."];
-const HEAR = [
-  ["når I kommer ind", [
-    ["いらっしゃいませ。", "Irasshaimase.", "Velkommen. Det siger alle butikker; du behøver ikke svare.", []],
-    ["何名様ですか？", "Nan-mei-sama desu ka?", "Hvor mange er I?", "persons"],
-    ["ご予約はされていますか？", "Go-yoyaku wa sarete imasu ka?", "Har I reserveret?", [["はい、予約しています。", "ja, vi har reserveret", "Hai, yoyaku shite imasu."], ["いいえ。", "nej", "Iie."]]],
-    ["満席です。", "Manseki desu.", "Der er fuldt.", []],
-    ["お名前を書いてお待ちください。", "Onamae o kaite omachi kudasai.", "Skriv jeres navn på listen, og vent.", []],
-    ["少々お待ちください。", "Shōshō omachi kudasai.", "Et øjeblik, vent lidt.", []],
-    ["こちらへどうぞ。", "Kochira e dōzo.", "Denne vej, værsgo.", []],
-    ["お好きな席へどうぞ。", "Osuki na seki e dōzo.", "Sæt jer, hvor I vil.", []],
-    ["食券を買ってください。", "Shokken o katte kudasai.", "Køb først en madbillet i automaten ved døren.", []]
-  ]],
-  ["når I bestiller", [
-    ["ご注文はお決まりですか？", "Go-chūmon wa okimari desu ka?", "Er I klar til at bestille?", [["はい。", "ja", "Hai."], ["もう少し待ってください。", "lidt mere tid, tak", "Mō sukoshi matte kudasai."]]],
-    ["お決まりになりましたらお呼びください。", "Okimari ni narimashitara oyobi kudasai.", "Kald på os, når I er klar.", []],
-    ["辛さはどうしますか？", "Karasa wa dō shimasu ka?", "Hvor stærk vil du have den?", [["辛くしないでください。", "ikke stærk", "Karaku shinaide kudasai."], ["普通でお願いします。", "normal", "Futsū de onegaishimasu."], ["辛口でお願いします。", "stærk", "Karakuchi de onegaishimasu."]]],
-    ["店内でお召し上がりですか？", "Tennai de omeshiagari desu ka?", "Spiser I her?", [["はい、店内で。", "ja, vi spiser her", "Hai, tennai de."], ["持ち帰りで。", "nej, det skal med", "Mochikaeri de."]]],
-    ["お持ち帰りですか？", "Omochikaeri desu ka?", "Skal det med?", [["はい、持ち帰りで。", "ja, det skal med", "Hai, mochikaeri de."], ["いいえ、店内で。", "nej, vi spiser her", "Iie, tennai de."]]],
-    ["以上でよろしいですか？", "Ijō de yoroshii desu ka?", "Var det alt?", [["はい、以上です。", "ja, det var alt", "Hai, ijō desu."], ["まだあります。", "nej, der er mere", "Mada arimasu."]]],
-    ["ラストオーダーです。", "Rasuto ōdā desu.", "Sidste bestilling: køkkenet lukker snart.", []]
-  ]],
-  ["når I betaler", [
-    ["お会計はレジでお願いします。", "Okaikei wa reji de onegaishimasu.", "Betal ved kassen.", []],
-    ["お支払いは？", "Oshiharai wa?", "Hvordan vil du betale?", [["カードで。", "med kort", "Kādo de."], ["現金で。", "kontant", "Genkin de."]]],
-    ["現金のみです。", "Genkin nomi desu.", "Kun kontanter.", []],
-    ["ポイントカードはお持ちですか？", "Pointo kādo wa omochi desu ka?", "Har du et pointkort?", [["いいえ、持っていません。", "nej, det har jeg ikke", "Iie, motte imasen."]]],
-    ["レシートはご利用ですか？", "Reshīto wa go-riyō desu ka?", "Vil du have kvitteringen? Sig ja, hvis du vil have tax free.", [YES, NO]]
-  ]],
-  ["i konbini og butikker", [
-    ["温めますか？", "Atatamemasu ka?", "Skal den varmes?", [YES, NO]],
-    ["袋はご利用ですか？", "Fukuro wa go-riyō desu ka?", "Vil du have en pose?", [YES, NO]],
-    ["お箸はおつけしますか？", "Ohashi wa otsuke shimasu ka?", "Vil du have spisepinde med?", [YES, NO]]
-  ]]
-];
 const COUNT_RO = ["", "ichi", "ni", "san", "yon", "go", "roku", "nana", "hachi", "kyū", "jū"];
 const TSU = ["", "hitotsu", "futatsu", "mittsu", "yottsu", "itsutsu", "muttsu", "nanatsu", "yattsu", "kokonotsu"];
 
@@ -1028,7 +986,7 @@ let talkQuery = "";
 const CAT_SHORT = { "Halal": "halal", "På restauranten": "restaurant", "Indkøb": "indkøb", "Transport": "transport", "Hotel": "hotel", "Nødsituation": "nød", "Praktisk": "praktisk" };
 let talkCat = store.get("tokyo-cat") || "all";
 if (talkCat !== "all" && !PHRASES.some(g => g[0] === talkCat)) talkCat = "all";
-let talkMode = ["hear", "read", "ways"].includes(store.get("tokyo-talk")) ? store.get("tokyo-talk") : "show";
+let talkMode = ["read", "ways"].includes(store.get("tokyo-talk")) ? store.get("tokyo-talk") : "show";
 function renderCats() {
   $("talkCats").innerHTML = [["all", "alle"], ...PHRASES.map(([g]) => [g, CAT_SHORT[g] || g])].map(([k, l]) =>
     `<button class="chip" type="button" data-c="${esc(k)}" aria-pressed="${!talkQuery.trim() && k === talkCat}">${esc(l)}</button>`).join("");
@@ -1092,29 +1050,65 @@ const READ = [
   ["大・小", "dai · shō", "stor · lille skylning", ""], ["止", "tomeru", "stop", ""], ["おしり", "oshiri", "vask bagtil", ""], ["ビデ", "bide", "bidet", ""], ["乾燥", "kansō", "tørring", ""]]]
 ];
 const RMARK = { x: "×", q: "?", o: "○" };
+/* skikke: the polite words, then what is expected (○ do, × don't), then the practical notes from overalt */
+const POLITE = [
+ ["こんにちは", "konnichiwa", "hej, goddag (om dagen)"],
+ ["おはようございます", "ohayō gozaimasu", "godmorgen (til ca. kl. 10)"],
+ ["こんばんは", "konbanwa", "godaften"],
+ ["ありがとうございます", "arigatō gozaimasu", "mange tak"],
+ ["ありがとうございました", "arigatō gozaimashita", "tak for det, når I går fra en butik eller restaurant"],
+ ["すみません", "sumimasen", "undskyld; også for at kalde på personalet, og som tak, når nogen hjælper"],
+ ["お願いします", "onegaishimasu", "tak, når I beder om noget (vær så venlig)"],
+ ["大丈夫です", "daijōbu desu", "nej tak, det er fint (fx til en pose)"],
+ ["いただきます", "itadakimasu", "siges før maden"],
+ ["ごちそうさまでした", "gochisōsama deshita", "tak for maden, når I går"],
+ ["失礼します", "shitsurei shimasu", "undskyld mig, når I går forbi nogen eller ind og ud"],
+ ["お元気で", "o-genki de", "hav det godt (ved et længere farvel)"],
+ ["お気をつけて", "o-ki o tsukete", "pas godt på jer, god tur"],
+ ["さようなら", "sayōnara", "farvel; til personalet siger man hellere arigatō gozaimashita"],
+ ["じゃあ、また", "jā, mata", "vi ses (til venner)"]
+];
+const EXPECT = [
+ ["o", "nik eller buk let med hovedet, når I hilser, takker og siger farvel."],
+ ["o", "læg pengene i den lille bakke ved kassen, ikke i hånden."],
+ ["o", "giv og tag imod ting, fx kort og kvitteringer, med begge hænder."],
+ ["o", "stil jer i kø, også på perronen ved de markerede linjer."],
+ ["o", "stå til venstre på rulletrappen i Tokyo, så andre kan gå forbi til højre."],
+ ["o", "vær stille i toget, og tal ikke i telefon."],
+ ["o", "tag skoene af, hvor der er et trin op, en skohylde eller tøfler."],
+ ["o", "den varme klud (oshibori) er til hænderne."],
+ ["o", "det er helt i orden at sørpe nudler."],
+ ["x", "giv ikke drikkepenge; prisen er prisen."],
+ ["x", "spis ikke, mens I går; spis ved boden eller automaten."],
+ ["x", "stik ikke spisepindene lodret ned i risen, og giv ikke mad fra pind til pind."],
+ ["x", "pust ikke næse ved bordet."],
+ ["x", "peg ikke på folk; vis vej med hele hånden."],
+ ["x", "smid ikke affald på gaden; der er få skraldespande, så tag det med."]
+];
 function renderRead() {
   $("readList").innerHTML = READ.map(([g, note, list], gi) => `<section class="hearGroup"><h2>${esc(g)}</h2>${note ? `<p class="readNote">${esc(note)}</p>` : ""}<div class="rdList">${list.map(([ja, ro, da, mk], i) =>
     `<button class="rd" type="button" data-rd="${gi}.${i}"><span class="rj" lang="ja">${esc(ja)}</span><span><span class="rm">${mk ? `<span class="mk ${mk}" aria-hidden="true">${RMARK[mk]}</span>` : ""}${esc(da || ro)}</span>${da ? `<span class="rr">${esc(ro)}</span>` : ""}</span></button>`).join("")}</div></section>`).join("");
 }
 function renderWays() {
   const si = 1, [sec, list] = EVERY[si];
-  $("waysList").innerHTML = `<section class="evSec"><h2>skikke og praktisk</h2><div class="evList">${list.map(([ic, n, j, t], ii) =>
+  $("waysList").innerHTML = `<section class="hearGroup"><h2>høflige ord</h2><p class="readNote">tryk på et ord for at se det stort${jaVoice() ? " og høre det" : ""}.</p><div class="rdList">${POLITE.map(([ja, ro, da], i) =>
+    `<button class="rd" type="button" data-pw="${i}"><span class="rj" lang="ja">${esc(ja)}</span><span><span class="rm">${esc(da)}</span><span class="rr">${esc(ro)}</span></span></button>`).join("")}</div></section>
+  <section class="hearGroup"><h2>det forventes</h2><ul class="ways">${EXPECT.map(([mk, t]) => `<li><span class="mk ${mk}" aria-hidden="true">${RMARK[mk]}</span><span>${esc(t)}</span></li>`).join("")}</ul></section>
+  <section class="evSec"><h2>praktisk</h2><div class="evList">${list.map(([ic, n, j, t], ii) =>
     `<button class="dish" type="button" data-evi="${si}.${ii}"><span class="ill" aria-hidden="true"><svg viewBox="0 0 64 64">${EV_ICONS[ic] || ""}</svg></span><span><b>${esc(n)}<span class="kanji" lang="ja">${esc(j)}</span></b><small>${esc(t)}</small></span><span class="go">›</span></button>`).join("")}</div></section>`;
 }
+document.addEventListener("click", e => {
+  const w = e.target.closest("[data-pw]"); if (!w) return;
+  const [ja, ro, da] = POLITE[+w.dataset.pw];
+  openBig({ text: ja, lang: "ja", say: ja, info: info(ro, da), kind: "read" }, w);
+});
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-rd]"); if (!b) return;
   const [gi, i] = b.dataset.rd.split(".").map(Number), [ja, ro, da] = READ[gi][2][i];
   openBig({ text: ja.replace(/・/g, "\n"), lang: "ja", say: ja.replace(/・/g, "、"), info: info(ro, da || ro), kind: "read" }, b);
 });
-/* "forstå": what staff say, to read and hear, with the answers to tap */
-function renderHear() {
-  const v = jaVoice(), canSay = v !== null && "speechSynthesis" in window;
-  $("hearList").innerHTML = HEAR.map(([g, list], gi) => `<section class="hearGroup"><h2>${esc(g)}</h2>${list.map(([ja, ro, da, rep], i) => `<div class="hear">
-    <p class="hj" lang="ja">${esc(ja)}</p><p class="hr">${esc(ro)}</p><p class="hd">${esc(da)}</p>
-    <div class="chips">${canSay ? `<button class="chip" type="button" data-say="${esc(ja)}" aria-label="læs højt">▶ hør</button>` : ""}${rep === "persons" ? `<span class="lbl2">svar:</span><button class="chip" type="button" data-hp="1">vi er … personer</button>` : rep.length ? `<span class="lbl2">svar:</span>${rep.map((r, k) => `<button class="chip" type="button" data-hr="${gi}.${i}.${k}">${esc(r[1])}</button>`).join("")}` : ""}</div></div>`).join("")}</section>`).join("");
-}
 function renderTalkMode() {
-  for (const [m, b, v] of [["show", "talkShow", "showView"], ["hear", "talkHear", "hearView"], ["read", "talkRead", "readView"], ["ways", "talkWays", "waysView"]]) {
+  for (const [m, b, v] of [["show", "talkShow", "showView"], ["read", "talkRead", "readView"], ["ways", "talkWays", "waysView"]]) {
     $(b).setAttribute("aria-pressed", String(talkMode === m)); $(v).hidden = talkMode !== m;
   }
   $("catScroll").hidden = talkMode !== "show";
@@ -1221,7 +1215,6 @@ function phraseView(p) {
   return { text: p[1], lang: "ja", say: p[1].replace(/\n/g, ""), info: info(p[2], p[0]), act: answerFor(type), kind: type };
 }
 /* an answer you tap in "forstå", shown in Japanese to the one who asked */
-function replyView(x) { return { text: x[0], lang: "ja", say: x[0], info: info(x[2], x[1]) }; }
 function halalView() {
   const li = l => l.map(([a, b]) => `<span class="hl">・${a}${b ? `<small>（${b}）</small>` : ""}</span>`).join("");
   const html = `<span class="hl">私はイスラム教徒です。</span><span class="hh no">× 食べられないもの</span>${li(HALAL_CARD.no)}<span class="hh ok">○ 食べられるもの</span>${li(HALAL_CARD.ok)}<span class="hl">よろしくお願いします。</span>`;
@@ -1519,11 +1512,7 @@ const EVERY = [
   ["læg mærke til", [
     ["toilet", "Toiletter", "トイレ", "Offentlige toiletter er gratis og rene, og de fleste har varmt sæde og vaskeknapper.", "止 er stop, おしり er vask, 流す er skyl.", [{ ph: "Hvor er toilettet?", l: "hvor er toilettet?" }]],
     ["tog", "Tog og rulletrapper", "電車", "I toget taler man ikke i telefon. På rulletrappen står man til venstre i Tokyo, så andre kan gå forbi til højre.", "På iPhone kan du lægge Suica i Wallet og betale med telefonen.", [{ ph: "Hvor kan jeg fylde mit Suica-kort op?", l: "hvor fylder jeg suica op?" }]],
-    ["skrald", "Næsten ingen skraldespande", "ゴミ箱", "Der står næsten ingen skraldespande på gaden. Tag affaldet med, eller smid det ved en konbini.", "", []],
-    ["gaa", "Spis ikke, mens du går", "食べ歩き", "Man spiser ved boden eller automaten, hvor man købte det. I Asakusa beder skilte om det.", "", []],
-    ["sko", "Sko af", "靴を脱ぐ", "Ser du et trin op til et hævet gulv, en skohylde eller tøfler, så tag skoene af. Det gælder også nogle restauranter og prøverum.", "", []],
     ["kontant", "Kontanter", "現金", "Kort virker de fleste steder, men små restauranter, boder og automater tager tit kun kontanter.", "Hæveautomaterne i 7-Eleven tager danske kort.", []],
-    ["drikkepenge", "Ingen drikkepenge", "チップ", "Man giver ikke drikkepenge i Japan; prisen er prisen, og det kan virke mærkeligt at lægge ekstra.", "", []],
     ["taxfree", "Tax free", "免税", "Fra 1. november 2026 betaler du moms i butikken og får de 10 % tilbage i lufthavnen, når du rejser hjem. Det gælder køb over 5.000 ¥ i én butik på en dag.", "Tag pas med, gem kvitteringerne, og hav varerne i håndbagagen til tjekket.", [{ ph: "Kan jeg få tax free?", l: "kan jeg få tax free?" }, { tab: "calc", l: "regn tax free ud" }]],
     ["boen", "Bøn", "お祈り", "Moskeer: Shin-Okubo-moskeen ved Shin-Okubo station, Tokyo Camii i Yoyogi-Uehara og As-Salaam Masjid i Okachimachi. Haneda Lufthavn og nogle stormagasiner har bederum.", "", [{ ph: "Er der et sted, hvor jeg kan bede?", l: "er der et sted at bede?" }, { url: "https://www.google.com/maps/search/?api=1&query=Islamic%20Alley&query_place_id=ChIJ42eQ0-ONGGAR88S29_JIGw0", l: "shin-okubo-moskeen på kort" }, { url: "https://www.google.com/maps/search/?api=1&query=Tokyo%20Camii", l: "tokyo camii på kort" }, { url: "https://www.google.com/maps/search/?api=1&query=Assalam%20Masjid%20Okachimachi", l: "as-salaam masjid på kort" }]],
     ["stik", "Stikkontakter", "コンセント", "Type A med 100 volt. Tag en adapter med; opladere til telefon og computer klarer spændingen.", "", []],
@@ -1639,14 +1628,8 @@ $("talkCats").addEventListener("click", e => {
   if (window.scrollY > y) window.scrollTo({ top: y });
 });
 $("talkShow").addEventListener("click", () => { talkMode = "show"; store.set("tokyo-talk", talkMode); renderTalkMode(); window.scrollTo({ top: 0 }); });
-$("talkHear").addEventListener("click", () => { talkMode = "hear"; store.set("tokyo-talk", talkMode); renderTalkMode(); window.scrollTo({ top: 0 }); });
 $("talkRead").addEventListener("click", () => { talkMode = "read"; store.set("tokyo-talk", talkMode); renderTalkMode(); window.scrollTo({ top: 0 }); });
 $("talkWays").addEventListener("click", () => { talkMode = "ways"; store.set("tokyo-talk", talkMode); renderTalkMode(); window.scrollTo({ top: 0 }); });
-$("hearList").addEventListener("click", e => {
-  const r = e.target.closest("[data-hr]"), pp = e.target.closest("[data-hp]");
-  if (r) { const [g, i, k] = r.dataset.hr.split(".").map(Number); openBig(replyView(HEAR[g][1][i][3][k]), r); }
-  else if (pp) openBig(personsView(), pp);
-});
 $("bigClose").addEventListener("click", closeBig);
 $("bigSpeak").addEventListener("click", () => { if (current) speakJa(current.say); });
 $("bigAct").addEventListener("click", e => {
@@ -1658,12 +1641,11 @@ $("bigAct").addEventListener("click", e => {
   if (b.dataset.cancel) { if (hotel) paint(hotelView()); else closeBig(); return; }
   if (b.dataset.save) { const v = ($("hotelInput").value || "").trim(); if (!v) { $("hotelInput").focus(); return; } hotel = v; store.set("tokyo-hotel", hotel); paint(hotelView()); }
 });
-if ("speechSynthesis" in window) { try { speechSynthesis.onvoiceschanged = () => { renderHear(); if (!$("big").hidden && current) paint(current); }; } catch (e) {} }
+if ("speechSynthesis" in window) { try { speechSynthesis.onvoiceschanged = () => { if (!$("big").hidden && current) paint(current); }; } catch (e) {} }
 document.addEventListener("keydown", e => { if (e.key !== "Escape") return; if (!$("big").hidden) closeBig(); else if (!$("sheet").hidden) closeSheet(); });
 renderEvery(); renderWays(); renderRead();
 renderSee();
 renderTalk();
-renderHear();
 fadeScroller($("catScroll"));
 tick();
 
