@@ -55,6 +55,13 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   300, hairlines instead of boxes (no web fonts any more), and the staff card is white on black. A fourth
   tab, omregn, gathers the tools and adds more: the tax-free refund on a price, read aloud, any number said in Japanese, and the time in Tokyo and Denmark. The phrasebook has seven
   categories to pick from, and the staff card closes with a button at the bottom or by pulling it down.
+- `aram.nu/tokyo`: oplev is rebuilt from a new round of research into 47 things to see and shops, in six
+  kinds to pick from (udsigt, oplevelser, spil & hobby, elektronik, butikker, byliv), each kind in its own
+  frame, with "overalt" as the last choice. More electronics and hobby shops (Yodobashi Akiba, Akizuki
+  Denshi, Radio Center, Yushakobo, Bambu Lab, Super Potato, Nakano Broadway, Gashapon Department Store,
+  Tamiya), new experiences (teamLab Borderless, SMALL WORLDS, Miraikan, Joypolis, DisneySea, Harry Potter,
+  PokéPark, Ghibli) and views (Azabudai Hills). Temples and shrines are gone (Senso-ji, Meiji Jingu). Oplev
+  has its own "where" choice, the same as under spis; places far out say how far and how to get there.
 - `aram.nu/tokyo` has a "desserter" section: eight viral Tokyo sweets to read about, each with its halal
   risk (gelatine, liqueur) and a button that asks staff about gelatine and alcohol, and seven shops for them
   (Poteri, Flipper's, Marion Crêpes, Naniwaya, Kimuraya, Benzaiten, Himitsudo), the uncertified ones said so.

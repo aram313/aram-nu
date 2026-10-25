@@ -132,10 +132,12 @@ Everything you tap opens the same sheet from the bottom, with the details and wh
   to go, in Japanese with the name and address. At its foot, "planlæg" puts the place in the plan tab,
   "været her" turns it green in every list, and a quiet "ikke interesseret" moves it to the archive; the
   gear (spis and oplev) opens settings with the archive, where it can be brought back. Sights work the same way.
-- **oplev**: "steder", 16 sights (sorted by distance when a point is chosen under spis), each with the
-  nearest halal places and "spørg om vej" with its Japanese name; and "overalt", 18 things met
-  everywhere in Tokyo to try or to notice, with buttons into the halal card, phrase cards, omregn or the
-  mosques on the map.
+- **oplev**: 47 things to see and shops in six kinds (udsigt, oplevelser, spil & hobby, elektronik, butikker,
+  byliv), chosen by chips like the dishes under spis, each kind in its own frame; no temples or shrines. The
+  same "where" choice as spis (shared) sorts them nearest first. Each has the nearest halal places and "spørg
+  om vej" with its Japanese name and address; places far out say how far and how to get there. The last
+  chip, "overalt", has 18 things met everywhere in Tokyo to try or to notice, with buttons into the halal
+  card, phrase cards, omregn or the mosques on the map.
 - **plan**: what you have planned, places to eat and sights together, nearest first when a point is chosen
   under spis (a chain shows its nearest branch), with a ✓ on each to mark it been; below, where you have been.
 - **parlør**: "vis frem" holds the halal card and 59 cards in seven categories to show staff; "forstå"
