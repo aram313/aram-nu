@@ -19,6 +19,10 @@ The Tokyo page (`src/tokyo/`) follows the same look since 2026-10-24 (Aram asked
 black on white and its icon is the text "/tokyo" in white on black (nothing religious).
 The tiles carry the shahada and Allah's name: never animate them falling, rotating or
 distorting, and keep them out of footers or decorative backgrounds.
+The calendar (`src/kalender/`, added 2026-11-20) is for the TimeOut club, not Aram's own page: it
+keeps the club's logo, dark blue look and normal capitals; do not move it to the black lowercase
+style. Its TV page must keep running on an old Smart-TV browser: ES5 only, no flexbox, grid,
+`vw`/`vh` or CSS variables in `tv.js`/`tv.css`/`shared.js` (`admin.*` may be modern).
 
 <!-- Expand: the purpose, the users, the constraints that are not obvious from the
      code. This is the context you would want if you were picking this up cold. -->

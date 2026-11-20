@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>TimeOut – Kalender</title>
+  <script>
+    // Vis fejl direkte på skærmen – et TV har ingen konsol
+    window.onerror = function (msg, url, line) {
+      var el = document.getElementById('status');
+      if (el) el.innerHTML = '<span class="pill">Fejl: ' + String(msg).replace(/</g, '&lt;') +
+        ' (' + String(url || '').split('/').pop() + ':' + line + ')</span>';
+      return false;
+    };
+  </script>
+  <link rel="stylesheet" href="tv.css">
+  <!-- Skrifttypen hentes uden at blokere siden; gamle TV'er bruger bare en standardskrift -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+</head>
+<body>
+  <div id="app">
+    <header class="top">
+      <img class="logo" src="logo.png" alt="TimeOut">
+      <div class="status" id="status"></div>
+      <div class="clock">
+        <div class="time" id="clock">--:--</div>
+        <div class="date" id="today"></div>
+      </div>
+    </header>
+    <main class="main">
+      <section class="weeks" id="weeks"><div class="fatal">Henter kalenderen …</div></section>
+      <aside class="panel" id="panel"></aside>
+    </main>
+  </div>
+  <script src="config.js" charset="utf-8"></script>
+  <script src="shared.js" charset="utf-8"></script>
+  <script src="tv.js" charset="utf-8"></script>
+</body>
+</html>
