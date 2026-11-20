@@ -28,6 +28,12 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   measures). Lines blend with "max" and hide behind faces; numbers come from the models.
   Arrow keys or a swipe for the next project, tap or Esc to close. Player in `src/stage.js`,
   data gzipped in `src/pts/` (about 13 MB, loaded one project at a time).
+- `aram.nu/kalender`: the TimeOut club's calendar (not linked from the front page, `noindex`). A TV
+  view of this week and next week with posters for coming talks, refreshing itself; an editor page
+  (`admin.html`, Supabase login) to add events, repeat them weekly, every other week, monthly or
+  quarterly (also "the last Wednesday"), change or cancel a single day, and upload posters; and
+  `tv-test.html` that checks whether a TV's own browser can show it. Data, logins and posters are in
+  Supabase; setup and guide in `docs/kalender/`.
 
 ### Changed
 

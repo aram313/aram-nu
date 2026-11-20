@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>TV-test – TimeOut-kalender</title>
+  <style>
+    * { margin: 0; padding: 0; -webkit-box-sizing: border-box; box-sizing: border-box; }
+    html, body { background: #0A0B22; color: #F3F4FF; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    body { padding: 2.5% 4%; font-size: 26px; line-height: 1.35; }
+    h1 { font-size: 1.6em; margin-bottom: .2em; }
+    .lead { color: #A9AED6; margin-bottom: .9em; }
+    #summary { padding: .7em .9em; border-radius: .5em; background: #1C1F4A; font-weight: bold; margin-bottom: .9em; }
+    #summary.ok { background: #0F3D2E; color: #7CF0BC; }
+    #summary.bad { background: #4A1626; color: #FFB3BE; }
+    table { width: 100%; border-collapse: collapse; }
+    td { padding: .38em .5em; border-bottom: 1px solid #262A5E; vertical-align: top; }
+    td.k { width: 36%; color: #A9AED6; }
+    td.v { font-weight: bold; }
+    .ok { color: #7CF0BC; } .bad { color: #FF9AA8; } .mid { color: #FFD08A; }
+    .small { font-size: .62em; font-weight: normal; color: #A9AED6; word-wrap: break-word; }
+    .go { display: inline-block; margin-top: 1em; padding: .55em 1.2em; border-radius: .5em; background: #6E5CFF;
+      color: #fff; text-decoration: none; font-weight: bold; font-size: 1.1em; }
+    .go:focus { outline: 4px solid #fff; }
+  </style>
+</head>
+<body>
+  <h1>TV-test</h1>
+  <p class="lead">Tjekker om TV'ets browser kan vise klubbens kalender. Vent et øjeblik …</p>
+  <div id="summary">JavaScript kører ikke i denne browser – kalenderen kan ikke vises her.</div>
+  <table id="rows"></table>
+  <a class="go" id="go" href="index.html">Åbn kalenderen &rarr;</a>
+
+  <script src="config.js" charset="utf-8"></script>
+  <script>
+  (function () {
+    var cfg = window.KALENDER_CONFIG || {};
+    var rows = document.getElementById('rows');
+    var pending = 0, problems = 0, dataOk = null;
+    document.body.style.fontSize = Math.max(16, Math.round((window.innerWidth || 1280) / 54)) + 'px';
+
+    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+    function row(label, html, cls) {
+      var tr = rows.insertRow(-1);
+      var a = tr.insertCell(0), b = tr.insertCell(1);
+      a.className = 'k'; b.className = 'v ' + (cls || '');
+      a.innerHTML = label; b.innerHTML = html;
+      return b;
+    }
+    function set(cell, html, cls) { cell.innerHTML = html; cell.className = 'v ' + (cls || ''); }
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function done() {
+      pending--;
+      if (pending > 0) return;
+      var s = document.getElementById('summary');
+      if (dataOk === false) {
+        s.className = 'bad';
+        s.innerHTML = '&#10007; TV\'et kan ikke hente kalenderens data. Brug pc\'en med Chrome i stedet (se tabellen).';
+      } else if (problems > 0) {
+        s.className = 'bad';
+        s.innerHTML = '&#10007; Der er problemer (se de røde linjer). Prøv "Åbn kalenderen" – ellers brug pc\'en.';
+      } else if (dataOk === null) {
+        s.className = '';
+        s.innerHTML = 'Browseren ser fin ud. Supabase er ikke sat op endnu, så kalenderen kører i demo med eksempler.';
+      } else {
+        s.className = 'ok';
+        s.innerHTML = '&#10003; Alt ser godt ud. Tryk på "Åbn kalenderen" og se, om den vises pænt.';
+      }
+    }
+
+    // 1) JavaScript og skærm
+    row('JavaScript', '&#10003; virker', 'ok');
+    row('Skærmstørrelse i browseren', (window.innerWidth || '?') + ' × ' + (window.innerHeight || '?') + ' punkter');
+
+    // 2) TV'ets ur
+    var now = new Date();
+    var days = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
+    row('TV\'ets dato og klokkeslæt', days[now.getDay()] + ' ' + now.getDate() + '/' + (now.getMonth() + 1) + ' ' +
+      now.getFullYear() + ' kl. ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) +
+      ' <span class="small">– passer det? Ellers ret uret i TV\'ets menu.</span>');
+
+    // 3) Moderne CSS (ikke nødvendigt – kalenderen klarer sig uden)
+    var t = document.createElement('div');
+    t.style.width = '10vw';
+    document.body.appendChild(t);
+    var vwOk = t.offsetWidth > 0 && Math.abs(t.offsetWidth - (window.innerWidth || 0) / 10) < 3;
+    document.body.removeChild(t);
+    row('Nyere skærm-funktioner', vwOk ? '&#10003; understøttet' : '– ikke understøttet <span class="small">(det klarer kalenderen selv)</span>', vwOk ? 'ok' : 'mid');
+
+    // 4) Lokal hukommelse (bruges til at vise kalenderen, hvis nettet falder ud)
+    var lsOk = false;
+    try { window.localStorage.setItem('tv-test', '1'); lsOk = window.localStorage.getItem('tv-test') === '1'; window.localStorage.removeItem('tv-test'); } catch (e) { lsOk = false; }
+    row('Hukommelse ved netudfald', lsOk ? '&#10003; virker' : '– virker ikke <span class="small">(ikke kritisk)</span>', lsOk ? 'ok' : 'mid');
+
+    // 5) Sikre forbindelser (https)
+    var httpsCell = row('Sikre sider (https)', '… tester', 'mid');
+    if (location.protocol === 'https:') {
+      set(httpsCell, '&#10003; virker <span class="small">(siden her er hentet sikkert)</span>', 'ok');
+    } else if (location.protocol === 'http:') {
+      pending++;
+      var img = new Image();
+      var timer = setTimeout(function () { img.onload = img.onerror = null; set(httpsCell, '&#10007; virker ikke (timeout)', 'bad'); problems++; done(); }, 15000);
+      img.onload = function () { clearTimeout(timer); set(httpsCell, '&#10003; virker', 'ok'); done(); };
+      img.onerror = function () { clearTimeout(timer); set(httpsCell, '&#10007; virker ikke <span class="small">– TV\'et kan sandsynligvis ikke godkende moderne sikkerhedscertifikater</span>', 'bad'); problems++; done(); };
+      img.src = 'https://' + location.host + location.pathname.replace(/[^\/]*$/, '') + 'logo.png?t=' + (+new Date());
+    } else {
+      set(httpsCell, '– kan ikke testes fra en lokal fil', 'mid');
+    }
+
+    // 6) Kalenderdata fra Supabase
+    var cors = false;
+    try { cors = 'withCredentials' in new XMLHttpRequest(); } catch (e) { cors = false; }
+    var dataCell = row('Kalenderdata (Supabase)', '… tester', 'mid');
+    if (!cfg.supabaseUrl || !cfg.supabaseKey) {
+      set(dataCell, '– ikke sat op endnu <span class="small">(config.js)</span>', 'mid');
+    } else if (!cors) {
+      dataOk = false;
+      set(dataCell, '&#10007; browseren kan ikke hente data fra andre sider', 'bad');
+    } else {
+      pending++;
+      var x = new XMLHttpRequest();
+      var finished = false;
+      var finish = function (ok, html) {
+        if (finished) return;
+        finished = true;
+        dataOk = ok;
+        set(dataCell, html, ok ? 'ok' : 'bad');
+        if (!ok) problems++;
+        done();
+      };
+      var t2 = setTimeout(function () { try { x.abort(); } catch (e) {} finish(false, '&#10007; intet svar (timeout)'); }, 20000);
+      x.open('GET', cfg.supabaseUrl.replace(/\/+$/, '') + '/rest/v1/events?select=id', true);
+      x.setRequestHeader('apikey', cfg.supabaseKey);
+      if (/^eyJ/.test(cfg.supabaseKey)) x.setRequestHeader('Authorization', 'Bearer ' + cfg.supabaseKey);
+      x.onreadystatechange = function () {
+        if (x.readyState !== 4) return;
+        clearTimeout(t2);
+        var st = x.status;
+        if (st >= 200 && st < 300) {
+          var n = '?';
+          try { n = JSON.parse(x.responseText).length; } catch (e) {}
+          finish(true, '&#10003; virker – ' + n + ' begivenheder fundet');
+        } else if (st === 0) {
+          finish(false, '&#10007; ingen forbindelse <span class="small">– TV\'et kan sandsynligvis ikke oprette den sikre forbindelse</span>');
+        } else if (st === 401 || st === 403) {
+          finish(false, '&#10007; nøglen afvises (' + st + ') <span class="small">– tjek supabaseKey i config.js</span>');
+        } else if (st === 404) {
+          finish(false, '&#10007; tabellen findes ikke (404) <span class="small">– kør supabase-opsaetning.sql</span>');
+        } else {
+          finish(false, '&#10007; fejl ' + st);
+        }
+      };
+      x.send();
+    }
+
+    row('Browser', '<span class="small">' + esc(navigator.userAgent) + '</span>');
+
+    pending++;
+    done();
+    try { document.getElementById('go').focus(); window.scrollTo(0, 0); } catch (e) {}
+  })();
+  </script>
+</body>
+</html>

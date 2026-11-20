@@ -167,6 +167,30 @@ makes it a full-screen app when added to a phone's home screen. Like the front p
 The exchange rate is fetched from `api.frankfurter.dev` when online; offline the built-in rate is used.
 Location needs the page on https, which Pages gives.
 
+## The TimeOut calendar
+
+`src/kalender/` is the TimeOut club's calendar at https://aram.nu/kalender, for a TV in the club. It has
+its own look (the club's logo, dark blue, capital letters), not the front page's. Not linked from the
+front page; `noindex`.
+
+- `index.html` (TV): this week and next week, today marked, a "nu" badge on what is happening now,
+  cancelled days crossed out, and on the right the posters of coming events in turn (or the rest of
+  the day when there are none). It fetches changes every 2 minutes, keeps the last copy for when the
+  net is down, and reloads itself at 04:00. Written in ES5 without flexbox or `vw` (`tv.js`, `tv.css`)
+  so an old Smart-TV browser can run it; errors show on the screen.
+- `admin.html` (editors): login, the coming weeks, the repeating events, and a form for an event
+  (weekly or every other week on chosen days; monthly or quarterly on "the nth/last weekday" or a
+  date; an end date; a poster, shrunk in the browser before upload). A single day of a series can be
+  changed ("kun denne dag") or cancelled; that is kept in the event's `exceptions`.
+- `tv-test.html`: checks a TV's browser (clock, https, the Supabase data) in large text.
+- `shared.js`: dates, repeat rules and Danish words for both pages. `config.js`: the Supabase URL and
+  public key, the event types and their colours.
+
+Supabase project `timeout-kalender` (free plan, Europe): table `events` and the public bucket
+`billeder`; anyone may read, only logged-in users may write, sign-ups are off and editors are added
+by hand. `docs/kalender/supabase-opsaetning.sql` makes all of it; `docs/kalender/VEJLEDNING.md` is
+the club's guide in Danish. Without a URL and key in `config.js` both pages run a demo in the browser.
+
 ## Publishing
 
 `.github/workflows/pages.yml` publishes `src/` to GitHub Pages on every push to `main`. It stamps

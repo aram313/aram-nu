@@ -1,0 +1,119 @@
+/*
+ * TV-visning. Alle størrelser er i "rem", og 1rem = 1 % af skærmens bredde
+ * (sættes af tv.js, så det også virker i gamle TV-browsere), så siden skalerer
+ * til ethvert 16:9-TV (720p, 1080p, 4K).
+ *
+ * Bevidst skrevet uden flexbox, grid, vw/vh og CSS-variabler, så ældre
+ * Smart-TV-browsere (fx Samsung fra 2012–2015) også kan vise siden.
+ */
+html { font-size: 1vw; height: 100%; }
+* { margin: 0; padding: 0; -webkit-box-sizing: border-box; box-sizing: border-box; }
+body { height: 100%; overflow: hidden; position: relative;
+  background-color: #0A0B22;
+  background-image: -webkit-radial-gradient(85% -10%, ellipse, rgba(110, 86, 255, .26), rgba(10, 11, 34, 0) 55%),
+                    -webkit-radial-gradient(0% 110%, ellipse, rgba(40, 110, 255, .16), rgba(10, 11, 34, 0) 50%);
+  background-image: radial-gradient(ellipse at 85% -10%, rgba(110, 86, 255, .26), rgba(10, 11, 34, 0) 55%),
+                    radial-gradient(ellipse at 0% 110%, rgba(40, 110, 255, .16), rgba(10, 11, 34, 0) 50%);
+  color: #F3F4FF;
+  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+}
+#app { position: absolute; top: 2.4%; bottom: 2.4%; left: 1.8rem; right: 1.8rem; }
+
+/* ---------- Top ---------- */
+.top { position: absolute; top: 0; left: 0; right: 0; height: 9.5%; }
+.logo { position: absolute; left: 0; top: 4%; height: 88%; width: auto; display: block; }
+.status { position: absolute; left: 25%; right: 25%; top: 30%; text-align: center; font-size: .95rem; color: #FFB547; font-weight: 600; }
+.status .pill { display: inline-block; padding: .35rem .9rem; border-radius: 2rem; background: rgba(255, 181, 71, .12); }
+.clock { position: absolute; right: 0; top: 0; text-align: right; white-space: nowrap; }
+.clock .time { font-size: 3.3rem; font-weight: 700; line-height: 1; letter-spacing: -.02em; }
+.clock .date { font-size: 1.15rem; color: #A9AED6; margin-top: .35rem; font-weight: 500; }
+
+/* ---------- Hovedområde ---------- */
+.main { position: absolute; top: 11.6%; bottom: 0; left: 0; right: 0; }
+.weeks { position: absolute; top: 0; bottom: 0; left: 0; right: 23.4rem; }
+.panel { position: absolute; top: 0; bottom: 0; right: 0; width: 22rem;
+  background: #14163A; -webkit-border-radius: 1rem; border-radius: 1rem; overflow: hidden; }
+
+/* ---------- Uger ---------- */
+.week { position: absolute; left: 0; right: 0; height: 48.6%; }
+.week-0 { top: 0; }
+.week-1 { bottom: 0; }
+.week-head { height: 2.6rem; line-height: 2rem; white-space: nowrap; overflow: hidden; }
+.wk-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -.01em; }
+.wk-sub { font-size: 1.1rem; color: #A9AED6; margin-left: .9rem; font-weight: 500; }
+.week-1 .wk-title { color: #D4D7F5; }
+
+/* 7 kolonner placeret med position (left sættes af tv.js) – virker i alle browsere */
+.days { position: absolute; top: 2.6rem; bottom: 0; left: 0; right: -.55rem; }
+.day { position: absolute; top: 0; bottom: 0; width: 14.2857%; }
+.box { position: absolute; top: 0; bottom: 0; left: 0; right: .55rem;
+  background: #14163A; -webkit-border-radius: .75rem; border-radius: .75rem; overflow: hidden; }
+.day.today .box { background: #1D1E58; -webkit-box-shadow: inset 0 0 0 .16rem #7B6CFF; box-shadow: inset 0 0 0 .16rem #7B6CFF; }
+.day.past-day .box { opacity: .42; }
+
+.day-head { position: relative; height: 3rem; padding: .75rem .85rem 0; white-space: nowrap; overflow: hidden; }
+.day-head .dn { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #A9AED6; }
+.day-head .dd { font-size: 1.25rem; font-weight: 700; margin-left: .35rem; }
+.day.today .dn { color: #C9C2FF; }
+.day-head .badge { position: absolute; right: .7rem; top: .82rem; font-size: .8rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .06em; background: #7B6CFF; color: #fff; padding: .22rem .5rem; -webkit-border-radius: .4rem; border-radius: .4rem; }
+
+.day-body { position: absolute; top: 3rem; bottom: .35rem; left: .35rem; right: .35rem; overflow: hidden; }
+
+/* ---------- Begivenheds-kort ---------- */
+.ev { position: relative; background: #20235A; -webkit-border-radius: .55rem; border-radius: .55rem;
+  padding: .5rem .45rem .55rem .85rem; margin-bottom: .42rem; overflow: hidden; }
+.day.today .ev { background: #2A2C72; }
+.ev .bar { position: absolute; left: 0; top: 0; bottom: 0; width: .34rem; }
+.ev .t { font-size: 1.02rem; font-weight: 700; white-space: nowrap; overflow: hidden; }
+.ev .n { font-size: 1.28rem; font-weight: 700; line-height: 1.2; margin-top: .12rem; color: #fff;
+  max-height: 2.42em; overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.ev .n.brk { word-wrap: break-word; }
+.ev .d { font-size: .92rem; line-height: 1.25; color: #B4B8E0; margin-top: .18rem;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ev.past { opacity: .45; }
+.ev.now { background: #3A3592; -webkit-box-shadow: 0 0 0 .14rem #A89CFF; box-shadow: 0 0 0 .14rem #A89CFF; }
+.ev .nu { display: inline-block; font-size: .72rem; font-weight: 800; letter-spacing: .08em; background: #fff; color: #2B2580;
+  padding: .1rem .38rem; -webkit-border-radius: .3rem; border-radius: .3rem; margin-left: .35rem; vertical-align: .12rem; }
+.ev.cancelled { opacity: .62; }
+.ev.cancelled .t { color: #FF9A9A !important; text-transform: uppercase; letter-spacing: .06em; font-size: .9rem; }
+.ev.cancelled .n { text-decoration: line-through; color: #C9CCEA; }
+.compact .ev .d { display: none; }
+.compact .ev .n { display: block; max-height: 1.25em; white-space: nowrap; text-overflow: ellipsis; }
+.more { font-size: .95rem; font-weight: 600; color: #A9AED6; padding: .15rem .5rem; }
+
+/* ---------- Højre panel ---------- */
+.panel-label { position: absolute; top: 1.2rem; left: 1.4rem; right: 1.4rem; font-size: .95rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .14em; color: #A9AED6; }
+.slide { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0;
+  -webkit-transition: opacity 1s ease; transition: opacity 1s ease; }
+.slide.on { opacity: 1; }
+.slide .img { position: absolute; top: 3.6rem; left: 1.4rem; right: 1.4rem; bottom: 15rem;
+  background-color: #0D0F2C; background-repeat: no-repeat; background-position: center center;
+  -webkit-background-size: contain; background-size: contain; -webkit-border-radius: .7rem; border-radius: .7rem; }
+.slide .info { position: absolute; left: 1.4rem; right: 1.4rem; bottom: 2.4rem; height: 11.6rem; overflow: hidden; }
+.slide .when { font-size: 1.15rem; font-weight: 700; }
+.slide .title { font-size: 1.9rem; font-weight: 800; line-height: 1.12; margin-top: .45rem; letter-spacing: -.01em;
+  max-height: 2.3em; overflow: hidden; -webkit-hyphens: auto; hyphens: auto;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.slide .desc { font-size: 1.08rem; line-height: 1.35; color: #C3C7EA; margin-top: .55rem;
+  max-height: 4.1em; overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+.dots { position: absolute; left: 0; right: 0; bottom: 1.1rem; text-align: center; }
+.dots i { display: inline-block; width: .55rem; height: .55rem; -webkit-border-radius: 50%; border-radius: 50%; background: #3A3E78; margin: 0 .25rem; }
+.dots i.on { background: #fff; }
+
+/* Liste-visning når der ikke er billeder */
+.agenda { position: absolute; top: 3.8rem; left: 1.4rem; right: 1.4rem; bottom: 1.4rem; overflow: hidden; }
+.ag { position: relative; padding: .9rem 0 .9rem 1.2rem; border-bottom: .08rem solid #262A5E; }
+.ag .bar { position: absolute; left: 0; top: 1rem; bottom: 1rem; width: .34rem; -webkit-border-radius: .2rem; border-radius: .2rem; }
+.ag .when { font-size: 1.05rem; font-weight: 700; }
+.ag .title { font-size: 1.6rem; font-weight: 800; line-height: 1.2; margin-top: .2rem; }
+.ag .desc { font-size: 1rem; color: #B4B8E0; margin-top: .2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.empty { position: absolute; top: 45%; left: 2rem; right: 2rem; text-align: center; font-size: 1.3rem; line-height: 1.4; color: #A9AED6; }
+
+/* Fejlbesked hvis JavaScript fejler */
+.fatal { position: absolute; left: 10%; right: 10%; top: 40%; text-align: center; font-size: 1.6rem; color: #FFB547; }
